@@ -130,7 +130,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$1,000.00</div>
+        <div id="balDisp">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -181,9 +181,29 @@
     </div>
 
     <script>
-        let bal = 1000, hands = [], dHand = [], deck = [], curBet = 0, activeHandIdx = 0, isGameOver = true, streak = 0;
+        // --- UNIVERSAL SESSION SYNC ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance; 
+        let hands = [], dHand = [], deck = [], curBet = 0, activeHandIdx = 0, isGameOver = true, streak = 0;
+
+        // Initialize UI
+        save();
 
         function save() { 
+            // Update Local Variable
+            currentUser.balance = bal;
+            // Update "Database"
+            allUsers[currentUser.name].balance = bal;
+            
+            // Push to Storage
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+
+            // Update UI
             document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
             document.getElementById('streakCounter').innerText = streak;
         }
@@ -203,7 +223,10 @@
 
         function deal() {
             curBet = parseFloat(document.getElementById('bjBet').value); 
-            if(curBet > bal || curBet <= 0) return;
+            if(curBet > bal || curBet <= 0) {
+                alert("Insufficient funds or invalid bet!");
+                return;
+            }
             bal -= curBet; save(); isGameOver = false; activeHandIdx = 0;
             
             const status = document.getElementById('bjStatus');
