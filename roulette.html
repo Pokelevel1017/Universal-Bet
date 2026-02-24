@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | Premium Roulette</title>
+    <title>Universal-Bet | Roulette</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         :root { 
@@ -14,6 +14,8 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
+        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
+        
         .viewport { height: calc(100vh - 64px); display: flex; }
 
         .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
@@ -59,7 +61,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$1,000.00</div>
+        <div id="balDisp">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -105,16 +107,31 @@
     </div>
 
     <script>
-        let bal = 1000, currentBet = null, nonce = 0;
+        // --- DATA SYNC SYSTEM ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance;
+        let currentBet = null, nonce = 0;
         const serverSeed = "universal_final_secure_2026";
         const wheel = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
         const reds = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
+
+        function updateStorage() {
+            currentUser.balance = bal;
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+        }
 
         function init() {
             const track = document.getElementById('reelTrack');
             const grid = document.getElementById('numbersGrid');
             
-            // 15 full sets of the wheel to ensure the track is long enough for a 6s spin
             const fullTrack = [];
             for(let i=0; i<15; i++) fullTrack.push(...wheel);
             
@@ -138,6 +155,7 @@
                     grid.appendChild(tile);
                 }
             }
+            updateStorage();
         }
 
         function selectBet(type, val) {
@@ -149,32 +167,28 @@
         function spin() {
             const betAmt = parseFloat(document.getElementById('rBet').value);
             if (!currentBet) return alert("Select a bet!");
-            if (betAmt > bal || betAmt <= 0) return;
+            if (betAmt > bal || betAmt <= 0) return alert("Insufficient funds!");
 
-            bal -= betAmt; nonce++; updateBal();
+            bal -= betAmt; 
+            nonce++; 
+            updateStorage();
+
             document.getElementById('spinBtn').disabled = true;
             document.getElementById('status').innerText = "SPINNING...";
 
-            // PROVABLY FAIR WINNER
             const hash = CryptoJS.HmacSHA512(`${nonce}`, serverSeed).toString();
             const winIdx = parseInt(hash.substring(0, 8), 16) % 37;
             const winNum = wheel[winIdx];
 
-            const itemWidth = 80; // FIXED PIXEL WIDTH
+            const itemWidth = 80; 
             const track = document.getElementById('reelTrack');
-            const container = document.querySelector('.reel-container');
-            const containerCenter = container.offsetWidth / 2;
-            
-            // Spin to the 10th set of numbers
+            const containerCenter = document.querySelector('.reel-container').offsetWidth / 2;
             const targetSetOffset = 37 * 10;
-            const winningPositionPixels = (targetSetOffset + winIdx) * itemWidth;
-            
-            // Perfect centering: Align the exact middle of the target tile to the exact middle of the container
-            const finalTranslateX = winningPositionPixels - containerCenter + (itemWidth / 2);
+            const finalTranslateX = ((targetSetOffset + winIdx) * itemWidth) - containerCenter + (itemWidth / 2);
 
             track.style.transition = 'none';
             track.style.transform = 'translateX(0px)';
-            track.offsetHeight; // Reset CSS
+            track.offsetHeight; 
 
             setTimeout(() => {
                 track.style.transition = 'transform 6s cubic-bezier(0.1, 0, 0.05, 1)';
@@ -211,7 +225,7 @@
                 status.innerText = `LOST: ${n} ${winColor.toUpperCase()}`;
                 status.style.color = "var(--loss-red)";
             }
-            updateBal();
+            updateStorage();
             
             const hist = document.getElementById('historyBar');
             const item = document.createElement('div');
@@ -220,12 +234,7 @@
             hist.prepend(item);
         }
 
-        function updateBal() {
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-        }
-
         init();
-        updateBal();
     </script>
 </body>
 </html>
