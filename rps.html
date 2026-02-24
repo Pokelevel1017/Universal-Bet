@@ -13,6 +13,8 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
+        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
+        
         .viewport { height: calc(100vh - 64px); display: flex; }
 
         /* SIDEBAR */
@@ -57,7 +59,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$1,000.00</div>
+        <div id="balDisp">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -101,7 +103,13 @@
     </div>
 
     <script>
-        let bal = 1000, playerChoice = null, nonce = 0;
+        // --- DATA SYNC SYSTEM ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance;
+        let playerChoice = null, nonce = 0;
         const serverSeed = "rps_server_secret_2026";
         const clientSeed = "user_client_seed";
 
@@ -112,6 +120,16 @@
             'S': { winsAgainst: 'P', losesAgainst: 'R' },
         };
 
+        function updateStorage() {
+            currentUser.balance = bal;
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+        }
+
         function selectChoice(choice) {
             playerChoice = choice;
             document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
@@ -119,10 +137,8 @@
             document.getElementById('playerCircle').innerText = emojiMap[choice];
         }
 
-        // --- PROVABLY FAIR LOGIC (Ported from your code) ---
         function getFairValue(sSeed, cSeed, n) {
             const hmac = CryptoJS.HmacSHA512(`${cSeed}:${n}:0`, sSeed).toString();
-            // Take first 8 chars (4 bytes) to generate float
             let bytes = [];
             for (let i = 0; i < 4; i++) {
                 bytes.push(parseInt(hmac.substring(i * 2, i * 2 + 2), 16));
@@ -141,18 +157,15 @@
             const bet = parseFloat(betInput.value);
 
             if (!playerChoice) return alert("Select Rock, Paper, or Scissors!");
-            if (bet > bal || bet <= 0) return;
+            if (bet > bal || bet <= 0) return alert("Insufficient funds!");
 
-            // Update state
             bal -= bet; nonce++;
-            updateBal();
+            updateStorage();
             document.getElementById('btnPlay').disabled = true;
 
-            // Generate Fair Result
             const fairValue = getFairValue(serverSeed, clientSeed, nonce);
             const houseBet = determineHouseBet(fairValue);
             
-            // Animation Delay
             let counter = 0;
             const houseCircle = document.getElementById('houseCircle');
             const interval = setInterval(() => {
@@ -186,7 +199,7 @@
                 status.innerText = "YOU WIN!";
                 status.style.color = "var(--win-green)";
                 pCircle.classList.add('winner');
-                const winAmount = bet * 1.95; // Standard 1.95x payout
+                const winAmount = bet * 1.95; 
                 bal += winAmount;
                 payout.innerText = `$${winAmount.toFixed(2)}`;
             } else {
@@ -195,14 +208,11 @@
                 hCircle.classList.add('winner');
                 payout.innerText = "$0.00";
             }
-            updateBal();
+            updateStorage();
         }
 
-        function updateBal() {
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-        }
-
-        updateBal();
+        // Initialize balance display
+        updateStorage();
     </script>
 </body>
 </html>
