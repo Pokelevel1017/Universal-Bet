@@ -13,6 +13,8 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
+        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
+        
         .viewport { height: calc(100vh - 64px); display: flex; }
 
         .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
@@ -55,7 +57,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$1,000.00</div>
+        <div id="balDisp">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -93,16 +95,33 @@
     </div>
 
     <script>
-        let bal = 1000, currentLevel = 0, isGameActive = false, currentBet = 0, nonce = 0;
+        // --- DATA SYNC SYSTEM ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance;
+        let currentLevel = 0, isGameActive = false, currentBet = 0, nonce = 0;
         const towerBoard = document.getElementById('towerBoard');
         const btnPlay = document.getElementById('btnPlay');
         const btnCashout = document.getElementById('btnCashout');
+        const serverSeed = "tower_secret_2026";
 
         const config = {
             easy:   { tiles: 4, bombs: 1, mults: [1.31, 1.74, 2.33, 3.10, 4.14, 5.52, 7.36, 9.81, 13.08] },
             medium: { tiles: 3, bombs: 1, mults: [1.47, 2.20, 3.31, 4.96, 7.44, 11.17, 16.75, 25.13, 37.70] },
             hard:   { tiles: 2, bombs: 1, mults: [1.96, 3.92, 7.84, 15.68, 31.36, 62.72, 125.4, 250.8, 501.6] }
         };
+
+        function updateStorage() {
+            currentUser.balance = bal;
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+        }
 
         function resetGame() {
             isGameActive = false;
@@ -138,7 +157,7 @@
 
         function startGame() {
             const bet = parseFloat(document.getElementById('tBet').value);
-            if (bet > bal || bet <= 0) return;
+            if (bet > bal || bet <= 0) return alert("Insufficient funds!");
             
             bal -= bet;
             currentBet = bet;
@@ -146,7 +165,7 @@
             currentLevel = 0;
             nonce++;
             
-            updateBal();
+            updateStorage();
             btnPlay.disabled = true;
             btnCashout.style.display = "block";
             
@@ -211,16 +230,12 @@
             isGameActive = false;
             btnPlay.disabled = false;
             btnCashout.style.display = "none";
-            updateBal();
+            updateStorage();
         }
 
-        function updateBal() {
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
-        }
-
-        const serverSeed = "tower_secret_2026";
+        // Initialize display and board
+        updateStorage();
         resetGame();
-        updateBal();
     </script>
 </body>
 </html>
