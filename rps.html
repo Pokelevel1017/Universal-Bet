@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal-Bet | Rock Paper Scissors</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        :root { 
+            --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
+            --win-green: #00e701; --loss-red: #ff4949; --tile-hover: #2d3a4f;
+        }
+
+        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
+        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
+        .viewport { height: calc(100vh - 64px); display: flex; }
+
+        /* SIDEBAR */
+        .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
+        .label { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+        
+        .input-wrapper { background: var(--dark-blue); border: 1px solid var(--mid-blue); border-radius: 8px; padding: 12px; margin-bottom: 20px; display: flex; align-items: center; }
+        .input-wrapper input { background: transparent; border: none; color: white; font-weight: 800; width: 100%; outline: none; font-size: 1rem; }
+
+        .stats-panel { background: #070b14; border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--mid-blue); }
+        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+        .stat-val.profit { color: var(--win-green); }
+
+        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* GAME STAGE */
+        .stage { flex: 1; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        
+        .game-area { display: flex; gap: 40px; align-items: center; margin-bottom: 50px; }
+        .hand-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .hand-circle { 
+            width: 120px; height: 120px; background: var(--mid-blue); border-radius: 50%; 
+            display: flex; align-items: center; justify-content: center; font-size: 50px;
+            border: 4px solid transparent; transition: 0.3s;
+        }
+        .hand-circle.active { border-color: var(--light-blue); box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
+        .hand-circle.winner { border-color: var(--win-green); box-shadow: 0 0 20px rgba(0, 231, 1, 0.3); }
+
+        .vs-text { font-size: 24px; font-weight: 900; color: #475569; }
+
+        .selection-grid { display: flex; gap: 15px; }
+        .choice-btn { 
+            width: 80px; height: 80px; background: var(--mid-blue); border-radius: 12px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 30px; transition: 0.2s; border: 2px solid transparent;
+        }
+        .choice-btn:hover { background: var(--tile-hover); border-color: var(--light-blue); transform: translateY(-3px); }
+        .choice-btn.selected { background: var(--light-blue); color: var(--dark-blue); }
+    </style>
+</head>
+<body>
+    <nav>
+        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
+        <div id="balDisp">$1,000.00</div>
+    </nav>
+
+    <div class="viewport">
+        <div class="sidebar">
+            <span class="label">Bet Amount</span>
+            <div class="input-wrapper"><input type="number" id="rpsBet" value="10.00"></div>
+
+            <div class="stats-panel">
+                <div class="stat-row">
+                    <span>Result</span>
+                    <span id="gameStatus" class="stat-val">—</span>
+                </div>
+                <div class="stat-row">
+                    <span>Payout</span>
+                    <span id="gamePayout" class="stat-val profit">$0.00</span>
+                </div>
+            </div>
+
+            <button class="btn-main" id="btnPlay" onclick="playRound()">Play Round</button>
+        </div>
+
+        <div class="stage">
+            <div class="game-area">
+                <div class="hand-container">
+                    <span class="label">House</span>
+                    <div id="houseCircle" class="hand-circle">?</div>
+                </div>
+                <div class="vs-text">VS</div>
+                <div class="hand-container">
+                    <span class="label">Player</span>
+                    <div id="playerCircle" class="hand-circle">?</div>
+                </div>
+            </div>
+
+            <div class="selection-grid">
+                <div class="choice-btn" id="btn-R" onclick="selectChoice('R')">🪨</div>
+                <div class="choice-btn" id="btn-P" onclick="selectChoice('P')">📜</div>
+                <div class="choice-btn" id="btn-S" onclick="selectChoice('S')">✂️</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bal = 1000, playerChoice = null, nonce = 0;
+        const serverSeed = "rps_server_secret_2026";
+        const clientSeed = "user_client_seed";
+
+        const emojiMap = { 'R': '🪨', 'P': '📜', 'S': '✂️' };
+        const RPS_WINNER_CONFIG = {
+            'R': { winsAgainst: 'S', losesAgainst: 'P' },
+            'P': { winsAgainst: 'R', losesAgainst: 'S' },
+            'S': { winsAgainst: 'P', losesAgainst: 'R' },
+        };
+
+        function selectChoice(choice) {
+            playerChoice = choice;
+            document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
+            document.getElementById(`btn-${choice}`).classList.add('selected');
+            document.getElementById('playerCircle').innerText = emojiMap[choice];
+        }
+
+        // --- PROVABLY FAIR LOGIC (Ported from your code) ---
+        function getFairValue(sSeed, cSeed, n) {
+            const hmac = CryptoJS.HmacSHA512(`${cSeed}:${n}:0`, sSeed).toString();
+            // Take first 8 chars (4 bytes) to generate float
+            let bytes = [];
+            for (let i = 0; i < 4; i++) {
+                bytes.push(parseInt(hmac.substring(i * 2, i * 2 + 2), 16));
+            }
+            return bytes.reduce((acc, value, i) => acc + value / Math.pow(256, i + 1), 0);
+        }
+
+        function determineHouseBet(fairValue) {
+            if (fairValue < 0.333333) return 'R';
+            if (fairValue < 0.666666) return 'P';
+            return 'S';
+        }
+
+        function playRound() {
+            const betInput = document.getElementById('rpsBet');
+            const bet = parseFloat(betInput.value);
+
+            if (!playerChoice) return alert("Select Rock, Paper, or Scissors!");
+            if (bet > bal || bet <= 0) return;
+
+            // Update state
+            bal -= bet; nonce++;
+            updateBal();
+            document.getElementById('btnPlay').disabled = true;
+
+            // Generate Fair Result
+            const fairValue = getFairValue(serverSeed, clientSeed, nonce);
+            const houseBet = determineHouseBet(fairValue);
+            
+            // Animation Delay
+            let counter = 0;
+            const houseCircle = document.getElementById('houseCircle');
+            const interval = setInterval(() => {
+                houseCircle.innerText = Object.values(emojiMap)[counter % 3];
+                counter++;
+            }, 100);
+
+            setTimeout(() => {
+                clearInterval(interval);
+                houseCircle.innerText = emojiMap[houseBet];
+                resolveWinner(playerChoice, houseBet, bet);
+                document.getElementById('btnPlay').disabled = false;
+            }, 800);
+        }
+
+        function resolveWinner(p, h, bet) {
+            const status = document.getElementById('gameStatus');
+            const payout = document.getElementById('gamePayout');
+            const hCircle = document.getElementById('houseCircle');
+            const pCircle = document.getElementById('playerCircle');
+
+            hCircle.classList.remove('winner');
+            pCircle.classList.remove('winner');
+
+            if (p === h) {
+                status.innerText = "DRAW";
+                status.style.color = "white";
+                bal += bet;
+                payout.innerText = `$${bet.toFixed(2)}`;
+            } else if (RPS_WINNER_CONFIG[p].winsAgainst === h) {
+                status.innerText = "YOU WIN!";
+                status.style.color = "var(--win-green)";
+                pCircle.classList.add('winner');
+                const winAmount = bet * 1.95; // Standard 1.95x payout
+                bal += winAmount;
+                payout.innerText = `$${winAmount.toFixed(2)}`;
+            } else {
+                status.innerText = "HOUSE WINS";
+                status.style.color = "var(--loss-red)";
+                hCircle.classList.add('winner');
+                payout.innerText = "$0.00";
+            }
+            updateBal();
+        }
+
+        function updateBal() {
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+        }
+
+        updateBal();
+    </script>
+</body>
+</html>
