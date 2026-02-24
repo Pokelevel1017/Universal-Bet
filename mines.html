@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Universal-Bet | Mines</title>
     <style>
-        :root { --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; --grid-cols: 5; }
+        :root { --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; --grid-cols: 5; --win-green: #00e701; --loss-red: #ff4949; }
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
         .viewport { height: calc(100vh - 64px); display: flex; }
@@ -16,16 +16,22 @@
         .stage { flex: 1; background: #0f172a; display: flex; align-items: center; justify-content: center; }
         .mines-container { width: 480px; height: 480px; transition: transform 0.1s; }
         .mines-grid { display: grid; grid-template-columns: repeat(var(--grid-cols), 1fr); grid-template-rows: repeat(var(--grid-cols), 1fr); gap: 8px; width: 100%; height: 100%; }
-        .tile { background: var(--mid-blue); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-bottom: 3px solid rgba(0,0,0,0.3); }
-        .tile.revealed { animation: flip 0.4s forwards; }
+        .tile { background: var(--mid-blue); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-bottom: 3px solid rgba(0,0,0,0.3); transition: 0.2s; }
+        .tile:hover { background: #2d3a4f; }
+        .tile.revealed { animation: flip 0.4s forwards; cursor: default; }
         @keyframes flip { 0% { transform: rotateY(0deg); } 100% { transform: rotateY(0deg); background: #0b1120; border-bottom: none; } }
         
         select { width: 100%; background: var(--dark-blue); border: 1px solid var(--mid-blue); color: white; padding: 12px; border-radius: 8px; margin-bottom: 20px; outline: none; }
-        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; }
+        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; }
+        .btn-main:hover { filter: brightness(1.1); }
+        .btn-cashout { background: var(--win-green) !important; }
     </style>
 </head>
 <body>
-    <nav><div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div><div id="balDisp">$1,000.00</div></nav>
+    <nav>
+        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
+        <div id="balDisp" style="color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px;">$0.00</div>
+    </nav>
     <div class="viewport">
         <div class="sidebar">
             <span style="font-size:11px; font-weight:800; color:#94a3b8; margin-bottom:8px; display:block;">BET AMOUNT</span>
@@ -39,36 +45,115 @@
         </div>
         <div class="stage"><div class="mines-container"><div class="mines-grid" id="mGrid"></div></div></div>
     </div>
+
     <script>
-        let bal = 1000, mActive = false, mPos = [], mGems = 0, mCurBet = 0;
-        function save() { document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; }
+        // --- UNIVERSAL SESSION SYNC ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance, mActive = false, mPos = [], mGems = 0, mCurBet = 0;
+
+        function save() { 
+            // Update local memory
+            currentUser.balance = bal;
+            // Update master database
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            // Update UI
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
+        }
+
+        // Initialize Balance Display
+        save();
+
         function resetGrid() { 
+            if(mActive) return; // Prevent changing grid during game
             const s = document.getElementById('mGridSize').value;
             document.documentElement.style.setProperty('--grid-cols', s);
             const grid = document.getElementById('mGrid'); grid.innerHTML = '';
             for(let i=0; i<s*s; i++) { let t = document.createElement('div'); t.className = 'tile'; grid.appendChild(t); }
+            document.getElementById('mSlider').max = (s*s) - 1;
         }
+
         function mStart() {
             if(mActive) { mCash(); return; }
-            mCurBet = parseFloat(document.getElementById('mBet').value); if(mCurBet > bal || mCurBet <= 0) return;
-            bal -= mCurBet; mActive = true; mGems = 0; mPos = []; save();
+            mCurBet = parseFloat(document.getElementById('mBet').value); 
+            if(mCurBet > bal || mCurBet <= 0) return alert("Insufficient funds!");
+
+            bal -= mCurBet; 
+            mActive = true; 
+            mGems = 0; 
+            mPos = []; 
+            save(); // Save the bet/loss immediately
+
             const s = document.getElementById('mGridSize').value;
             const count = parseInt(document.getElementById('mSlider').value);
             while(mPos.length < count) { let r = Math.floor(Math.random()*(s*s)); if(!mPos.includes(r)) mPos.push(r); }
+            
             document.getElementById('mBtn').innerText = "Cash Out";
+            document.getElementById('mBtn').classList.add('btn-cashout');
+            document.getElementById('mStatus').innerText = "0.00x";
+            
             const grid = document.getElementById('mGrid'); grid.innerHTML = '';
             for(let i=0; i<s*s; i++) {
                 const t = document.createElement('div'); t.className = 'tile';
                 t.onclick = () => {
                     if(!mActive || t.classList.contains('revealed')) return;
                     t.classList.add('revealed');
-                    if(mPos.includes(i)) { t.innerText = '💣'; mActive = false; document.getElementById('mBtn').innerText = "Bet"; }
-                    else { t.innerText = '💎'; mGems++; let mult = (0.99*((s*s)/((s*s)-mGems))).toFixed(2); document.getElementById('mStatus').innerText = mult + "x"; }
+                    if(mPos.includes(i)) { 
+                        t.innerText = '💣'; 
+                        t.style.background = "var(--loss-red)";
+                        mActive = false; 
+                        document.getElementById('mBtn').innerText = "Bet"; 
+                        document.getElementById('mBtn').classList.remove('btn-cashout');
+                        document.getElementById('mStatus').innerText = "BUST";
+                        document.getElementById('mStatus').style.color = "var(--loss-red)";
+                        // Reveal all mines
+                        revealAll();
+                    }
+                    else { 
+                        t.innerText = '💎'; 
+                        t.style.color = "var(--light-blue)";
+                        mGems++; 
+                        let mult = (0.99*((s*s)/((s*s)-mGems))).toFixed(2); 
+                        document.getElementById('mStatus').innerText = mult + "x";
+                        document.getElementById('mStatus').style.color = "var(--light-blue)";
+                    }
                 };
                 grid.appendChild(t);
             }
         }
-        function mCash() { mActive = false; document.getElementById('mBtn').innerText = "Bet"; let s = document.getElementById('mGridSize').value; let mult = 0.99*((s*s)/((s*s)-mGems)); bal += (mCurBet * mult); save(); }
+
+        function revealAll() {
+            const tiles = document.querySelectorAll('.tile');
+            mPos.forEach(pos => {
+                tiles[pos].innerText = '💣';
+                tiles[pos].classList.add('revealed');
+            });
+        }
+
+        function mCash() { 
+            if(!mActive || mGems === 0) return;
+            mActive = false; 
+            document.getElementById('mBtn').innerText = "Bet"; 
+            document.getElementById('mBtn').classList.remove('btn-cashout');
+            
+            let s = document.getElementById('mGridSize').value; 
+            let mult = 0.99*((s*s)/((s*s)-mGems)); 
+            let winAmount = mCurBet * mult;
+            
+            bal += winAmount; 
+            save(); // Save the win
+            document.getElementById('mStatus').innerText = "WIN: " + mult.toFixed(2) + "x";
+            document.getElementById('mStatus').style.color = "var(--win-green)";
+            revealAll();
+        }
+
         resetGrid();
     </script>
 </body>
