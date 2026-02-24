@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal-Bet | Blackjack</title>
+    <style>
+        :root { 
+            --dark-blue: #0b1120; 
+            --mid-blue: #1e293b; 
+            --light-blue: #38bdf8; 
+            --felt-green: #064e3b; 
+            --win-green: #00e701; 
+            --loss-red: #ff4949;
+        }
+
+        body { 
+            background-color: var(--dark-blue); 
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            overflow: hidden; 
+        }
+
+        nav { 
+            background: #070b14; 
+            padding: 0 2rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            height: 64px; 
+            border-bottom: 1px solid var(--mid-blue); 
+        }
+
+        .viewport { height: calc(100vh - 64px); display: flex; }
+
+        /* FIXED SIDEBAR */
+        .sidebar { 
+            width: 300px; 
+            background: #111827; 
+            border-right: 1px solid var(--mid-blue); 
+            padding: 24px; 
+            display: flex; 
+            flex-direction: column; 
+            flex-shrink: 0; 
+        }
+
+        .label { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+
+        .bet-input-wrapper { 
+            background: var(--dark-blue); 
+            border: 1px solid var(--mid-blue); 
+            border-radius: 8px; 
+            padding: 12px; 
+            margin-bottom: 20px; 
+        }
+
+        .bet-input-wrapper input { 
+            background: transparent; 
+            border: none; 
+            color: white; 
+            font-weight: 800; 
+            width: 100%; 
+            outline: none; 
+            font-size: 1rem; 
+        }
+
+        .streak-box {
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .streak-val { font-size: 24px; font-weight: 900; color: var(--light-blue); }
+
+        /* GAME STAGE */
+        .stage { flex: 1; background: #0f172a; position: relative; display: flex; justify-content: center; align-items: center; }
+        
+        .table-felt { 
+            width: 90%; 
+            height: 85%; 
+            background: var(--felt-green); 
+            border-radius: 300px 300px 50px 50px; 
+            border: 12px solid #3f2b1d; 
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.8); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: space-around; 
+            padding: 20px; 
+        }
+
+        .hand-container { text-align: center; transition: 0.3s; padding: 15px; border-radius: 20px; }
+        .active-hand { background: rgba(255, 255, 255, 0.08); box-shadow: 0 0 20px var(--light-blue); }
+
+        .hand-label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 2px; margin-top: 18px; }
+        .total-badge { background: rgba(0,0,0,0.7); padding: 4px 12px; border-radius: 20px; font-size: 14px; font-weight: 800; color: var(--light-blue); margin-left: 5px; }
+
+        .cards-row { display: flex; gap: 10px; min-height: 125px; justify-content: center; margin-top: 10px; }
+
+        /* CARDS */
+        .card { 
+            width: 80px; height: 115px; background: white; border-radius: 8px; color: #1e293b; 
+            padding: 10px; font-weight: 900; display: flex; flex-direction: column; justify-content: space-between; 
+            box-shadow: 2px 5px 15px rgba(0,0,0,0.5); animation: dealCard 0.4s ease-out; position: relative;
+        }
+
+        .card.hidden-card { 
+            background: #be123c; 
+            background-image: radial-gradient(var(--mid-blue) 1px, transparent 0); 
+            background-size: 8px 8px; 
+            border: 4px solid white; 
+        }
+        .card.hidden-card::after { content: '♠'; color: rgba(255,255,255,0.15); font-size: 40px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+        @keyframes dealCard { from { transform: translateY(-400px) rotate(20deg); opacity: 0; } to { transform: translateY(0) rotate(0deg); opacity: 1; } }
+
+        /* CONTROLS */
+        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; margin-bottom: 10px; transition: 0.2s; }
+        .btn-sub { background: var(--mid-blue); color: white; width: 100%; padding: 14px; border-radius: 8px; border: none; cursor: pointer; margin-bottom: 10px; font-weight: 700; }
+        .btn-main:hover { filter: brightness(1.1); }
+        .hidden { display: none; }
+
+        #bjStatus { margin-top: auto; font-size: 2rem; font-weight: 900; text-align: center; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
+        <div id="balDisp">$1,000.00</div>
+    </nav>
+
+    <div class="viewport">
+        <div class="sidebar">
+            <div class="streak-box">
+                <div class="label" style="margin-bottom:2px;">Win Streak</div>
+                <div class="streak-val" id="streakCounter">0</div>
+            </div>
+
+            <span class="label">Bet Amount</span>
+            <div class="bet-input-wrapper">
+                <input type="number" id="bjBet" value="10.00" step="10">
+            </div>
+
+            <div id="bj-pre">
+                <button class="btn-main" onclick="deal()">PLACE BET</button>
+            </div>
+
+            <div id="bj-in" class="hidden">
+                <button class="btn-main" onclick="hit()">HIT</button>
+                <button class="btn-sub" onclick="stand()">STAND</button>
+                <button id="doubleBtn" class="btn-sub" onclick="double()">DOUBLE</button>
+                <button id="splitBtn" class="btn-sub hidden" onclick="split()">SPLIT</button>
+            </div>
+
+            <div id="bjStatus"></div>
+        </div>
+
+        <div class="stage">
+            <div class="table-felt">
+                <div class="hand-container">
+                    <div class="hand-label">Dealer <span id="dTotal" class="total-badge">?</span></div>
+                    <div id="dCards" class="cards-row"></div>
+                </div>
+
+                <div style="display:flex; gap:30px; width: 100%; justify-content: center;">
+                    <div id="hand0-cont" class="hand-container">
+                        <div id="hand0-cards" class="cards-row"></div>
+                        <div class="hand-label">Hand 1 <span id="hand0-total" class="total-badge">0</span></div>
+                    </div>
+                    <div id="hand1-cont" class="hand-container hidden">
+                        <div id="hand1-cards" class="cards-row"></div>
+                        <div class="hand-label">Hand 2 <span id="hand1-total" class="total-badge">0</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let bal = 1000, hands = [], dHand = [], deck = [], curBet = 0, activeHandIdx = 0, isGameOver = true, streak = 0;
+
+        function save() { 
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
+            document.getElementById('streakCounter').innerText = streak;
+        }
+
+        function createDeck() {
+            deck = []; 
+            const suits = ['♠','♥','♦','♣'], vals = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+            for(let s of suits) for(let v of vals) deck.push({v, s, w: parseInt(v) || (v==='A'?11:10), r: (s==='♥'||s==='♦')});
+            deck.sort(()=>Math.random()-0.5);
+        }
+
+        function score(h) {
+            let s = h.reduce((a,b)=>a+b.w,0), aces = h.filter(c=>c.v==='A').length;
+            while(s > 21 && aces > 0) { s -= 10; aces--; }
+            return s;
+        }
+
+        function deal() {
+            curBet = parseFloat(document.getElementById('bjBet').value); 
+            if(curBet > bal || curBet <= 0) return;
+            bal -= curBet; save(); isGameOver = false; activeHandIdx = 0;
+            
+            const status = document.getElementById('bjStatus');
+            status.innerText = '';
+            status.style.color = "white";
+
+            document.getElementById('hand1-cont').classList.add('hidden');
+            document.getElementById('bj-pre').classList.add('hidden');
+            document.getElementById('bj-in').classList.remove('hidden');
+            document.getElementById('splitBtn').classList.add('hidden');
+            document.getElementById('doubleBtn').classList.remove('hidden');
+            
+            createDeck();
+            hands = [[deck.pop(), deck.pop()]];
+            dHand = [deck.pop(), deck.pop()];
+            
+            if(hands[0][0].v === hands[0][1].v) document.getElementById('splitBtn').classList.remove('hidden');
+            
+            render(false);
+
+            if(score(hands[0]) === 21) {
+                status.innerText = "BLACKJACK!";
+                status.style.color = "var(--win-green)";
+                setTimeout(stand, 600);
+            }
+        }
+
+        function render(showAll) {
+            hands.forEach((h, idx) => {
+                const el = document.getElementById(`hand${idx}-cards`);
+                el.innerHTML = '';
+                h.forEach(c => el.innerHTML += `<div class="card" style="color:${c.r?'#be123c':'#1e293b'}"><div>${c.v}</div><div style="font-size:2rem;align-self:center">${c.s}</div><div style="text-align:right">${c.v}</div></div>`);
+                document.getElementById(`hand${idx}-total`).innerText = score(h);
+                document.getElementById(`hand${idx}-cont`).classList.toggle('active-hand', !showAll && activeHandIdx === idx);
+            });
+
+            const dEl = document.getElementById('dCards');
+            dEl.innerHTML = '';
+            dHand.forEach((c, i) => {
+                if(i === 1 && !showAll) dEl.innerHTML += `<div class="card hidden-card"></div>`;
+                else dEl.innerHTML += `<div class="card" style="color:${c.r?'#be123c':'#1e293b'}"><div>${c.v}</div><div style="font-size:2rem;align-self:center">${c.s}</div><div style="text-align:right">${c.v}</div></div>`;
+            });
+            document.getElementById('dTotal').innerText = showAll ? score(dHand) : "?";
+        }
+
+        function hit() {
+            if(isGameOver) return;
+            hands[activeHandIdx].push(deck.pop());
+            document.getElementById('splitBtn').classList.add('hidden');
+            document.getElementById('doubleBtn').classList.add('hidden');
+            render(false);
+            if(score(hands[activeHandIdx]) >= 21) nextHand();
+        }
+
+        function split() {
+            if(bal < curBet) return;
+            bal -= curBet; save();
+            const secondCard = hands[0].pop();
+            hands.push([secondCard]);
+            hands[0].push(deck.pop());
+            hands[1].push(deck.pop());
+            document.getElementById('hand1-cont').classList.remove('hidden');
+            document.getElementById('splitBtn').classList.add('hidden');
+            render(false);
+        }
+
+        function nextHand() {
+            if(activeHandIdx < hands.length - 1) {
+                activeHandIdx++;
+                render(false);
+            } else {
+                stand();
+            }
+        }
+
+        function stand() {
+            if(isGameOver) return;
+            if(activeHandIdx < hands.length - 1) {
+                nextHand();
+                return;
+            }
+            
+            isGameOver = true;
+            while(score(dHand) < 17) dHand.push(deck.pop());
+            render(true);
+            
+            let totalWin = 0;
+            const ds = score(dHand);
+            const status = document.getElementById('bjStatus');
+
+            hands.forEach(h => {
+                const ps = score(h);
+                if(ps <= 21 && (ds > 21 || ps > ds)) {
+                    totalWin += (ps === 21 && h.length === 2) ? curBet * 2.5 : curBet * 2;
+                } else if(ps <= 21 && ps === ds) {
+                    totalWin += curBet;
+                }
+            });
+
+            if(totalWin > curBet * hands.length) {
+                status.innerText = "WINNER";
+                status.style.color = "var(--win-green)";
+                streak++;
+            } else if(totalWin === 0) {
+                status.innerText = "DEALER WINS";
+                status.style.color = "var(--loss-red)";
+                streak = 0;
+            } else {
+                status.innerText = "PUSH";
+                status.style.color = "white";
+            }
+
+            bal += totalWin;
+            save();
+            document.getElementById('bj-pre').classList.remove('hidden');
+            document.getElementById('bj-in').classList.add('hidden');
+        }
+
+        function double() {
+            if(bal >= curBet) {
+                bal -= curBet;
+                curBet *= 2;
+                save();
+                hands[activeHandIdx].push(deck.pop());
+                render(false);
+                nextHand();
+            }
+        }
+    </script>
+</body>
+</html>
