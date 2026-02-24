@@ -187,23 +187,24 @@
 
         if (!currentUser) window.location.href = 'index.html';
 
+        // PULL ACTUAL BALANCE FROM ACCOUNT
         let bal = currentUser.balance; 
         let hands = [], dHand = [], deck = [], curBet = 0, activeHandIdx = 0, isGameOver = true, streak = 0;
 
-        // Initialize UI
+        // Initialize UI immediately
         save();
 
         function save() { 
-            // Update Local Variable
+            // Sync with local session
             currentUser.balance = bal;
-            // Update "Database"
-            allUsers[currentUser.name].balance = bal;
+            // Sync with leaderboard database
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
             
-            // Push to Storage
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             localStorage.setItem('users', JSON.stringify(allUsers));
 
-            // Update UI
             document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
             document.getElementById('streakCounter').innerText = streak;
         }
@@ -224,10 +225,15 @@
         function deal() {
             curBet = parseFloat(document.getElementById('bjBet').value); 
             if(curBet > bal || curBet <= 0) {
-                alert("Insufficient funds or invalid bet!");
+                alert("Insufficient funds!");
                 return;
             }
-            bal -= curBet; save(); isGameOver = false; activeHandIdx = 0;
+            
+            bal -= curBet; 
+            save(); // Save loss immediately
+            
+            isGameOver = false; 
+            activeHandIdx = 0;
             
             const status = document.getElementById('bjStatus');
             status.innerText = '';
@@ -283,7 +289,8 @@
 
         function split() {
             if(bal < curBet) return;
-            bal -= curBet; save();
+            bal -= curBet; 
+            save();
             const secondCard = hands[0].pop();
             hands.push([secondCard]);
             hands[0].push(deck.pop());
@@ -340,7 +347,7 @@
             }
 
             bal += totalWin;
-            save();
+            save(); 
             document.getElementById('bj-pre').classList.remove('hidden');
             document.getElementById('bj-in').classList.add('hidden');
         }
