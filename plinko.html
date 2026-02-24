@@ -33,9 +33,10 @@
             border-bottom: 1px solid var(--mid-blue); 
         }
 
+        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
+
         .viewport { height: calc(100vh - 64px); display: flex; }
 
-        /* SIDEBAR STYLING */
         .sidebar { 
             width: 300px; 
             background: #111827; 
@@ -98,7 +99,6 @@
         .btn-main:hover { filter: brightness(1.1); transform: translateY(-1px); }
         .btn-main:active { transform: translateY(0) scale(0.98); }
 
-        /* GAME STAGE */
         .stage { 
             flex: 1; 
             background: #0f172a; 
@@ -140,7 +140,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$1,000.00</div>
+        <div id="balDisp">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -183,18 +183,34 @@
     </div>
 
     <script>
+        // --- DATA SYNC SYSTEM ---
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance;
+        let nonce = 0, balls = [], pegs = [], multipliers = [];
+        const serverSeed = "7d8f9e0a1b2c3d4e5f6g7h8i9j0k"; 
+        const clientSeed = "universal_user_client";
+
+        function updateStorage() {
+            currentUser.balance = bal;
+            if (allUsers && allUsers[currentUser.name]) {
+                allUsers[currentUser.name].balance = bal;
+            }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
+            document.getElementById('nonceDisp').innerText = nonce;
+        }
+
+        // --- GAME ENGINE ---
         const canvas = document.getElementById('plinkoCanvas');
         const ctx = canvas.getContext('2d');
         canvas.width = 800; canvas.height = 750;
 
-        let bal = 1000, nonce = 0, balls = [], pegs = [], multipliers = [];
-        const serverSeed = "7d8f9e0a1b2c3d4e5f6g7h8i9j0k"; 
-        const clientSeed = "universal_user_client";
+        const ballRadius = 6, pegRadius = 3.5, gravity = 0.08;
 
-        // Constants for slow, cinematic fall
-        const ballRadius = 6, pegRadius = 3.5, gravity = 0.08, friction = 0.35;
-
-        // Payout Tables (Authentic Rainbet/Stake odds)
         const payoutData = {
             low: {
                 8: [5.6, 2.1, 1.1, 1, 0.5, 1, 1.1, 2.1, 5.6],
@@ -223,11 +239,6 @@
             }
         };
 
-        function getMults(risk, rows) {
-            // Helper to fill in medium/high gaps if specific row isn't in table
-            return payoutData[risk][rows] || payoutData[risk][16];
-        }
-
         function initBoard() {
             pegs = [];
             const rows = parseInt(document.getElementById('rowCount').value);
@@ -239,13 +250,8 @@
                     pegs.push({ x: startX + j * spacingX, y: 60 + i * spacingY });
                 }
             }
-            multipliers = getMults(document.getElementById('riskLevel').value, rows);
-            save();
-        }
-
-        function save() { 
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
-            document.getElementById('nonceDisp').innerText = nonce;
+            multipliers = payoutData[document.getElementById('riskLevel').value][rows] || payoutData['medium'][16];
+            updateStorage();
         }
 
         class Ball {
@@ -255,35 +261,28 @@
                 this.bet = bet; this.risk = risk; this.row_count = row_count;
                 this.path = path; this.step = 0; this.active = true;
             }
-
             update() {
                 this.vy += gravity;
                 this.x += this.vx; this.y += this.vy;
                 this.vx *= 0.98;
-
                 pegs.forEach(peg => {
                     const dx = this.x - peg.x, dy = this.y - peg.y, dist = Math.sqrt(dx*dx + dy*dy);
                     if (dist < ballRadius + pegRadius && this.step < this.row_count) {
                         const direction = this.path[this.step] === 1 ? 1 : -1;
-                        this.vx = direction * 1.6; 
-                        this.vy = 1.2; 
-                        this.step++;
+                        this.vx = direction * 1.6; this.vy = 1.2; this.step++;
                     }
                 });
-
                 if (this.y > 60 + (this.row_count * 32) + 20) {
                     this.active = false; this.onLand();
                 }
             }
-
             onLand() {
                 const plinko_ticket = this.path.reduce((a, b) => a + b, 0);
                 const mult = multipliers[plinko_ticket] || 0;
                 bal += this.bet * mult;
                 showWin(mult);
-                save();
+                updateStorage();
             }
-
             draw() {
                 ctx.beginPath(); ctx.arc(this.x, this.y, ballRadius, 0, Math.PI*2);
                 ctx.fillStyle = this.risk === 'high' ? '#ff4949' : (this.risk === 'medium' ? '#fb923c' : '#38bdf8');
@@ -303,10 +302,12 @@
         function dropBall() {
             const bet = parseFloat(document.getElementById('pBet').value);
             const row_count = parseInt(document.getElementById('rowCount').value);
-            if (bet > bal || bet <= 0) return;
-            bal -= bet; nonce++; save();
+            if (bet > bal || bet <= 0) return alert("Insufficient funds!");
+            
+            bal -= bet; 
+            nonce++; 
+            updateStorage();
 
-            // PROVABLY FAIR LOGIC (PHP PORT)
             const combined_seed = CryptoJS.SHA256(serverSeed + ":" + clientSeed + ":" + nonce).toString();
             let path = [];
             for (let x = 0; x < 64; x = x + 4) {
@@ -317,15 +318,12 @@
 
         function animate() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw Pegs
             ctx.fillStyle = '#475569';
             pegs.forEach(p => {
                 ctx.beginPath(); ctx.arc(p.x, p.y, pegRadius, 0, Math.PI*2);
                 ctx.fill(); ctx.closePath();
             });
 
-            // CENTERED MULTIPLIERS
             const rows = parseInt(document.getElementById('rowCount').value);
             const spacingX = 38, spacingY = 32;
             const totalWidth = multipliers.length * spacingX;
@@ -335,21 +333,15 @@
             multipliers.forEach((m, i) => {
                 const x = startX + (i * spacingX);
                 const gutter = 4;
-                
                 ctx.fillStyle = m >= 5 ? 'rgba(0, 231, 1, 0.2)' : (m >= 1 ? 'rgba(56, 189, 248, 0.1)' : 'rgba(255, 73, 73, 0.1)');
-                
-                // Drawing bucket background
                 ctx.beginPath();
                 if(ctx.roundRect) ctx.roundRect(x + (gutter/2), yPos, spacingX - gutter, 26, 4);
                 else ctx.rect(x + (gutter/2), yPos, spacingX - gutter, 26);
                 ctx.fill();
-
-                // Multiplier Text
                 ctx.fillStyle = 'white';
                 ctx.font = 'bold 9px Inter';
                 ctx.textAlign = 'center';
-                let txt = m >= 1000 ? (m/1000)+'k' : m+'x';
-                ctx.fillText(txt, x + (spacingX / 2), yPos + 17);
+                ctx.fillText(m >= 1000 ? (m/1000)+'k' : m+'x', x + (spacingX / 2), yPos + 17);
             });
 
             balls = balls.filter(b => b.active);
