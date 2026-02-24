@@ -30,7 +30,7 @@
     </style>
 </head>
 <body>
-    <nav><div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div><div id="balDisp">$1,000.00</div></nav>
+    <nav><div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div><div id="balDisp">$0.00</div></nav>
     <div class="viewport">
         <div class="sidebar">
             <span style="font-size:11px; font-weight:800; color:#94a3b8; margin-bottom:8px; display:block;">BET AMOUNT</span>
@@ -68,9 +68,23 @@
         </div>
     </div>
     <script>
-        let bal = 1000, diceMode = 'over';
-        function save() { document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; }
+        // SYNC SYSTEM
+        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        let allUsers = JSON.parse(localStorage.getItem('users'));
+        if (!currentUser) window.location.href = 'index.html';
+
+        let bal = currentUser.balance, diceMode = 'over';
+
+        function save() { 
+            currentUser.balance = bal;
+            if (allUsers && allUsers[currentUser.name]) allUsers[currentUser.name].balance = bal;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('users', JSON.stringify(allUsers));
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
+        }
+
         function setDiceMode(m) { diceMode = m; document.getElementById('modeOver').classList.toggle('active', m==='over'); document.getElementById('modeUnder').classList.toggle('active', m==='under'); document.getElementById('labelMode').innerText = "ROLL " + m.toUpperCase(); updateDiceUI(); }
+        
         function updateDiceUI() {
             const v = parseFloat(document.getElementById('diceSlider').value);
             const winBar = document.getElementById('dice-win-bar');
@@ -81,11 +95,15 @@
             document.getElementById('diceMult').innerText = (99 / winChance).toFixed(4) + 'x';
             document.getElementById('diceChance').innerText = winChance.toFixed(2) + '%';
         }
+
         function rollDice() {
             const bet = parseFloat(document.getElementById('diceBet').value);
             const target = parseFloat(document.getElementById('diceSlider').value);
-            if(bet > bal || bet <= 0) return;
-            bal -= bet; save();
+            if(bet > bal || bet <= 0) return alert("Insufficient funds!");
+            
+            bal -= bet; 
+            save(); // Save loss immediately
+
             const bubble = document.getElementById('diceDisplay'); bubble.classList.remove('show');
             setTimeout(() => {
                 const roll = (Math.random() * 100).toFixed(2);
@@ -95,11 +113,19 @@
                 const status = document.getElementById('diceStatus');
                 if(win) {
                     let winChance = (diceMode === 'over') ? (100 - target) : target;
-                    bal += bet * (99 / winChance); status.innerText = "WIN"; status.style.color = 'var(--win-green)';
-                } else { status.innerText = "LOSS"; status.style.color = 'var(--loss-red)'; }
+                    bal += bet * (99 / winChance); 
+                    status.innerText = "WIN"; 
+                    status.style.color = 'var(--win-green)';
+                } else { 
+                    status.innerText = "LOSS"; 
+                    status.style.color = 'var(--loss-red)'; 
+                }
                 save();
             }, 50);
         }
+
+        // Initialize UI
+        save();
         updateDiceUI();
     </script>
 </body>
