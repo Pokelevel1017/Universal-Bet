@@ -34,7 +34,6 @@
 
         .viewport { height: calc(100vh - 64px); display: flex; }
 
-        /* FIXED SIDEBAR */
         .sidebar { 
             width: 300px; 
             background: #111827; 
@@ -76,7 +75,6 @@
 
         .streak-val { font-size: 24px; font-weight: 900; color: var(--light-blue); }
 
-        /* GAME STAGE */
         .stage { flex: 1; background: #0f172a; position: relative; display: flex; justify-content: center; align-items: center; }
         
         .table-felt { 
@@ -101,7 +99,6 @@
 
         .cards-row { display: flex; gap: 10px; min-height: 125px; justify-content: center; margin-top: 10px; }
 
-        /* CARDS */
         .card { 
             width: 80px; height: 115px; background: white; border-radius: 8px; color: #1e293b; 
             padding: 10px; font-weight: 900; display: flex; flex-direction: column; justify-content: space-between; 
@@ -114,14 +111,11 @@
             background-size: 8px 8px; 
             border: 4px solid white; 
         }
-        .card.hidden-card::after { content: '♠'; color: rgba(255,255,255,0.15); font-size: 40px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
 
         @keyframes dealCard { from { transform: translateY(-400px) rotate(20deg); opacity: 0; } to { transform: translateY(0) rotate(0deg); opacity: 1; } }
 
-        /* CONTROLS */
         .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; margin-bottom: 10px; transition: 0.2s; }
         .btn-sub { background: var(--mid-blue); color: white; width: 100%; padding: 14px; border-radius: 8px; border: none; cursor: pointer; margin-bottom: 10px; font-weight: 700; }
-        .btn-main:hover { filter: brightness(1.1); }
         .hidden { display: none; }
 
         #bjStatus { margin-top: auto; font-size: 2rem; font-weight: 900; text-align: center; min-height: 50px; }
@@ -130,7 +124,7 @@
 <body>
     <nav>
         <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$0.00</div>
+        <div id="balDisp" style="color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px;">$0.00</div>
     </nav>
 
     <div class="viewport">
@@ -153,7 +147,6 @@
                 <button class="btn-main" onclick="hit()">HIT</button>
                 <button class="btn-sub" onclick="stand()">STAND</button>
                 <button id="doubleBtn" class="btn-sub" onclick="double()">DOUBLE</button>
-                <button id="splitBtn" class="btn-sub hidden" onclick="split()">SPLIT</button>
             </div>
 
             <div id="bjStatus"></div>
@@ -166,49 +159,39 @@
                     <div id="dCards" class="cards-row"></div>
                 </div>
 
-                <div style="display:flex; gap:30px; width: 100%; justify-content: center;">
-                    <div id="hand0-cont" class="hand-container">
-                        <div id="hand0-cards" class="cards-row"></div>
-                        <div class="hand-label">Hand 1 <span id="hand0-total" class="total-badge">0</span></div>
-                    </div>
-                    <div id="hand1-cont" class="hand-container hidden">
-                        <div id="hand1-cards" class="cards-row"></div>
-                        <div class="hand-label">Hand 2 <span id="hand1-total" class="total-badge">0</span></div>
-                    </div>
+                <div id="hand0-cont" class="hand-container">
+                    <div id="hand0-cards" class="cards-row"></div>
+                    <div class="hand-label">Your Hand <span id="hand0-total" class="total-badge">0</span></div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // --- UNIVERSAL SESSION SYNC ---
+        // --- DATA SYNC ---
         let currentUser = JSON.parse(localStorage.getItem('currentUser'));
         let allUsers = JSON.parse(localStorage.getItem('users'));
 
         if (!currentUser) window.location.href = 'index.html';
 
-        // PULL ACTUAL BALANCE FROM ACCOUNT
-        let bal = currentUser.balance; 
+        let bal = currentUser.balance;
         let hands = [], dHand = [], deck = [], curBet = 0, activeHandIdx = 0, isGameOver = true, streak = 0;
 
-        // Initialize UI immediately
-        save();
-
-        function save() { 
-            // Sync with local session
+        function updateStorage() {
             currentUser.balance = bal;
-            // Sync with leaderboard database
             if (allUsers && allUsers[currentUser.name]) {
                 allUsers[currentUser.name].balance = bal;
             }
-            
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
             localStorage.setItem('users', JSON.stringify(allUsers));
-
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
+            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
             document.getElementById('streakCounter').innerText = streak;
         }
 
+        // Run on start
+        updateStorage();
+
+        // --- GAME LOGIC ---
         function createDeck() {
             deck = []; 
             const suits = ['♠','♥','♦','♣'], vals = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
@@ -224,50 +207,30 @@
 
         function deal() {
             curBet = parseFloat(document.getElementById('bjBet').value); 
-            if(curBet > bal || curBet <= 0) {
-                alert("Insufficient funds!");
-                return;
-            }
-            
-            bal -= curBet; 
-            save(); // Save loss immediately
-            
-            isGameOver = false; 
-            activeHandIdx = 0;
-            
-            const status = document.getElementById('bjStatus');
-            status.innerText = '';
-            status.style.color = "white";
+            if(curBet > bal || curBet <= 0) return alert("Insufficient funds!");
 
-            document.getElementById('hand1-cont').classList.add('hidden');
+            bal -= curBet; 
+            updateStorage(); 
+            
+            isGameOver = false;
+            document.getElementById('bjStatus').innerText = '';
             document.getElementById('bj-pre').classList.add('hidden');
             document.getElementById('bj-in').classList.remove('hidden');
-            document.getElementById('splitBtn').classList.add('hidden');
             document.getElementById('doubleBtn').classList.remove('hidden');
-            
+
             createDeck();
             hands = [[deck.pop(), deck.pop()]];
             dHand = [deck.pop(), deck.pop()];
-            
-            if(hands[0][0].v === hands[0][1].v) document.getElementById('splitBtn').classList.remove('hidden');
-            
             render(false);
 
-            if(score(hands[0]) === 21) {
-                status.innerText = "BLACKJACK!";
-                status.style.color = "var(--win-green)";
-                setTimeout(stand, 600);
-            }
+            if(score(hands[0]) === 21) setTimeout(stand, 600);
         }
 
         function render(showAll) {
-            hands.forEach((h, idx) => {
-                const el = document.getElementById(`hand${idx}-cards`);
-                el.innerHTML = '';
-                h.forEach(c => el.innerHTML += `<div class="card" style="color:${c.r?'#be123c':'#1e293b'}"><div>${c.v}</div><div style="font-size:2rem;align-self:center">${c.s}</div><div style="text-align:right">${c.v}</div></div>`);
-                document.getElementById(`hand${idx}-total`).innerText = score(h);
-                document.getElementById(`hand${idx}-cont`).classList.toggle('active-hand', !showAll && activeHandIdx === idx);
-            });
+            const el = document.getElementById('hand0-cards');
+            el.innerHTML = '';
+            hands[0].forEach(c => el.innerHTML += `<div class="card" style="color:${c.r?'#be123c':'#1e293b'}"><div>${c.v}</div><div style="font-size:2rem;align-self:center">${c.s}</div><div style="text-align:right">${c.v}</div></div>`);
+            document.getElementById('hand0-total').innerText = score(hands[0]);
 
             const dEl = document.getElementById('dCards');
             dEl.innerHTML = '';
@@ -280,86 +243,48 @@
 
         function hit() {
             if(isGameOver) return;
-            hands[activeHandIdx].push(deck.pop());
-            document.getElementById('splitBtn').classList.add('hidden');
+            hands[0].push(deck.pop());
             document.getElementById('doubleBtn').classList.add('hidden');
             render(false);
-            if(score(hands[activeHandIdx]) >= 21) nextHand();
-        }
-
-        function split() {
-            if(bal < curBet) return;
-            bal -= curBet; 
-            save();
-            const secondCard = hands[0].pop();
-            hands.push([secondCard]);
-            hands[0].push(deck.pop());
-            hands[1].push(deck.pop());
-            document.getElementById('hand1-cont').classList.remove('hidden');
-            document.getElementById('splitBtn').classList.add('hidden');
-            render(false);
-        }
-
-        function nextHand() {
-            if(activeHandIdx < hands.length - 1) {
-                activeHandIdx++;
-                render(false);
-            } else {
-                stand();
-            }
+            if(score(hands[0]) >= 21) stand();
         }
 
         function stand() {
             if(isGameOver) return;
-            if(activeHandIdx < hands.length - 1) {
-                nextHand();
-                return;
-            }
-            
             isGameOver = true;
             while(score(dHand) < 17) dHand.push(deck.pop());
             render(true);
             
-            let totalWin = 0;
-            const ds = score(dHand);
+            let win = 0;
+            const ps = score(hands[0]), ds = score(dHand);
             const status = document.getElementById('bjStatus');
 
-            hands.forEach(h => {
-                const ps = score(h);
-                if(ps <= 21 && (ds > 21 || ps > ds)) {
-                    totalWin += (ps === 21 && h.length === 2) ? curBet * 2.5 : curBet * 2;
-                } else if(ps <= 21 && ps === ds) {
-                    totalWin += curBet;
-                }
-            });
-
-            if(totalWin > curBet * hands.length) {
+            if(ps <= 21 && (ds > 21 || ps > ds)) {
+                win = (ps === 21 && hands[0].length === 2) ? curBet * 2.5 : curBet * 2;
                 status.innerText = "WINNER";
                 status.style.color = "var(--win-green)";
                 streak++;
-            } else if(totalWin === 0) {
-                status.innerText = "DEALER WINS";
-                status.style.color = "var(--loss-red)";
-                streak = 0;
-            } else {
+            } else if(ps <= 21 && ps === ds) {
+                win = curBet;
                 status.innerText = "PUSH";
                 status.style.color = "white";
+            } else {
+                status.innerText = "LOST";
+                status.style.color = "var(--loss-red)";
+                streak = 0;
             }
 
-            bal += totalWin;
-            save(); 
+            bal += win;
+            updateStorage();
             document.getElementById('bj-pre').classList.remove('hidden');
             document.getElementById('bj-in').classList.add('hidden');
         }
 
         function double() {
             if(bal >= curBet) {
-                bal -= curBet;
-                curBet *= 2;
-                save();
-                hands[activeHandIdx].push(deck.pop());
-                render(false);
-                nextHand();
+                bal -= curBet; curBet *= 2; updateStorage();
+                hands[0].push(deck.pop());
+                render(false); stand();
             }
         }
     </script>
