@@ -13,47 +13,45 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* NAV & SIDEBAR */
+        /* NAV */
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
         .logo span { color: var(--light-blue); }
         .balance-box { background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; font-weight: 800; color: var(--accent-green); border: 1px solid rgba(56, 189, 248, 0.2); font-size: 1.1rem; }
 
+        /* LAYOUT */
         .main-content { display: flex; flex: 1; overflow: hidden; }
+
+        /* FULL SIDEBAR RESTORED */
         .sidebar { width: 280px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; overflow-y: auto; }
         .sidebar-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; }
         .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
         /* GAME AREA */
-        .game-area { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); position: relative; overflow-y: auto; }
-        
-        .dice-card { width: 100%; max-width: 900px; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--mid-blue); box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
+        .game-area { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); overflow-y: auto; }
+        .dice-card { width: 100%; max-width: 800px; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--mid-blue); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
 
-        /* SLIDER SYSTEM */
+        /* DICE PRO SYSTEMS */
         .slider-container { position: relative; width: 100%; height: 50px; background: #0f172a; border-radius: 10px; margin: 80px 0 40px 0; border: 4px solid var(--mid-blue); }
         #winZone { position: absolute; height: 100%; background: var(--accent-green); border-radius: 6px; opacity: 0.25; transition: 0.1s; }
         .dice-slider { -webkit-appearance: none; width: 100%; height: 100%; background: transparent; position: relative; z-index: 5; cursor: pointer; }
-        .dice-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 45px; height: 65px; background: white; border-radius: 8px; border: 3px solid var(--light-blue); cursor: grab; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
-        .roll-marker { position: absolute; top: -65px; transform: translateX(-50%); padding: 10px 15px; border-radius: 8px; font-weight: 900; font-size: 1.4rem; color: white; display: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; border: 2px solid rgba(255,255,255,0.2); }
+        .dice-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 45px; height: 65px; background: white; border-radius: 8px; border: 3px solid var(--light-blue); cursor: grab; }
+        .roll-marker { position: absolute; top: -65px; transform: translateX(-50%); padding: 10px 15px; border-radius: 8px; font-weight: 900; font-size: 1.4rem; color: white; display: none; z-index: 10; border: 2px solid rgba(255,255,255,0.2); }
 
-        /* STATS GRID */
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; margin-bottom: 30px; }
         .stat-box { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid var(--mid-blue); text-align: center; }
-        .stat-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+        .stat-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
         .stat-value { font-size: 1.2rem; font-weight: 900; color: white; }
 
-        /* MODE TOGGLE */
-        .mode-toggle { background: var(--mid-blue); border-radius: 8px; display: flex; padding: 4px; gap: 4px; margin-bottom: 20px; width: 100%; }
-        .mode-btn { flex: 1; padding: 10px; border-radius: 6px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 12px; }
+        .mode-toggle { background: var(--mid-blue); border-radius: 8px; display: flex; padding: 4px; gap: 4px; margin-bottom: 20px; }
+        .mode-btn { flex: 1; padding: 10px; border-radius: 6px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; cursor: pointer; font-size: 12px; }
         .mode-btn.active { background: #334155; color: white; }
 
-        /* BLACKJACK STYLE BET BAR */
-        .action-bar { margin-top: 35px; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+        .action-bar { margin-top: 35px; display: flex; flex-direction: column; align-items: center; width: 100%; }
         .bet-box { display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 12px 25px; border-radius: 15px; border: 1px solid var(--mid-blue); }
         .bet-box input { background: transparent; border: none; color: white; font-size: 1.5rem; font-weight: 900; width: 120px; text-align: center; outline: none; }
-        .btn-deal { padding: 14px 28px; border-radius: 10px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; font-size: 13px; background: var(--light-blue); color: var(--dark-blue); }
-        .btn-deal:hover { filter: brightness(1.1); transform: translateY(-2px); }
+        .btn-deal { padding: 14px 28px; border-radius: 10px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; background: var(--light-blue); color: var(--dark-blue); }
     </style>
 </head>
 <body>
@@ -65,15 +63,15 @@
 
 <div class="main-content">
     <aside class="sidebar">
-        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
+        <a href="index.html" class="side-link">🏠 Home</a>
         <div class="sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
-        <a href="dice.html" class="side-link active-link"><span>🎲</span> Dice</a>
-        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="plinko.html" class="side-link"><span>🔮</span> Plinko</a>
-        <a href="roulette.html" class="side-link"><span>🎡</span> Roulette</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
-        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
+        <a href="blackjack.html" class="side-link">🃏 Blackjack</a>
+        <a href="dice.html" class="side-link active-link">🎲 Dice</a>
+        <a href="mines.html" class="side-link">💣 Mines</a>
+        <a href="plinko.html" class="side-link">🔮 Plinko</a>
+        <a href="roulette.html" class="side-link">🎡 Roulette</a>
+        <a href="rps.html" class="side-link">✊ Rock Paper Scissors</a>
+        <a href="tower.html" class="side-link">🗼 Tower</a>
     </aside>
 
     <main class="game-area">
@@ -86,13 +84,13 @@
             <div class="slider-container">
                 <div id="winZone"></div>
                 <div class="roll-marker" id="rollMarker">50.00</div>
-                <input type="range" min="20" max="80" step="0.01" value="50.00" class="dice-slider" id="diceSlider" oninput="updateStats()">
+                <input type="range" min="2" max="98" step="0.01" value="50.00" class="dice-slider" id="diceSlider" oninput="updateStats()">
             </div>
 
             <div class="stats-grid">
                 <div class="stat-box">
                     <div class="stat-label">Multiplier</div>
-                    <div class="stat-value" id="multiplier">2.0000x</div>
+                    <div class="stat-value" id="multiplier" style="color: var(--hot-orange);">1.7000x</div>
                 </div>
                 <div class="stat-box">
                     <div class="stat-label">Win Chance</div>
@@ -104,7 +102,7 @@
                 <div class="bet-box">
                     <span style="color:var(--accent-green); font-weight:900;">$</span>
                     <input type="number" id="betAmount" value="10" min="1">
-                    <button class="btn-deal" onclick="playDice()">Place Bet & Roll</button>
+                    <button class="btn-deal" id="rollBtn" onclick="playDice()">Roll Dice</button>
                 </div>
             </div>
         </div>
@@ -132,9 +130,11 @@
 
     function init() {
         if (!user) return window.location.href = 'index.html';
-        db.ref('users/' + user.name).on('value', s => {
-            user = s.val();
-            document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        db.ref('users/' + user.name.toLowerCase()).on('value', s => {
+            if(s.exists()){
+                user = s.val();
+                document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            }
         });
         updateStats();
     }
@@ -151,10 +151,13 @@
         const winZone = document.getElementById('winZone');
         const val = parseFloat(slider.value);
         let chance = (mode === 'over') ? (100 - val) : val;
-        let mult = (99 / chance).toFixed(4);
+        
+        // Lowered Multipliers (85% RTP)
+        let mult = (85 / chance);
+        if (mult > 20) mult = 20; 
         
         document.getElementById('winChance').innerText = chance.toFixed(2) + '%';
-        document.getElementById('multiplier').innerText = mult + 'x';
+        document.getElementById('multiplier').innerText = mult.toFixed(4) + 'x';
 
         if(mode === 'over') {
             winZone.style.left = val + '%';
@@ -166,33 +169,34 @@
     }
 
     async function playDice() {
-        const betInput = document.getElementById('betAmount');
-        const bet = parseFloat(betInput.value);
+        const bet = parseFloat(document.getElementById('betAmount').value);
         if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
-        // Deduct
-        db.ref('users/'+user.name).update({ balance: user.balance - bet });
+        const btn = document.getElementById('rollBtn');
+        btn.disabled = true;
 
         const sliderVal = parseFloat(document.getElementById('diceSlider').value);
         const roll = (Math.random() * 100).toFixed(2);
         const marker = document.getElementById('rollMarker');
-
-        marker.style.display = 'block';
-        marker.style.left = roll + '%';
-        marker.innerText = roll;
+        
+        let chance = (mode === 'over') ? (100 - sliderVal) : sliderVal;
+        let mult = (85 / chance);
+        if (mult > 20) mult = 20;
 
         let isWin = (mode === 'over') ? (parseFloat(roll) > sliderVal) : (parseFloat(roll) < sliderVal);
-        
-        if (isWin) {
-            marker.style.background = 'var(--accent-green)';
-            marker.style.color = 'black';
-            const chance = (mode === 'over') ? (100 - sliderVal) : sliderVal;
-            const mult = 99 / chance;
-            db.ref('users/'+user.name).update({ balance: user.balance + (bet * mult) });
-        } else {
-            marker.style.background = 'var(--danger-red)';
-            marker.style.color = 'white';
-        }
+        const profit = isWin ? (bet * mult) - bet : -bet;
+
+        db.ref('users/' + user.name.toLowerCase()).transaction((u) => {
+            if (u) u.balance += profit;
+            return u;
+        }).then(() => {
+            marker.style.display = 'block';
+            marker.style.left = roll + '%';
+            marker.innerText = roll;
+            marker.style.background = isWin ? 'var(--accent-green)' : 'var(--danger-red)';
+            marker.style.color = isWin ? 'black' : 'white';
+            btn.disabled = false;
+        });
     }
 
     init();
