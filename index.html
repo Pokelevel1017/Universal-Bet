@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet</title>
+    <title>Universal-Bet | Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
@@ -44,31 +45,62 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* GAMES GRID */
-        .game-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-        @media (max-width: 1100px) { .game-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } }
+        /* NEWS TAB STYLING */
+        .news-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
+        @media (max-width: 1000px) { .news-container { grid-template-columns: 1fr; } }
 
-        .game-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .game-card:hover { transform: translateY(-10px); border-color: var(--light-blue); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
-        .game-img-wrapper { width: 100%; height: 200px; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: var(--premium-gradient); position: relative; }
-        .game-info-v2 { padding: 20px; text-align: center; }
-        .game-title { font-size: 1.4rem; font-weight: 900; margin: 0; color: #fff; }
-        .game-multiplier { font-size: 11px; font-weight: 800; color: var(--hot-orange); text-transform: uppercase; margin-top: 8px; display: block; }
+        .news-card { 
+            background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
+            padding: 25px; margin-bottom: 20px; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .news-card:hover { border-color: var(--light-blue); background: #161f2e; }
+        .news-tag { 
+            font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 4px; 
+            text-transform: uppercase; margin-bottom: 15px; display: inline-block;
+        }
+        .tag-update { background: rgba(56, 189, 248, 0.2); color: var(--light-blue); }
+        .tag-live { background: rgba(0, 231, 1, 0.2); color: var(--accent-green); animation: pulse 2s infinite; }
+        
+        .news-title { font-size: 1.4rem; font-weight: 900; margin: 10px 0; }
+        .news-excerpt { color: var(--text-muted); line-height: 1.6; font-size: 14px; }
+        
+        .live-feed { background: #070b14; border-radius: 16px; border: 1px solid var(--mid-blue); padding: 20px; height: 400px; overflow: hidden; display: flex; flex-direction: column; }
+        .feed-item { 
+            display: flex; align-items: center; justify-content: space-between; 
+            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            animation: slideIn 0.4s ease-out;
+        }
+        .feed-user { font-weight: 800; color: white; }
+        .feed-amount { color: var(--accent-green); font-weight: 900; }
 
-        /* LEADERBOARD */
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* TABLES */
         .leaderboard-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--mid-blue); }
-        .leaderboard-table th { background: #070b14; padding: 15px; color: var(--text-muted); text-align: left; font-size: 12px; text-transform: uppercase; }
-        .leaderboard-table td { padding: 15px; border-top: 1px solid var(--mid-blue); }
-        .bal-cell { color: var(--accent-green); font-weight: 800; text-align: right; }
+        .leaderboard-table th { background: #070b14; padding: 18px; color: var(--text-muted); text-align: left; font-size: 11px; text-transform: uppercase; }
+        .leaderboard-table td { padding: 18px; border-top: 1px solid var(--mid-blue); font-size: 14px; }
+        .bal-cell { color: var(--accent-green); font-weight: 900; text-align: right; font-family: monospace; font-size: 1.1rem; }
+        .rank-badge { font-weight: 900; color: white; background: var(--mid-blue); padding: 4px 10px; border-radius: 6px; }
+        .rank-1 { background: #fbbf24; color: #000; }
+        .rank-2 { background: #94a3b8; color: #000; }
+        .rank-3 { background: #92400e; color: #fff; }
 
-        /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(12px); }
-        .modal { background: var(--modal-bg); padding: 40px; border-radius: 24px; width: 420px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; }
-        .modal-icon { font-size: 3.5rem; margin-bottom: 20px; display: block; }
-        .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid var(--mid-blue); background: #070b14; color: white; text-align: center; font-size: 1.1rem; font-weight: 700; outline: none; box-sizing: border-box; }
-        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; cursor: pointer; border: none; text-transform: uppercase; margin-top: 25px; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(12px); }
+        .modal { background: var(--modal-bg); padding: 40px; border-radius: 24px; width: 400px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; }
+        .modal input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid var(--mid-blue); background: #070b14; color: white; font-weight: 700; margin-top: 15px; outline: none; }
+        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; border: none; margin-top: 20px; }
 
-        .footer { text-align: center; padding: 60px 0; color: #475569; font-weight: 700; font-size: 11px; letter-spacing: 3px; }
+        .footer { text-align: center; padding: 40px 0; color: #475569; font-weight: 700; font-size: 10px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -91,7 +123,7 @@
         <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
         <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
         <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="rps.html" class="side-link"><span>✊</span> RPS</a>
         <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
     </aside>
 
@@ -102,32 +134,33 @@
         </div>
 
         <div class="tab-nav">
-            <button class="tab-btn active" onclick="switchTab('games')">Popular Games</button>
+            <button class="tab-btn active" onclick="switchTab('news')">Latest News</button>
             <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
             <button class="tab-btn" onclick="switchTab('about')">About</button>
         </div>
 
-        <div id="games" class="tab-content active">
-            <div class="game-grid">
-                <div class="game-card" onclick="location.href='blackjack.html'">
-                    <div class="game-img-wrapper">🃏</div>
-                    <div class="game-info-v2">
-                        <h3 class="game-title">Blackjack</h3>
-                        <span class="game-multiplier">Up to 2.5x Payout</span>
+        <div id="news" class="tab-content active">
+            <div class="news-container">
+                <div class="news-main">
+                    <div class="news-card">
+                        <span class="news-tag tag-update">System Update</span>
+                        <h2 class="news-title">Global Real-Time Sync</h2>
+                        <p class="news-excerpt">The live feed now monitors all active players. When someone wins big, you'll see it here first. No refresh needed.</p>
+                    </div>
+                    <div class="news-card">
+                        <span class="news-tag tag-update">Security</span>
+                        <h2 class="news-title">Encrypted Transactions</h2>
+                        <p class="news-excerpt">Your username is your key. All balance changes are handled via secure Firebase transactions to prevent data loss.</p>
                     </div>
                 </div>
-                <div class="game-card" onclick="location.href='mines.html'">
-                    <div class="game-img-wrapper">💣</div>
-                    <div class="game-info-v2">
-                        <h3 class="game-title">Mines</h3>
-                        <span class="game-multiplier">Up to 1,000x Payout</span>
+
+                <div class="live-feed">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-shrink:0;">
+                        <h3 style="font-size:12px; text-transform:uppercase; letter-spacing:1px; margin:0;">Live Feed</h3>
+                        <span class="news-tag tag-live" style="margin:0;">Live</span>
                     </div>
-                </div>
-                <div class="game-card" onclick="location.href='dice.html'">
-                    <div class="game-img-wrapper">🎲</div>
-                    <div class="game-info-v2">
-                        <h3 class="game-title">Dice</h3>
-                        <span class="game-multiplier">High-Speed Slider</span>
+                    <div id="liveJackpotFeed" style="overflow-y: auto; flex:1;">
+                        <div class="feed-item" style="color: var(--text-muted)">Waiting for activity...</div>
                     </div>
                 </div>
             </div>
@@ -136,7 +169,7 @@
         <div id="leaderboard" class="tab-content">
             <table class="leaderboard-table">
                 <thead>
-                    <tr><th>Rank</th><th>Player</th><th style="text-align: right;">Balance</th></tr>
+                    <tr><th>Rank</th><th>Player</th><th style="text-align: right;">Total Balance</th></tr>
                 </thead>
                 <tbody id="leaderboardBody"></tbody>
             </table>
@@ -144,24 +177,20 @@
 
         <div id="about" class="tab-content">
             <div class="about-box">
-                <h3><span>🏆</span> About Universal-Bet</h3>
-                <p>Welcome to <b>Universal-Bet</b>, a premier high-stakes platform. Your progress always saves to the cloud!</p>
-                <hr style="border: 0; border-top: 1px solid var(--mid-blue); margin: 20px 0;">
-                <p style="font-size: 13px;">Created by <b>FUSIONZZZ</b>.</p>
+                <h3>🏆 Universal-Bet</h3>
+                <p>Welcome to Universal-Bet! Created by <b>FUSIONZZZ</b>.</p>
             </div>
         </div>
-
         <div class="footer">WEBSITE MADE BY FUSIONZZZ</div>
     </main>
 </div>
 
-<div class="modal-overlay" id="modalOverlay">
+<div class="modal-overlay" id="modalOverlay" style="display:none">
     <div class="modal">
-        <span class="modal-icon">👤</span>
-        <h2>Enter Username</h2>
-        <p>Use the same name on any device to sync your balance.</p>
-        <input type="text" id="usernameInput" placeholder="Username..." maxlength="15">
-        <button class="btn-submit" onclick="handleAuth()">Confirm & Enter</button>
+        <span style="font-size:3rem">👤</span>
+        <h2>Access Account</h2>
+        <input type="text" id="usernameInput" placeholder="Enter name...">
+        <button class="btn-submit" onclick="handleAuth()">Confirm</button>
     </div>
 </div>
 
@@ -182,19 +211,19 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let currentLocalUser = null;
+    let lastKnownBalances = {}; // To track who just won money
 
-    // LOGIN LOGIC - FIXED FOR CROSS-DEVICE
     function checkAuth() {
         const localUser = JSON.parse(localStorage.getItem('currentUser'));
         if (localUser && localUser.name) {
             db.ref('users/' + localUser.name.toLowerCase()).once('value', (snap) => {
                 if(snap.exists()){
                     currentLocalUser = snap.val();
-                    document.getElementById('modalOverlay').style.display = 'none';
                     startLiveSync();
+                    initLiveFeed(); // START THE LIVE WIN FEED
                 } else {
                     localStorage.removeItem('currentUser');
-                    location.reload();
+                    document.getElementById('modalOverlay').style.display = 'flex';
                 }
             });
         } else {
@@ -204,40 +233,83 @@
 
     function handleAuth() {
         const nameInput = document.getElementById('usernameInput').value.trim();
-        if (nameInput.length < 3) return alert("Username too short.");
+        if (nameInput.length < 3) return alert("Min 3 characters");
         const name = nameInput.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-        db.ref('users/' + name).once('value').then((snapshot) => {
-            if (snapshot.exists()) {
-                // EXITSING USER: Pull cloud data
-                localStorage.setItem('currentUser', JSON.stringify(snapshot.val()));
-                location.reload();
+        db.ref('users/' + name).once('value').then((snap) => {
+            if (snap.exists()) {
+                localStorage.setItem('currentUser', JSON.stringify(snap.val()));
             } else {
-                // NEW USER: Create with $100
                 const newUser = { name: name, balance: 100.00, lastBonus: 0 };
-                db.ref('users/' + name).set(newUser).then(() => {
-                    localStorage.setItem('currentUser', JSON.stringify(newUser));
-                    location.reload();
-                });
+                db.ref('users/' + name).set(newUser);
+                localStorage.setItem('currentUser', JSON.stringify(newUser));
             }
+            location.reload();
         });
     }
 
     function startLiveSync() {
-        db.ref('users/' + currentLocalUser.name.toLowerCase()).on('value', (snapshot) => {
-            if (snapshot.exists()) {
-                currentLocalUser = snapshot.val();
-                localStorage.setItem('currentUser', JSON.stringify(currentLocalUser));
+        db.ref('users/' + currentLocalUser.name.toLowerCase()).on('value', (snap) => {
+            if (snap.exists()) {
+                currentLocalUser = snap.val();
                 updateUI(currentLocalUser);
             }
         });
     }
 
+    // --- LIVE JACKPOT FEED LOGIC ---
+    function initLiveFeed() {
+        const feedContainer = document.getElementById('liveJackpotFeed');
+        
+        db.ref('users').on('value', (snap) => {
+            let activityDetected = false;
+            
+            snap.forEach(child => {
+                const user = child.val();
+                const userId = user.name.toLowerCase();
+                const newBal = user.balance;
+                const oldBal = lastKnownBalances[userId];
+
+                // If balance increased, they won or claimed bonus!
+                if (oldBal !== undefined && newBal > oldBal) {
+                    const winAmount = newBal - oldBal;
+                    addFeedItem(user.name.toUpperCase(), winAmount);
+                    activityDetected = true;
+                }
+                lastKnownBalances[userId] = newBal;
+            });
+        });
+    }
+
+    function addFeedItem(name, amount) {
+        const feedContainer = document.getElementById('liveJackpotFeed');
+        
+        // Remove "Waiting..." text if it exists
+        if (feedContainer.innerText.includes("Waiting")) feedContainer.innerHTML = "";
+
+        const item = document.createElement('div');
+        item.className = 'feed-item';
+        item.innerHTML = `
+            <span class="feed-user">${name}</span>
+            <span class="feed-amount">+$${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
+        `;
+
+        // Keep only top 8 items
+        feedContainer.prepend(item);
+        if (feedContainer.children.length > 8) {
+            feedContainer.removeChild(feedContainer.lastChild);
+        }
+    }
+
     function updateUI(user) {
+        document.getElementById('modalOverlay').style.display = 'none';
         document.getElementById('balanceDisplay').style.visibility = 'visible';
         document.getElementById('headerReward').style.display = 'flex';
         document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-        document.getElementById('headerContent').innerHTML = `<h1>Welcome back, <span class="highlight">${user.name.toUpperCase()}</span>!</h1><p>Your high-stakes legacy is secured.</p>`;
+        document.getElementById('headerContent').innerHTML = `
+            <h1>Welcome back, <span class="highlight">${user.name.toUpperCase()}</span>!</h1>
+            <p>Ready to get on that leaderboard???</p>
+        `;
         
         if (window.rewardInterval) clearInterval(window.rewardInterval);
         window.rewardInterval = setInterval(() => updateTimer(user), 1000);
@@ -256,55 +328,47 @@
             const s = Math.floor((diff % 60000) / 1000);
             timerText.innerText = `${h}H ${m}M ${s}S`;
             rewardBox.style.opacity = "0.5";
-            rewardBox.style.cursor = "default";
         } else {
             timerText.innerText = "Claim $25.00";
             rewardBox.style.opacity = "1";
-            rewardBox.style.cursor = "pointer";
         }
     }
 
     function claimBonus() {
-        if (!currentLocalUser) return;
         const cooldown = 24 * 60 * 60 * 1000;
         if (Date.now() - (currentLocalUser.lastBonus || 0) < cooldown) return;
-
-        db.ref('users/' + currentLocalUser.name.toLowerCase()).transaction((user) => {
-            if (user) {
-                user.balance = (user.balance || 0) + 25.00;
-                user.lastBonus = Date.now();
-            }
-            return user;
+        db.ref('users/' + currentLocalUser.name.toLowerCase()).transaction(u => {
+            if(u){ u.balance += 25; u.lastBonus = Date.now(); }
+            return u;
         });
     }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         event.currentTarget.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         if(tabId === 'leaderboard') fetchLeaderboard();
     }
 
-    // LEADERBOARD LOGIC - FIXED
     function fetchLeaderboard() {
         const board = document.getElementById('leaderboardBody');
-        board.innerHTML = '<tr><td colspan="3">Loading rankings...</td></tr>';
+        board.innerHTML = '<tr><td colspan="3">Syncing World Rankings...</td></tr>';
         
-        db.ref('users').once('value', (snapshot) => {
+        db.ref('users').on('value', (snap) => {
             let users = [];
-            snapshot.forEach((child) => {
-                users.push(child.val());
-            });
-            // Manual Sort for reliability
+            snap.forEach(child => { users.push(child.val()); });
             users.sort((a, b) => b.balance - a.balance);
             
-            board.innerHTML = users.slice(0, 15).map((u, i) => `
+            board.innerHTML = users.slice(0, 15).map((u, i) => {
+                const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
+                return `
                 <tr>
-                    <td>#${i + 1}</td>
-                    <td style="font-weight:700">${u.name.toUpperCase()}</td>
-                    <td class="bal-cell">$${u.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                </tr>`).join('');
+                    <td><span class="rank-badge ${rankClass}">#${i + 1}</span></td>
+                    <td style="font-weight:700">${(u.name || 'Unknown').toUpperCase()}</td>
+                    <td class="bal-cell">$${(u.balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                </tr>`;
+            }).join('');
         });
     }
 
