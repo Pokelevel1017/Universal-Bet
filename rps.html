@@ -6,7 +6,6 @@
     <title>Universal-Bet | RPS</title>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -21,10 +20,11 @@
             display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
         }
 
+        /* NAV */
         nav { 
             background: #070b14; padding: 0 2rem; display: flex; 
             justify-content: space-between; align-items: center; 
-            height: 70px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100;
+            height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100;
         }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
         .logo span { color: var(--light-blue); }
@@ -36,6 +36,7 @@
 
         .main-content { display: flex; flex: 1; overflow: hidden; }
 
+        /* SIDEBAR */
         .nav-sidebar { 
             width: 260px; background: #070b14; border-right: 1px solid var(--mid-blue); 
             padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; 
@@ -52,51 +53,73 @@
         }
         .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
+        /* CONTROLS */
         .control-panel { 
-            width: 300px; background: rgba(0,0,0,0.2); border-right: 1px solid var(--mid-blue); 
-            padding: 24px; display: flex; flex-direction: column; gap: 20px; 
+            width: 320px; background: rgba(0,0,0,0.2); border-right: 1px solid var(--mid-blue); 
+            padding: 30px 24px; display: flex; flex-direction: column; gap: 25px; 
         }
         .bet-input-box { 
             background: var(--card-bg); padding: 15px; border-radius: 12px; 
-            border: 1px solid var(--mid-blue); display: flex; align-items: center; gap: 10px;
+            border: 2px solid var(--mid-blue); display: flex; align-items: center; gap: 12px;
+            transition: 0.2s;
         }
-        .bet-input-box input { background: transparent; border: none; color: white; font-size: 1.2rem; font-weight: 800; width: 100%; outline: none; }
+        .bet-input-box:focus-within { border-color: var(--light-blue); }
+        .bet-input-box input { background: transparent; border: none; color: white; font-size: 1.3rem; font-weight: 800; width: 100%; outline: none; }
 
         .btn-play { 
-            width: 100%; padding: 18px; border-radius: 12px; border: none; 
+            width: 100%; padding: 18px; border-radius: 14px; border: none; 
             font-weight: 900; text-transform: uppercase; cursor: pointer; 
             background: var(--light-blue); color: var(--dark-blue); transition: 0.2s;
-            box-shadow: 0 4px 0 #0284c7;
+            box-shadow: 0 4px 0 #0284c7; font-size: 1rem;
         }
-        .btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #0284c7; }
-        .btn-play:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-play:hover { filter: brightness(1.1); transform: translateY(-1px); }
+        .btn-play:active { transform: translateY(2px); box-shadow: 0 1px 0 #0284c7; }
+        .btn-play:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
 
-        .game-stage { flex: 1; background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* STAGE */
+        .game-stage { flex: 1; background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
 
-        .battle-area { display: flex; align-items: center; gap: 80px; margin-bottom: 50px; }
-        .hand-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .hand-icon { font-size: 5.5rem; }
-        .hand-label { font-size: 12px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; }
+        .battle-area { display: flex; align-items: center; gap: 100px; margin-bottom: 60px; }
+        .hand-container { display: flex; flex-direction: column; align-items: center; gap: 20px; min-width: 150px; }
+        .hand-icon { font-size: 7rem; transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); }
+        .hand-label { font-size: 13px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
 
-        .vs-badge { background: var(--mid-blue); padding: 12px 18px; border-radius: 50%; font-weight: 900; color: var(--light-blue); border: 2px solid var(--light-blue); }
+        .vs-badge { 
+            background: #070b14; padding: 15px; border-radius: 50%; font-weight: 900; 
+            color: var(--light-blue); border: 3px solid var(--mid-blue); 
+            box-shadow: 0 0 20px rgba(0,0,0,0.5); font-size: 0.9rem;
+        }
 
-        .selection-grid { display: flex; gap: 15px; }
+        /* SELECTION */
+        .selection-grid { display: flex; gap: 20px; }
         .choice-card { 
             background: var(--card-bg); border: 2px solid var(--mid-blue); 
-            padding: 20px; border-radius: 15px; cursor: pointer; 
-            display: flex; flex-direction: column; align-items: center; width: 100px;
+            padding: 25px 15px; border-radius: 20px; cursor: pointer; 
+            display: flex; flex-direction: column; align-items: center; width: 110px;
+            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .choice-card.selected { border-color: var(--accent-green); background: rgba(0, 231, 1, 0.1); }
-        .choice-card span { font-size: 2.2rem; }
-        .choice-card p { margin: 5px 0 0 0; font-size: 11px; font-weight: 800; }
+        .choice-card:hover { transform: translateY(-5px); border-color: var(--light-blue); background: rgba(56, 189, 248, 0.05); }
+        .choice-card.selected { border-color: var(--accent-green); background: rgba(0, 231, 1, 0.1); transform: scale(1.05); }
+        .choice-card span { font-size: 2.5rem; margin-bottom: 10px; }
+        .choice-card p { margin: 0; font-size: 11px; font-weight: 900; letter-spacing: 1px; color: var(--text-muted); }
+        .choice-card.selected p { color: var(--accent-green); }
 
-        #status-text { margin-top: 40px; font-weight: 900; font-size: 1.6rem; text-transform: uppercase; height: 40px; }
+        #status-text { height: 50px; font-weight: 900; font-size: 2rem; text-transform: uppercase; margin-bottom: 20px; text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
 
-        @keyframes shake {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-30px); }
+        /* ANIMATIONS */
+        @keyframes handShake {
+            0%, 100% { transform: rotate(0deg) translateY(0); }
+            25% { transform: rotate(-15deg) translateY(-20px); }
+            75% { transform: rotate(15deg) translateY(10px); }
         }
-        .shaking { animation: shake 0.4s ease infinite; }
+        .shaking { animation: handShake 0.4s ease infinite; }
+        
+        .win-pulse { animation: pulse 0.5s ease 2; }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
@@ -110,10 +133,10 @@
     <aside class="nav-sidebar">
         <a href="index.html" class="side-link"><span>🏠</span> Home</a>
         <div class="nav-sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link active-link"><span>🃏</span> Blackjack</a>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
         <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
         <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="rps.html" class="side-link active-link"><span>✊</span> RPS</a>
         <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
     </aside>
 
@@ -121,15 +144,16 @@
         <div>
             <span class="nav-sidebar-label" style="margin-left:0">Bet Amount</span>
             <div class="bet-input-box">
-                <span style="color:var(--accent-green); font-weight:900;">$</span>
-                <input type="number" id="betAmt" value="10.00">
+                <span style="color:var(--accent-green); font-weight:900; font-size: 1.2rem;">$</span>
+                <input type="number" id="betAmt" value="10.00" step="0.01">
             </div>
         </div>
         <button class="btn-play" id="playBtn" onclick="playGame()">Battle</button>
-        <div id="status-text"></div>
     </aside>
 
     <main class="game-stage">
+        <div id="status-text"></div>
+        
         <div class="battle-area">
             <div class="hand-container">
                 <div class="hand-label">Dealer</div>
@@ -151,7 +175,6 @@
 </div>
 
 <script>
-    // Firebase Config
     const firebaseConfig = { 
         apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0", 
         authDomain: "universalbet-427ce.firebaseapp.com", 
@@ -165,8 +188,6 @@
     const db = firebase.database();
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
-    if (!user) window.location.href = 'index.html';
-
     let selectedMove = null;
     const moves = {
         rock: { emoji: '✊', beats: 'scissors' },
@@ -174,19 +195,23 @@
         scissors: { emoji: '✌️', beats: 'paper' }
     };
 
-    // --- REALTIME MONEY SYNC ---
-    db.ref('users/' + user.name.toLowerCase()).on('value', (snapshot) => {
-        if(snapshot.exists()){
-            user = snapshot.val();
-            document.getElementById('balDisp').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-        }
-    });
+    function init() {
+        if (!user) window.location.href = 'index.html';
+        db.ref('users/' + user.name.toLowerCase()).on('value', (s) => {
+            if(s.exists()){
+                user = s.val();
+                document.getElementById('balDisp').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            }
+        });
+    }
 
     function selectMove(move) {
+        if (document.getElementById('playBtn').disabled) return;
         selectedMove = move;
         document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
         document.getElementById(`card-${move}`).classList.add('selected');
         document.getElementById('playerHand').innerText = moves[move].emoji;
+        document.getElementById('status-text').innerText = "";
     }
 
     async function playGame() {
@@ -194,18 +219,26 @@
         if (!selectedMove) return alert("Select your move!");
         if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
-        // Subtract bet from Firebase
-        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
-
         const btn = document.getElementById('playBtn');
         const status = document.getElementById('status-text');
         const pHand = document.getElementById('playerHand');
         const dHand = document.getElementById('dealerHand');
 
+        // Initial State
         btn.disabled = true;
+        status.innerText = "READY...";
+        status.style.color = "white";
+        
+        // Reset to fists for shaking
+        pHand.innerText = '✊';
+        dHand.innerText = '✊';
+        pHand.classList.remove('win-pulse');
+        dHand.classList.remove('win-pulse');
         pHand.classList.add('shaking');
         dHand.classList.add('shaking');
-        status.innerText = "Wait...";
+
+        // Deduct Bet
+        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
 
         setTimeout(async () => {
             pHand.classList.remove('shaking');
@@ -220,18 +253,22 @@
             if (selectedMove === dealerMove) {
                 await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet; return u; });
                 status.innerText = "DRAW!";
-                status.style.color = "var(--light-blue)";
+                status.style.color = "var(--text-muted)";
             } else if (moves[selectedMove].beats === dealerMove) {
-                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet * 2; return u; });
-                status.innerText = "WINNER!";
+                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet * 1.95; return u; });
+                status.innerText = "YOU WIN!";
                 status.style.color = "var(--accent-green)";
+                pHand.classList.add('win-pulse');
             } else {
-                status.innerText = "LOST";
+                status.innerText = "DEALER WINS";
                 status.style.color = "var(--danger-red)";
+                dHand.classList.add('win-pulse');
             }
             btn.disabled = false;
-        }, 1200);
+        }, 1500);
     }
+
+    init();
 </script>
 </body>
 </html>
