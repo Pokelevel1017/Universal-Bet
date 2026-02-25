@@ -38,11 +38,14 @@
         .highlight { color: var(--light-blue); }
 
         /* TABS */
-        .tab-nav { display: flex; gap: 10px; border-bottom: 1px solid var(--mid-blue); margin-bottom: 30px; }
-        .tab-btn { padding: 12px 24px; background: none; border: none; color: var(--text-muted); font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; border-bottom: 2px solid transparent; transition: 0.2s; }
+        .tab-nav { display: flex; gap: 10px; border-bottom: 1px solid var(--mid-blue); margin-bottom: 30px; position: relative; }
+        .tab-btn { padding: 12px 24px; background: none; border: none; color: var(--text-muted); font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; border-bottom: 2px solid transparent; transition: 0.2s; position: relative; }
         .tab-btn.active { color: var(--light-blue); border-bottom-color: var(--light-blue); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        /* NOTIFICATION BADGE */
+        .notify-badge { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; display: none; border: 2px solid var(--dark-blue); }
 
         /* NEWS TAB + FEED */
         .news-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: stretch; }
@@ -61,7 +64,8 @@
         .feed-scroll::-webkit-scrollbar { display: none; }
         .feed-item { display: flex; flex-direction: column; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); animation: slideIn 0.4s ease-out; }
         .feed-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
-        .feed-user { font-weight: 800; color: white; font-size: 13px; }
+        .feed-user { font-weight: 800; color: white; font-size: 13px; cursor: pointer; }
+        .feed-user:hover { color: var(--light-blue); text-decoration: underline; }
         .feed-amount { color: var(--accent-green); font-weight: 900; font-size: 13px; }
         .feed-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; font-weight: 700; text-transform: uppercase; }
 
@@ -72,6 +76,8 @@
         .leaderboard-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--mid-blue); }
         .leaderboard-table th { background: #070b14; padding: 18px; color: var(--text-muted); text-align: left; font-size: 11px; text-transform: uppercase; }
         .leaderboard-table td { padding: 18px; border-top: 1px solid var(--mid-blue); font-size: 14px; }
+        .player-cell { cursor: pointer; font-weight: 700; }
+        .player-cell:hover { color: var(--light-blue); }
         .bal-cell { color: var(--accent-green); font-weight: 900; text-align: right; font-family: monospace; font-size: 1.1rem; }
         .rank-badge { font-weight: 900; color: white; background: var(--mid-blue); padding: 4px 10px; border-radius: 6px; }
         .rank-1 { background: #fbbf24; color: #000; }
@@ -86,6 +92,28 @@
         .modal { background: #0f172a; padding: 50px 40px; border-radius: 28px; width: 100%; max-width: 420px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; }
         .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #1e293b; background: #070b14; color: white; font-weight: 600; font-size: 16px; outline: none; margin-bottom: 12px; box-sizing: border-box; }
         .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; margin-top: 20px; }
+
+        /* PROFILE MODAL STYLES */
+        .profile-card { text-align: left; }
+        .profile-header { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; border-bottom: 1px solid var(--mid-blue); padding-bottom: 20px; }
+        .profile-avatar { width: 60px; height: 60px; background: var(--light-blue); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--dark-blue); font-weight: 900; }
+        .profile-username { font-size: 1.8rem; font-weight: 900; margin: 0; text-transform: uppercase; }
+        .profile-stat-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .profile-stat-label { color: var(--text-muted); font-weight: 600; font-size: 13px; }
+        .profile-stat-value { font-weight: 800; font-size: 14px; }
+        .value-green { color: var(--accent-green); }
+        .status-online { color: var(--accent-green); font-weight: 900; }
+        .status-offline { color: #ef4444; font-weight: 900; }
+
+        /* FRIENDS STYLING */
+        .btn-friend { background: #1e293b; color: white; border: 1px solid var(--light-blue); padding: 10px; border-radius: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: 800; transition: 0.3s; }
+        .btn-friend:disabled { opacity: 0.5; cursor: not-allowed; }
+        .friends-list-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .friend-item { background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--mid-blue); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .friend-item:hover { border-color: var(--light-blue); }
+        .request-actions { display: flex; gap: 8px; }
+        .btn-accept { background: var(--accent-green); border: none; color: black; padding: 6px 12px; border-radius: 4px; font-weight: 900; cursor: pointer; }
+        .btn-decline { background: #ef4444; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-weight: 900; cursor: pointer; }
 
         .footer { text-align: center; padding: 40px 0; color: #475569; font-weight: 700; font-size: 10px; letter-spacing: 2px; }
     </style>
@@ -123,6 +151,10 @@
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('news')">Latest News</button>
             <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
+            <button class="tab-btn" onclick="switchTab('friendsTab')">
+                Friends
+                <span id="friendBadge" class="notify-badge"></span>
+            </button>
             <button class="tab-btn" onclick="switchTab('about')">About</button>
         </div>
 
@@ -162,6 +194,16 @@
             </table>
         </div>
 
+        <div id="friendsTab" class="tab-content">
+            <h3 id="requestTitle" style="display:none; font-size:12px; color:var(--light-blue); text-transform:uppercase;">Pending Requests</h3>
+            <div id="requestsList" class="friends-list-container"></div>
+            
+            <h3 style="margin-top:30px; font-size:12px; color:var(--text-muted); text-transform:uppercase;">My Friends</h3>
+            <div id="friendsList" class="friends-list-container">
+                <p style="color:var(--text-muted)">You haven't added any friends yet.</p>
+            </div>
+        </div>
+
         <div id="about" class="tab-content">
             <div class="about-box">
                 <h3>🏆 Universal-Bet</h3>
@@ -180,6 +222,36 @@
         <input type="text" id="usernameInput" placeholder="Username">
         <input type="password" id="passwordInput" placeholder="Password">
         <button class="btn-submit" onclick="handleAuth()">Confirm Identity</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="profileOverlay" style="display:none" onclick="if(event.target == this) this.style.display='none'">
+    <div class="modal profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar" id="pAvatar">?</div>
+            <div>
+                <h2 class="profile-username" id="pUsername">USER</h2>
+                <span style="font-size:10px; color:var(--text-muted); font-weight:800;">PLAYER PROFILE</span>
+            </div>
+        </div>
+        <div class="profile-stat-row">
+            <span class="profile-stat-label">Current Status</span>
+            <span class="profile-stat-value" id="pStatus">---</span>
+        </div>
+        <div class="profile-stat-row">
+            <span class="profile-stat-label">Member Since</span>
+            <span class="profile-stat-value" id="pJoined">Feb 2026</span>
+        </div>
+        <div class="profile-stat-row">
+            <span class="profile-stat-label">Leaderboard Rank</span>
+            <span class="profile-stat-value" id="pRank">#--</span>
+        </div>
+        <div class="profile-stat-row">
+            <span class="profile-stat-label">Total Balance</span>
+            <span class="profile-stat-value value-green" id="pBalance">$0.00</span>
+        </div>
+        <button id="pFriendBtn" class="btn-friend" onclick="sendFriendRequest()">+ Send Request</button>
+        <button class="btn-submit" onclick="document.getElementById('profileOverlay').style.display='none'">Close Profile</button>
     </div>
 </div>
 
@@ -210,6 +282,7 @@
                     currentLocalUser = snap.val();
                     startLiveSync();
                     initPersistentFeed(); 
+                    startPresence(); 
                 } else {
                     localStorage.removeItem('currentUser');
                     document.getElementById('modalOverlay').style.display = 'flex';
@@ -218,6 +291,13 @@
         } else {
             document.getElementById('modalOverlay').style.display = 'flex';
         }
+    }
+
+    function startPresence() {
+        if(!currentLocalUser) return;
+        const userRef = db.ref('users/' + currentLocalUser.name.toLowerCase());
+        userRef.update({ lastSeen: Date.now() });
+        setInterval(() => { userRef.update({ lastSeen: Date.now() }); }, 30000);
     }
 
     function handleAuth() {
@@ -232,7 +312,11 @@
                     location.reload();
                 } else { alert("Incorrect password!"); }
             } else {
-                const newUser = { name, password: passInput, balance: 100.00, lastBonus: 0 };
+                const newUser = { 
+                    name, password: passInput, balance: 100.00, lastBonus: 0,
+                    createdAt: Date.now(), lastSeen: Date.now(),
+                    friends: {}, requests: {}
+                };
                 db.ref('users/' + name).set(newUser);
                 localStorage.setItem('currentUser', JSON.stringify(newUser));
                 location.reload();
@@ -245,40 +329,19 @@
             if (snap.exists()) {
                 currentLocalUser = snap.val();
                 updateUI(currentLocalUser);
+                checkRequestBadge();
+                if(document.getElementById('friendsTab').classList.contains('active')) fetchFriends();
             }
         });
     }
 
-    function initPersistentFeed() {
-        const feedRef = db.ref('recent_wins');
-        db.ref('users').on('value', (snap) => {
-            snap.forEach(child => {
-                const user = child.val();
-                const userId = user.name.toLowerCase();
-                const newBal = user.balance;
-                const oldBal = lastKnownBalances[userId];
-                if (oldBal !== undefined && newBal > oldBal) {
-                    feedRef.push({ name: user.name.toUpperCase(), amount: newBal - oldBal, timestamp: Date.now() });
-                }
-                lastKnownBalances[userId] = newBal;
-            });
-        });
-
-        feedRef.limitToLast(10).on('value', (snap) => {
-            const feedContainer = document.getElementById('liveJackpotFeed');
-            feedContainer.innerHTML = "";
-            let wins = [];
-            snap.forEach(child => { wins.push(child.val()); });
-            wins.reverse().forEach(win => {
-                const timeStr = new Date(win.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-                const item = document.createElement('div');
-                item.className = 'feed-item';
-                item.innerHTML = `
-                    <div class="feed-top"><span class="feed-user">${win.name}</span><span class="feed-amount">+$${win.amount.toFixed(2)}</span></div>
-                    <div class="feed-time">${timeStr}</div>`;
-                feedContainer.appendChild(item);
-            });
-        });
+    function checkRequestBadge() {
+        const badge = document.getElementById('friendBadge');
+        if (currentLocalUser.requests && Object.keys(currentLocalUser.requests).length > 0) {
+            badge.style.display = 'block';
+        } else {
+            badge.style.display = 'none';
+        }
     }
 
     function updateUI(user) {
@@ -317,10 +380,11 @@
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        if(event) event.currentTarget.classList.add('active');
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
         if(tabId === 'leaderboard') fetchLeaderboard();
+        if(tabId === 'friendsTab') fetchFriends();
     }
 
     function fetchLeaderboard() {
@@ -328,8 +392,169 @@
             let users = [];
             snap.forEach(child => { users.push(child.val()); });
             document.getElementById('leaderboardBody').innerHTML = users.sort((a,b)=>b.balance-a.balance).slice(0,15).map((u,i)=>`
-                <tr><td><span class="rank-badge ${i<3?`rank-${i+1}`:''}">#${i+1}</span></td><td>${u.name.toUpperCase()}</td><td class="bal-cell">$${u.balance.toFixed(2)}</td></tr>
+                <tr><td><span class="rank-badge ${i<3?`rank-${i+1}`:''}">#${i+1}</span></td><td class="player-cell" onclick="viewProfile('${u.name}')">${u.name.toUpperCase()}</td><td class="bal-cell">$${u.balance.toFixed(2)}</td></tr>
             `).join('');
+        });
+    }
+
+    function initPersistentFeed() {
+        const feedRef = db.ref('recent_wins');
+        db.ref('users').on('value', (snap) => {
+            snap.forEach(child => {
+                const user = child.val();
+                const userId = user.name.toLowerCase();
+                const newBal = user.balance;
+                const oldBal = lastKnownBalances[userId];
+                if (oldBal !== undefined && newBal > oldBal) {
+                    feedRef.push({ name: user.name.toUpperCase(), amount: newBal - oldBal, timestamp: Date.now() });
+                }
+                lastKnownBalances[userId] = newBal;
+            });
+        });
+        feedRef.limitToLast(10).on('value', (snap) => {
+            const feedContainer = document.getElementById('liveJackpotFeed');
+            feedContainer.innerHTML = "";
+            let wins = [];
+            snap.forEach(child => { wins.push(child.val()); });
+            wins.reverse().forEach(win => {
+                const timeStr = new Date(win.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const item = document.createElement('div');
+                item.className = 'feed-item';
+                item.innerHTML = `
+                    <div class="feed-top"><span class="feed-user" onclick="viewProfile('${win.name}')">${win.name}</span><span class="feed-amount">+$${win.amount.toFixed(2)}</span></div>
+                    <div class="feed-time">${timeStr}</div>`;
+                feedContainer.appendChild(item);
+            });
+        });
+    }
+
+    // --- ENHANCED FRIENDS LOGIC ---
+
+    let currentViewingUser = "";
+
+    function viewProfile(username) {
+        db.ref('users').once('value', (snap) => {
+            let allUsers = [];
+            snap.forEach(c => { allUsers.push(c.val()); });
+            allUsers.sort((a,b) => b.balance - a.balance);
+            const userIdx = allUsers.findIndex(u => u.name.toLowerCase() === username.toLowerCase());
+            const targetUser = allUsers[userIdx];
+            if(!targetUser) return;
+
+            currentViewingUser = targetUser.name.toLowerCase();
+            document.getElementById('pUsername').innerText = targetUser.name;
+            document.getElementById('pAvatar').innerText = targetUser.name.charAt(0).toUpperCase();
+            document.getElementById('pBalance').innerText = `$${targetUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            document.getElementById('pRank').innerText = `#${userIdx + 1}`;
+            document.getElementById('pJoined').innerText = targetUser.createdAt ? new Date(targetUser.createdAt).toLocaleDateString() : "Legacy User";
+
+            const isOnline = (Date.now() - (targetUser.lastSeen || 0)) < 60000;
+            const statusEl = document.getElementById('pStatus');
+            statusEl.innerText = isOnline ? "ONLINE" : "OFFLINE";
+            statusEl.className = isOnline ? "profile-stat-value status-online" : "profile-stat-value status-offline";
+
+            const friendBtn = document.getElementById('pFriendBtn');
+            if (currentViewingUser === currentLocalUser.name.toLowerCase()) {
+                friendBtn.style.display = 'none';
+            } else {
+                friendBtn.style.display = 'block';
+                friendBtn.disabled = false;
+                
+                const isFriend = currentLocalUser.friends && currentLocalUser.friends[currentViewingUser];
+                const hasSentRequest = targetUser.requests && targetUser.requests[currentLocalUser.name.toLowerCase()];
+
+                if (isFriend) {
+                    friendBtn.innerText = "Remove Friend";
+                    friendBtn.onclick = removeFriend;
+                } else if (hasSentRequest) {
+                    friendBtn.innerText = "Request Pending...";
+                    friendBtn.disabled = true;
+                } else {
+                    friendBtn.innerText = "+ Send Request";
+                    friendBtn.onclick = sendFriendRequest;
+                }
+            }
+            document.getElementById('profileOverlay').style.display = 'flex';
+        });
+    }
+
+    function sendFriendRequest() {
+        db.ref(`users/${currentViewingUser}/requests/${currentLocalUser.name.toLowerCase()}`).set(true);
+        alert("Friend request sent!");
+        document.getElementById('profileOverlay').style.display = 'none';
+    }
+
+    function removeFriend() {
+        if(!confirm(`Remove ${currentViewingUser.toUpperCase()} from friends?`)) return;
+        db.ref(`users/${currentLocalUser.name.toLowerCase()}/friends/${currentViewingUser}`).remove();
+        db.ref(`users/${currentViewingUser}/friends/${currentLocalUser.name.toLowerCase()}`).remove();
+        document.getElementById('profileOverlay').style.display = 'none';
+    }
+
+    function acceptRequest(requester) {
+        // Add to my friends
+        db.ref(`users/${currentLocalUser.name.toLowerCase()}/friends/${requester}`).set(true);
+        // Add me to their friends
+        db.ref(`users/${requester}/friends/${currentLocalUser.name.toLowerCase()}`).set(true);
+        // Delete request
+        db.ref(`users/${currentLocalUser.name.toLowerCase()}/requests/${requester}`).remove();
+    }
+
+    function declineRequest(requester) {
+        db.ref(`users/${currentLocalUser.name.toLowerCase()}/requests/${requester}`).remove();
+    }
+
+    function fetchFriends() {
+        const friendsList = document.getElementById('friendsList');
+        const reqList = document.getElementById('requestsList');
+        const reqTitle = document.getElementById('requestTitle');
+
+        db.ref('users').once('value', (snap) => {
+            // Render Requests
+            reqList.innerHTML = "";
+            const requests = currentLocalUser.requests ? Object.keys(currentLocalUser.requests) : [];
+            if (requests.length > 0) {
+                reqTitle.style.display = 'block';
+                requests.forEach(reqName => {
+                    const item = document.createElement('div');
+                    item.className = 'friend-item';
+                    item.innerHTML = `
+                        <span style="font-weight:800;">${reqName.toUpperCase()}</span>
+                        <div class="request-actions">
+                            <button class="btn-accept" onclick="acceptRequest('${reqName}')">Accept</button>
+                            <button class="btn-decline" onclick="declineRequest('${reqName}')">✕</button>
+                        </div>
+                    `;
+                    reqList.appendChild(item);
+                });
+            } else {
+                reqTitle.style.display = 'none';
+            }
+
+            // Render Friends
+            friendsList.innerHTML = "";
+            const friends = currentLocalUser.friends ? Object.keys(currentLocalUser.friends) : [];
+            if (friends.length > 0) {
+                friends.forEach(fName => {
+                    const userData = snap.child(fName).val();
+                    if (userData) {
+                        const isOnline = (Date.now() - (userData.lastSeen || 0)) < 60000;
+                        const item = document.createElement('div');
+                        item.className = 'friend-item';
+                        item.onclick = () => viewProfile(userData.name);
+                        item.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:10px;">
+                                <div class="profile-avatar" style="width:30px; height:30px; font-size:12px;">${userData.name.charAt(0).toUpperCase()}</div>
+                                <span style="font-weight:800;">${userData.name.toUpperCase()}</span>
+                            </div>
+                            <span class="${isOnline ? 'status-online' : 'status-offline'}" style="font-size:10px;">${isOnline ? 'ONLINE' : 'OFFLINE'}</span>
+                        `;
+                        friendsList.appendChild(item);
+                    }
+                });
+            } else {
+                friendsList.innerHTML = '<p style="color:var(--text-muted)">No friends yet.</p>';
+            }
         });
     }
 
