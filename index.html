@@ -86,6 +86,7 @@
         .modal h2 { font-size: 1.8rem; font-weight: 900; margin: 20px 0 10px; }
         .modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
         .modal-icon-container { width: 80px; height: 80px; background: rgba(56, 189, 248, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .modal-inputs { display: flex; flex-direction: column; gap: 12px; }
         .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #1e293b; background: #070b14; color: white; font-weight: 600; font-size: 16px; outline: none; transition: 0.2s; box-sizing: border-box; }
         .modal input:focus { border-color: var(--light-blue); background: #0b1120; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
         .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; margin-top: 20px; transition: 0.3s; }
@@ -188,8 +189,11 @@
             </svg>
         </div>
         <h2>Access Account</h2>
-        <p>Enter your username to sync your progress.</p>
-        <input type="text" id="usernameInput" placeholder="Username" autocomplete="off">
+        <p>Sync your progress across devices.</p>
+        <div class="modal-inputs">
+            <input type="text" id="usernameInput" placeholder="Username" autocomplete="off">
+            <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
+        </div>
         <button class="btn-submit" onclick="handleAuth()">Confirm Identity</button>
     </div>
 </div>
@@ -233,18 +237,33 @@
 
     function handleAuth() {
         const nameInput = document.getElementById('usernameInput').value.trim();
-        if (nameInput.length < 3) return alert("Min 3 characters");
+        const passInput = document.getElementById('passwordInput').value.trim();
+        
+        if (nameInput.length < 3) return alert("Min 3 characters for username");
+        if (passInput.length < 4) return alert("Min 4 characters for password");
+        
         const name = nameInput.toLowerCase().replace(/[^a-z0-9]/g, "");
 
         db.ref('users/' + name).once('value').then((snap) => {
             if (snap.exists()) {
-                localStorage.setItem('currentUser', JSON.stringify(snap.val()));
+                const userData = snap.val();
+                if (userData.password === passInput) {
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    location.reload();
+                } else {
+                    alert("Incorrect password!");
+                }
             } else {
-                const newUser = { name: name, balance: 100.00, lastBonus: 0 };
+                const newUser = { 
+                    name: name, 
+                    password: passInput, 
+                    balance: 100.00, 
+                    lastBonus: 0 
+                };
                 db.ref('users/' + name).set(newUser);
                 localStorage.setItem('currentUser', JSON.stringify(newUser));
+                location.reload();
             }
-            location.reload();
         });
     }
 
@@ -257,7 +276,6 @@
         });
     }
 
-    // FEED CLEANER (DELETES WINS > 24H OLD)
     function cleanupOldWins() {
         const cutoff = Date.now() - (24 * 60 * 60 * 1000);
         db.ref('recent_wins').orderByChild('timestamp').endAt(cutoff).once('value', (snap) => {
@@ -269,7 +287,6 @@
         cleanupOldWins();
         const feedRef = db.ref('recent_wins');
         
-        // Push local wins to server
         db.ref('users').on('value', (snap) => {
             snap.forEach(child => {
                 const user = child.val();
@@ -283,7 +300,6 @@
             });
         });
 
-        // Display shared feed
         feedRef.limitToLast(12).on('value', (snap) => {
             const feedContainer = document.getElementById('liveJackpotFeed');
             feedContainer.innerHTML = "";
