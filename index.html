@@ -47,8 +47,8 @@
         /* NEWS TAB */
         .news-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: stretch; }
         @media (max-width: 1000px) { .news-container { grid-template-columns: 1fr; } }
-        .news-card { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; margin-bottom: 20px; transition: 0.3s; position: relative; }
-        .news-card:last-child { margin-bottom: 0; }
+        .news-main { display: flex; flex-direction: column; gap: 20px; }
+        .news-card { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; transition: 0.3s; position: relative; flex: 1; }
         .news-card:hover { border-color: var(--light-blue); background: #161f2e; }
         .news-tag { font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 15px; display: inline-block; }
         .tag-update { background: rgba(56, 189, 248, 0.2); color: var(--light-blue); }
@@ -57,7 +57,7 @@
         .news-excerpt { color: var(--text-muted); line-height: 1.6; font-size: 14px; }
 
         /* LIVE FEED */
-        .live-feed { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; display: flex; flex-direction: column; }
+        .live-feed { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; display: flex; flex-direction: column; height: 450px; }
         .feed-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; }
         .feed-scroll::-webkit-scrollbar { display: none; }
         .feed-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; animation: slideIn 0.4s ease-out; }
@@ -76,6 +76,9 @@
         .rank-1 { background: #fbbf24; color: #000; }
         .rank-2 { background: #94a3b8; color: #000; }
         .rank-3 { background: #92400e; color: #fff; }
+
+        /* ABOUT BOX */
+        .about-box { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--mid-blue); line-height: 1.8; }
 
         /* LOGIN MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
@@ -148,7 +151,8 @@
                         <span class="news-tag tag-live" style="margin:0;">Live</span>
                     </div>
                     <div id="liveJackpotFeed" class="feed-scroll">
-                        </div>
+                        <div class="feed-item" style="color: var(--text-muted)">Connecting...</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -167,6 +171,7 @@
                 <h3>🏆 Universal-Bet</h3>
                 <p>A secure, real-time fake gambling platform with a competitive leaderboard.</p>
                 <p>Developed by <b>FUSIONZZZ</b>.</p>
+                <p>Version 1.0 - New website!</p>
             </div>
         </div>
 
@@ -252,46 +257,42 @@
         });
     }
 
-    // NEW PERSISTENT FEED LOGIC
+    // FEED CLEANER (DELETES WINS > 24H OLD)
+    function cleanupOldWins() {
+        const cutoff = Date.now() - (24 * 60 * 60 * 1000);
+        db.ref('recent_wins').orderByChild('timestamp').endAt(cutoff).once('value', (snap) => {
+            snap.forEach(child => { child.ref.remove(); });
+        });
+    }
+
     function initPersistentFeed() {
+        cleanupOldWins();
         const feedRef = db.ref('recent_wins');
         
-        // Listen for new wins and log them to persistent storage
+        // Push local wins to server
         db.ref('users').on('value', (snap) => {
             snap.forEach(child => {
                 const user = child.val();
                 const userId = user.name.toLowerCase();
                 const newBal = user.balance;
                 const oldBal = lastKnownBalances[userId];
-
                 if (oldBal !== undefined && newBal > oldBal) {
-                    const winAmt = newBal - oldBal;
-                    // Push to the shared history node
-                    feedRef.push({
-                        name: user.name.toUpperCase(),
-                        amount: winAmt,
-                        timestamp: Date.now()
-                    });
+                    feedRef.push({ name: user.name.toUpperCase(), amount: newBal - oldBal, timestamp: Date.now() });
                 }
                 lastKnownBalances[userId] = newBal;
             });
         });
 
-        // Pull the last 10 persistent wins to display
-        feedRef.limitToLast(10).on('value', (snap) => {
+        // Display shared feed
+        feedRef.limitToLast(12).on('value', (snap) => {
             const feedContainer = document.getElementById('liveJackpotFeed');
             feedContainer.innerHTML = "";
             let wins = [];
             snap.forEach(child => { wins.push(child.val()); });
-            
-            // Reverse so newest is at top
             wins.reverse().forEach(win => {
                 const item = document.createElement('div');
                 item.className = 'feed-item';
-                item.innerHTML = `
-                    <span class="feed-user">${win.name}</span>
-                    <span class="feed-amount">+$${win.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-                `;
+                item.innerHTML = `<span class="feed-user">${win.name}</span><span class="feed-amount">+$${win.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>`;
                 feedContainer.appendChild(item);
             });
         });
@@ -321,12 +322,10 @@
             const m = Math.floor((diff % 3600000) / 60000);
             const s = Math.floor((diff % 60000) / 1000);
             timerText.innerText = `${h}H ${m}M ${s}S`;
-            rewardBox.style.opacity = "0.5";
-            rewardBox.style.pointerEvents = "none";
+            rewardBox.style.opacity = "0.5"; rewardBox.style.pointerEvents = "none";
         } else {
             timerText.innerText = "Claim $25.00";
-            rewardBox.style.opacity = "1";
-            rewardBox.style.pointerEvents = "auto";
+            rewardBox.style.opacity = "1"; rewardBox.style.pointerEvents = "auto";
         }
     }
 
