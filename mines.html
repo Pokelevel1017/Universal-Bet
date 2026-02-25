@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Universal-Bet | Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
@@ -22,50 +23,84 @@
         /* LAYOUT */
         .main-content { display: flex; flex: 1; overflow: hidden; }
 
-        /* SIDEBAR */
-        .sidebar { width: 280px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; overflow-y: auto; }
+        .sidebar { width: 260px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
         .sidebar-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; }
         .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
         /* GAME AREA */
-        .game-area { flex: 1; padding: 40px; display: flex; gap: 40px; justify-content: center; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); }
+        .game-area { flex: 1; padding: 40px; display: flex; gap: 50px; justify-content: center; align-items: flex-start; background: radial-gradient(circle at top left, #1e293b, #0b1120); overflow-y: auto; }
         
-        .controls { width: 320px; background: var(--card-bg); padding: 25px; border-radius: 15px; border: 1px solid var(--mid-blue); }
-        .input-group { margin-bottom: 20px; }
-        label { display: block; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
-        input, select { width: 100%; background: #070b14; border: 1px solid var(--mid-blue); color: white; padding: 12px; border-radius: 8px; font-weight: 700; box-sizing: border-box; }
+        .controls { width: 340px; background: var(--card-bg); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .input-group { margin-bottom: 22px; }
+        label { display: block; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
         
-        input[type="range"] { accent-color: var(--light-blue); margin-top: 10px; }
+        input, select { 
+            width: 100%; background: #070b14; border: 2px solid var(--mid-blue); color: white; 
+            padding: 14px; border-radius: 12px; font-weight: 700; outline: none; transition: 0.2s;
+            box-sizing: border-box;
+        }
+        input:focus { border-color: var(--light-blue); }
+        
+        input[type="range"] { -webkit-appearance: none; height: 8px; background: var(--mid-blue); border: none; padding: 0; }
+        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--light-blue); border-radius: 50%; cursor: pointer; }
 
-        .btn-main { width: 100%; padding: 15px; border-radius: 8px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; background: var(--light-blue); color: var(--dark-blue); margin-top: 10px; transition: 0.2s; }
-        .btn-main:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-main { 
+            width: 100%; padding: 18px; border-radius: 14px; border: none; font-weight: 900; 
+            text-transform: uppercase; cursor: pointer; background: var(--light-blue); 
+            color: var(--dark-blue); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-size: 15px; margin-top: 10px;
+        }
+        .btn-main:hover { transform: scale(1.02); filter: brightness(1.1); }
         .btn-cashout { background: var(--accent-green); display: none; }
 
-        /* DYNAMIC GRID */
+        /* FIXED GRID SYSTEM */
+        .grid-container {
+            width: 540px; height: 540px; background: rgba(0,0,0,0.2); 
+            padding: 15px; border-radius: 20px; box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+        }
+
         .mines-grid { 
-            display: grid; gap: 8px; width: 500px; height: 500px; 
-            background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px;
+            display: grid; gap: 10px; width: 100%; height: 100%;
+            grid-template-columns: repeat(5, 1fr);
         }
 
         .tile { 
-            background: var(--tile-bg); border-radius: 6px; cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+            background: var(--tile-bg); border-radius: 10px; cursor: pointer; 
             display: flex; align-items: center; justify-content: center; 
-            font-size: 1.5rem; border-bottom: 4px solid rgba(0,0,0,0.3);
+            font-size: 1.8rem; position: relative; border: none;
+            box-sizing: border-box; transition: background 0.2s, transform 0.1s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+            aspect-ratio: 1/1; /* Keeps tiles perfectly square */
         }
-        .tile:hover { background: #4a5568; transform: scale(1.05); }
-        .tile.revealed { transform: rotateY(180deg); border-bottom: none; }
-        .tile.gem { color: var(--accent-green); background: rgba(0, 231, 1, 0.1); border: 2px solid var(--accent-green); }
-        .tile.mine { color: var(--danger-red); background: rgba(239, 68, 68, 0.1); border: 2px solid var(--danger-red); animation: shake 0.3s; }
+        .tile:hover { background: #3d495d; }
+        .tile:active { transform: translateY(2px); box-shadow: none; }
+
+        .tile.revealed { cursor: default; box-shadow: none; animation: popReveal 0.3s ease-out forwards; }
+        
+        @keyframes popReveal {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .tile.gem { background: rgba(0, 231, 1, 0.1); border: 2px solid var(--accent-green); }
+        .tile.mine { background: rgba(239, 68, 68, 0.15); border: 2px solid var(--danger-red); animation: shake 0.4s; }
 
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
         }
 
-        .disabled { pointer-events: none; opacity: 0.6; }
+        .multiplier-badge {
+            text-align: center; margin-bottom: 15px; padding: 10px;
+            background: rgba(56, 189, 248, 0.1); border-radius: 10px;
+            border: 1px solid rgba(56, 189, 248, 0.2); display: none;
+        }
+
+        .disabled { pointer-events: none; }
+        .dimmed { opacity: 0.3; filter: grayscale(1); }
     </style>
 </head>
 <body>
@@ -77,21 +112,27 @@
 
 <div class="main-content">
     <aside class="sidebar">
-        <a href="index.html" class="side-link">🏠 Home</a>
+        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
         <div class="sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link active-link"><span>🃏</span> Blackjack</a>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
         <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
-        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="mines.html" class="side-link active-link"><span>💣</span> Mines</a>
+        <a href="rps.html" class="side-link"><span>✊</span> RPS</a>
         <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
     </aside>
 
     <main class="game-area">
         <div class="controls">
+            <div id="multBadge" class="multiplier-badge">
+                <span style="color:var(--text-muted); font-size: 11px; font-weight: 800;">CURRENT MULTIPLIER</span><br>
+                <span id="currentMult" style="color:var(--hot-orange); font-size: 1.5rem; font-weight: 900;">1.00x</span>
+            </div>
+
             <div class="input-group">
                 <label>Bet Amount</label>
-                <input type="number" id="betAmount" value="10.00">
+                <input type="number" id="betAmount" value="10.00" step="0.01">
             </div>
+
             <div class="input-group">
                 <label>Grid Size</label>
                 <select id="gridSize" onchange="createGrid()">
@@ -101,17 +142,21 @@
                     <option value="8">8x8 (64 Tiles)</option>
                 </select>
             </div>
+
             <div class="input-group">
-                <label>Mines: <span id="mineDisplay" style="color:white">3</span></label>
+                <label>Mines: <span id="mineDisplay" style="color:white; font-size:1rem">3</span></label>
                 <input type="range" id="mineSlider" min="1" max="24" value="3" oninput="updateMineMax()">
             </div>
+
             <button id="startBtn" class="btn-main" onclick="startGame()">Start Game</button>
-            <button id="cashoutBtn" class="btn-main btn-cashout" onclick="cashout()">Cashout</button>
+            <button id="cashoutBtn" class="btn-main btn-cashout" onclick="cashout()">Cashout ($0.00)</button>
             
-            <div id="status" style="margin-top: 20px; text-align: center; font-weight: 800; font-size: 14px;"></div>
+            <div id="status" style="margin-top: 20px; text-align: center; font-weight: 900; font-size: 16px; letter-spacing: 1px;"></div>
         </div>
 
-        <div class="mines-grid" id="grid"></div>
+        <div class="grid-container">
+            <div class="mines-grid" id="grid"></div>
+        </div>
     </main>
 </div>
 
@@ -134,7 +179,7 @@
     let user = JSON.parse(localStorage.getItem('currentUser'));
     
     let activeGame = false;
-    let mines = [];
+    let mineLocations = [];
     let revealedCount = 0;
     let currentBet = 0;
 
@@ -154,6 +199,7 @@
         const size = parseInt(document.getElementById('gridSize').value);
         const maxMines = (size * size) - 1;
         const slider = document.getElementById('mineSlider');
+        if (parseInt(slider.value) >= maxMines) slider.value = maxMines - 1;
         slider.max = maxMines;
         document.getElementById('mineDisplay').innerText = slider.value;
     }
@@ -167,8 +213,7 @@
         for (let i = 0; i < size * size; i++) {
             const tile = document.createElement('div');
             tile.className = 'tile disabled';
-            tile.dataset.index = i;
-            tile.onclick = () => revealTile(i);
+            tile.onclick = () => revealTile(i, tile);
             grid.appendChild(tile);
         }
         updateMineMax();
@@ -184,7 +229,7 @@
         for (let i = 0; i < revealedCount; i++) {
             multiplier *= (totalTiles - i) / (numGems - i);
         }
-        return multiplier * 0.85; // 15% House Edge
+        return multiplier * 0.98; // 2% House Edge (Best in class)
     }
 
     function startGame() {
@@ -194,15 +239,17 @@
         currentBet = bet;
         activeGame = true;
         revealedCount = 0;
-        mines = [];
+        mineLocations = [];
         
         db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
 
         const size = parseInt(document.getElementById('gridSize').value);
+        const total = size * size;
         const numMines = parseInt(document.getElementById('mineSlider').value);
-        while(mines.length < numMines) {
-            let r = Math.floor(Math.random() * (size * size));
-            if(!mines.includes(r)) mines.push(r);
+
+        while(mineLocations.length < numMines) {
+            let r = Math.floor(Math.random() * total);
+            if(!mineLocations.includes(r)) mineLocations.push(r);
         }
 
         document.querySelectorAll('.tile').forEach(t => {
@@ -212,25 +259,25 @@
         
         document.getElementById('startBtn').style.display = 'none';
         document.getElementById('cashoutBtn').style.display = 'block';
+        document.getElementById('multBadge').style.display = 'block';
+        document.getElementById('currentMult').innerText = '1.00x';
         document.getElementById('cashoutBtn').innerText = `Cashout ($${bet.toFixed(2)})`;
-        document.getElementById('status').innerText = "Game Active...";
+        document.getElementById('status').innerText = "";
     }
 
-    function revealTile(index) {
-        if (!activeGame) return;
-        const tiles = document.querySelectorAll('.tile');
-        const tile = tiles[index];
-        if (tile.classList.contains('revealed')) return;
+    function revealTile(index, tileEl) {
+        if (!activeGame || tileEl.classList.contains('revealed')) return;
 
-        if (mines.includes(index)) {
+        if (mineLocations.includes(index)) {
             gameOver(false);
         } else {
             revealedCount++;
-            tile.classList.add('revealed', 'gem');
-            tile.innerText = '💎';
+            tileEl.classList.add('revealed', 'gem');
+            tileEl.innerText = '💎';
             
-            const currentMult = getMultiplier();
-            document.getElementById('cashoutBtn').innerText = `Cashout ($${(currentBet * currentMult).toFixed(2)})`;
+            const m = getMultiplier();
+            document.getElementById('currentMult').innerText = m.toFixed(2) + 'x';
+            document.getElementById('cashoutBtn').innerText = `Cashout ($${(currentBet * m).toFixed(2)})`;
         }
     }
 
@@ -250,15 +297,23 @@
     function gameOver(isWin) {
         activeGame = false;
         const tiles = document.querySelectorAll('.tile');
-        mines.forEach(idx => {
-            tiles[idx].classList.add('revealed', 'mine');
-            tiles[idx].innerText = '💣';
+        
+        tiles.forEach((t, i) => {
+            t.classList.add('disabled');
+            if (mineLocations.includes(i)) {
+                t.classList.add('revealed', 'mine');
+                t.innerText = '💣';
+            } else if (!t.classList.contains('revealed')) {
+                t.classList.add('dimmed');
+            }
         });
 
-        if(!isWin) document.getElementById('status').innerHTML = `<span style="color:var(--danger-red)">BUSTED!</span>`;
+        if(!isWin) {
+            document.getElementById('status').innerHTML = `<span style="color:var(--danger-red)">BUSTED!</span>`;
+        }
+        
         document.getElementById('startBtn').style.display = 'block';
         document.getElementById('cashoutBtn').style.display = 'none';
-        tiles.forEach(t => t.classList.add('disabled'));
     }
 
     init();
