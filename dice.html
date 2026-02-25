@@ -3,184 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | Dice</title>
+    <title>Universal-Bet | Dice Pro</title>
     <style>
         :root { 
             --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
-            --win-green: #00e701; --loss-red: #ff4949; 
+            --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
+            --danger-red: #ef4444; --hot-orange: #fb923c;
         }
 
-        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
-        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
-        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
-        
-        .viewport { height: calc(100vh - 64px); display: flex; }
-        .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
-        
-        .label { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        .bet-input-wrapper { background: var(--dark-blue); border: 1px solid var(--mid-blue); border-radius: 8px; padding: 12px; display: flex; align-items: center; margin-bottom: 20px; }
-        .bet-input-wrapper input { background: transparent; border: none; color: white; font-weight: 800; width: 100%; outline: none; font-size: 1rem; }
-        
-        .stage { flex: 1; background: #0f172a; display: flex; align-items: center; justify-content: center; }
-        .dice-board { width: 90%; max-width: 800px; background: #1a2434; padding: 60px 40px; border-radius: 20px; position: relative; }
-        
-        .dice-result-bubble { 
-            position: absolute; top: -35px; left: 50%; transform: translateX(-50%) scale(0); 
-            background: #2b384b; padding: 15px 40px; border-radius: 12px; font-size: 2.5rem; 
-            font-weight: 900; border: 2px solid var(--mid-blue); opacity: 0; 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            z-index: 5;
-        }
-        .dice-result-bubble.show { transform: translateX(-50%) scale(1); opacity: 1; }
+        /* NAV & SIDEBAR */
+        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
+        .logo span { color: var(--light-blue); }
+        .balance-box { background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; font-weight: 800; color: var(--accent-green); border: 1px solid rgba(56, 189, 248, 0.2); font-size: 1.1rem; }
 
-        .dice-track-container { position: relative; height: 12px; margin: 60px 0; background: var(--loss-red); border-radius: 10px; }
-        #dice-win-bar { background: var(--win-green); height: 100%; position: absolute; border-radius: 10px; transition: 0.2s; }
-        
-        .dice-input-range { position: absolute; width: 100%; -webkit-appearance: none; background: transparent; z-index: 10; cursor: pointer; height: 40px; top: -14px; margin: 0; }
-        .dice-input-range::-webkit-slider-thumb { -webkit-appearance: none; height: 36px; width: 50px; background: #fff; border-radius: 6px; border: 2px solid var(--light-blue); }
-        
-        #roll-pointer { 
-            position: absolute; top: 25px; width: 0; height: 0; 
-            border-left: 15px solid transparent; border-right: 15px solid transparent; 
-            border-bottom: 20px solid white; transition: left 0.8s cubic-bezier(0.19, 1, 0.22, 1); 
-            margin-left: -15px; 
-        }
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 280px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; overflow-y: auto; }
+        .sidebar-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; }
+        .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
+        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
-        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; text-transform: uppercase; }
-        .btn-main:active { transform: scale(0.98); }
+        /* GAME AREA */
+        .game-area { flex: 1; padding: 40px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); position: relative; overflow-y: auto; }
+        
+        .dice-card { width: 100%; max-width: 900px; background: var(--card-bg); padding: 40px; border-radius: 20px; border: 1px solid var(--mid-blue); box-shadow: 0 20px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; align-items: center; }
 
-        .mode-toggle { display: flex; background: var(--dark-blue); padding: 4px; border-radius: 8px; margin: 20px 0; border: 1px solid var(--mid-blue); }
-        .mode-btn { flex: 1; padding: 10px; border-radius: 6px; border: none; background: transparent; color: #94a3b8; font-weight: 800; cursor: pointer; }
-        .mode-btn.active { background: var(--mid-blue); color: white; }
+        /* SLIDER SYSTEM */
+        .slider-container { position: relative; width: 100%; height: 50px; background: #0f172a; border-radius: 10px; margin: 80px 0 40px 0; border: 4px solid var(--mid-blue); }
+        #winZone { position: absolute; height: 100%; background: var(--accent-green); border-radius: 6px; opacity: 0.25; transition: 0.1s; }
+        .dice-slider { -webkit-appearance: none; width: 100%; height: 100%; background: transparent; position: relative; z-index: 5; cursor: pointer; }
+        .dice-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 45px; height: 65px; background: white; border-radius: 8px; border: 3px solid var(--light-blue); cursor: grab; box-shadow: 0 0 15px rgba(0,0,0,0.5); }
+        .roll-marker { position: absolute; top: -65px; transform: translateX(-50%); padding: 10px 15px; border-radius: 8px; font-weight: 900; font-size: 1.4rem; color: white; display: none; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 10; border: 2px solid rgba(255,255,255,0.2); }
+
+        /* STATS GRID */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; margin-bottom: 30px; }
+        .stat-box { background: #0f172a; padding: 15px; border-radius: 12px; border: 1px solid var(--mid-blue); text-align: center; }
+        .stat-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 5px; }
+        .stat-value { font-size: 1.2rem; font-weight: 900; color: white; }
+
+        /* MODE TOGGLE */
+        .mode-toggle { background: var(--mid-blue); border-radius: 8px; display: flex; padding: 4px; gap: 4px; margin-bottom: 20px; width: 100%; }
+        .mode-btn { flex: 1; padding: 10px; border-radius: 6px; border: none; background: transparent; color: var(--text-muted); font-weight: 800; cursor: pointer; transition: 0.2s; font-size: 12px; }
+        .mode-btn.active { background: #334155; color: white; }
+
+        /* BLACKJACK STYLE BET BAR */
+        .action-bar { margin-top: 35px; display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+        .bet-box { display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 12px 25px; border-radius: 15px; border: 1px solid var(--mid-blue); }
+        .bet-box input { background: transparent; border: none; color: white; font-size: 1.5rem; font-weight: 900; width: 120px; text-align: center; outline: none; }
+        .btn-deal { padding: 14px 28px; border-radius: 10px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; font-size: 13px; background: var(--light-blue); color: var(--dark-blue); }
+        .btn-deal:hover { filter: brightness(1.1); transform: translateY(-2px); }
     </style>
 </head>
 <body>
-    <nav>
-        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$0.00</div>
-    </nav>
 
-    <div class="viewport">
-        <div class="sidebar">
-            <span class="label">Bet Amount</span>
-            <div class="bet-input-wrapper"><input type="number" id="diceBet" value="10.00"></div>
-            
+<nav>
+    <div class="logo" onclick="location.href='index.html'">UNIVERSAL<span>-BET</span></div>
+    <div class="balance-box"><span id="navBal">$0.00</span></div>
+</nav>
+
+<div class="main-content">
+    <aside class="sidebar">
+        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
+        <div class="sidebar-label">Games</div>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
+        <a href="dice.html" class="side-link active-link"><span>🎲</span> Dice</a>
+        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
+        <a href="plinko.html" class="side-link"><span>🔮</span> Plinko</a>
+        <a href="roulette.html" class="side-link"><span>🎡</span> Roulette</a>
+        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
+    </aside>
+
+    <main class="game-area">
+        <div class="dice-card">
             <div class="mode-toggle">
-                <button id="modeOver" class="mode-btn active" onclick="setDiceMode('over')">Roll Over</button>
-                <button id="modeUnder" class="mode-btn" onclick="setDiceMode('under')">Roll Under</button>
+                <button class="mode-btn active" id="btnOver" onclick="setMode('over')">Roll Over</button>
+                <button class="mode-btn" id="btnUnder" onclick="setMode('under')">Roll Under</button>
             </div>
-            
-            <button class="btn-main" onclick="rollDice()">Roll Dice</button>
-            <div id="diceStatus" style="text-align:center; font-size:1.5rem; font-weight:900; margin-top:auto; padding-bottom: 20px;"></div>
-        </div>
 
-        <div class="stage">
-            <div class="dice-board">
-                <div class="dice-result-bubble" id="diceDisplay">50.00</div>
-                <div class="dice-track-container">
-                    <div id="dice-win-bar"></div>
-                    <input type="range" id="diceSlider" class="dice-input-range" min="2" max="98" value="50" oninput="updateDiceUI()">
-                    <div id="roll-pointer" style="left: 50%;"></div>
+            <div class="slider-container">
+                <div id="winZone"></div>
+                <div class="roll-marker" id="rollMarker">50.00</div>
+                <input type="range" min="2" max="98" step="0.01" value="50.00" class="dice-slider" id="diceSlider" oninput="updateStats()">
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-label">Multiplier</div>
+                    <div class="stat-value" id="multiplier">2.0000x</div>
                 </div>
-                <div style="display:flex; gap:10px;">
-                    <div style="flex:1; text-align:center; background:#0b1120; padding:15px; border-radius:10px; border:1px solid var(--mid-blue);">
-                        <div style="font-size:11px; color:#94a3b8; font-weight: 800;">MULTIPLIER</div>
-                        <div id="diceMult" style="font-weight:900;">2.0000x</div>
-                    </div>
-                    <div style="flex:1; text-align:center; background:#0b1120; padding:15px; border-radius:10px; border:1px solid var(--mid-blue);">
-                        <div style="font-size:11px; color:#94a3b8; font-weight: 800;" id="labelMode">ROLL OVER</div>
-                        <div id="targetDisplay" style="font-weight:900;">50.00</div>
-                    </div>
-                    <div style="flex:1; text-align:center; background:#0b1120; padding:15px; border-radius:10px; border:1px solid var(--mid-blue);">
-                        <div style="font-size:11px; color:#94a3b8; font-weight: 800;">WIN CHANCE</div>
-                        <div id="diceChance" style="font-weight:900;">50.00%</div>
-                    </div>
+                <div class="stat-box">
+                    <div class="stat-label">Win Chance</div>
+                    <div class="stat-value" id="winChance">50.00%</div>
+                </div>
+            </div>
+
+            <div class="action-bar">
+                <div class="bet-box">
+                    <span style="color:var(--accent-green); font-weight:900;">$</span>
+                    <input type="number" id="betAmount" value="10" min="1">
+                    <button class="btn-deal" onclick="playDice()">Place Bet & Roll</button>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+</div>
 
-    <script>
-        // --- DATA SYNC SYSTEM ---
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let allUsers = JSON.parse(localStorage.getItem('users'));
-        if (!currentUser) window.location.href = 'index.html';
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
-        let bal = currentUser.balance;
-        let diceMode = 'over';
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
+        authDomain: "universalbet-427ce.firebaseapp.com",
+        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com",
+        projectId: "universalbet-427ce",
+        storageBucket: "universalbet-427ce.firebasestorage.app",
+        messagingSenderId: "804592033030",
+        appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
+    };
 
-        function updateStorage() { 
-            currentUser.balance = bal;
-            if (allUsers && allUsers[currentUser.name]) {
-                allUsers[currentUser.name].balance = bal;
-            }
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            localStorage.setItem('users', JSON.stringify(allUsers));
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`; 
-        }
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let mode = 'over';
 
-        function setDiceMode(m) { 
-            diceMode = m; 
-            document.getElementById('modeOver').classList.toggle('active', m==='over'); 
-            document.getElementById('modeUnder').classList.toggle('active', m==='under'); 
-            document.getElementById('labelMode').innerText = "ROLL " + m.toUpperCase(); 
-            updateDiceUI(); 
-        }
+    function init() {
+        if (!user) return window.location.href = 'index.html';
+        db.ref('users/' + user.name).on('value', s => {
+            user = s.val();
+            document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        });
+        updateStats();
+    }
+
+    function setMode(newMode) {
+        mode = newMode;
+        document.getElementById('btnOver').classList.toggle('active', mode === 'over');
+        document.getElementById('btnUnder').classList.toggle('active', mode === 'under');
+        updateStats();
+    }
+
+    function updateStats() {
+        const slider = document.getElementById('diceSlider');
+        const winZone = document.getElementById('winZone');
+        const val = parseFloat(slider.value);
+        let chance = (mode === 'over') ? (100 - val) : val;
+        let mult = (99 / chance).toFixed(4);
         
-        function updateDiceUI() {
-            const v = parseFloat(document.getElementById('diceSlider').value);
-            const winBar = document.getElementById('dice-win-bar');
-            let winChance = (diceMode === 'over') ? (100 - v) : v;
-            
-            winBar.style.width = winChance + "%";
-            winBar.style.left = (diceMode === 'over') ? v + "%" : "0%";
-            
-            document.getElementById('targetDisplay').innerText = v.toFixed(2);
-            document.getElementById('diceMult').innerText = (99 / winChance).toFixed(4) + 'x';
-            document.getElementById('diceChance').innerText = winChance.toFixed(2) + '%';
+        document.getElementById('winChance').innerText = chance.toFixed(2) + '%';
+        document.getElementById('multiplier').innerText = mult + 'x';
+
+        if(mode === 'over') {
+            winZone.style.left = val + '%';
+            winZone.style.width = (100 - val) + '%';
+        } else {
+            winZone.style.left = '0%';
+            winZone.style.width = val + '%';
         }
+    }
 
-        function rollDice() {
-            const betInput = document.getElementById('diceBet');
-            const bet = parseFloat(betInput.value);
-            const target = parseFloat(document.getElementById('diceSlider').value);
-            
-            if(bet > bal || bet <= 0) return alert("Insufficient funds!");
-            
-            // Deduct bet and sync
-            bal -= bet; 
-            updateStorage(); 
+    async function playDice() {
+        const betInput = document.getElementById('betAmount');
+        const bet = parseFloat(betInput.value);
+        if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
-            const bubble = document.getElementById('diceDisplay'); 
-            bubble.classList.remove('show');
-            
-            setTimeout(() => {
-                const roll = (Math.random() * 100).toFixed(2);
-                document.getElementById('roll-pointer').style.left = roll + "%";
-                bubble.innerText = roll; 
-                bubble.classList.add('show');
-                
-                let win = (diceMode === 'over' && roll > target) || (diceMode === 'under' && roll < target);
-                const status = document.getElementById('diceStatus');
-                
-                if(win) {
-                    let winChance = (diceMode === 'over') ? (100 - target) : target;
-                    const payout = bet * (99 / winChance);
-                    bal += payout; 
-                    status.innerText = "WIN"; 
-                    status.style.color = 'var(--win-green)';
-                } else { 
-                    status.innerText = "LOSS"; 
-                    status.style.color = 'var(--loss-red)'; 
-                }
-                updateStorage();
-            }, 50);
+        // Deduct
+        db.ref('users/'+user.name).update({ balance: user.balance - bet });
+
+        const sliderVal = parseFloat(document.getElementById('diceSlider').value);
+        const roll = (Math.random() * 100).toFixed(2);
+        const marker = document.getElementById('rollMarker');
+
+        marker.style.display = 'block';
+        marker.style.left = roll + '%';
+        marker.innerText = roll;
+
+        let isWin = (mode === 'over') ? (parseFloat(roll) > sliderVal) : (parseFloat(roll) < sliderVal);
+        
+        if (isWin) {
+            marker.style.background = 'var(--accent-green)';
+            marker.style.color = 'black';
+            const chance = (mode === 'over') ? (100 - sliderVal) : sliderVal;
+            const mult = 99 / chance;
+            db.ref('users/'+user.name).update({ balance: user.balance + (bet * mult) });
+        } else {
+            marker.style.background = 'var(--danger-red)';
+            marker.style.color = 'white';
         }
+    }
 
-        // Initialize UI
-        updateStorage();
-        updateDiceUI();
-    </script>
+    init();
+</script>
 </body>
 </html>
