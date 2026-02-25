@@ -44,7 +44,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* NEWS TAB */
+        /* NEWS TAB + FEED */
         .news-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; align-items: stretch; }
         @media (max-width: 1000px) { .news-container { grid-template-columns: 1fr; } }
         .news-main { display: flex; flex-direction: column; gap: 20px; }
@@ -56,13 +56,14 @@
         .news-title { font-size: 1.4rem; font-weight: 900; margin: 10px 0; }
         .news-excerpt { color: var(--text-muted); line-height: 1.6; font-size: 14px; }
 
-        /* LIVE FEED */
         .live-feed { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; display: flex; flex-direction: column; height: 450px; }
         .feed-scroll { flex: 1; overflow-y: auto; scrollbar-width: none; }
         .feed-scroll::-webkit-scrollbar { display: none; }
-        .feed-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; animation: slideIn 0.4s ease-out; }
-        .feed-user { font-weight: 800; color: white; }
-        .feed-amount { color: var(--accent-green); font-weight: 900; }
+        .feed-item { display: flex; flex-direction: column; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); animation: slideIn 0.4s ease-out; }
+        .feed-top { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .feed-user { font-weight: 800; color: white; font-size: 13px; }
+        .feed-amount { color: var(--accent-green); font-weight: 900; font-size: 13px; }
+        .feed-time { font-size: 10px; color: var(--text-muted); margin-top: 4px; font-weight: 700; text-transform: uppercase; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
@@ -80,17 +81,11 @@
         /* ABOUT BOX */
         .about-box { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--mid-blue); line-height: 1.8; }
 
-        /* LOGIN MODAL */
+        /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
-        .modal { background: #0f172a; padding: 50px 40px; border-radius: 28px; width: 100%; max-width: 420px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); position: relative; }
-        .modal h2 { font-size: 1.8rem; font-weight: 900; margin: 20px 0 10px; }
-        .modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-        .modal-icon-container { width: 80px; height: 80px; background: rgba(56, 189, 248, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid rgba(56, 189, 248, 0.2); }
-        .modal-inputs { display: flex; flex-direction: column; gap: 12px; }
-        .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #1e293b; background: #070b14; color: white; font-weight: 600; font-size: 16px; outline: none; transition: 0.2s; box-sizing: border-box; }
-        .modal input:focus { border-color: var(--light-blue); background: #0b1120; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
-        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; margin-top: 20px; transition: 0.3s; }
-        .btn-submit:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
+        .modal { background: #0f172a; padding: 50px 40px; border-radius: 28px; width: 100%; max-width: 420px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; }
+        .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #1e293b; background: #070b14; color: white; font-weight: 600; font-size: 16px; outline: none; margin-bottom: 12px; box-sizing: border-box; }
+        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; margin-top: 20px; }
 
         .footer { text-align: center; padding: 40px 0; color: #475569; font-weight: 700; font-size: 10px; letter-spacing: 2px; }
     </style>
@@ -141,8 +136,8 @@
                     </div>
                     <div class="news-card">
                         <span class="news-tag tag-update">Notice</span>
-                        <h2 class="news-title">Dont like the games we have?</h2>
-                        <p class="news-excerpt">If you dont like the games we have dont worry! I update this site every week with new games!</p>
+                        <h2 class="news-title">Weekly Updates</h2>
+                        <p class="news-excerpt">I update this site every week with new games! Stay tuned for more ways to win.</p>
                     </div>
                 </div>
 
@@ -172,7 +167,6 @@
                 <h3>🏆 Universal-Bet</h3>
                 <p>A secure, real-time fake gambling platform with a competitive leaderboard.</p>
                 <p>Developed by <b>FUSIONZZZ</b>.</p>
-                <p>Version 1.0 - New website!</p>
             </div>
         </div>
 
@@ -182,18 +176,9 @@
 
 <div class="modal-overlay" id="modalOverlay" style="display:none">
     <div class="modal">
-        <div class="modal-icon-container">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-        </div>
         <h2>Access Account</h2>
-        <p>Sync your progress across devices.</p>
-        <div class="modal-inputs">
-            <input type="text" id="usernameInput" placeholder="Username" autocomplete="off">
-            <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
-        </div>
+        <input type="text" id="usernameInput" placeholder="Username">
+        <input type="password" id="passwordInput" placeholder="Password">
         <button class="btn-submit" onclick="handleAuth()">Confirm Identity</button>
     </div>
 </div>
@@ -219,7 +204,7 @@
 
     function checkAuth() {
         const localUser = JSON.parse(localStorage.getItem('currentUser'));
-        if (localUser && localUser.name) {
+        if (localUser?.name) {
             db.ref('users/' + localUser.name.toLowerCase()).once('value', (snap) => {
                 if(snap.exists()){
                     currentLocalUser = snap.val();
@@ -238,28 +223,16 @@
     function handleAuth() {
         const nameInput = document.getElementById('usernameInput').value.trim();
         const passInput = document.getElementById('passwordInput').value.trim();
-        
-        if (nameInput.length < 3) return alert("Min 3 characters for username");
-        if (passInput.length < 4) return alert("Min 4 characters for password");
-        
+        if (nameInput.length < 3 || passInput.length < 4) return alert("Invalid inputs");
         const name = nameInput.toLowerCase().replace(/[^a-z0-9]/g, "");
-
         db.ref('users/' + name).once('value').then((snap) => {
             if (snap.exists()) {
-                const userData = snap.val();
-                if (userData.password === passInput) {
-                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                if (snap.val().password === passInput) {
+                    localStorage.setItem('currentUser', JSON.stringify(snap.val()));
                     location.reload();
-                } else {
-                    alert("Incorrect password!");
-                }
+                } else { alert("Incorrect password!"); }
             } else {
-                const newUser = { 
-                    name: name, 
-                    password: passInput, 
-                    balance: 100.00, 
-                    lastBonus: 0 
-                };
+                const newUser = { name, password: passInput, balance: 100.00, lastBonus: 0 };
                 db.ref('users/' + name).set(newUser);
                 localStorage.setItem('currentUser', JSON.stringify(newUser));
                 location.reload();
@@ -276,17 +249,8 @@
         });
     }
 
-    function cleanupOldWins() {
-        const cutoff = Date.now() - (24 * 60 * 60 * 1000);
-        db.ref('recent_wins').orderByChild('timestamp').endAt(cutoff).once('value', (snap) => {
-            snap.forEach(child => { child.ref.remove(); });
-        });
-    }
-
     function initPersistentFeed() {
-        cleanupOldWins();
         const feedRef = db.ref('recent_wins');
-        
         db.ref('users').on('value', (snap) => {
             snap.forEach(child => {
                 const user = child.val();
@@ -300,15 +264,18 @@
             });
         });
 
-        feedRef.limitToLast(12).on('value', (snap) => {
+        feedRef.limitToLast(10).on('value', (snap) => {
             const feedContainer = document.getElementById('liveJackpotFeed');
             feedContainer.innerHTML = "";
             let wins = [];
             snap.forEach(child => { wins.push(child.val()); });
             wins.reverse().forEach(win => {
+                const timeStr = new Date(win.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 const item = document.createElement('div');
                 item.className = 'feed-item';
-                item.innerHTML = `<span class="feed-user">${win.name}</span><span class="feed-amount">+$${win.amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>`;
+                item.innerHTML = `
+                    <div class="feed-top"><span class="feed-user">${win.name}</span><span class="feed-amount">+$${win.amount.toFixed(2)}</span></div>
+                    <div class="feed-time">${timeStr}</div>`;
                 feedContainer.appendChild(item);
             });
         });
@@ -319,18 +286,14 @@
         document.getElementById('balanceDisplay').style.visibility = 'visible';
         document.getElementById('headerReward').style.display = 'flex';
         document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-        document.getElementById('headerContent').innerHTML = `
-            <h1>Welcome back, <span class="highlight">${user.name.toUpperCase()}</span>!</h1>
-            <p>Ready to get on that leaderboard???</p>
-        `;
+        document.getElementById('headerContent').innerHTML = `<h1>Welcome back, <span class="highlight">${user.name.toUpperCase()}</span>!</h1><p>Ready to get on that leaderboard???</p>`;
         if (window.rewardInterval) clearInterval(window.rewardInterval);
         window.rewardInterval = setInterval(() => updateTimer(user), 1000);
         updateTimer(user);
     }
 
     function updateTimer(user) {
-        const now = Date.now();
-        const diff = (24 * 60 * 60 * 1000) - (now - (user.lastBonus || 0));
+        const diff = (24 * 60 * 60 * 1000) - (Date.now() - (user.lastBonus || 0));
         const timerText = document.getElementById('headerTimer');
         const rewardBox = document.getElementById('headerReward');
         if (diff > 0) {
@@ -361,15 +324,12 @@
     }
 
     function fetchLeaderboard() {
-        const board = document.getElementById('leaderboardBody');
         db.ref('users').on('value', (snap) => {
             let users = [];
             snap.forEach(child => { users.push(child.val()); });
-            users.sort((a, b) => b.balance - a.balance);
-            board.innerHTML = users.slice(0, 15).map((u, i) => {
-                const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
-                return `<tr><td><span class="rank-badge ${rankClass}">#${i + 1}</span></td><td>${(u.name || 'Unknown').toUpperCase()}</td><td class="bal-cell">$${(u.balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
-            }).join('');
+            document.getElementById('leaderboardBody').innerHTML = users.sort((a,b)=>b.balance-a.balance).slice(0,15).map((u,i)=>`
+                <tr><td><span class="rank-badge ${i<3?`rank-${i+1}`:''}">#${i+1}</span></td><td>${u.name.toUpperCase()}</td><td class="bal-cell">$${u.balance.toFixed(2)}</td></tr>
+            `).join('');
         });
     }
 
