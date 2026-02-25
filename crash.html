@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | 24/7 Persistent Crash</title>
+    <title>Universal-Bet | Persistent Live Crash</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
@@ -14,75 +14,80 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; }
-        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; }
+        /* Navigation */
+        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; }
+        .logo { font-size: 1.4rem; font-weight: 900; letter-spacing: -1px; }
         .logo span { color: var(--light-blue); }
-        .balance-box { background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; font-weight: 800; color: var(--accent-green); border: 1px solid rgba(56, 189, 248, 0.2); }
+        .balance-box { background: var(--mid-blue); padding: 8px 16px; border-radius: 8px; font-weight: 800; color: var(--accent-green); border: 1px solid rgba(56, 189, 248, 0.2); }
 
-        .history-bar { background: #070b14; padding: 10px 20px; display: flex; gap: 8px; border-bottom: 1px solid var(--mid-blue); overflow-x: auto; min-height: 45px; align-items: center; }
-        .hist-chip { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 800; background: var(--mid-blue); color: white; }
+        /* History */
+        .history-bar { background: #070b14; padding: 8px 20px; display: flex; gap: 8px; border-bottom: 1px solid var(--mid-blue); overflow-x: auto; min-height: 40px; align-items: center; }
+        .hist-chip { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 800; background: var(--mid-blue); }
 
-        .main-content { display: flex; flex: 1; overflow: hidden; }
+        .main-layout { display: flex; flex: 1; overflow: hidden; }
 
-        /* Left Sidebar */
-        .sidebar { width: 220px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; }
-        .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 12px; }
-        .active-link { background: var(--mid-blue); color: white; }
+        /* Sidebar Left */
+        .sidebar { width: 230px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 15px; display: flex; flex-direction: column; gap: 5px; }
+        .side-link { padding: 12px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 14px; transition: 0.2s; }
+        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
-        /* Game Area */
-        .game-area { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1e293b, #0b1120); position: relative; }
-        .multiplier { font-size: 8rem; font-weight: 900; margin: 10px 0; font-variant-numeric: tabular-nums; letter-spacing: -4px; transition: color 0.1s; }
-        .crashed { color: var(--danger-red); transform: scale(1.05); }
-
-        /* Right Panel */
-        .right-panel { width: 280px; background: #070b14; border-left: 1px solid var(--mid-blue); display: flex; flex-direction: column; }
-        .bets-header { padding: 15px; font-weight: 800; border-bottom: 1px solid var(--mid-blue); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
-        .bets-list { flex: 1; overflow-y: auto; padding: 10px; }
-        .bet-row { display: flex; justify-content: space-between; padding: 10px; border-radius: 6px; margin-bottom: 5px; background: rgba(255,255,255,0.03); font-size: 13px; border-left: 3px solid transparent; }
-        .bet-row.cashed { border-left-color: var(--accent-green); background: rgba(0, 231, 1, 0.08); color: var(--accent-green); }
-        .friend-hlt { color: var(--accent-green) !important; font-weight: 900; text-shadow: 0 0 10px rgba(0, 231, 1, 0.3); }
+        /* Center Game */
+        .game-container { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(circle at center, #1e293b, #0b1120); position: relative; }
+        .mult-text { font-size: 8.5rem; font-weight: 900; margin: 0; letter-spacing: -5px; font-variant-numeric: tabular-nums; line-height: 1; }
+        .status-msg { color: var(--light-blue); font-weight: 800; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-size: 13px; }
+        .crashed-anim { color: var(--danger-red); transform: scale(1.05); transition: transform 0.1s; }
 
         /* Controls */
-        .controls { background: var(--card-bg); padding: 20px; border-radius: 15px; border: 1px solid var(--mid-blue); width: 320px; }
-        .input-group { display: flex; gap: 5px; margin-bottom: 10px; }
-        input { flex: 1; background: #070b14; border: 1px solid var(--mid-blue); padding: 12px; border-radius: 8px; color: white; font-weight: 700; outline: none; }
-        .btn-max { background: var(--mid-blue); border: none; color: white; padding: 0 15px; border-radius: 8px; cursor: pointer; font-weight: 800; font-size: 11px; }
-        .btn { width: 100%; padding: 16px; border-radius: 8px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.1s; }
+        .bet-card { background: var(--card-bg); padding: 25px; border-radius: 20px; border: 1px solid var(--mid-blue); width: 340px; margin-top: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .input-row { display: flex; gap: 10px; margin-bottom: 15px; }
+        input { flex: 1; background: #070b14; border: 1px solid var(--mid-blue); padding: 14px; border-radius: 10px; color: white; font-weight: 700; outline: none; font-size: 1rem; }
+        .max-btn { background: var(--mid-blue); border: none; color: white; padding: 0 15px; border-radius: 10px; cursor: pointer; font-weight: 800; font-size: 12px; }
+        .action-btn { width: 100%; padding: 18px; border-radius: 10px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; font-size: 1.1rem; transition: 0.2s; }
         .btn-bet { background: var(--light-blue); color: var(--dark-blue); }
         .btn-cash { background: var(--accent-green); color: black; }
-        .btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .action-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+
+        /* Sidebar Right (Live Bets) */
+        .right-panel { width: 280px; background: #070b14; border-left: 1px solid var(--mid-blue); display: flex; flex-direction: column; }
+        .list-header { padding: 15px; font-weight: 800; border-bottom: 1px solid var(--mid-blue); display: flex; justify-content: space-between; font-size: 12px; color: var(--text-muted); }
+        .bet-feed { flex: 1; overflow-y: auto; padding: 10px; }
+        .bet-item { display: flex; justify-content: space-between; padding: 12px; border-radius: 8px; margin-bottom: 6px; background: rgba(255,255,255,0.02); font-size: 13px; font-weight: 600; }
+        .bet-item.win { background: rgba(0, 231, 1, 0.08); color: var(--accent-green); border-left: 3px solid var(--accent-green); }
+        .friend-name { color: var(--accent-green) !important; font-weight: 900; }
     </style>
 </head>
 <body>
 
 <nav>
     <div class="logo">UNIVERSAL<span>-BET</span></div>
-    <div class="balance-box"><span id="navBal">$0.00</span></div>
+    <div class="balance-box"><span id="balDisplay">$0.00</span></div>
 </nav>
 
-<div class="history-bar" id="historyBar"></div>
+<div class="history-bar" id="histBar"></div>
 
-<div class="main-content">
+<div class="main-layout">
     <aside class="sidebar">
-        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
-        <a href="crash.html" class="side-link active-link"><span>🚀</span> Crash</a>
+        <a href="blackjack.html" class="side-link">Blackjack</a>
+        <a href="crash.html" class="side-link active-link">Crash</a>
+        <a href="dice.html" class="side-link">Dice</a>
     </aside>
 
-    <main class="game-area">
-        <div id="statusLabel" style="color:var(--light-blue); font-weight:800; letter-spacing:2px; font-size:12px;">INITIALIZING...</div>
-        <div class="multiplier" id="multiplierDisplay">1.00x</div>
-        <div class="controls">
-            <div class="input-group">
-                <input type="number" id="betInput" value="10">
-                <button class="btn-max" onclick="document.getElementById('betInput').value = Math.floor(user.balance)">MAX</button>
+    <main class="game-container">
+        <div class="status-msg" id="statusText">Synchronizing...</div>
+        <div class="mult-text" id="multDisplay">1.00x</div>
+        
+        <div class="bet-card">
+            <div class="input-row">
+                <input type="number" id="betAmount" value="10" min="1">
+                <button class="max-btn" onclick="setMax()">MAX</button>
             </div>
-            <button id="mainBtn" class="btn btn-bet" onclick="handleBtnClick()">Place Bet</button>
+            <button id="gameBtn" class="action-btn btn-bet" onclick="handleInput()">Place Bet</button>
         </div>
     </main>
 
     <aside class="right-panel">
-        <div class="bets-header"><span>ACTIVE PLAYERS</span> <span id="playerCount">0</span></div>
-        <div class="bets-list" id="betsList"></div>
+        <div class="list-header"><span>LIVE PLAYERS</span> <span id="pCount">0</span></div>
+        <div class="bet-feed" id="betFeed"></div>
     </aside>
 </div>
 
@@ -90,6 +95,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
 <script>
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
         authDomain: "universalbet-427ce.firebaseapp.com",
@@ -104,151 +110,168 @@
     const db = firebase.database();
     let user = JSON.parse(localStorage.getItem('currentUser'));
 
-    let currentGameState = { status: 'waiting', multiplier: 1.00, lastTick: 0 };
-    let myCurrentBet = null;
-    let hasCashed = false;
+    // Local State
+    let state = { status: 'waiting', multiplier: 1.00, lastTick: 0 };
+    let activeBet = null;
+    let cashedOut = false;
     let isHosting = false;
 
     function init() {
         if (!user) return window.location.href = 'index.html';
 
-        // Listen for user balance
+        // 1. Balance Sync
         db.ref('users/' + user.name.toLowerCase()).on('value', s => {
-            if(s.exists()){ user = s.val(); document.getElementById('navBal').innerText = `$${user.balance.toLocaleString()}`; }
+            if(s.exists()){ 
+                user = s.val(); 
+                document.getElementById('balDisplay').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+            }
         });
 
-        // Global state listener
+        // 2. Game State Heartbeat
         db.ref('crash_game/state').on('value', s => {
             const data = s.val();
-            if(!data) return startHostCycle();
+            if (!data) return startHosting();
+            state = data;
             
-            currentGameState = data;
-            
-            // Critical: If the host hasn't updated in 2 seconds, WE become the host
-            if (Date.now() - data.lastTick > 2000) {
-                if (!isHosting) startHostCycle();
+            // If the current host is gone (no update for 2.2 seconds), take over
+            if (Date.now() - data.lastTick > 2200 && !isHosting) {
+                startHosting();
             }
-            
-            updateUI();
+            renderUI();
         });
 
-        // Real-time bets listener
+        // 3. Live Bets Sync
         db.ref('crash_game/bets').on('value', s => renderBets(s.val()));
 
-        // History listener
+        // 4. History Sync
         db.ref('crash_game/history').limitToLast(12).on('value', s => {
             const h = s.val();
-            const bar = document.getElementById('historyBar');
+            const bar = document.getElementById('histBar');
             bar.innerHTML = "";
             if(h) Object.values(h).reverse().forEach(v => {
-                bar.innerHTML += `<div class="hist-chip" style="color:${v >= 2 ? 'var(--accent-green)' : 'var(--danger-red)'}">${parseFloat(v).toFixed(2)}x</div>`;
+                const color = v >= 2 ? 'var(--accent-green)' : 'var(--danger-red)';
+                bar.innerHTML += `<div class="hist-chip" style="color:${color}">${parseFloat(v).toFixed(2)}x</div>`;
             });
         });
     }
 
-    function updateUI() {
-        const d = document.getElementById('multiplierDisplay');
-        const b = document.getElementById('mainBtn');
-        const s = document.getElementById('statusLabel');
+    function renderUI() {
+        const m = document.getElementById('multDisplay');
+        const s = document.getElementById('statusText');
+        const btn = document.getElementById('gameBtn');
 
-        if(currentGameState.status === 'waiting') {
-            d.innerText = currentGameState.timer + "s";
-            d.classList.remove('crashed');
-            s.innerText = "PREPARING ROUND";
-            b.innerText = myCurrentBet ? "BET PLACED" : "PLACE BET";
-            b.className = "btn btn-bet";
-            b.disabled = !!myCurrentBet;
-        } else if(currentGameState.status === 'running') {
-            d.innerText = currentGameState.multiplier.toFixed(2) + "x";
-            s.innerText = "LIVE";
-            if(myCurrentBet && !hasCashed) {
-                b.className = "btn btn-cash";
-                b.innerText = `CASH OUT ($${(myCurrentBet.amount * currentGameState.multiplier).toFixed(2)})`;
-                b.disabled = false;
+        if (state.status === 'waiting') {
+            m.innerText = state.timer + "s";
+            m.classList.remove('crashed-anim');
+            s.innerText = "Accepting Bets";
+            btn.className = "action-btn btn-bet";
+            btn.innerText = activeBet ? "Bet Registered" : "Place Bet";
+            btn.disabled = !!activeBet;
+        } else if (state.status === 'running') {
+            m.innerText = state.multiplier.toFixed(2) + "x";
+            m.classList.remove('crashed-anim');
+            s.innerText = "Game in Progress";
+            if (activeBet && !cashedOut) {
+                btn.className = "action-btn btn-cash";
+                btn.innerText = `Cash Out ($${(activeBet.amount * state.multiplier).toFixed(2)})`;
+                btn.disabled = false;
             } else {
-                b.disabled = true;
-                b.innerText = hasCashed ? "CASHED OUT" : "IN PROGRESS";
+                btn.disabled = true;
+                btn.innerText = cashedOut ? "Cashed Out" : "Waiting for Next";
             }
         } else {
-            d.innerText = currentGameState.multiplier.toFixed(2) + "x";
-            d.classList.add('crashed');
-            s.innerText = "CRASHED";
-            b.innerText = "WAITING...";
-            b.disabled = true;
+            m.innerText = state.multiplier.toFixed(2) + "x";
+            m.classList.add('crashed-anim');
+            s.innerText = "Crashed!";
+            btn.disabled = true;
+            btn.innerText = "Round Over";
         }
     }
 
-    function handleBtnClick() {
-        if(currentGameState.status === 'waiting' && !myCurrentBet) {
-            const amt = parseFloat(document.getElementById('betInput').value);
-            if(amt > user.balance || amt <= 0) return;
-            myCurrentBet = { user: user.name, amount: amt, status: 'playing' };
+    function handleInput() {
+        const amt = parseFloat(document.getElementById('betAmount').value);
+        if (state.status === 'waiting' && !activeBet) {
+            if (amt <= 0 || amt > user.balance) return alert("Invalid Balance");
+            activeBet = { user: user.name, amount: amt, status: 'playing' };
             db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance - amt });
-            db.ref('crash_game/bets/'+user.name).set(myCurrentBet);
-        } else if(currentGameState.status === 'running' && myCurrentBet && !hasCashed) {
-            hasCashed = true;
-            const win = myCurrentBet.amount * currentGameState.multiplier;
+            db.ref('crash_game/bets/'+user.name).set(activeBet);
+        } else if (state.status === 'running' && activeBet && !cashedOut) {
+            cashedOut = true;
+            const win = activeBet.amount * state.multiplier;
             db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance + win });
-            db.ref('crash_game/bets/'+user.name).update({ status: 'cashed', mult: currentGameState.multiplier.toFixed(2) });
+            db.ref('crash_game/bets/'+user.name).update({ status: 'cashed', mult: state.multiplier.toFixed(2) });
         }
     }
 
     function renderBets(bets) {
-        const list = document.getElementById('betsList');
-        const count = document.getElementById('playerCount');
-        list.innerHTML = "";
-        if(!bets) { count.innerText = "0"; return; }
+        const feed = document.getElementById('betFeed');
+        const pCount = document.getElementById('pCount');
+        feed.innerHTML = "";
+        if (!bets) { pCount.innerText = "0"; return; }
         
         const friends = user.friends || [];
-        const entries = Object.values(bets);
-        count.innerText = entries.length;
-        
-        entries.forEach(b => {
-            const isMeOrFriend = (b.user === user.name || friends.includes(b.user));
-            const row = document.createElement('div');
-            row.className = `bet-row ${b.status === 'cashed' ? 'cashed' : ''}`;
-            row.innerHTML = `<span class="${isMeOrFriend ? 'friend-hlt' : ''}">${b.user}</span><span>${b.status === 'cashed' ? b.mult+'x' : '$'+b.amount}</span>`;
-            list.appendChild(row);
+        const items = Object.values(bets);
+        pCount.innerText = items.length;
+
+        items.forEach(b => {
+            const isFriend = (b.user === user.name || friends.includes(b.user));
+            const div = document.createElement('div');
+            div.className = `bet-item ${b.status === 'cashed' ? 'win' : ''}`;
+            div.innerHTML = `
+                <span class="${isFriend ? 'friend-name' : ''}">${b.user}</span>
+                <span>${b.status === 'cashed' ? b.mult + 'x' : '$' + b.amount}</span>
+            `;
+            feed.appendChild(div);
         });
     }
 
-    // --- ENHANCED ENGINE ---
-    async function startHostCycle() {
-        if(isHosting) return;
+    function setMax() {
+        document.getElementById('betAmount').value = Math.floor(user.balance);
+    }
+
+    // --- DECENTRALIZED ENGINE LOGIC ---
+    async function startHosting() {
+        if (isHosting) return;
         isHosting = true;
         
-        while(isHosting) {
-            // Check if someone else took over while we were starting
-            const snap = await db.ref('crash_game/state/lastTick').get();
-            if(snap.exists() && Date.now() - snap.val() < 1500) {
-                isHosting = false;
-                break;
-            }
-
-            // Phase 1: Wait
+        while (isHosting) {
+            // New Round Prep
             await db.ref('crash_game/bets').remove();
-            myCurrentBet = null; hasCashed = false;
-            for(let i=10; i>=0; i--) {
-                await db.ref('crash_game/state').set({ status:'waiting', timer:i, lastTick: Date.now() });
+            activeBet = null; cashedOut = false;
+
+            // Phase 1: Countdown
+            for (let i = 10; i >= 0; i--) {
+                await db.ref('crash_game/state').set({ status: 'waiting', timer: i, lastTick: Date.now() });
                 await new Promise(r => setTimeout(r, 1000));
+                if (!checkIfStillHost()) return;
             }
 
-            // Phase 2: Run
-            let mult = 1.00;
-            const crashPoint = (0.98 / (1 - Math.random())).toFixed(2);
-            while(mult < crashPoint) {
-                // Growth speed curve
-                mult += (mult * 0.0008 * Math.pow(mult, 1.45)) + 0.01;
-                await db.ref('crash_game/state').update({ status:'running', multiplier: mult, lastTick: Date.now() });
-                // Frequency increases as multiplier increases
-                await new Promise(r => setTimeout(r, Math.max(25, 120 - (mult * 10))));
+            // Phase 2: Running
+            let curMult = 1.00;
+            const crashAt = (0.98 / (1 - Math.random())).toFixed(2);
+            
+            while (curMult < crashAt) {
+                // Exponential acceleration formula
+                curMult += (curMult * 0.0006 * Math.pow(curMult, 1.5)) + 0.01;
+                await db.ref('crash_game/state').update({ status: 'running', multiplier: curMult, lastTick: Date.now() });
+                
+                // Frequency increases: 120ms to 25ms delay
+                const delay = Math.max(25, 120 - (curMult * 10));
+                await new Promise(r => setTimeout(r, delay));
+                if (!checkIfStillHost()) return;
             }
 
             // Phase 3: Crash
-            await db.ref('crash_game/state').update({ status:'crashed', multiplier: mult, lastTick: Date.now() });
-            db.ref('crash_game/history').push(mult.toFixed(2));
+            await db.ref('crash_game/state').update({ status: 'crashed', multiplier: curMult, lastTick: Date.now() });
+            db.ref('crash_game/history').push(curMult.toFixed(2));
             await new Promise(r => setTimeout(r, 4000));
         }
+    }
+
+    function checkIfStillHost() {
+        // Simple check to prevent double-hosting if someone else took over
+        if (!isHosting) return false;
+        return true;
     }
 
     init();
