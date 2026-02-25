@@ -11,12 +11,11 @@
             --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
             --premium-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             --modal-bg: #0f172a;
-            --hot-orange: #fb923c;
         }
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* NAV */
+        /* NAVIGATION */
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
         .logo span { color: var(--light-blue); }
@@ -32,60 +31,41 @@
         .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
-        /* DASHBOARD */
+        /* DASHBOARD CONTENT */
         .dashboard { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top left, #1e293b, #0b1120); }
         .status-header { margin-bottom: 30px; }
         .status-header h1 { font-size: 2.2rem; font-weight: 900; margin: 0; }
         .highlight { color: var(--light-blue); }
 
-        /* TAB NAVIGATION */
+        /* TABS */
         .tab-nav { display: flex; gap: 10px; border-bottom: 1px solid var(--mid-blue); margin-bottom: 30px; }
         .tab-btn { padding: 12px 24px; background: none; border: none; color: var(--text-muted); font-weight: 800; cursor: pointer; text-transform: uppercase; font-size: 13px; border-bottom: 2px solid transparent; transition: 0.2s; }
         .tab-btn.active { color: var(--light-blue); border-bottom-color: var(--light-blue); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* NEWS TAB STYLING */
+        /* NEWS TAB */
         .news-container { display: grid; grid-template-columns: 1fr 350px; gap: 30px; }
         @media (max-width: 1000px) { .news-container { grid-template-columns: 1fr; } }
-
-        .news-card { 
-            background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);
-            padding: 25px; margin-bottom: 20px; transition: 0.3s; position: relative; overflow: hidden;
-        }
+        .news-card { background: var(--card-bg); border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); padding: 25px; margin-bottom: 20px; transition: 0.3s; position: relative; }
         .news-card:hover { border-color: var(--light-blue); background: #161f2e; }
-        .news-tag { 
-            font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 4px; 
-            text-transform: uppercase; margin-bottom: 15px; display: inline-block;
-        }
+        .news-tag { font-size: 10px; font-weight: 900; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; margin-bottom: 15px; display: inline-block; }
         .tag-update { background: rgba(56, 189, 248, 0.2); color: var(--light-blue); }
         .tag-live { background: rgba(0, 231, 1, 0.2); color: var(--accent-green); animation: pulse 2s infinite; }
-        
         .news-title { font-size: 1.4rem; font-weight: 900; margin: 10px 0; }
         .news-excerpt { color: var(--text-muted); line-height: 1.6; font-size: 14px; }
-        
-        .live-feed { background: #070b14; border-radius: 16px; border: 1px solid var(--mid-blue); padding: 20px; height: 400px; overflow: hidden; display: flex; flex-direction: column; }
-        .feed-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 13px;
-            animation: slideIn 0.4s ease-out;
-        }
+
+        /* LIVE FEED */
+        .live-feed { background: #070b14; border-radius: 16px; border: 1px solid var(--mid-blue); padding: 20px; height: 420px; display: flex; flex-direction: column; }
+        .feed-scroll { flex: 1; overflow-y: auto; }
+        .feed-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px; animation: slideIn 0.4s ease-out; }
         .feed-user { font-weight: 800; color: white; }
         .feed-amount { color: var(--accent-green); font-weight: 900; }
 
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* TABLES */
+        /* LEADERBOARD TABLE */
         .leaderboard-table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 12px; overflow: hidden; border: 1px solid var(--mid-blue); }
         .leaderboard-table th { background: #070b14; padding: 18px; color: var(--text-muted); text-align: left; font-size: 11px; text-transform: uppercase; }
         .leaderboard-table td { padding: 18px; border-top: 1px solid var(--mid-blue); font-size: 14px; }
@@ -95,10 +75,16 @@
         .rank-2 { background: #94a3b8; color: #000; }
         .rank-3 { background: #92400e; color: #fff; }
 
-        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.9); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(12px); }
-        .modal { background: var(--modal-bg); padding: 40px; border-radius: 24px; width: 400px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; }
-        .modal input { width: 100%; padding: 15px; border-radius: 10px; border: 2px solid var(--mid-blue); background: #070b14; color: white; font-weight: 700; margin-top: 15px; outline: none; }
-        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 15px; border-radius: 10px; font-weight: 900; cursor: pointer; border: none; margin-top: 20px; }
+        /* LOGIN MODAL (UPDATED) */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(8px); }
+        .modal { background: #0f172a; padding: 50px 40px; border-radius: 28px; width: 100%; max-width: 420px; border: 1px solid rgba(56, 189, 248, 0.3); text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); position: relative; }
+        .modal h2 { font-size: 1.8rem; font-weight: 900; margin: 20px 0 10px; }
+        .modal p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+        .modal-icon-container { width: 80px; height: 80px; background: rgba(56, 189, 248, 0.1); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 1px solid rgba(56, 189, 248, 0.2); }
+        .modal input { width: 100%; padding: 16px; border-radius: 12px; border: 2px solid #1e293b; background: #070b14; color: white; font-weight: 600; font-size: 16px; outline: none; transition: 0.2s; box-sizing: border-box; }
+        .modal input:focus { border-color: var(--light-blue); background: #0b1120; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); }
+        .btn-submit { width: 100%; background: var(--light-blue); color: var(--dark-blue); padding: 16px; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; border: none; margin-top: 20px; transition: 0.3s; }
+        .btn-submit:hover { background: #7dd3fc; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(56, 189, 248, 0.3); }
 
         .footer { text-align: center; padding: 40px 0; color: #475569; font-weight: 700; font-size: 10px; letter-spacing: 2px; }
     </style>
@@ -144,23 +130,23 @@
                 <div class="news-main">
                     <div class="news-card">
                         <span class="news-tag tag-update">System Update</span>
-                        <h2 class="news-title">Global Real-Time Sync</h2>
-                        <p class="news-excerpt">The live feed now monitors all active players. When someone wins big, you'll see it here first. No refresh needed.</p>
+                        <h2 class="news-title">Real-Time Cloud Sync</h2>
+                        <p class="news-excerpt">Our database now handles thousands of concurrent wins. Your balance and rankings update across all your devices instantly.</p>
                     </div>
                     <div class="news-card">
                         <span class="news-tag tag-update">Security</span>
-                        <h2 class="news-title">Encrypted Transactions</h2>
-                        <p class="news-excerpt">Your username is your key. All balance changes are handled via secure Firebase transactions to prevent data loss.</p>
+                        <h2 class="news-title">Provably Fair System</h2>
+                        <p class="news-excerpt">Every game outcome is now cryptographically hashed to ensure complete transparency and 100% fair play.</p>
                     </div>
                 </div>
 
                 <div class="live-feed">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-shrink:0;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                         <h3 style="font-size:12px; text-transform:uppercase; letter-spacing:1px; margin:0;">Live Feed</h3>
                         <span class="news-tag tag-live" style="margin:0;">Live</span>
                     </div>
-                    <div id="liveJackpotFeed" style="overflow-y: auto; flex:1;">
-                        <div class="feed-item" style="color: var(--text-muted)">Waiting for activity...</div>
+                    <div id="liveJackpotFeed" class="feed-scroll">
+                        <div class="feed-item" style="color: var(--text-muted)">Listening for winners...</div>
                     </div>
                 </div>
             </div>
@@ -178,19 +164,27 @@
         <div id="about" class="tab-content">
             <div class="about-box">
                 <h3>🏆 Universal-Bet</h3>
-                <p>Welcome to Universal-Bet! Created by <b>FUSIONZZZ</b>.</p>
+                <p>A secure, real-time fake gambling platform with a global competitive leaderboard.</p>
+                <p>Developed by <b>FUSIONZZZ</b>.</p>
             </div>
         </div>
+
         <div class="footer">WEBSITE MADE BY FUSIONZZZ</div>
     </main>
 </div>
 
 <div class="modal-overlay" id="modalOverlay" style="display:none">
     <div class="modal">
-        <span style="font-size:3rem">👤</span>
+        <div class="modal-icon-container">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+        </div>
         <h2>Access Account</h2>
-        <input type="text" id="usernameInput" placeholder="Enter name...">
-        <button class="btn-submit" onclick="handleAuth()">Confirm</button>
+        <p>Enter your username to sync your progress.</p>
+        <input type="text" id="usernameInput" placeholder="Username" autocomplete="off">
+        <button class="btn-submit" onclick="handleAuth()">Confirm Identity</button>
     </div>
 </div>
 
@@ -211,7 +205,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let currentLocalUser = null;
-    let lastKnownBalances = {}; // To track who just won money
+    let lastKnownBalances = {}; 
 
     function checkAuth() {
         const localUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -220,7 +214,7 @@
                 if(snap.exists()){
                     currentLocalUser = snap.val();
                     startLiveSync();
-                    initLiveFeed(); // START THE LIVE WIN FEED
+                    initLiveFeed(); 
                 } else {
                     localStorage.removeItem('currentUser');
                     document.getElementById('modalOverlay').style.display = 'flex';
@@ -257,24 +251,17 @@
         });
     }
 
-    // --- LIVE JACKPOT FEED LOGIC ---
+    // LIVE WIN FEED LOGIC
     function initLiveFeed() {
-        const feedContainer = document.getElementById('liveJackpotFeed');
-        
         db.ref('users').on('value', (snap) => {
-            let activityDetected = false;
-            
             snap.forEach(child => {
                 const user = child.val();
                 const userId = user.name.toLowerCase();
                 const newBal = user.balance;
                 const oldBal = lastKnownBalances[userId];
 
-                // If balance increased, they won or claimed bonus!
                 if (oldBal !== undefined && newBal > oldBal) {
-                    const winAmount = newBal - oldBal;
-                    addFeedItem(user.name.toUpperCase(), winAmount);
-                    activityDetected = true;
+                    addFeedItem(user.name.toUpperCase(), newBal - oldBal);
                 }
                 lastKnownBalances[userId] = newBal;
             });
@@ -283,22 +270,12 @@
 
     function addFeedItem(name, amount) {
         const feedContainer = document.getElementById('liveJackpotFeed');
-        
-        // Remove "Waiting..." text if it exists
-        if (feedContainer.innerText.includes("Waiting")) feedContainer.innerHTML = "";
-
+        if (feedContainer.innerText.includes("Listening")) feedContainer.innerHTML = "";
         const item = document.createElement('div');
         item.className = 'feed-item';
-        item.innerHTML = `
-            <span class="feed-user">${name}</span>
-            <span class="feed-amount">+$${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>
-        `;
-
-        // Keep only top 8 items
+        item.innerHTML = `<span class="feed-user">${name}</span><span class="feed-amount">+$${amount.toLocaleString(undefined, {minimumFractionDigits: 2})}</span>`;
         feedContainer.prepend(item);
-        if (feedContainer.children.length > 8) {
-            feedContainer.removeChild(feedContainer.lastChild);
-        }
+        if (feedContainer.children.length > 10) feedContainer.removeChild(feedContainer.lastChild);
     }
 
     function updateUI(user) {
@@ -310,7 +287,6 @@
             <h1>Welcome back, <span class="highlight">${user.name.toUpperCase()}</span>!</h1>
             <p>Ready to get on that leaderboard???</p>
         `;
-        
         if (window.rewardInterval) clearInterval(window.rewardInterval);
         window.rewardInterval = setInterval(() => updateTimer(user), 1000);
         updateTimer(user);
@@ -321,22 +297,21 @@
         const diff = (24 * 60 * 60 * 1000) - (now - (user.lastBonus || 0));
         const timerText = document.getElementById('headerTimer');
         const rewardBox = document.getElementById('headerReward');
-
         if (diff > 0) {
             const h = Math.floor(diff / 3600000);
             const m = Math.floor((diff % 3600000) / 60000);
             const s = Math.floor((diff % 60000) / 1000);
             timerText.innerText = `${h}H ${m}M ${s}S`;
             rewardBox.style.opacity = "0.5";
+            rewardBox.style.pointerEvents = "none";
         } else {
             timerText.innerText = "Claim $25.00";
             rewardBox.style.opacity = "1";
+            rewardBox.style.pointerEvents = "auto";
         }
     }
 
     function claimBonus() {
-        const cooldown = 24 * 60 * 60 * 1000;
-        if (Date.now() - (currentLocalUser.lastBonus || 0) < cooldown) return;
         db.ref('users/' + currentLocalUser.name.toLowerCase()).transaction(u => {
             if(u){ u.balance += 25; u.lastBonus = Date.now(); }
             return u;
@@ -353,21 +328,13 @@
 
     function fetchLeaderboard() {
         const board = document.getElementById('leaderboardBody');
-        board.innerHTML = '<tr><td colspan="3">Syncing World Rankings...</td></tr>';
-        
         db.ref('users').on('value', (snap) => {
             let users = [];
             snap.forEach(child => { users.push(child.val()); });
             users.sort((a, b) => b.balance - a.balance);
-            
             board.innerHTML = users.slice(0, 15).map((u, i) => {
                 const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : '';
-                return `
-                <tr>
-                    <td><span class="rank-badge ${rankClass}">#${i + 1}</span></td>
-                    <td style="font-weight:700">${(u.name || 'Unknown').toUpperCase()}</td>
-                    <td class="bal-cell">$${(u.balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
-                </tr>`;
+                return `<tr><td><span class="rank-badge ${rankClass}">#${i + 1}</span></td><td>${(u.name || 'Unknown').toUpperCase()}</td><td class="bal-cell">$${(u.balance || 0).toLocaleString(undefined, {minimumFractionDigits: 2})}</td></tr>`;
             }).join('');
         });
     }
