@@ -3,216 +3,234 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | Rock Paper Scissors</title>
+    <title>Universal-Bet | RPS Firebase</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
-            --win-green: #00e701; --loss-red: #ff4949; --tile-hover: #2d3a4f;
+            --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
+            --danger-red: #ef4444; 
         }
 
-        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
-        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
-        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
-        
-        .viewport { height: calc(100vh - 64px); display: flex; }
-
-        /* SIDEBAR */
-        .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
-        .label { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-        
-        .input-wrapper { background: var(--dark-blue); border: 1px solid var(--mid-blue); border-radius: 8px; padding: 12px; margin-bottom: 20px; display: flex; align-items: center; }
-        .input-wrapper input { background: transparent; border: none; color: white; font-weight: 800; width: 100%; outline: none; font-size: 1rem; }
-
-        .stats-panel { background: #070b14; border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--mid-blue); }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
-        .stat-val.profit { color: var(--win-green); }
-
-        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        /* GAME STAGE */
-        .stage { flex: 1; background: #0f172a; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
-        
-        .game-area { display: flex; gap: 40px; align-items: center; margin-bottom: 50px; }
-        .hand-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .hand-circle { 
-            width: 120px; height: 120px; background: var(--mid-blue); border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; font-size: 50px;
-            border: 4px solid transparent; transition: 0.3s;
+        body { 
+            background-color: var(--dark-blue); color: white; 
+            font-family: 'Inter', sans-serif; margin: 0; 
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
         }
-        .hand-circle.active { border-color: var(--light-blue); box-shadow: 0 0 20px rgba(56, 189, 248, 0.3); }
-        .hand-circle.winner { border-color: var(--win-green); box-shadow: 0 0 20px rgba(0, 231, 1, 0.3); }
 
-        .vs-text { font-size: 24px; font-weight: 900; color: #475569; }
+        nav { 
+            background: #070b14; padding: 0 2rem; display: flex; 
+            justify-content: space-between; align-items: center; 
+            height: 70px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
+        .logo span { color: var(--light-blue); }
+        .balance-box { 
+            background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; 
+            font-weight: 800; color: var(--accent-green); 
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 1.1rem; 
+        }
+
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+
+        .nav-sidebar { 
+            width: 260px; background: #070b14; border-right: 1px solid var(--mid-blue); 
+            padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; 
+            flex-shrink: 0; 
+        }
+        .nav-sidebar-label { 
+            font-size: 11px; font-weight: 800; color: var(--text-muted); 
+            text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; 
+        }
+        .side-link { 
+            padding: 12px 15px; border-radius: 8px; color: var(--text-muted); 
+            text-decoration: none; font-weight: 600; transition: 0.2s; 
+            display: flex; align-items: center; gap: 12px; font-size: 14px; 
+        }
+        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
+
+        .control-panel { 
+            width: 300px; background: rgba(0,0,0,0.2); border-right: 1px solid var(--mid-blue); 
+            padding: 24px; display: flex; flex-direction: column; gap: 20px; 
+        }
+        .bet-input-box { 
+            background: var(--card-bg); padding: 15px; border-radius: 12px; 
+            border: 1px solid var(--mid-blue); display: flex; align-items: center; gap: 10px;
+        }
+        .bet-input-box input { background: transparent; border: none; color: white; font-size: 1.2rem; font-weight: 800; width: 100%; outline: none; }
+
+        .btn-play { 
+            width: 100%; padding: 18px; border-radius: 12px; border: none; 
+            font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            background: var(--light-blue); color: var(--dark-blue); transition: 0.2s;
+            box-shadow: 0 4px 0 #0284c7;
+        }
+        .btn-play:active { transform: translateY(2px); box-shadow: 0 2px 0 #0284c7; }
+        .btn-play:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .game-stage { flex: 1; background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+        .battle-area { display: flex; align-items: center; gap: 80px; margin-bottom: 50px; }
+        .hand-container { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .hand-icon { font-size: 5.5rem; }
+        .hand-label { font-size: 12px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; }
+
+        .vs-badge { background: var(--mid-blue); padding: 12px 18px; border-radius: 50%; font-weight: 900; color: var(--light-blue); border: 2px solid var(--light-blue); }
 
         .selection-grid { display: flex; gap: 15px; }
-        .choice-btn { 
-            width: 80px; height: 80px; background: var(--mid-blue); border-radius: 12px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 30px; transition: 0.2s; border: 2px solid transparent;
+        .choice-card { 
+            background: var(--card-bg); border: 2px solid var(--mid-blue); 
+            padding: 20px; border-radius: 15px; cursor: pointer; 
+            display: flex; flex-direction: column; align-items: center; width: 100px;
         }
-        .choice-btn:hover { background: var(--tile-hover); border-color: var(--light-blue); transform: translateY(-3px); }
-        .choice-btn.selected { background: var(--light-blue); color: var(--dark-blue); }
+        .choice-card.selected { border-color: var(--accent-green); background: rgba(0, 231, 1, 0.1); }
+        .choice-card span { font-size: 2.2rem; }
+        .choice-card p { margin: 5px 0 0 0; font-size: 11px; font-weight: 800; }
+
+        #status-text { margin-top: 40px; font-weight: 900; font-size: 1.6rem; text-transform: uppercase; height: 40px; }
+
+        @keyframes shake {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+        .shaking { animation: shake 0.4s ease infinite; }
     </style>
 </head>
 <body>
-    <nav>
-        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$0.00</div>
-    </nav>
 
-    <div class="viewport">
-        <div class="sidebar">
-            <span class="label">Bet Amount</span>
-            <div class="input-wrapper"><input type="number" id="rpsBet" value="10.00"></div>
+<nav>
+    <div class="logo" onclick="location.href='index.html'">UNIVERSAL<span>-BET</span></div>
+    <div class="balance-box" id="balDisp">$0.00</div>
+</nav>
 
-            <div class="stats-panel">
-                <div class="stat-row">
-                    <span>Result</span>
-                    <span id="gameStatus" class="stat-val">—</span>
-                </div>
-                <div class="stat-row">
-                    <span>Payout</span>
-                    <span id="gamePayout" class="stat-val profit">$0.00</span>
-                </div>
-            </div>
+<div class="main-content">
+    <aside class="nav-sidebar">
+        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
+        <div class="nav-sidebar-label">Games</div>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
+        <a href="roulette.html" class="side-link"><span>🎡</span> Roulette</a>
+        <a href="rps.html" class="side-link active-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
+    </aside>
 
-            <button class="btn-main" id="btnPlay" onclick="playRound()">Play Round</button>
-        </div>
-
-        <div class="stage">
-            <div class="game-area">
-                <div class="hand-container">
-                    <span class="label">House</span>
-                    <div id="houseCircle" class="hand-circle">?</div>
-                </div>
-                <div class="vs-text">VS</div>
-                <div class="hand-container">
-                    <span class="label">Player</span>
-                    <div id="playerCircle" class="hand-circle">?</div>
-                </div>
-            </div>
-
-            <div class="selection-grid">
-                <div class="choice-btn" id="btn-R" onclick="selectChoice('R')">🪨</div>
-                <div class="choice-btn" id="btn-P" onclick="selectChoice('P')">📜</div>
-                <div class="choice-btn" id="btn-S" onclick="selectChoice('S')">✂️</div>
+    <aside class="control-panel">
+        <div>
+            <span class="nav-sidebar-label" style="margin-left:0">Bet Amount</span>
+            <div class="bet-input-box">
+                <span style="color:var(--accent-green); font-weight:900;">$</span>
+                <input type="number" id="betAmt" value="10.00">
             </div>
         </div>
-    </div>
+        <button class="btn-play" id="playBtn" onclick="playGame()">Battle</button>
+        <div id="status-text"></div>
+    </aside>
 
-    <script>
-        // --- DATA SYNC SYSTEM ---
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let allUsers = JSON.parse(localStorage.getItem('users'));
-        if (!currentUser) window.location.href = 'index.html';
+    <main class="game-stage">
+        <div class="battle-area">
+            <div class="hand-container">
+                <div class="hand-label">Dealer</div>
+                <div id="dealerHand" class="hand-icon">✊</div>
+            </div>
+            <div class="vs-badge">VS</div>
+            <div class="hand-container">
+                <div class="hand-label">Player</div>
+                <div id="playerHand" class="hand-icon">✊</div>
+            </div>
+        </div>
 
-        let bal = currentUser.balance;
-        let playerChoice = null, nonce = 0;
-        const serverSeed = "rps_server_secret_2026";
-        const clientSeed = "user_client_seed";
+        <div class="selection-grid">
+            <div class="choice-card" onclick="selectMove('rock')" id="card-rock"><span>✊</span><p>ROCK</p></div>
+            <div class="choice-card" onclick="selectMove('paper')" id="card-paper"><span>✋</span><p>PAPER</p></div>
+            <div class="choice-card" onclick="selectMove('scissors')" id="card-scissors"><span>✌️</span><p>SCISSORS</p></div>
+        </div>
+    </main>
+</div>
 
-        const emojiMap = { 'R': '🪨', 'P': '📜', 'S': '✂️' };
-        const RPS_WINNER_CONFIG = {
-            'R': { winsAgainst: 'S', losesAgainst: 'P' },
-            'P': { winsAgainst: 'R', losesAgainst: 'S' },
-            'S': { winsAgainst: 'P', losesAgainst: 'R' },
-        };
+<script>
+    // Firebase Config
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0", 
+        authDomain: "universalbet-427ce.firebaseapp.com", 
+        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com", 
+        projectId: "universalbet-427ce", 
+        storageBucket: "universalbet-427ce.firebasestorage.app", 
+        messagingSenderId: "804592033030", 
+        appId: "1:804592033030:web:352d7f4e8a75fb3f215287" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        function updateStorage() {
-            currentUser.balance = bal;
-            if (allUsers && allUsers[currentUser.name]) {
-                allUsers[currentUser.name].balance = bal;
-            }
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            localStorage.setItem('users', JSON.stringify(allUsers));
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) window.location.href = 'index.html';
+
+    let selectedMove = null;
+    const moves = {
+        rock: { emoji: '✊', beats: 'scissors' },
+        paper: { emoji: '✋', beats: 'rock' },
+        scissors: { emoji: '✌️', beats: 'paper' }
+    };
+
+    // --- REALTIME MONEY SYNC ---
+    db.ref('users/' + user.name.toLowerCase()).on('value', (snapshot) => {
+        if(snapshot.exists()){
+            user = snapshot.val();
+            document.getElementById('balDisp').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
         }
+    });
 
-        function selectChoice(choice) {
-            playerChoice = choice;
-            document.querySelectorAll('.choice-btn').forEach(b => b.classList.remove('selected'));
-            document.getElementById(`btn-${choice}`).classList.add('selected');
-            document.getElementById('playerCircle').innerText = emojiMap[choice];
-        }
+    function selectMove(move) {
+        selectedMove = move;
+        document.querySelectorAll('.choice-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById(`card-${move}`).classList.add('selected');
+        document.getElementById('playerHand').innerText = moves[move].emoji;
+    }
 
-        function getFairValue(sSeed, cSeed, n) {
-            const hmac = CryptoJS.HmacSHA512(`${cSeed}:${n}:0`, sSeed).toString();
-            let bytes = [];
-            for (let i = 0; i < 4; i++) {
-                bytes.push(parseInt(hmac.substring(i * 2, i * 2 + 2), 16));
-            }
-            return bytes.reduce((acc, value, i) => acc + value / Math.pow(256, i + 1), 0);
-        }
+    async function playGame() {
+        const bet = parseFloat(document.getElementById('betAmt').value);
+        if (!selectedMove) return alert("Select your move!");
+        if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
-        function determineHouseBet(fairValue) {
-            if (fairValue < 0.333333) return 'R';
-            if (fairValue < 0.666666) return 'P';
-            return 'S';
-        }
+        // Subtract bet from Firebase
+        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
 
-        function playRound() {
-            const betInput = document.getElementById('rpsBet');
-            const bet = parseFloat(betInput.value);
+        const btn = document.getElementById('playBtn');
+        const status = document.getElementById('status-text');
+        const pHand = document.getElementById('playerHand');
+        const dHand = document.getElementById('dealerHand');
 
-            if (!playerChoice) return alert("Select Rock, Paper, or Scissors!");
-            if (bet > bal || bet <= 0) return alert("Insufficient funds!");
+        btn.disabled = true;
+        pHand.classList.add('shaking');
+        dHand.classList.add('shaking');
+        status.innerText = "Wait...";
 
-            bal -= bet; nonce++;
-            updateStorage();
-            document.getElementById('btnPlay').disabled = true;
-
-            const fairValue = getFairValue(serverSeed, clientSeed, nonce);
-            const houseBet = determineHouseBet(fairValue);
+        setTimeout(async () => {
+            pHand.classList.remove('shaking');
+            dHand.classList.remove('shaking');
             
-            let counter = 0;
-            const houseCircle = document.getElementById('houseCircle');
-            const interval = setInterval(() => {
-                houseCircle.innerText = Object.values(emojiMap)[counter % 3];
-                counter++;
-            }, 100);
+            const moveKeys = Object.keys(moves);
+            const dealerMove = moveKeys[Math.floor(Math.random() * 3)];
+            
+            pHand.innerText = moves[selectedMove].emoji;
+            dHand.innerText = moves[dealerMove].emoji;
 
-            setTimeout(() => {
-                clearInterval(interval);
-                houseCircle.innerText = emojiMap[houseBet];
-                resolveWinner(playerChoice, houseBet, bet);
-                document.getElementById('btnPlay').disabled = false;
-            }, 800);
-        }
-
-        function resolveWinner(p, h, bet) {
-            const status = document.getElementById('gameStatus');
-            const payout = document.getElementById('gamePayout');
-            const hCircle = document.getElementById('houseCircle');
-            const pCircle = document.getElementById('playerCircle');
-
-            hCircle.classList.remove('winner');
-            pCircle.classList.remove('winner');
-
-            if (p === h) {
-                status.innerText = "DRAW";
-                status.style.color = "white";
-                bal += bet;
-                payout.innerText = `$${bet.toFixed(2)}`;
-            } else if (RPS_WINNER_CONFIG[p].winsAgainst === h) {
-                status.innerText = "YOU WIN!";
-                status.style.color = "var(--win-green)";
-                pCircle.classList.add('winner');
-                const winAmount = bet * 1.95; 
-                bal += winAmount;
-                payout.innerText = `$${winAmount.toFixed(2)}`;
+            if (selectedMove === dealerMove) {
+                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet; return u; });
+                status.innerText = "DRAW!";
+                status.style.color = "var(--light-blue)";
+            } else if (moves[selectedMove].beats === dealerMove) {
+                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet * 2; return u; });
+                status.innerText = "WINNER!";
+                status.style.color = "var(--accent-green)";
             } else {
-                status.innerText = "HOUSE WINS";
-                status.style.color = "var(--loss-red)";
-                hCircle.classList.add('winner');
-                payout.innerText = "$0.00";
+                status.innerText = "LOST";
+                status.style.color = "var(--danger-red)";
             }
-            updateStorage();
-        }
-
-        // Initialize balance display
-        updateStorage();
-    </script>
+            btn.disabled = false;
+        }, 1200);
+    }
+</script>
 </body>
 </html>
