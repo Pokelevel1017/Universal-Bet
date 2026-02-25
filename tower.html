@@ -3,239 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | Tower</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <title>Universal-Bet | Tower Pro</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <style>
         :root { 
             --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
-            --win-green: #00e701; --loss-red: #ff4949; --tile-hover: #2d3a4f;
+            --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
+            --danger-red: #ef4444; 
         }
 
-        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; overflow: hidden; }
-        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 64px; border-bottom: 1px solid var(--mid-blue); }
-        #balDisp { color: #00e701; font-weight: 800; background: #1e293b; padding: 8px 15px; border-radius: 6px; }
-        
-        .viewport { height: calc(100vh - 64px); display: flex; }
-
-        .sidebar { width: 300px; background: #111827; border-right: 1px solid var(--mid-blue); padding: 24px; display: flex; flex-direction: column; flex-shrink: 0; box-sizing: border-box; }
-        .label { font-size: 11px; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-        
-        .input-wrapper { background: var(--dark-blue); border: 1px solid var(--mid-blue); border-radius: 8px; padding: 12px; margin-bottom: 20px; display: flex; align-items: center; }
-        .input-wrapper input, .input-wrapper select { background: transparent; border: none; color: white; font-weight: 800; width: 100%; outline: none; font-size: 1rem; appearance: none; cursor: pointer; }
-        select option { background: #111827; }
-
-        .stats-panel { background: #070b14; border-radius: 8px; padding: 15px; margin-bottom: 20px; border: 1px solid var(--mid-blue); }
-        .stat-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
-        .stat-val { color: var(--light-blue); }
-        .stat-val.profit { color: var(--win-green); }
-
-        .btn-main { background: var(--light-blue); color: var(--dark-blue); width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; border: none; cursor: pointer; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-main:disabled { opacity: 0.4; cursor: not-allowed; }
-        .btn-cashout { background: var(--win-green); margin-top: 10px; display: none; }
-
-        .stage { flex: 1; background: #0f172a; display: flex; align-items: center; justify-content: center; position: relative; overflow-y: auto; padding: 40px 0; }
-        .tower-container { display: flex; flex-direction: column-reverse; gap: 8px; width: 350px; }
-        
-        .tower-row { display: flex; gap: 8px; opacity: 0.3; transition: 0.3s; pointer-events: none; position: relative; }
-        .tower-row.active { opacity: 1; pointer-events: all; }
-        .tower-row.completed { opacity: 0.8; pointer-events: none; }
-
-        .tile { 
-            flex: 1; height: 45px; background: var(--mid-blue); border-radius: 4px; 
-            display: flex; align-items: center; justify-content: center; 
-            cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+        body { 
+            background-color: var(--dark-blue); color: white; 
+            font-family: 'Inter', sans-serif; margin: 0; 
+            display: flex; flex-direction: column; height: 100vh; overflow: hidden; 
         }
-        .tile:hover { background: var(--tile-hover); border-color: var(--light-blue); }
-        .tile.win { background: rgba(0, 231, 1, 0.2) !important; border-color: var(--win-green); }
-        .tile.loss { background: rgba(255, 73, 73, 0.2) !important; border-color: var(--loss-red); }
+
+        /* --- NAVBAR --- */
+        nav { 
+            background: #070b14; padding: 0 2rem; display: flex; 
+            justify-content: space-between; align-items: center; 
+            height: 70px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100;
+        }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
+        .logo span { color: var(--light-blue); }
+        .balance-box { 
+            background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; 
+            font-weight: 800; color: var(--accent-green); 
+            border: 1px solid rgba(56, 189, 248, 0.2); font-size: 1.1rem; 
+        }
+
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+
+        /* --- LEFT NAVIGATION SIDEBAR --- */
+        .nav-sidebar { 
+            width: 240px; background: #070b14; border-right: 1px solid var(--mid-blue); 
+            padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0;
+        }
+        .nav-sidebar-label { 
+            font-size: 11px; font-weight: 800; color: var(--text-muted); 
+            text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; 
+        }
+        .side-link { 
+            padding: 12px 15px; border-radius: 8px; color: var(--text-muted); 
+            text-decoration: none; font-weight: 600; font-size: 14px; 
+            display: flex; align-items: center; gap: 12px; transition: 0.2s;
+        }
+        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
+
+        /* --- CONTROL PANEL --- */
+        .control-panel { 
+            width: 300px; background: rgba(0,0,0,0.15); border-right: 1px solid var(--mid-blue); 
+            padding: 24px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0;
+        }
         
-        .row-mult { position: absolute; left: -70px; width: 60px; text-align: right; font-size: 12px; font-weight: 900; color: #475569; top: 14px; }
-        .tower-row.active .row-mult { color: var(--light-blue); }
-        .tower-row.completed .row-mult { color: var(--win-green); }
+        .bet-box { 
+            background: var(--card-bg); padding: 15px; border-radius: 12px; 
+            border: 1px solid var(--mid-blue); display: flex; align-items: center; gap: 10px;
+        }
+        .bet-box input { background: transparent; border: none; color: white; font-size: 1.2rem; font-weight: 800; width: 100%; outline: none; }
+
+        .diff-selector { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; background: var(--dark-blue); padding: 5px; border-radius: 10px; border: 1px solid var(--mid-blue); }
+        .diff-btn { 
+            background: transparent; border: none; color: var(--text-muted); padding: 10px; 
+            font-size: 11px; font-weight: 800; cursor: pointer; border-radius: 6px;
+        }
+        .diff-btn.active { background: var(--mid-blue); color: white; }
+
+        .btn-action { 
+            width: 100%; padding: 18px; border-radius: 12px; border: none; 
+            font-weight: 900; text-transform: uppercase; cursor: pointer; 
+            background: var(--light-blue); color: var(--dark-blue); transition: 0.2s;
+            box-shadow: 0 4px 0 #0284c7; font-size: 1rem;
+        }
+        .btn-cashout { background: var(--accent-green); color: black; box-shadow: 0 4px 0 #059669; display: none; }
+
+        /* --- GAME STAGE --- */
+        .game-stage { 
+            flex: 1; display: flex; flex-direction: column; align-items: center; 
+            justify-content: center; background: radial-gradient(circle at center, #1e293b 0%, #0b1120 100%);
+            overflow-y: auto;
+        }
+
+        .tower-container { 
+            display: flex; flex-direction: column-reverse; gap: 8px; 
+            padding: 25px; border-radius: 16px; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .tower-row { 
+            display: flex; gap: 10px; padding: 6px; border-radius: 10px; 
+            transition: 0.3s; opacity: 0.2; pointer-events: none;
+        }
+        .active-row { opacity: 1; pointer-events: all; background: rgba(56, 189, 248, 0.1); outline: 1px solid var(--light-blue); }
+        .completed-row { opacity: 0.9; }
+
+        .cell { 
+            width: 65px; height: 50px; background: var(--mid-blue); 
+            border-radius: 8px; cursor: pointer; display: flex; 
+            align-items: center; justify-content: center; font-size: 1.4rem;
+            border: 2px solid transparent; transition: 0.2s;
+        }
+        .cell:hover { background: #2d3e5a; transform: translateY(-2px); }
+        .cell.win { background: var(--accent-green); border-color: #059669; box-shadow: 0 0 15px rgba(0, 231, 1, 0.4); }
+        .cell.loss { background: var(--danger-red); border-color: #b91c1c; }
+
+        .row-mult { 
+            width: 50px; display: flex; align-items: center; 
+            justify-content: center; font-weight: 900; color: var(--light-blue); font-size: 0.75rem;
+        }
+
+        #status { margin-top: 15px; font-weight: 800; text-align: center; height: 20px; text-transform: uppercase; font-size: 0.8rem;}
+
     </style>
 </head>
 <body>
-    <nav>
-        <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:900;">UNIVERSAL<span>-BET</span></div>
-        <div id="balDisp">$0.00</div>
-    </nav>
 
-    <div class="viewport">
-        <div class="sidebar">
-            <span class="label">Bet Amount</span>
-            <div class="input-wrapper"><input type="number" id="tBet" value="10.00"></div>
+<nav>
+    <div class="logo" onclick="location.href='index.html'">UNIVERSAL<span>-BET</span></div>
+    <div class="balance-box" id="balDisp">$0.00</div>
+</nav>
 
-            <span class="label">Difficulty</span>
-            <div class="input-wrapper">
-                <select id="tDifficulty" onchange="resetGame()">
-                    <option value="easy">Easy (4 Tiles, 1 Bomb)</option>
-                    <option value="medium" selected>Medium (3 Tiles, 1 Bomb)</option>
-                    <option value="hard">Hard (2 Tiles, 1 Bomb)</option>
-                </select>
-            </div>
+<div class="main-content">
+    <aside class="nav-sidebar">
+        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
+        <div class="nav-sidebar-label">Games</div>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
+        <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
+        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
+        <a href="roulette.html" class="side-link"><span>🎡</span> Roulette</a>
+        <a href="rps.html" class="side-link"><span>✊</span> RPS</a>
+        <a href="tower.html" class="side-link active-link"><span>🗼</span> Tower</a>
+    </aside>
 
-            <div class="stats-panel">
-                <div class="stat-row">
-                    <span>Current Profit</span>
-                    <span id="statProfit" class="stat-val profit">$0.00</span>
-                </div>
-                <div class="stat-row">
-                    <span>Next Tile</span>
-                    <span id="statNext" class="stat-val">$0.00</span>
-                </div>
-            </div>
-
-            <button class="btn-main" id="btnPlay" onclick="startGame()">Start Game</button>
-            <button class="btn-main btn-cashout" id="btnCashout" onclick="cashout()">Cash Out</button>
+    <aside class="control-panel">
+        <span class="nav-sidebar-label" style="margin:0">Difficulty</span>
+        <div class="diff-selector">
+            <button class="diff-btn active" onclick="setDiff('easy')">EASY</button>
+            <button class="diff-btn" onclick="setDiff('medium')">MED</button>
+            <button class="diff-btn" onclick="setDiff('hard')">HARD</button>
         </div>
 
-        <div class="stage">
-            <div class="tower-container" id="towerBoard"></div>
+        <span class="nav-sidebar-label" style="margin:0">Bet Amount</span>
+        <div class="bet-box">
+            <span style="color:var(--accent-green); font-weight:900;">$</span>
+            <input type="number" id="betAmt" value="10.00">
         </div>
-    </div>
 
-    <script>
-        // --- DATA SYNC SYSTEM ---
-        let currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        let allUsers = JSON.parse(localStorage.getItem('users'));
-        if (!currentUser) window.location.href = 'index.html';
+        <button class="btn-action" id="startBtn" onclick="startGame()">Start Game</button>
+        <button class="btn-action btn-cashout" id="cashBtn" onclick="cashout()">Cashout</button>
+        
+        <div id="status"></div>
+    </aside>
 
-        let bal = currentUser.balance;
-        let currentLevel = 0, isGameActive = false, currentBet = 0, nonce = 0;
-        const towerBoard = document.getElementById('towerBoard');
-        const btnPlay = document.getElementById('btnPlay');
-        const btnCashout = document.getElementById('btnCashout');
-        const serverSeed = "tower_secret_2026";
+    <main class="game-stage">
+        <div class="tower-container" id="towerGrid"></div>
+    </main>
+</div>
 
-        const config = {
-            easy:   { tiles: 4, bombs: 1, mults: [1.31, 1.74, 2.33, 3.10, 4.14, 5.52, 7.36, 9.81, 13.08] },
-            medium: { tiles: 3, bombs: 1, mults: [1.47, 2.20, 3.31, 4.96, 7.44, 11.17, 16.75, 25.13, 37.70] },
-            hard:   { tiles: 2, bombs: 1, mults: [1.96, 3.92, 7.84, 15.68, 31.36, 62.72, 125.4, 250.8, 501.6] }
-        };
+<script>
+    const firebaseConfig = { 
+        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0", 
+        authDomain: "universalbet-427ce.firebaseapp.com", 
+        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com", 
+        projectId: "universalbet-427ce", 
+        storageBucket: "universalbet-427ce.firebasestorage.app", 
+        messagingSenderId: "804592033030", 
+        appId: "1:804592033030:web:352d7f4e8a75fb3f215287" 
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-        function updateStorage() {
-            currentUser.balance = bal;
-            if (allUsers && allUsers[currentUser.name]) {
-                allUsers[currentUser.name].balance = bal;
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let currentLevel = 0;
+    let isPlaying = false;
+    let difficulty = 'easy';
+
+    const gameSettings = {
+        easy:   { tiles: 3, bombs: 1, mults: [1.45, 2.18, 3.27, 4.91, 7.37, 11.0, 16.5, 24.8] },
+        medium: { tiles: 2, bombs: 1, mults: [1.96, 3.92, 7.84, 15.6, 31.3, 62.7, 125, 250] },
+        hard:   { tiles: 3, bombs: 2, mults: [2.94, 8.82, 26.4, 79.3, 238, 714, 2142, 6426] }
+    };
+
+    db.ref('users/' + user.name.toLowerCase()).on('value', (snap) => {
+        if(snap.exists()){
+            user = snap.val();
+            document.getElementById('balDisp').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+    });
+
+    function setDiff(d) {
+        if (isPlaying) return;
+        difficulty = d;
+        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
+        event.target.classList.add('active');
+        createGrid();
+    }
+
+    function createGrid() {
+        const grid = document.getElementById('towerGrid');
+        grid.innerHTML = '';
+        const config = gameSettings[difficulty];
+
+        for (let i = 0; i < 8; i++) {
+            const row = document.createElement('div');
+            row.className = 'tower-row';
+            row.id = `row-${i}`;
+            
+            const mult = document.createElement('div');
+            mult.className = 'row-mult';
+            mult.innerText = config.mults[i] + 'x';
+            row.appendChild(mult);
+
+            for (let j = 0; j < config.tiles; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.onclick = () => handleChoice(i, j);
+                row.appendChild(cell);
             }
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            localStorage.setItem('users', JSON.stringify(allUsers));
-            document.getElementById('balDisp').innerText = `$${bal.toLocaleString(undefined, {minimumFractionDigits:2})}`;
+            grid.appendChild(row);
+        }
+    }
+
+    async function startGame() {
+        const bet = parseFloat(document.getElementById('betAmt').value);
+        if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
+
+        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
+        
+        isPlaying = true;
+        currentLevel = 0;
+        document.getElementById('startBtn').style.display = 'none';
+        document.getElementById('cashBtn').style.display = 'block';
+        document.getElementById('cashBtn').innerText = `Cashout $0.00`;
+        document.getElementById('status').innerText = "Select a tile";
+        
+        createGrid();
+        updateActiveRow();
+    }
+
+    function updateActiveRow() {
+        document.querySelectorAll('.tower-row').forEach(r => {
+            r.classList.remove('active-row');
+            if(parseInt(r.id.split('-')[1]) < currentLevel) r.classList.add('completed-row');
+        });
+        const row = document.getElementById(`row-${currentLevel}`);
+        if(row) row.classList.add('active-row');
+    }
+
+    async function handleChoice(rowIdx, cellIdx) {
+        if (!isPlaying || rowIdx !== currentLevel) return;
+
+        const config = gameSettings[difficulty];
+        let bombIndices = [];
+        while(bombIndices.length < config.bombs) {
+            let r = Math.floor(Math.random() * config.tiles);
+            if(!bombIndices.includes(r)) bombIndices.push(r);
         }
 
-        function resetGame() {
-            isGameActive = false;
-            currentLevel = 0;
-            towerBoard.innerHTML = '';
-            btnPlay.disabled = false;
-            btnCashout.style.display = "none";
-            document.getElementById('statProfit').innerText = "$0.00";
-            document.getElementById('statNext').innerText = "$0.00";
+        const rowEl = document.getElementById(`row-${rowIdx}`);
+        const cells = rowEl.querySelectorAll('.cell');
+
+        if (!bombIndices.includes(cellIdx)) {
+            cells[cellIdx].classList.add('win');
+            cells[cellIdx].innerText = '💎';
+            currentLevel++;
             
-            const diff = document.getElementById('tDifficulty').value;
-            const settings = config[diff];
-
-            for (let i = 0; i < settings.mults.length; i++) {
-                const row = document.createElement('div');
-                row.className = 'tower-row';
-                row.id = `row-${i}`;
-                
-                const multTag = document.createElement('div');
-                multTag.className = 'row-mult';
-                multTag.innerText = settings.mults[i] + 'x';
-                row.appendChild(multTag);
-
-                for (let j = 0; j < settings.tiles; j++) {
-                    const tile = document.createElement('div');
-                    tile.className = 'tile';
-                    tile.onclick = () => handlePick(i, j);
-                    row.appendChild(tile);
-                }
-                towerBoard.appendChild(row);
-            }
-        }
-
-        function startGame() {
-            const bet = parseFloat(document.getElementById('tBet').value);
-            if (bet > bal || bet <= 0) return alert("Insufficient funds!");
+            const bet = parseFloat(document.getElementById('betAmt').value);
+            const currentWin = bet * config.mults[currentLevel-1];
+            document.getElementById('cashBtn').innerText = `Cashout $${currentWin.toFixed(2)}`;
             
-            bal -= bet;
-            currentBet = bet;
-            isGameActive = true;
-            currentLevel = 0;
-            nonce++;
-            
-            updateStorage();
-            btnPlay.disabled = true;
-            btnCashout.style.display = "block";
-            
-            document.querySelectorAll('.tower-row').forEach(r => r.classList.remove('active', 'completed'));
-            document.querySelectorAll('.tile').forEach(t => t.className = 'tile');
-            
-            document.getElementById(`row-0`).classList.add('active');
-            updateStats();
+            if (currentLevel === 8) cashout();
+            else updateActiveRow();
+        } else {
+            cells[cellIdx].classList.add('loss');
+            cells[cellIdx].innerText = '💥';
+            bombIndices.forEach(idx => cells[idx].classList.add('loss'));
+            gameOver();
         }
+    }
 
-        function updateStats() {
-            const diff = document.getElementById('tDifficulty').value;
-            const settings = config[diff];
-            const currentMult = currentLevel === 0 ? 0 : settings.mults[currentLevel - 1];
-            const nextMult = settings.mults[currentLevel];
+    function gameOver() {
+        isPlaying = false;
+        document.getElementById('status').innerText = "Game Over";
+        document.getElementById('status').style.color = "var(--danger-red)";
+        setTimeout(resetUI, 1500);
+    }
 
-            document.getElementById('statProfit').innerText = `$${(currentBet * currentMult).toFixed(2)}`;
-            document.getElementById('statNext').innerText = `$${(currentBet * nextMult).toFixed(2)}`;
-            btnCashout.innerText = currentLevel === 0 ? "SURRENDER" : `CASH OUT $${(currentBet * currentMult).toFixed(2)}`;
-        }
+    async function cashout() {
+        if (!isPlaying || currentLevel === 0) return;
+        const bet = parseFloat(document.getElementById('betAmt').value);
+        const win = bet * gameSettings[difficulty].mults[currentLevel-1];
+        
+        await db.ref('users/' + user.name.toLowerCase()).transaction(u => {
+            if(u) u.balance += win;
+            return u;
+        });
 
-        function handlePick(rowIdx, tileIdx) {
-            if (!isGameActive || rowIdx !== currentLevel) return;
+        document.getElementById('status').innerText = `Won $${win.toFixed(2)}`;
+        document.getElementById('status').style.color = "var(--accent-green)";
+        isPlaying = false;
+        setTimeout(resetUI, 1500);
+    }
 
-            const diff = document.getElementById('tDifficulty').value;
-            const settings = config[diff];
-            
-            const combinedSeed = CryptoJS.SHA256(`${serverSeed}:${nonce}:${rowIdx}`).toString();
-            const bombPos = parseInt(combinedSeed.substring(0, 2), 16) % settings.tiles;
+    function resetUI() {
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('cashBtn').style.display = 'none';
+        document.getElementById('status').innerText = "";
+        createGrid();
+    }
 
-            const row = document.getElementById(`row-${rowIdx}`);
-            const tile = row.children[tileIdx + 1];
-
-            if (tileIdx === bombPos) {
-                tile.classList.add('loss');
-                gameOver(false);
-            } else {
-                tile.classList.add('win');
-                row.classList.add('completed');
-                row.classList.remove('active');
-                
-                if (currentLevel === settings.mults.length - 1) {
-                    currentLevel++;
-                    cashout();
-                } else {
-                    currentLevel++;
-                    document.getElementById(`row-${currentLevel}`).classList.add('active');
-                    updateStats();
-                }
-            }
-        }
-
-        function cashout() {
-            if (!isGameActive) return;
-            const diff = document.getElementById('tDifficulty').value;
-            const win = currentLevel === 0 ? 0 : currentBet * config[diff].mults[currentLevel - 1];
-            bal += win;
-            gameOver(true);
-        }
-
-        function gameOver(isWin) {
-            isGameActive = false;
-            btnPlay.disabled = false;
-            btnCashout.style.display = "none";
-            updateStorage();
-        }
-
-        // Initialize display and board
-        updateStorage();
-        resetGame();
-    </script>
+    createGrid();
+</script>
 </body>
 </html>
