@@ -239,10 +239,6 @@
             <span class="profile-stat-value" id="pStatus">---</span>
         </div>
         <div class="profile-stat-row">
-            <span class="profile-stat-label">Member Since</span>
-            <span class="profile-stat-value" id="pJoined">Feb 2026</span>
-        </div>
-        <div class="profile-stat-row">
             <span class="profile-stat-label">Leaderboard Rank</span>
             <span class="profile-stat-value" id="pRank">#--</span>
         </div>
@@ -446,7 +442,6 @@
             document.getElementById('pAvatar').innerText = targetUser.name.charAt(0).toUpperCase();
             document.getElementById('pBalance').innerText = `$${targetUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
             document.getElementById('pRank').innerText = `#${userIdx + 1}`;
-            document.getElementById('pJoined').innerText = targetUser.createdAt ? new Date(targetUser.createdAt).toLocaleDateString() : "Legacy User";
 
             const isOnline = (Date.now() - (targetUser.lastSeen || 0)) < 60000;
             const statusEl = document.getElementById('pStatus');
@@ -492,11 +487,8 @@
     }
 
     function acceptRequest(requester) {
-        // Add to my friends
         db.ref(`users/${currentLocalUser.name.toLowerCase()}/friends/${requester}`).set(true);
-        // Add me to their friends
         db.ref(`users/${requester}/friends/${currentLocalUser.name.toLowerCase()}`).set(true);
-        // Delete request
         db.ref(`users/${currentLocalUser.name.toLowerCase()}/requests/${requester}`).remove();
     }
 
@@ -510,7 +502,6 @@
         const reqTitle = document.getElementById('requestTitle');
 
         db.ref('users').once('value', (snap) => {
-            // Render Requests
             reqList.innerHTML = "";
             const requests = currentLocalUser.requests ? Object.keys(currentLocalUser.requests) : [];
             if (requests.length > 0) {
@@ -531,7 +522,6 @@
                 reqTitle.style.display = 'none';
             }
 
-            // Render Friends
             friendsList.innerHTML = "";
             const friends = currentLocalUser.friends ? Object.keys(currentLocalUser.friends) : [];
             if (friends.length > 0) {
