@@ -352,24 +352,32 @@
     }
 
     function updateTimer(user) {
-        const diff = (24 * 60 * 60 * 1000) - (Date.now() - (user.lastBonus || 0));
+        // Updated to 5 minutes (300,000 ms)
+        const bonusInterval = 5 * 60 * 1000;
+        const diff = bonusInterval - (Date.now() - (user.lastBonus || 0));
         const timerText = document.getElementById('headerTimer');
         const rewardBox = document.getElementById('headerReward');
         if (diff > 0) {
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
+            const m = Math.floor(diff / 60000);
             const s = Math.floor((diff % 60000) / 1000);
-            timerText.innerText = `${h}H ${m}M ${s}S`;
+            timerText.innerText = `${m}M ${s}S`;
             rewardBox.style.opacity = "0.5"; rewardBox.style.pointerEvents = "none";
         } else {
-            timerText.innerText = "Claim $25.00";
+            // Updated reward label to $10.00
+            timerText.innerText = "Claim $10.00";
             rewardBox.style.opacity = "1"; rewardBox.style.pointerEvents = "auto";
         }
     }
 
     function claimBonus() {
         db.ref('users/' + currentLocalUser.name.toLowerCase()).transaction(u => {
-            if(u){ u.balance += 25; u.lastBonus = Date.now(); }
+            if(u){ 
+                const bonusInterval = 5 * 60 * 1000;
+                if(Date.now() - (u.lastBonus || 0) >= bonusInterval) {
+                    u.balance += 10.00; // Updated reward amount to 10 dollars
+                    u.lastBonus = Date.now();
+                }
+            }
             return u;
         });
     }
@@ -424,8 +432,6 @@
         });
     }
 
-    // --- ENHANCED FRIENDS LOGIC ---
-
     let currentViewingUser = "";
 
     function viewProfile(username) {
@@ -454,7 +460,6 @@
             } else {
                 friendBtn.style.display = 'block';
                 friendBtn.disabled = false;
-                
                 const isFriend = currentLocalUser.friends && currentLocalUser.friends[currentViewingUser];
                 const hasSentRequest = targetUser.requests && targetUser.requests[currentLocalUser.name.toLowerCase()];
 
