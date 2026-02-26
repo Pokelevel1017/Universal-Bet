@@ -15,7 +15,6 @@
 
         body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-        /* NAV & SIDEBAR */
         nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
         .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
         .logo span { color: var(--light-blue); }
@@ -27,47 +26,77 @@
         .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
         .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
 
-        /* GAME AREA */
-        .game-area { flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); position: relative; overflow-y: auto; }
-        .table-surface { width: 100%; max-width: 900px; min-height: 520px; background: var(--felt-green); border-radius: 200px 200px 40px 40px; border: 12px solid #3d2b1f; box-shadow: inset 0 0 120px rgba(0,0,0,0.6), 0 25px 50px rgba(0,0,0,0.5); display: flex; flex-direction: column; justify-content: space-between; align-items: center; position: relative; padding: 40px 0; }
-
-        .hand-label { background: rgba(0,0,0,0.5); padding: 5px 15px; border-radius: 20px; font-weight: 900; font-size: 14px; color: white; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .score-badge { color: var(--light-blue); font-size: 1.1rem; }
-
-        .hands-container { display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%; }
-        .hand-wrapper { display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
-        .active-hand { transform: scale(1.05); filter: drop-shadow(0 0 15px var(--light-blue)); }
+        .game-area { flex: 1; padding: 15px; display: flex; flex-direction: column; align-items: center; background: radial-gradient(circle at top left, #1e293b, #0b1120); position: relative; overflow-y: auto; }
         
-        .card-row { display: flex; justify-content: center; min-height: 120px; margin-left: 20px; }
+        /* THE SMALLER TABLE */
+        .table-surface { 
+            width: 95%; 
+            max-width: 700px; 
+            min-height: 400px; 
+            background: var(--felt-green); 
+            border-radius: 150px 150px 40px 40px; 
+            border: 10px solid #3d2b1f; 
+            box-shadow: inset 0 0 100px rgba(0,0,0,0.6), 0 20px 40px rgba(0,0,0,0.5); 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: relative; 
+            padding: 25px 0; 
+        }
+
+        /* CENTERED WIN/LOSE TEXT */
+        .status-overlay { 
+            position: absolute; 
+            top: 40%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            font-size: 3.5rem; 
+            font-weight: 900; 
+            text-shadow: 4px 4px 0px rgba(0,0,0,0.8); 
+            z-index: 100; 
+            pointer-events: none; 
+            display: none; 
+            text-align: center; 
+            width: 100%; 
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+
+        .hand-label { background: rgba(0,0,0,0.5); padding: 4px 12px; border-radius: 20px; font-weight: 900; font-size: 12px; color: white; border: 1px solid rgba(255,255,255,0.2); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .score-badge { color: var(--light-blue); font-size: 1rem; }
+
+        .hands-container { display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%; }
+        .hand-wrapper { display: flex; flex-direction: column; align-items: center; transition: 0.3s; }
+        .active-hand { transform: scale(1.03); filter: drop-shadow(0 0 10px var(--light-blue)); }
+        
+        .card-row { display: flex; justify-content: center; min-height: 100px; margin-left: 15px; }
         
         .card { 
-            width: 80px; height: 110px; background: white; border-radius: 8px; color: black; padding: 8px; 
-            font-weight: 900; font-size: 1.2rem; display: flex; flex-direction: column; justify-content: space-between;
-            box-shadow: 3px 3px 10px rgba(0,0,0,0.4); border: 1px solid #ddd;
-            margin-left: -40px;
+            width: 70px; height: 95px; 
+            background: white; border-radius: 6px; color: black; padding: 6px; 
+            font-weight: 900; font-size: 1rem; display: flex; flex-direction: column; justify-content: space-between;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.4); border: 1px solid #ddd;
+            margin-left: -35px; 
             animation: cardDeal 0.4s ease-out forwards;
             position: relative;
         }
         @keyframes cardDeal { from { transform: translateY(-100px) rotate(15deg); opacity: 0; } to { transform: translateY(0) rotate(0); opacity: 1; } }
+        @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1); } }
         
         .card.red { color: #ef4444; }
         .card.hidden { background: var(--premium-gradient); border: 2px solid var(--light-blue); color: transparent; }
 
-        /* CONTROLS */
-        .action-bar { margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
-        .bet-box { display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 10px 20px; border-radius: 12px; border: 1px solid var(--mid-blue); }
-        .bet-box input { background: transparent; border: none; color: white; font-size: 1.3rem; font-weight: 900; width: 100px; text-align: center; outline: none; }
+        .action-bar { margin-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .bet-box { display: flex; align-items: center; gap: 15px; background: var(--card-bg); padding: 8px 18px; border-radius: 12px; border: 1px solid var(--mid-blue); }
+        .bet-box input { background: transparent; border: none; color: white; font-size: 1.2rem; font-weight: 900; width: 80px; text-align: center; outline: none; }
         
         .btn-group { display: flex; gap: 10px; }
-        .btn { padding: 12px 24px; border-radius: 10px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; font-size: 13px; }
+        .btn { padding: 10px 20px; border-radius: 8px; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; transition: 0.2s; font-size: 12px; }
         .btn-deal { background: var(--light-blue); color: var(--dark-blue); }
         .btn-hit { background: var(--mid-blue); color: white; border: 1px solid var(--light-blue); }
         .btn-stand { background: var(--danger-red); color: white; }
         .btn-extra { background: var(--hot-orange); color: var(--dark-blue); }
         .btn:disabled { opacity: 0.3; cursor: not-allowed; }
-
-        .status-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; font-weight: 900; text-shadow: 4px 4px 0px rgba(0,0,0,0.8); z-index: 100; pointer-events: none; display: none; text-align: center; width: 100%; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        @keyframes popIn { 0% { transform: translate(-50%, -50%) scale(0); } 100% { transform: translate(-50%, -50%) scale(1); } }
     </style>
 </head>
 <body>
@@ -126,6 +155,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
 <script>
+    // Logic remains identical to original
     const firebaseConfig = {
         apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
         authDomain: "universalbet-427ce.firebaseapp.com",
@@ -176,7 +206,7 @@
         const el = document.createElement('div');
         el.className = `card ${card.r ? 'red' : ''} ${hidden ? 'hidden' : ''}`;
         if(!hidden) {
-            el.innerHTML = `<div>${card.v}</div><div style="font-size:2rem;align-self:center">${card.s}</div><div style="align-self:flex-end;transform:rotate(180deg)">${card.v}</div>`;
+            el.innerHTML = `<div>${card.v}</div><div style="font-size:1.5rem;align-self:center">${card.s}</div><div style="align-self:flex-end;transform:rotate(180deg)">${card.v}</div>`;
         }
         document.getElementById(targetId).appendChild(el);
     }
@@ -184,11 +214,9 @@
     function updateScores(showDealer = false) {
         document.getElementById('playerScore0').innerText = getVal(hands[0]);
         if (hands[1]) document.getElementById('playerScore1').innerText = getVal(hands[1]);
-        
         if (showDealer) {
             document.getElementById('dealerScore').innerText = getVal(dealerHand);
         } else {
-            // Show only the first card value
             let firstCard = dealerHand[0];
             let v = (['J','Q','K'].includes(firstCard.v)) ? 10 : (firstCard.v === 'A' ? 11 : parseInt(firstCard.v));
             document.getElementById('dealerScore').innerText = v + " + ?";
@@ -198,10 +226,7 @@
     function startDeal() {
         currentBet = parseFloat(document.getElementById('betAmount').value);
         if (currentBet > user.balance || currentBet <= 0) return alert("Insufficient Funds");
-        
         db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance - currentBet });
-        
-        // Reset state
         hands = [[]]; dealerHand = []; activeHand = 0; isGameOver = false;
         document.getElementById('playerHandsContainer').innerHTML = '<div class="hand-wrapper active-hand" id="hand0"><div class="hand-label">PLAYER <span class="score-badge" id="playerScore0">0</span></div><div class="card-row" id="playerCards0"></div></div>';
         document.getElementById('dealerCards').innerHTML = '';
@@ -209,17 +234,13 @@
         document.getElementById('betControls').style.display = 'none';
         document.getElementById('gameControls').style.display = 'flex';
         document.getElementById('doubleBtn').style.display = 'inline-block';
-
         createDeck();
-        
-        // Deal sequence
         setTimeout(() => { hands[0].push(deck.pop()); renderCard(hands[0][0], 'playerCards0'); updateScores(); }, 100);
         setTimeout(() => { dealerHand.push(deck.pop()); renderCard(dealerHand[0], 'dealerCards'); updateScores(); }, 300);
         setTimeout(() => { hands[0].push(deck.pop()); renderCard(hands[0][1], 'playerCards0'); updateScores(); }, 500);
         setTimeout(() => { 
             dealerHand.push(deck.pop()); 
             renderCard(dealerHand[1], 'dealerCards', true);
-            
             if (getVal(hands[0]) === 21) endRound("BLACKJACK!", currentBet * 2.5);
             document.getElementById('splitBtn').style.display = (hands[0][0].v === hands[0][1].v) ? 'inline-block' : 'none';
         }, 700);
@@ -231,10 +252,8 @@
         hands[activeHand].push(card);
         renderCard(card, `playerCards${activeHand}`);
         updateScores();
-        
         document.getElementById('doubleBtn').style.display = 'none';
         document.getElementById('splitBtn').style.display = 'none';
-
         if(getVal(hands[activeHand]) > 21) {
             if(hands.length > 1 && activeHand === 0) nextHand();
             else stand();
@@ -252,12 +271,10 @@
     function stand() {
         if (isGameOver) return;
         if (hands.length > 1 && activeHand === 0) return nextHand();
-        
         isGameOver = true;
         document.getElementById('dealerCards').innerHTML = '';
         dealerHand.forEach(c => renderCard(c, 'dealerCards'));
         updateScores(true);
-        
         let ds = getVal(dealerHand);
         const dealerDraw = setInterval(() => {
             if (ds < 17) {
@@ -277,7 +294,6 @@
         let totalWin = 0;
         let ds = getVal(dealerHand);
         let results = [];
-
         hands.forEach(h => {
             const ps = getVal(h);
             if (ps > 21) results.push("BUST");
@@ -285,7 +301,6 @@
             else if (ps === ds) { totalWin += currentBet; results.push("PUSH"); }
             else results.push("LOSE");
         });
-
         const finalStatus = results.length > 1 ? results.join(" | ") : results[0];
         showStatus(finalStatus, totalWin);
     }
@@ -295,11 +310,7 @@
         status.innerText = msg;
         status.style.color = msg.includes("WIN") ? 'var(--accent-green)' : (msg.includes("PUSH") ? 'white' : 'var(--danger-red)');
         status.style.display = 'block';
-
-        if(payout > 0) {
-            db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance + payout });
-        }
-
+        if(payout > 0) db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance + payout });
         setTimeout(() => {
             document.getElementById('betControls').style.display = 'flex';
             document.getElementById('gameControls').style.display = 'none';
@@ -314,16 +325,9 @@
     function split() {
         if (user.balance < currentBet) return alert("Insufficient Funds");
         db.ref('users/'+user.name.toLowerCase()).update({ balance: user.balance - currentBet });
-        
         const card = hands[0].pop();
         hands.push([card]);
-        
-        document.getElementById('playerHandsContainer').innerHTML += `
-            <div class="hand-wrapper" id="hand1">
-                <div class="hand-label">PLAYER 2 <span class="score-badge" id="playerScore1">0</span></div>
-                <div class="card-row" id="playerCards1"></div>
-            </div>`;
-        
+        document.getElementById('playerHandsContainer').innerHTML += `<div class="hand-wrapper" id="hand1"><div class="hand-label">PLAYER 2 <span class="score-badge" id="playerScore1">0</span></div><div class="card-row" id="playerCards1"></div></div>`;
         document.getElementById('playerCards0').innerHTML = '';
         renderCard(hands[0][0], 'playerCards0');
         renderCard(hands[1][0], 'playerCards1');
