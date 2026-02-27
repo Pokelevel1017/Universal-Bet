@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal-Bet | Slots</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
+            --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
+            --gold: #fbbf24;
+        }
+
+        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+
+        /* NAVIGATION */
+        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
+        .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; }
+        .logo span { color: var(--light-blue); }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .balance-box { background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; font-weight: 800; color: var(--accent-green); display: flex; align-items: center; gap: 10px; font-size: 1.1rem; border: 1px solid rgba(56, 189, 248, 0.2); }
+
+        /* LAYOUT */
+        .main-content { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 280px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; overflow-y: auto; }
+        .sidebar-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; }
+        .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer; }
+        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
+
+        /* DASHBOARD */
+        .dashboard { flex: 1; padding: 40px; overflow-y: auto; background: radial-gradient(circle at top left, #1e293b, #0b1120); display: flex; flex-direction: column; align-items: center; }
+        
+        .jackpot-container { 
+            background: rgba(251, 191, 36, 0.05); border: 1px solid rgba(251, 191, 36, 0.2); 
+            padding: 15px 40px; border-radius: 16px; display: flex; flex-direction: column; align-items: center; margin-bottom: 30px;
+        }
+        .jackpot-label { font-size: 10px; font-weight: 900; color: var(--gold); text-transform: uppercase; letter-spacing: 3px; margin-bottom: 4px; }
+        .jackpot-value { font-size: 2.2rem; font-weight: 900; color: var(--gold); text-shadow: 0 0 15px rgba(251, 191, 36, 0.4); }
+
+        .game-area { display: flex; gap: 20px; align-items: stretch; max-width: 900px; width: 100%; justify-content: center; }
+
+        /* SLOT MACHINE */
+        .slot-machine-ui { background: var(--card-bg); padding: 35px; border-radius: 24px; border: 1px solid var(--mid-blue); width: 420px; text-align: center; display: flex; flex-direction: column; }
+        .reels-wrapper { display: flex; gap: 12px; justify-content: center; margin-bottom: 25px; }
+        .reel-window { width: 100px; height: 130px; background: #070b14; border-radius: 15px; border: 2px solid var(--mid-blue); overflow: hidden; position: relative; }
+        .reel-strip { position: absolute; top: 0; left: 0; width: 100%; display: flex; flex-direction: column; transition: top 2s cubic-bezier(0.45, 0.05, 0.55, 0.95); }
+        .symbol { height: 130px; width: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.8rem; }
+
+        /* WIN HISTORY */
+        .history-panel { background: #070b14; border: 1px solid var(--mid-blue); border-radius: 24px; width: 280px; display: flex; flex-direction: column; overflow: hidden; }
+        .history-header { 
+            padding: 15px 20px; border-bottom: 1px solid var(--mid-blue); 
+            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(255,255,255,0.02); 
+        }
+        .header-title { font-weight: 900; font-size: 11px; color: var(--light-blue); text-transform: uppercase; letter-spacing: 1.5px; }
+        .clear-btn { background: transparent; border: 1px solid var(--mid-blue); color: var(--text-muted); font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .clear-btn:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+        .history-list { flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 12px; }
+        .history-item { background: var(--mid-blue); padding: 12px 15px; border-radius: 12px; display: flex; flex-direction: column; gap: 4px; border: 1px solid rgba(255,255,255,0.05); animation: slideIn 0.3s ease; }
+        .hist-top { display: flex; justify-content: space-between; align-items: center; }
+        .hist-sym { letter-spacing: -3px; font-size: 1.2rem; font-weight: 700; }
+        .hist-win { color: var(--accent-green); font-family: monospace; font-size: 14px; font-weight: 800; }
+        .hist-time { font-size: 10px; color: var(--text-muted); font-weight: 600; text-align: right; }
+
+        /* CONTROLS */
+        .bet-wrapper { background: #070b14; border: 2px solid var(--mid-blue); border-radius: 12px; display: flex; align-items: center; padding: 0 15px; width: 160px; margin: 0 auto 20px auto; }
+        .bet-currency { color: var(--accent-green); font-weight: 900; font-size: 1.2rem; }
+        .bet-input { background: transparent; border: none; color: white; padding: 15px 5px; width: 100%; font-size: 1.2rem; font-weight: 800; outline: none; text-align: center; }
+
+        .action-btns { display: flex; gap: 10px; width: 100%; }
+        .spin-btn { flex: 2; padding: 18px; border-radius: 12px; border: none; background: var(--light-blue); color: var(--dark-blue); font-size: 1.3rem; font-weight: 900; cursor: pointer; text-transform: uppercase; transition: 0.2s; }
+        .pay-btn { flex: 1; padding: 18px; border-radius: 12px; border: 1px solid var(--mid-blue); background: var(--mid-blue); color: white; font-weight: 800; cursor: pointer; font-size: 0.9rem; }
+        .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        /* MODAL */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal-content { background: #0f172a; border: 2px solid var(--light-blue); padding: 35px; border-radius: 24px; width: 320px; text-align: center; }
+        .pay-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1e293b; font-weight: 700; }
+        .status-msg { height: 30px; margin-top: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo" onclick="location.href='index.html'">UNIVERSAL<span>-BET</span></div>
+    <div class="nav-right">
+        <div class="balance-box"><span id="navBal">$0.00</span></div>
+    </div>
+</nav>
+
+<div class="main-content">
+    <aside class="sidebar">
+        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
+        <div class="sidebar-label">Games</div>
+        <a href="slots.html" class="side-link active-link"><span>🎰</span> Triple-7 Slots</a>
+        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
+        <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
+        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
+        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
+        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
+    </aside>
+
+    <main class="dashboard">
+        <div class="jackpot-container">
+            <div class="jackpot-label">Grand Jackpot</div>
+            <div class="jackpot-value">$1,000.00</div>
+        </div>
+
+        <div class="game-area">
+            <div class="slot-machine-ui">
+                <div class="reels-wrapper">
+                    <div class="reel-window"><div id="strip1" class="reel-strip"></div></div>
+                    <div class="reel-window"><div id="strip2" class="reel-strip"></div></div>
+                    <div class="reel-window"><div id="strip3" class="reel-strip"></div></div>
+                </div>
+
+                <div class="controls">
+                    <div class="bet-wrapper">
+                        <span class="bet-currency">$</span>
+                        <input type="number" id="betAmount" class="bet-input" value="10" min="1">
+                    </div>
+                    <div class="action-btns">
+                        <button class="pay-btn" onclick="togglePaytable(true)">Paytable</button>
+                        <button id="spinBtn" class="spin-btn" onclick="spin()">Spin</button>
+                    </div>
+                </div>
+                <div class="status-msg" id="status"></div>
+            </div>
+
+            <div class="history-panel">
+                <div class="history-header">
+                    <span class="header-title">Recent Wins</span>
+                    <button class="clear-btn" onclick="clearHistory()">Clear</button>
+                </div>
+                <div class="history-list" id="winHistory"></div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div id="payModal" class="modal" onclick="togglePaytable(false)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <h2 style="margin-top:0; color: var(--gold); letter-spacing: 1px;">PAYTABLE</h2>
+        <div class="pay-row"><span>7️⃣ 7️⃣ 7️⃣</span> <span style="color:var(--gold)">$1,000</span></div>
+        <div class="pay-row"><span>💎 💎 💎</span> <span>25x</span></div>
+        <div class="pay-row"><span>🔔 🔔 🔔</span> <span>15x</span></div>
+        <div class="pay-row"><span>🍋 🍋 🍋</span> <span>10x</span></div>
+        <div class="pay-row"><span>🍒 🍒 🍒</span> <span>5x</span></div>
+        <div class="pay-row"><span>ANY PAIR</span> <span>1.5x</span></div>
+        <button class="spin-btn" style="margin-top:25px; font-size:1rem; padding:12px" onclick="togglePaytable(false)">Close</button>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
+        authDomain: "universalbet-427ce.firebaseapp.com",
+        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com",
+        projectId: "universalbet-427ce",
+        storageBucket: "universalbet-427ce.firebasestorage.app",
+        messagingSenderId: "804592033030",
+        appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    if (!user) { window.location.href = 'index.html'; }
+
+    const symbols = ['🍒', '🍋', '🔔', '💎', '7️⃣'];
+    const weighted = ['🍒','🍒','🍒','🍒','🍒','🍒','🍒','🍋','🍋','🍋','🍋','🍋','🔔','🔔','🔔','🔔','💎','💎','💎','7️⃣'];
+    let currentBalance = 0;
+
+    function initReels() {
+        [1,2,3].forEach(id => {
+            const strip = document.getElementById('strip'+id);
+            for(let i=0; i<45; i++) {
+                const div = document.createElement('div');
+                div.className = 'symbol';
+                div.innerText = symbols[Math.floor(Math.random()*symbols.length)];
+                strip.appendChild(div);
+            }
+        });
+    }
+    initReels();
+
+    db.ref('users/' + user.name.toLowerCase()).on('value', (snap) => {
+        if(snap.exists()) {
+            currentBalance = snap.val().balance;
+            document.getElementById('navBal').innerText = `$${currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+        }
+    });
+
+    function loadHistory() {
+        const saved = JSON.parse(localStorage.getItem('slotHistory_' + user.name)) || [];
+        const list = document.getElementById('winHistory');
+        list.innerHTML = saved.length ? "" : '<div style="color: var(--text-muted); text-align: center; margin-top: 40px; font-size: 12px;">No wins yet</div>';
+        saved.forEach(item => renderHistoryItem(item.amount, item.syms, item.time));
+    }
+
+    function addHistory(amount, syms) {
+        const now = new Date();
+        let hours = now.getHours();
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; 
+        const timeStr = `${hours}:${minutes} ${ampm}`;
+        
+        const saved = JSON.parse(localStorage.getItem('slotHistory_' + user.name)) || [];
+        saved.unshift({ amount, syms, time: timeStr });
+        if (saved.length > 4) saved.pop();
+        localStorage.setItem('slotHistory_' + user.name, JSON.stringify(saved));
+        loadHistory();
+    }
+
+    function clearHistory() {
+        if(confirm("Clear your win history?")) {
+            localStorage.removeItem('slotHistory_' + user.name);
+            loadHistory();
+        }
+    }
+
+    function renderHistoryItem(amount, syms, time) {
+        const list = document.getElementById('winHistory');
+        const div = document.createElement('div');
+        div.className = 'history-item';
+        div.innerHTML = `
+            <div class="hist-top">
+                <span class="hist-sym">${syms}</span>
+                <span class="hist-win">+$${amount.toFixed(2)}</span>
+            </div>
+            <div class="hist-time">${time}</div>
+        `;
+        list.appendChild(div);
+    }
+    loadHistory();
+
+    function togglePaytable(show) { document.getElementById('payModal').style.display = show ? 'flex' : 'none'; }
+
+    function spin() {
+        const bet = parseFloat(document.getElementById('betAmount').value);
+        if (isNaN(bet) || bet > currentBalance || bet <= 0) return alert("Invalid Bet!");
+        const btn = document.getElementById('spinBtn');
+        btn.disabled = true;
+        document.getElementById('status').innerText = "Spinning...";
+        db.ref('users/' + user.name.toLowerCase() + '/balance').set(currentBalance - bet);
+        const results = [
+            weighted[Math.floor(Math.random() * weighted.length)],
+            weighted[Math.floor(Math.random() * weighted.length)],
+            weighted[Math.floor(Math.random() * weighted.length)]
+        ];
+        [1,2,3].forEach((id, i) => {
+            const strip = document.getElementById('strip'+id);
+            const targetIndex = 40; 
+            strip.children[targetIndex].innerText = results[i];
+            strip.style.transition = 'none';
+            strip.style.top = '0px';
+            setTimeout(() => {
+                strip.style.transition = `top ${2 + (i*0.5)}s cubic-bezier(0.45, 0.05, 0.55, 0.95)`;
+                strip.style.top = `-${targetIndex * 130}px`;
+            }, 50);
+        });
+        setTimeout(() => {
+            checkWin(results, bet);
+            btn.disabled = false;
+        }, 3500);
+    }
+
+    function checkWin(res, bet) {
+        const status = document.getElementById('status');
+        let win = 0;
+        if (res[0] === res[1] && res[1] === res[2]) {
+            if (res[0] === '7️⃣') { 
+                win = 1000; status.style.color = "var(--gold)"; status.innerText = "🏆 JACKPOT!! 🏆"; 
+            } else {
+                const mult = res[0] === '💎' ? 25 : (res[0] === '🔔' ? 15 : (res[0] === '🍋' ? 10 : 5));
+                win = bet * mult; status.style.color = "var(--accent-green)"; status.innerText = "BIG WIN!";
+            }
+        } else if (res[0] === res[1] || res[1] === res[2] || res[0] === res[2]) {
+            win = bet * 1.5; status.style.color = "white"; status.innerText = "PAIR!";
+        } else {
+            status.style.color = "var(--text-muted)"; status.innerText = "Try Again";
+        }
+        if (win > 0) {
+            db.ref('users/' + user.name.toLowerCase() + '/balance').set(currentBalance + win);
+            addHistory(win, res.join(''));
+            if(win >= 50) db.ref('recent_wins').push({ name: user.name.toUpperCase(), amount: win, timestamp: Date.now() });
+        }
+    }
+</script>
+</body>
+</html>
