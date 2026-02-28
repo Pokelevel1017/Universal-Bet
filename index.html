@@ -107,11 +107,36 @@
         .btn-friend { background: #1e293b; color: white; border: 1px solid var(--light-blue); padding: 10px; border-radius: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: 800; transition: 0.3s; }
         .btn-friend:disabled { opacity: 0.5; cursor: not-allowed; }
         .friends-list-container { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
-        .friend-item { background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--mid-blue); display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .friend-item { background: var(--card-bg); padding: 15px; border-radius: 12px; border: 1px solid var(--mid-blue); display: flex; align-items: center; justify-content: space-between; cursor: pointer; position: relative; }
         .friend-item:hover { border-color: var(--light-blue); }
+        .unread-dot { width: 10px; height: 10px; background: var(--light-blue); border-radius: 50%; position: absolute; left: -5px; top: 50%; transform: translateY(-50%); box-shadow: 0 0 10px var(--light-blue); }
+        
         .request-actions { display: flex; gap: 8px; }
         .btn-accept { background: var(--accent-green); border: none; color: black; padding: 6px 12px; border-radius: 4px; font-weight: 900; cursor: pointer; }
         .btn-decline { background: #ef4444; border: none; color: white; padding: 6px 12px; border-radius: 4px; font-weight: 900; cursor: pointer; }
+
+        /* CHAT SYSTEM STYLES */
+        .chat-modal { width: 500px; max-width: 95vw; display: flex; flex-direction: column; height: 600px; padding: 0; overflow: hidden; text-align: left; }
+        .chat-header { background: #070b14; padding: 20px; border-bottom: 1px solid var(--mid-blue); display: flex; justify-content: space-between; align-items: center; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #0b1120; }
+        .message-wrapper { display: flex; flex-direction: column; width: 100%; }
+        .message { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 14px; line-height: 1.4; position: relative; }
+        .msg-sent { align-self: flex-end; background: var(--light-blue); color: var(--dark-blue); font-weight: 600; border-bottom-right-radius: 2px; }
+        .msg-received { align-self: flex-start; background: var(--mid-blue); color: white; border-bottom-left-radius: 2px; }
+        .msg-meta { font-size: 9px; color: var(--text-muted); margin-top: 4px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; }
+        .meta-sent { text-align: right; }
+        .meta-received { text-align: left; }
+        
+        /* TYPING INDICATOR */
+        .typing-bubble { display: none; align-self: flex-start; background: var(--mid-blue); padding: 12px 16px; border-radius: 12px; border-bottom-left-radius: 2px; margin-bottom: 10px; }
+        .dot { height: 6px; width: 6px; background: #94a3b8; border-radius: 50%; display: inline-block; margin-right: 3px; animation: bounce 1.4s infinite ease-in-out; }
+        .dot:nth-child(2) { animation-delay: 0.2s; }
+        .dot:nth-child(3) { animation-delay: 0.4s; margin-right: 0; }
+        @keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+
+        .chat-input-area { background: #070b14; padding: 15px; border-top: 1px solid var(--mid-blue); display: flex; gap: 10px; }
+        .chat-input-area input { flex: 1; background: #111827; border: 1px solid var(--mid-blue); border-radius: 8px; color: white; padding: 12px; outline: none; }
+        .btn-chat-send { background: var(--light-blue); border: none; padding: 0 20px; border-radius: 8px; font-weight: 900; cursor: pointer; }
 
         .footer { text-align: center; padding: 40px 0; color: #475569; font-weight: 700; font-size: 10px; letter-spacing: 2px; }
     </style>
@@ -150,6 +175,10 @@
         <div class="tab-nav">
             <button class="tab-btn active" onclick="switchTab('news')">Latest News</button>
             <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
+            <button class="tab-btn" onclick="switchTab('chatsTab')">
+                Chats
+                <span id="chatBadge" class="notify-badge"></span>
+            </button>
             <button class="tab-btn" onclick="switchTab('friendsTab')">
                 Friends
                 <span id="friendBadge" class="notify-badge"></span>
@@ -164,11 +193,6 @@
                         <span class="news-tag tag-update">FIX</span>
                         <h2 class="news-title">FIXED MONEY GLITCH</h2>
                         <p class="news-excerpt">Fixed money glitch with mines!!</p>
-                    </div>
-                    <div class="news-card">
-                        <span class="news-tag tag-update">NEWS</span>
-                        <h2 class="news-title">WHATS PLANNED FOR THE FUTURE?</h2>
-                        <p class="news-excerpt">We plan to add more games to make the website way more fun for example uno where you can bet!!</p>
                     </div>
                 </div>
 
@@ -191,6 +215,13 @@
                 </thead>
                 <tbody id="leaderboardBody"></tbody>
             </table>
+        </div>
+
+        <div id="chatsTab" class="tab-content">
+            <h3 style="font-size:12px; color:var(--text-muted); text-transform:uppercase;">Recent Conversations</h3>
+            <div id="conversationsList" class="friends-list-container">
+                <p style="color:var(--text-muted)">No active chats found.</p>
+            </div>
         </div>
 
         <div id="friendsTab" class="tab-content">
@@ -246,6 +277,23 @@
     </div>
 </div>
 
+<div class="modal-overlay" id="chatOverlay" style="display:none" onclick="if(event.target == this) closeChat()">
+    <div class="modal chat-modal">
+        <div class="chat-header">
+            <h2 id="chatWithTitle" style="margin:0; font-size:18px;">Chatting with...</h2>
+            <button onclick="closeChat()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">&times;</button>
+        </div>
+        <div id="chatMessages" class="chat-messages"></div>
+        <div id="typingIndicator" class="typing-bubble" style="margin-left: 20px;">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="chat-input-area">
+            <input type="text" id="chatInput" placeholder="Type a message..." onkeypress="if(event.key === 'Enter') sendChatMessage()">
+            <button class="btn-chat-send" onclick="sendChatMessage()">SEND</button>
+        </div>
+    </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 
@@ -264,6 +312,20 @@
     const db = firebase.database();
     let currentLocalUser = null;
     let lastKnownBalances = {}; 
+    let activeChatFriend = null;
+    let chatListener = null;
+    let typingTimeout = null;
+    let globalMsgListener = null;
+
+    const badWords = ["fuck", "shit", "bitch", "asshole", "dick", "pussy", "nigger", "cunt", "faggot", "bastard", "slut", "whore"];
+    function filterText(text) {
+        let filtered = text;
+        badWords.forEach(word => {
+            const regex = new RegExp(word, "gi");
+            filtered = filtered.replace(regex, "****");
+        });
+        return filtered;
+    }
 
     function checkAuth() {
         const localUser = JSON.parse(localStorage.getItem('currentUser'));
@@ -274,6 +336,7 @@
                     startLiveSync();
                     initPersistentFeed(); 
                     startPresence(); 
+                    listenForGlobalMessages();
                 } else {
                     localStorage.removeItem('currentUser');
                     document.getElementById('modalOverlay').style.display = 'flex';
@@ -322,17 +385,40 @@
                 updateUI(currentLocalUser);
                 checkRequestBadge();
                 if(document.getElementById('friendsTab').classList.contains('active')) fetchFriends();
+                if(document.getElementById('chatsTab').classList.contains('active')) fetchChatsList();
             }
         });
     }
 
     function checkRequestBadge() {
-        const badge = document.getElementById('friendBadge');
+        const fBadge = document.getElementById('friendBadge');
         if (currentLocalUser.requests && Object.keys(currentLocalUser.requests).length > 0) {
-            badge.style.display = 'block';
+            fBadge.style.display = 'block';
         } else {
-            badge.style.display = 'none';
+            fBadge.style.display = 'none';
         }
+    }
+
+    // LISTENS FOR ANY UNREAD MESSAGES GLOBALLY
+    function listenForGlobalMessages() {
+        if(globalMsgListener) globalMsgListener.off();
+        globalMsgListener = db.ref('chats');
+        globalMsgListener.on('value', (snap) => {
+            let hasUnread = false;
+            const myName = currentLocalUser.name.toLowerCase();
+            snap.forEach(chatSnap => {
+                if(chatSnap.key.includes(myName)) {
+                    chatSnap.forEach(msgSnap => {
+                        const msg = msgSnap.val();
+                        if(msg.sender !== myName && !msg.read) {
+                            hasUnread = true;
+                        }
+                    });
+                }
+            });
+            document.getElementById('chatBadge').style.display = hasUnread ? 'block' : 'none';
+            if(document.getElementById('chatsTab').classList.contains('active')) fetchChatsList();
+        });
     }
 
     function updateUI(user) {
@@ -382,6 +468,7 @@
         document.getElementById(tabId).classList.add('active');
         if(tabId === 'leaderboard') fetchLeaderboard();
         if(tabId === 'friendsTab') fetchFriends();
+        if(tabId === 'chatsTab') fetchChatsList();
     }
 
     function fetchLeaderboard() {
@@ -417,15 +504,11 @@
                 const timeStr = new Date(win.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
                 const item = document.createElement('div');
                 item.className = 'feed-item';
-                item.innerHTML = `
-                    <div class="feed-top"><span class="feed-user" onclick="viewProfile('${win.name}')">${win.name}</span><span class="feed-amount">+$${win.amount.toFixed(2)}</span></div>
-                    <div class="feed-time">${timeStr}</div>`;
+                item.innerHTML = `<div class="feed-top"><span class="feed-user" onclick="viewProfile('${win.name}')">${win.name}</span><span class="feed-amount">+$${win.amount.toFixed(2)}</span></div><div class="feed-time">${timeStr}</div>`;
                 feedContainer.appendChild(item);
             });
         });
     }
-
-    let currentViewingUser = "";
 
     function viewProfile(username) {
         db.ref('users').once('value', (snap) => {
@@ -435,32 +518,19 @@
             const userIdx = allUsers.findIndex(u => u.name.toLowerCase() === username.toLowerCase());
             const targetUser = allUsers[userIdx];
             if(!targetUser) return;
-
             currentViewingUser = targetUser.name.toLowerCase();
             document.getElementById('pUsername').innerText = targetUser.name;
             document.getElementById('pAvatar').innerText = targetUser.name.charAt(0).toUpperCase();
             document.getElementById('pBalance').innerText = `$${targetUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
             document.getElementById('pRank').innerText = `#${userIdx + 1}`;
-
             const friendBtn = document.getElementById('pFriendBtn');
-            if (currentViewingUser === currentLocalUser.name.toLowerCase()) {
-                friendBtn.style.display = 'none';
-            } else {
-                friendBtn.style.display = 'block';
-                friendBtn.disabled = false;
+            if (currentViewingUser === currentLocalUser.name.toLowerCase()) { friendBtn.style.display = 'none'; } else {
+                friendBtn.style.display = 'block'; friendBtn.disabled = false;
                 const isFriend = currentLocalUser.friends && currentLocalUser.friends[currentViewingUser];
                 const hasSentRequest = targetUser.requests && targetUser.requests[currentLocalUser.name.toLowerCase()];
-
-                if (isFriend) {
-                    friendBtn.innerText = "Remove Friend";
-                    friendBtn.onclick = removeFriend;
-                } else if (hasSentRequest) {
-                    friendBtn.innerText = "Request Pending...";
-                    friendBtn.disabled = true;
-                } else {
-                    friendBtn.innerText = "+ Send Request";
-                    friendBtn.onclick = sendFriendRequest;
-                }
+                if (isFriend) { friendBtn.innerText = "Remove Friend"; friendBtn.onclick = removeFriend; }
+                else if (hasSentRequest) { friendBtn.innerText = "Request Pending..."; friendBtn.disabled = true; }
+                else { friendBtn.innerText = "+ Send Request"; friendBtn.onclick = sendFriendRequest; }
             }
             document.getElementById('profileOverlay').style.display = 'flex';
         });
@@ -493,7 +563,6 @@
         const friendsList = document.getElementById('friendsList');
         const reqList = document.getElementById('requestsList');
         const reqTitle = document.getElementById('requestTitle');
-
         db.ref('users').once('value', (snap) => {
             reqList.innerHTML = "";
             const requests = currentLocalUser.requests ? Object.keys(currentLocalUser.requests) : [];
@@ -502,19 +571,10 @@
                 requests.forEach(reqName => {
                     const item = document.createElement('div');
                     item.className = 'friend-item';
-                    item.innerHTML = `
-                        <span style="font-weight:800;">${reqName.toUpperCase()}</span>
-                        <div class="request-actions">
-                            <button class="btn-accept" onclick="acceptRequest('${reqName}')">Accept</button>
-                            <button class="btn-decline" onclick="declineRequest('${reqName}')">✕</button>
-                        </div>
-                    `;
+                    item.innerHTML = `<span style="font-weight:800;">${reqName.toUpperCase()}</span><div class="request-actions"><button class="btn-accept" onclick="acceptRequest('${reqName}')">Accept</button><button class="btn-decline" onclick="declineRequest('${reqName}')">✕</button></div>`;
                     reqList.appendChild(item);
                 });
-            } else {
-                reqTitle.style.display = 'none';
-            }
-
+            } else { reqTitle.style.display = 'none'; }
             friendsList.innerHTML = "";
             const friends = currentLocalUser.friends ? Object.keys(currentLocalUser.friends) : [];
             if (friends.length > 0) {
@@ -523,20 +583,120 @@
                     if (userData) {
                         const item = document.createElement('div');
                         item.className = 'friend-item';
-                        item.onclick = () => viewProfile(userData.name);
-                        item.innerHTML = `
-                            <div style="display:flex; align-items:center; gap:10px;">
-                                <div class="profile-avatar" style="width:30px; height:30px; font-size:12px;">${userData.name.charAt(0).toUpperCase()}</div>
-                                <span style="font-weight:800;">${userData.name.toUpperCase()}</span>
-                            </div>
-                        `;
+                        item.onclick = () => openChat(userData.name);
+                        item.innerHTML = `<div style="display:flex; align-items:center; gap:10px;"><div class="profile-avatar" style="width:30px; height:30px; font-size:12px;">${userData.name.charAt(0).toUpperCase()}</div><span style="font-weight:800;">${userData.name.toUpperCase()}</span></div><span style="font-size:10px; color:var(--light-blue); font-weight:800;">MESSAGE ></span>`;
                         friendsList.appendChild(item);
                     }
                 });
-            } else {
-                friendsList.innerHTML = '<p style="color:var(--text-muted)">No friends yet.</p>';
-            }
+            } else { friendsList.innerHTML = '<p style="color:var(--text-muted)">No friends yet.</p>'; }
         });
+    }
+
+    // FETCHES ALL ACTIVE CONVERSATIONS FOR THE CHATS TAB
+    function fetchChatsList() {
+        const conversationsList = document.getElementById('conversationsList');
+        const myName = currentLocalUser.name.toLowerCase();
+        
+        db.ref('chats').once('value', (snap) => {
+            conversationsList.innerHTML = "";
+            let chatFound = false;
+            snap.forEach(chatSnap => {
+                if(chatSnap.key.includes(myName)) {
+                    chatFound = true;
+                    const participants = chatSnap.key.split('_');
+                    const friendName = participants.find(p => p !== myName);
+                    
+                    let unreadCount = 0;
+                    let lastMsg = "No messages yet";
+                    chatSnap.forEach(msgSnap => {
+                        const m = msgSnap.val();
+                        lastMsg = m.text;
+                        if(m.sender !== myName && !m.read) unreadCount++;
+                    });
+
+                    const item = document.createElement('div');
+                    item.className = 'friend-item';
+                    item.onclick = () => openChat(friendName);
+                    item.innerHTML = `
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            ${unreadCount > 0 ? '<div class="unread-dot"></div>' : ''}
+                            <div class="profile-avatar" style="width:35px; height:35px; font-size:14px;">${friendName.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <div style="font-weight:800;">${friendName.toUpperCase()}</div>
+                                <div style="font-size:11px; color:var(--text-muted); width:150px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${lastMsg}</div>
+                            </div>
+                        </div>
+                        <span style="font-size:10px; color:${unreadCount > 0 ? 'var(--light-blue)' : 'var(--text-muted)'}; font-weight:800;">${unreadCount > 0 ? unreadCount + ' NEW' : 'VIEW'}</span>
+                    `;
+                    conversationsList.appendChild(item);
+                }
+            });
+            if(!chatFound) conversationsList.innerHTML = '<p style="color:var(--text-muted)">No active chats. Start one from the Friends tab!</p>';
+        });
+    }
+
+    /* CHAT CORE */
+    function openChat(friendName) {
+        activeChatFriend = friendName.toLowerCase();
+        document.getElementById('chatWithTitle').innerText = `Chat with ${friendName.toUpperCase()}`;
+        document.getElementById('chatOverlay').style.display = 'flex';
+        const myName = currentLocalUser.name.toLowerCase();
+        const chatId = [myName, activeChatFriend].sort().join('_');
+        if(chatListener) chatListener.off();
+        db.ref(`typing/${chatId}/${activeChatFriend}`).on('value', (snap) => {
+            document.getElementById('typingIndicator').style.display = snap.val() ? 'block' : 'none';
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+        chatListener = db.ref(`chats/${chatId}`).limitToLast(50);
+        chatListener.on('value', (snap) => {
+            const messagesContainer = document.getElementById('chatMessages');
+            messagesContainer.innerHTML = "";
+            snap.forEach(child => {
+                const msg = child.val();
+                const isSent = msg.sender === myName;
+                if(!isSent && !msg.read) { db.ref(`chats/${chatId}/${child.key}`).update({read: true}); }
+                const dateObj = new Date(msg.timestamp);
+                const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const dateStr = dateObj.toLocaleDateString([], {month: 'short', day: 'numeric'});
+                const receipt = isSent ? (msg.read ? " • Read" : " • Sent") : "";
+                const wrapper = document.createElement('div');
+                wrapper.className = 'message-wrapper';
+                wrapper.innerHTML = `<div class="message ${isSent ? 'msg-sent' : 'msg-received'}">${msg.text}</div><div class="msg-meta ${isSent ? 'meta-sent' : 'meta-received'}">${dateStr} • ${timeStr}${receipt}</div>`;
+                messagesContainer.appendChild(wrapper);
+            });
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        });
+        document.getElementById('chatInput').oninput = () => {
+            db.ref(`typing/${chatId}/${myName}`).set(true);
+            clearTimeout(typingTimeout);
+            typingTimeout = setTimeout(() => db.ref(`typing/${chatId}/${myName}`).set(false), 2000);
+        };
+    }
+
+    function sendChatMessage() {
+        const input = document.getElementById('chatInput');
+        const rawText = input.value.trim();
+        if (!rawText || !activeChatFriend) return;
+        const myName = currentLocalUser.name.toLowerCase();
+        const chatId = [myName, activeChatFriend].sort().join('_');
+        const cleanText = filterText(rawText);
+        db.ref(`chats/${chatId}`).push({ sender: myName, text: cleanText, timestamp: Date.now(), read: false });
+        db.ref(`typing/${chatId}/${myName}`).set(false);
+        input.value = "";
+    }
+
+    function closeChat() {
+        if(activeChatFriend) {
+            const myName = currentLocalUser.name.toLowerCase();
+            const chatId = [myName, activeChatFriend].sort().join('_');
+            db.ref(`typing/${chatId}/${myName}`).set(false);
+            db.ref(`typing/${chatId}/${activeChatFriend}`).off();
+        }
+        if(chatListener) chatListener.off();
+        document.getElementById('chatOverlay').style.display = 'none';
+        activeChatFriend = null;
+        fetchChatsList(); // Refresh the list to clear dots
     }
 
     checkAuth();
