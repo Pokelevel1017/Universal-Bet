@@ -242,6 +242,11 @@
         revealedCount = 0;
         mineLocations = [];
         
+        // Lock inputs
+        document.getElementById('gridSize').disabled = true;
+        document.getElementById('mineSlider').disabled = true;
+        document.getElementById('betAmount').disabled = true;
+
         db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
 
         const size = parseInt(document.getElementById('gridSize').value);
@@ -297,6 +302,12 @@
 
     function gameOver(isWin) {
         activeGame = false;
+        
+        // Re-enable inputs
+        document.getElementById('gridSize').disabled = false;
+        document.getElementById('mineSlider').disabled = false;
+        document.getElementById('betAmount').disabled = false;
+
         const tiles = document.querySelectorAll('.tile');
         
         tiles.forEach((t, i) => {
