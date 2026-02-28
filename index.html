@@ -102,8 +102,6 @@
         .profile-stat-label { color: var(--text-muted); font-weight: 600; font-size: 13px; }
         .profile-stat-value { font-weight: 800; font-size: 14px; }
         .value-green { color: var(--accent-green); }
-        .status-online { color: var(--accent-green); font-weight: 900; }
-        .status-offline { color: #ef4444; font-weight: 900; }
 
         /* FRIENDS STYLING */
         .btn-friend { background: #1e293b; color: white; border: 1px solid var(--light-blue); padding: 10px; border-radius: 8px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: 800; transition: 0.3s; }
@@ -163,14 +161,14 @@
             <div class="news-container">
                 <div class="news-main">
                     <div class="news-card">
-                        <span class="news-tag tag-update">GAME</span>
-                        <h2 class="news-title">NEW GAME! (SLOTS)</h2>
-                        <p class="news-excerpt">Try out the new game to the website we have officialy added slots!</p>
+                        <span class="news-tag tag-update">FIX</span>
+                        <h2 class="news-title">FIXED MONEY GLITCH</h2>
+                        <p class="news-excerpt">Fixed money glitch with mines!!</p>
                     </div>
                     <div class="news-card">
-                        <span class="news-tag tag-update">Notice</span>
-                        <h2 class="news-title">BONUS UPDATE</h2>
-                        <p class="news-excerpt">Changed it so you get 10 dollars every 5 minutes enjoy!!!</p>
+                        <span class="news-tag tag-update">NEWS</span>
+                        <h2 class="news-title">WHATS PLANNED FOR THE FUTURE?</h2>
+                        <p class="news-excerpt">We plan to add more games to make the website way more fun for example uno where you can bet!!</p>
                     </div>
                 </div>
 
@@ -234,10 +232,6 @@
                 <h2 class="profile-username" id="pUsername">USER</h2>
                 <span style="font-size:10px; color:var(--text-muted); font-weight:800;">PLAYER PROFILE</span>
             </div>
-        </div>
-        <div class="profile-stat-row">
-            <span class="profile-stat-label">Current Status</span>
-            <span class="profile-stat-value" id="pStatus">---</span>
         </div>
         <div class="profile-stat-row">
             <span class="profile-stat-label">Leaderboard Rank</span>
@@ -353,7 +347,6 @@
     }
 
     function updateTimer(user) {
-        // Updated to 5 minutes (300,000 ms)
         const bonusInterval = 5 * 60 * 1000;
         const diff = bonusInterval - (Date.now() - (user.lastBonus || 0));
         const timerText = document.getElementById('headerTimer');
@@ -364,7 +357,6 @@
             timerText.innerText = `${m}M ${s}S`;
             rewardBox.style.opacity = "0.5"; rewardBox.style.pointerEvents = "none";
         } else {
-            // Updated reward label to $10.00
             timerText.innerText = "Claim $10.00";
             rewardBox.style.opacity = "1"; rewardBox.style.pointerEvents = "auto";
         }
@@ -375,7 +367,7 @@
             if(u){ 
                 const bonusInterval = 5 * 60 * 1000;
                 if(Date.now() - (u.lastBonus || 0) >= bonusInterval) {
-                    u.balance += 10.00; // Updated reward amount to 10 dollars
+                    u.balance += 10.00; 
                     u.lastBonus = Date.now();
                 }
             }
@@ -449,11 +441,6 @@
             document.getElementById('pAvatar').innerText = targetUser.name.charAt(0).toUpperCase();
             document.getElementById('pBalance').innerText = `$${targetUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
             document.getElementById('pRank').innerText = `#${userIdx + 1}`;
-
-            const isOnline = (Date.now() - (targetUser.lastSeen || 0)) < 60000;
-            const statusEl = document.getElementById('pStatus');
-            statusEl.innerText = isOnline ? "ONLINE" : "OFFLINE";
-            statusEl.className = isOnline ? "profile-stat-value status-online" : "profile-stat-value status-offline";
 
             const friendBtn = document.getElementById('pFriendBtn');
             if (currentViewingUser === currentLocalUser.name.toLowerCase()) {
@@ -534,7 +521,6 @@
                 friends.forEach(fName => {
                     const userData = snap.child(fName).val();
                     if (userData) {
-                        const isOnline = (Date.now() - (userData.lastSeen || 0)) < 60000;
                         const item = document.createElement('div');
                         item.className = 'friend-item';
                         item.onclick = () => viewProfile(userData.name);
@@ -543,7 +529,6 @@
                                 <div class="profile-avatar" style="width:30px; height:30px; font-size:12px;">${userData.name.charAt(0).toUpperCase()}</div>
                                 <span style="font-weight:800;">${userData.name.toUpperCase()}</span>
                             </div>
-                            <span class="${isOnline ? 'status-online' : 'status-offline'}" style="font-size:10px;">${isOnline ? 'ONLINE' : 'OFFLINE'}</span>
                         `;
                         friendsList.appendChild(item);
                     }
