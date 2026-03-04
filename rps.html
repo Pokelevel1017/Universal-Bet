@@ -352,12 +352,17 @@
         scissors: { emoji: '✌️', beats: 'paper' }
     };
 
+    // Two-Decimal Enforcer
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function init() {
-        if (!user) window.location.href = 'index.html';
+        if (!user) return window.location.href = 'index.html';
         db.ref('users/' + user.name.toLowerCase()).on('value', (s) => {
             if(s.exists()){
                 user = s.val();
-                document.getElementById('balDisp').innerText = user.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('balDisp').innerText = parseFloat(user.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
     }
@@ -376,7 +381,7 @@
     }
 
     async function playGame() {
-        const bet = parseFloat(document.getElementById('betAmt').value);
+        const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
         if (!selectedMove) return alert("Select your move!");
         if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
@@ -394,7 +399,8 @@
         pHand.classList.add('shaking');
         dHand.classList.add('shaking');
 
-        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
+        // Initial deduction
+        await db.ref('users/' + user.name.toLowerCase() + '/balance').set(cleanMoney(user.balance - bet));
 
         setTimeout(async () => {
             pHand.classList.remove('shaking');
@@ -407,11 +413,18 @@
             dHand.innerText = moves[dealerMove].emoji;
 
             if (selectedMove === dealerMove) {
-                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet; return u; });
+                // Return bet
+                db.ref('users/' + user.name.toLowerCase() + '/balance').transaction(current => {
+                    return cleanMoney((current || 0) + bet);
+                });
                 status.innerText = "DRAW!";
                 status.style.color = "var(--text-muted)";
             } else if (moves[selectedMove].beats === dealerMove) {
-                await db.ref('users/' + user.name.toLowerCase()).transaction(u => { if(u) u.balance += bet * 1.95; return u; });
+                // Win 1.95x
+                const winAmount = cleanMoney(bet * 1.95);
+                db.ref('users/' + user.name.toLowerCase() + '/balance').transaction(current => {
+                    return cleanMoney((current || 0) + winAmount);
+                });
                 status.innerText = "YOU WIN!";
                 status.style.color = "var(--accent-green)";
             } else {
