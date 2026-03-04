@@ -44,7 +44,7 @@
         .game-layout { display: flex; gap: 20px; width: 100%; max-width: 1100px; min-height: 600px; }
 
         .game-sidebar { width: 300px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-        .table-area { flex: 1; background: radial-gradient(circle at center, #1c2536 0%, #0e121b 100%); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; }
+        .table-area { flex: 1; background: radial-gradient(circle at center, #1c2536 0%, #0e121b 100%); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
 
         .section-header { font-family: var(--font-condensed); font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
 
@@ -69,12 +69,12 @@
         .tower-row.completed { opacity: 0.6; pointer-events: none; }
 
         .row-multiplier { width: 60px; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-weight: 700; font-size: 12px; color: var(--text-muted); background: #0a0e17; border-radius: 4px; }
-        .active .row-multiplier { color: var(--primary-blue); }
+        .active .row-multiplier { color: var(--primary-blue); border: 1px solid var(--primary-blue); }
 
-        .tower-cell { flex: 1; height: 50px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.2s; }
+        .tower-cell { flex: 1; height: 50px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.2s; user-select: none; }
         .tower-cell:hover { background: #242e42; border-color: var(--primary-blue); }
-        .tower-cell.win { background: var(--accent-green); border-color: var(--accent-green); color: #000; }
-        .tower-cell.loss { background: var(--danger-red); border-color: var(--danger-red); }
+        .tower-cell.win { background: var(--accent-green) !important; border-color: var(--accent-green); color: #000; }
+        .tower-cell.loss { background: var(--danger-red) !important; border-color: var(--danger-red); }
 
         .status-msg { height: 30px; font-family: var(--font-condensed); font-weight: 800; font-size: 20px; margin-bottom: 15px; text-transform: uppercase; }
 
@@ -166,6 +166,7 @@
     const db = firebase.database();
 
     let user = JSON.parse(localStorage.getItem('currentUser'));
+    let currentBal = 0;
     let currentLevel = 0;
     let isPlaying = false;
     let difficulty = 'easy';
@@ -176,12 +177,17 @@
         hard:   { tiles: 3, bombs: 2, mults: [2.94, 8.82, 26.4, 79.3, 238, 714, 2142, 6426] }
     };
 
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function init() {
-        if(!user) window.location.href = 'index.html';
+        if(!user) return window.location.href = 'index.html';
+        
         db.ref('users/' + user.name.toLowerCase()).on('value', (s) => {
             if(s.exists()){
-                user = s.val();
-                document.getElementById('balDisp').innerText = user.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                currentBal = s.val().balance;
+                document.getElementById('balDisp').innerText = currentBal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
         createGrid();
@@ -195,7 +201,9 @@
         createGrid();
     }
 
-    function setMaxBet() { if(user) document.getElementById('betAmt').value = user.balance.toFixed(2); }
+    function setMaxBet() { 
+        document.getElementById('betAmt').value = currentBal.toFixed(2); 
+    }
 
     function createGrid() {
         const grid = document.getElementById('towerGrid');
@@ -223,10 +231,11 @@
     }
 
     async function startGame() {
-        const bet = parseFloat(document.getElementById('betAmt').value);
-        if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
+        const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
+        if (isNaN(bet) || bet > currentBal || bet <= 0) return alert("Invalid Bet or Insufficient Balance");
 
-        await db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
+        // Deduct Bet
+        await db.ref('users/' + user.name.toLowerCase()).update({ balance: cleanMoney(currentBal - bet) });
         
         isPlaying = true;
         currentLevel = 0;
@@ -234,6 +243,7 @@
         document.getElementById('cashBtn').style.display = 'block';
         document.getElementById('cashBtn').innerText = `Cashout ($0.00)`;
         document.getElementById('status-text').innerText = "";
+        document.querySelectorAll('.diff-btn').forEach(b => b.disabled = true);
         
         createGrid();
         updateActiveRow();
@@ -249,10 +259,11 @@
         if(row) row.classList.add('active');
     }
 
-    async function handleChoice(rowIdx, cellIdx) {
+    function handleChoice(rowIdx, cellIdx) {
         if (!isPlaying || rowIdx !== currentLevel) return;
 
         const config = gameSettings[difficulty];
+        // Generate random bomb positions for this specific row click
         let bombIndices = [];
         while(bombIndices.length < config.bombs) {
             let r = Math.floor(Math.random() * config.tiles);
@@ -263,19 +274,31 @@
         const cells = rowEl.querySelectorAll('.tower-cell');
 
         if (!bombIndices.includes(cellIdx)) {
+            // Hit a Diamond
             cells[cellIdx].classList.add('win');
             cells[cellIdx].innerText = '💎';
             currentLevel++;
             
-            const bet = parseFloat(document.getElementById('betAmt').value);
-            const currentWin = bet * config.mults[currentLevel-1];
+            const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
+            const currentWin = cleanMoney(bet * config.mults[currentLevel-1]);
             document.getElementById('cashBtn').innerText = `Cashout ($${currentWin.toFixed(2)})`;
             
-            if (currentLevel === 8) cashout();
-            else updateActiveRow();
+            if (currentLevel === 8) {
+                cashout(); // Auto cashout at top
+            } else {
+                updateActiveRow();
+            }
         } else {
+            // Hit a Bomb
             cells[cellIdx].classList.add('loss');
             cells[cellIdx].innerText = '💥';
+            
+            // Show other bombs in this row
+            bombIndices.forEach(idx => {
+                cells[idx].innerText = '💥';
+                cells[idx].classList.add('loss');
+            });
+
             gameOver();
         }
     }
@@ -284,32 +307,34 @@
         isPlaying = false;
         document.getElementById('status-text').innerText = "COLLAPSED";
         document.getElementById('status-text').style.color = "var(--danger-red)";
+        
         setTimeout(() => {
-            document.getElementById('startBtn').style.display = 'block';
-            document.getElementById('cashBtn').style.display = 'none';
-            createGrid();
-        }, 1500);
+            resetUI();
+        }, 2000);
     }
 
     async function cashout() {
         if (!isPlaying || currentLevel === 0) return;
-        const bet = parseFloat(document.getElementById('betAmt').value);
-        const win = bet * gameSettings[difficulty].mults[currentLevel-1];
         
-        await db.ref('users/' + user.name.toLowerCase()).transaction(u => {
-            if(u) u.balance += win;
-            return u;
-        });
+        const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
+        const win = cleanMoney(bet * gameSettings[difficulty].mults[currentLevel-1]);
+        
+        await db.ref('users/' + user.name.toLowerCase() + '/balance').transaction(curr => cleanMoney((curr || 0) + win));
 
         document.getElementById('status-text').innerText = `+$${win.toFixed(2)}`;
         document.getElementById('status-text').style.color = "var(--accent-green)";
         isPlaying = false;
         
         setTimeout(() => {
-            document.getElementById('startBtn').style.display = 'block';
-            document.getElementById('cashBtn').style.display = 'none';
-            createGrid();
-        }, 1500);
+            resetUI();
+        }, 2000);
+    }
+
+    function resetUI() {
+        document.getElementById('startBtn').style.display = 'block';
+        document.getElementById('cashBtn').style.display = 'none';
+        document.querySelectorAll('.diff-btn').forEach(b => b.disabled = false);
+        createGrid();
     }
 
     init();
