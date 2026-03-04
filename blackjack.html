@@ -311,12 +311,17 @@
 
     let deck = [], pHand = [], dHand = [], currentBet = 0, isGameOver = false;
 
+    // Helper to enforce two decimal places strictly
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function init() {
         if (!currentLocalUser) return window.location.href = 'index.html';
         db.ref('users/' + currentLocalUser.name).on('value', snap => {
             if (snap.exists()) {
                 currentLocalUser = snap.val();
-                document.getElementById('navBal').innerText = currentLocalUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('navBal').innerText = parseFloat(currentLocalUser.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
     }
@@ -351,10 +356,10 @@
     }
 
     function startGame() {
-        currentBet = parseFloat(document.getElementById('betAmount').value);
+        currentBet = cleanMoney(parseFloat(document.getElementById('betAmount').value));
         if (isNaN(currentBet) || currentBet > currentLocalUser.balance || currentBet <= 0) return alert("Invalid Bet");
 
-        db.ref('users/'+currentLocalUser.name+'/balance').set(currentLocalUser.balance - currentBet);
+        db.ref('users/'+currentLocalUser.name+'/balance').set(cleanMoney(currentLocalUser.balance - currentBet));
 
         pHand = []; dHand = []; isGameOver = false;
         document.getElementById('playerCards').innerHTML = '';
@@ -376,7 +381,7 @@
         document.getElementById('playerScore').innerText = getVal(pHand);
         document.getElementById('dealerScore').innerText = "?";
 
-        if(getVal(pHand) === 21) endRound("BLACKJACK", currentBet * 2.5);
+        if(getVal(pHand) === 21) endRound("BLACKJACK", cleanMoney(currentBet * 2.5));
     }
 
     function hit() {
@@ -391,8 +396,8 @@
 
     function doubleDown() {
         if(currentLocalUser.balance < currentBet) return alert("Low balance");
-        db.ref('users/'+currentLocalUser.name+'/balance').set(currentLocalUser.balance - currentBet);
-        currentBet *= 2;
+        db.ref('users/'+currentLocalUser.name+'/balance').set(cleanMoney(currentLocalUser.balance - currentBet));
+        currentBet = cleanMoney(currentBet * 2);
         hit();
         if(!isGameOver) stand();
     }
@@ -414,8 +419,8 @@
             } else {
                 clearInterval(dealerLoop);
                 const pv = getVal(pHand);
-                if(dv > 21 || pv > dv) endRound("WINNER", currentBet * 2);
-                else if(pv === dv) endRound("PUSH", currentBet);
+                if(dv > 21 || pv > dv) endRound("WINNER", cleanMoney(currentBet * 2));
+                else if(pv === dv) endRound("PUSH", cleanMoney(currentBet));
                 else endRound("DEALER WINS", 0);
             }
         }, 600);
@@ -429,7 +434,7 @@
         status.style.color = payout > currentBet ? 'var(--accent-green)' : (payout === 0 ? '#e11d48' : '#fff');
         
         if(payout > 0) {
-            db.ref('users/'+currentLocalUser.name+'/balance').set(currentLocalUser.balance + payout);
+            db.ref('users/'+currentLocalUser.name+'/balance').set(cleanMoney(currentLocalUser.balance + payout));
         }
 
         setTimeout(() => {
