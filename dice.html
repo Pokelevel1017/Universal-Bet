@@ -325,12 +325,17 @@
     const db = firebase.database();
     let currentLocalUser = JSON.parse(localStorage.getItem('currentUser'));
 
+    // Two-Decimal Enforcer
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function init() {
         if (!currentLocalUser) return window.location.href = 'index.html';
         db.ref('users/' + currentLocalUser.name).on('value', snap => {
             if (snap.exists()) {
                 currentLocalUser = snap.val();
-                document.getElementById('navBal').innerText = currentLocalUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('navBal').innerText = parseFloat(currentLocalUser.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
         updateStats();
@@ -347,7 +352,6 @@
         const val = slider.value;
         document.getElementById('targetDisplay').innerText = val;
         
-        // Update slider track gradient position
         slider.style.setProperty('--range-pct', val + '%');
 
         const chance = 100 - val;
@@ -357,12 +361,14 @@
     }
 
     function rollDice() {
-        const bet = parseFloat(document.getElementById('betAmount').value);
+        const bet = cleanMoney(parseFloat(document.getElementById('betAmount').value));
         const target = parseFloat(document.getElementById('rollSlider').value);
         
         if (isNaN(bet) || bet <= 0 || bet > currentLocalUser.balance) return alert("Invalid Bet");
 
-        db.ref('users/' + currentLocalUser.name + '/balance').set(currentLocalUser.balance - bet);
+        // Deduct bet safely
+        const balanceAfterBet = cleanMoney(currentLocalUser.balance - bet);
+        db.ref('users/' + currentLocalUser.name + '/balance').set(balanceAfterBet);
 
         const result = (Math.random() * 100).toFixed(2);
         const display = document.getElementById('rollResult');
@@ -372,10 +378,12 @@
         const mult = 99 / chance;
 
         if (parseFloat(result) > target) {
-            const winAmount = bet * mult;
+            const winAmount = cleanMoney(bet * mult);
             display.style.color = 'var(--accent-green)';
             display.style.borderColor = 'var(--accent-green)';
-            db.ref('users/' + currentLocalUser.name + '/balance').set(currentLocalUser.balance + winAmount);
+            
+            // Add win to the balance we had AFTER the bet was deducted
+            db.ref('users/' + currentLocalUser.name + '/balance').set(cleanMoney(balanceAfterBet + winAmount));
         } else {
             display.style.color = 'var(--danger-red)';
             display.style.borderColor = 'var(--danger-red)';
