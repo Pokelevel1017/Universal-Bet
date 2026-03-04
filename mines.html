@@ -3,114 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bet | Mines</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <title>Universal-Bets | Mines</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --dark-blue: #0b1120; --mid-blue: #1e293b; --light-blue: #38bdf8; 
-            --accent-green: #00e701; --card-bg: #111827; --text-muted: #94a3b8;
-            --danger-red: #ef4444; --tile-bg: #2d3748;
+        :root {
+            --bg-body: #0e121b;
+            --bg-sidebar: #131926;
+            --bg-card: #1a2232;
+            --bg-header: #131926;
+            --primary-blue: #007aff;
+            --accent-green: #00e701;
+            --danger-red: #e11d48;
+            --text-main: #ffffff;
+            --text-muted: #8a96aa;
+            --border-color: #242e42;
+            --font-main: 'Inter', sans-serif;
+            --font-condensed: 'Roboto Condensed', sans-serif;
+            --tile-bg: #242e42;
+            --tile-hover: #2c394f;
         }
 
-        body { background-color: var(--dark-blue); color: white; font-family: 'Inter', sans-serif; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            font-family: var(--font-main); 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
 
-        /* NAV */
-        nav { background: #070b14; padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 75px; border-bottom: 1px solid var(--mid-blue); flex-shrink: 0; z-index: 100; }
-        .logo { font-size: 1.5rem; font-weight: 900; cursor: pointer; }
-        .logo span { color: var(--light-blue); }
-        .balance-box { background: var(--mid-blue); padding: 10px 20px; border-radius: 8px; font-weight: 800; color: var(--accent-green); border: 1px solid rgba(56, 189, 248, 0.2); font-size: 1.1rem; }
+        /* --- NAVIGATION --- */
+        nav { 
+            background: var(--bg-header); 
+            padding: 0 1.5rem; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            height: 60px; 
+            border-bottom: 1px solid var(--border-color); 
+            z-index: 1000; 
+        }
+        .logo { font-family: var(--font-condensed); font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; color: #fff; text-decoration: none; }
+        .logo span { color: var(--primary-blue); }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .balance-pill { display: flex; align-items: center; background: #0a0e17; border: 1px solid var(--border-color); border-radius: 50px; padding: 4px 14px 4px 6px; }
+        .currency-icon { width: 22px; height: 22px; background: linear-gradient(135deg, #1d2b44, #121926); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-weight: 800; font-size: 12px; margin-right: 10px; }
+        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 15px; }
 
-        /* LAYOUT */
-        .main-content { display: flex; flex: 1; overflow: hidden; }
+        /* --- LAYOUT --- */
+        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
+        .sidebar { width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 10px 0; display: flex; flex-direction: column; flex-shrink: 0; }
+        .sidebar-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; padding: 25px 20px 8px; letter-spacing: 1px; }
+        .side-link { padding: 10px 20px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 12px; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
+        .side-link:hover, .active-link { background: rgba(255,255,255,0.03); color: #fff; border-left-color: var(--primary-blue); }
 
-        .sidebar { width: 260px; background: #070b14; border-right: 1px solid var(--mid-blue); padding: 20px 12px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
-        .sidebar-label { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin: 20px 0 10px 15px; letter-spacing: 1px; }
-        .side-link { padding: 12px 15px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-weight: 600; transition: 0.2s; display: flex; align-items: center; gap: 12px; font-size: 14px; }
-        .side-link:hover, .active-link { background: var(--mid-blue); color: white; }
-
-        /* GAME AREA */
-        .game-area { flex: 1; padding: 40px; display: flex; gap: 50px; justify-content: center; align-items: flex-start; background: radial-gradient(circle at top left, #1e293b, #0b1120); overflow-y: auto; }
+        /* --- MINES GAME ENGINE UI --- */
+        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; align-items: center; }
         
-        .controls { width: 340px; background: var(--card-bg); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .input-group { margin-bottom: 22px; }
-        label { display: block; font-size: 11px; font-weight: 900; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; letter-spacing: 0.5px; }
+        .game-layout {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            height: 540px;
+            align-items: stretch;
+        }
+
+        .game-sidebar {
+            width: 300px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-shrink: 0; 
+        }
+
+        .table-area {
+            flex: 1;
+            background: radial-gradient(circle at center, #1c2536 0%, #0e121b 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .section-header {
+            font-family: var(--font-condensed);
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .bet-input-wrapper {
+            background: #0a0e17;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            padding: 10px 14px;
+        }
+
+        .bet-input-wrapper input, .bet-input-wrapper select {
+            background: #0a0e17; /* Explicit background */
+            border: none;
+            color: #fff;
+            width: 100%;
+            font-weight: 700;
+            outline: none;
+            font-size: 15px;
+            appearance: none; /* Removes default browser arrows */
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        /* DARK DROPDOWN FIX */
+        .bet-input-wrapper select option {
+            background-color: var(--bg-sidebar);
+            color: #fff;
+            padding: 10px;
+        }
+
+        .max-btn {
+            background: var(--border-color);
+            border: none;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .max-btn:hover { background: var(--primary-blue); }
+
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-family: var(--font-condensed);
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+            font-size: 15px;
+        }
+        .btn-primary { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 0 #0056b3; }
+        .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #0056b3; }
         
-        input, select { 
-            width: 100%; background: #070b14; border: 2px solid var(--mid-blue); color: white; 
-            padding: 14px; border-radius: 12px; font-weight: 700; outline: none; transition: 0.2s;
+        .btn-success { background: var(--accent-green); color: #000; display: none; box-shadow: 0 4px 0 #009e01; }
+        .btn-success:active { transform: translateY(2px); box-shadow: 0 2px 0 #009e01; }
+
+        .multiplier-display {
+            background: #0a0e17;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+        .multiplier-display .val { font-family: var(--font-condensed); font-weight: 800; color: var(--accent-green); font-size: 24px; }
+
+        .grid-container {
+            width: 460px;
+            height: 460px;
+            display: grid;
+            gap: 10px;
+            padding: 10px;
             box-sizing: border-box;
         }
-        input:focus { border-color: var(--light-blue); }
-        
-        input[type="range"] { -webkit-appearance: none; height: 8px; background: var(--mid-blue); border: none; padding: 0; }
-        input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; background: var(--light-blue); border-radius: 50%; cursor: pointer; }
 
-        .btn-main { 
-            width: 100%; padding: 18px; border-radius: 14px; border: none; font-weight: 900; 
-            text-transform: uppercase; cursor: pointer; background: var(--light-blue); 
-            color: var(--dark-blue); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
-            font-size: 15px; margin-top: 10px;
+        .tile {
+            background: var(--tile-bg);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            transition: 0.2s;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+            position: relative;
         }
-        .btn-main:hover { transform: scale(1.02); filter: brightness(1.1); }
-        .btn-cashout { background: var(--accent-green); display: none; }
-
-        /* FIXED GRID SYSTEM */
-        .grid-container {
-            width: 540px; height: 540px; background: rgba(0,0,0,0.2); 
-            padding: 15px; border-radius: 20px; box-shadow: inset 0 0 30px rgba(0,0,0,0.3);
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .mines-grid { 
-            display: grid; gap: 10px; width: 100%; height: 100%;
-            grid-template-columns: repeat(5, 1fr);
-        }
-
-        .tile { 
-            background: var(--tile-bg); border-radius: 10px; cursor: pointer; 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 1.8rem; position: relative; border: none;
-            box-sizing: border-box; transition: background 0.2s, transform 0.1s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.2);
-            aspect-ratio: 1/1; /* Keeps tiles perfectly square */
-        }
-        .tile:hover { background: #3d495d; }
-        .tile:active { transform: translateY(2px); box-shadow: none; }
-
-        .tile.revealed { cursor: default; box-shadow: none; animation: popReveal 0.3s ease-out forwards; }
-        
-        @keyframes popReveal {
-            0% { transform: scale(0.8); opacity: 0.5; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .tile.gem { background: rgba(0, 231, 1, 0.1); border: 2px solid var(--accent-green); }
-        .tile.mine { background: rgba(239, 68, 68, 0.15); border: 2px solid var(--danger-red); animation: shake 0.4s; }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-4px); }
-            75% { transform: translateX(4px); }
-        }
-
-        .multiplier-badge {
-            text-align: center; margin-bottom: 15px; padding: 10px;
-            background: rgba(56, 189, 248, 0.1); border-radius: 10px;
-            border: 1px solid rgba(56, 189, 248, 0.2); display: none;
-        }
-
+        .tile:hover { background: var(--tile-hover); transform: translateY(-2px); }
+        .tile.revealed { cursor: default; box-shadow: none; transform: none; }
+        .tile.gem { background: rgba(0, 231, 1, 0.1); border: 2px solid var(--accent-green); box-shadow: inset 0 0 15px rgba(0, 231, 1, 0.2); }
+        .tile.mine { background: rgba(225, 29, 72, 0.1); border: 2px solid var(--danger-red); }
+        .tile.dimmed { opacity: 0.2; transform: scale(0.9); }
         .disabled { pointer-events: none; }
-        .dimmed { opacity: 0.3; filter: grayscale(1); }
+
+        .status-text { text-align: center; font-family: var(--font-condensed); font-weight: 800; font-size: 18px; margin-top: 10px; }
+
+        .how-to-play {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 30px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+        }
+        .how-to-play h3 { font-family: var(--font-condensed); text-transform: uppercase; font-size: 16px; margin-top: 0; color: var(--primary-blue); }
+        .how-to-play p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+
+        .footer { padding: 30px; text-align: center; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
+        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #0a0e17; border-radius: 10px; border: 1px solid var(--border-color); }
+        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo" onclick="location.href='index.html'">UNIVERSAL<span>-BET</span></div>
-    <div class="balance-box"><span id="navBal">$0.00</span></div>
+    <a href="index.html" class="logo">UNIVERSAL-<span>BETS</span></a>
+    <div class="nav-right">
+        <div class="balance-pill">
+            <div class="currency-icon">$</div>
+            <span class="nav-bal" id="navBal">0.00</span>
+        </div>
+    </div>
 </nav>
 
-<div class="main-content">
+<div class="main-wrapper">
     <aside class="sidebar">
         <a href="index.html" class="side-link"><span>🏠</span> Home</a>
         <div class="sidebar-label">Games</div>
@@ -122,42 +246,56 @@
         <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
     </aside>
 
-    <main class="game-area">
-        <div class="controls">
-            <div id="multBadge" class="multiplier-badge">
-                <span style="color:var(--text-muted); font-size: 11px; font-weight: 800;">CURRENT MULTIPLIER</span><br>
-                <span id="currentMult" style="color:var(--hot-orange); font-size: 1.5rem; font-weight: 900;">1.00x</span>
+    <main class="content-scroll">
+        <div class="game-layout">
+            <div class="game-sidebar">
+                <div id="multBox" class="multiplier-display" style="display:none">
+                    <div class="section-header" style="font-size:9px">Current Payout</div>
+                    <div class="val" id="currentMult">1.00x</div>
+                </div>
+
+                <div>
+                    <div class="section-header">Bet Amount</div>
+                    <div class="bet-input-wrapper">
+                        <input type="number" id="betAmount" value="10.00" step="0.01">
+                        <button class="max-btn" onclick="setMaxBet()">MAX</button>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-header">Grid Size</div>
+                    <div class="bet-input-wrapper">
+                        <select id="gridSize" onchange="createGrid()">
+                            <option value="5">5x5 Grid</option>
+                            <option value="6">6x6 Grid</option>
+                            <option value="7">7x7 Grid</option>
+                            <option value="8">8x8 Grid</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="section-header">Number of Mines: <span id="mineDisplay" style="color:#fff">3</span></div>
+                    <input type="range" id="mineSlider" min="1" max="24" value="3" oninput="updateMineMax()">
+                </div>
+
+                <button id="startBtn" class="btn btn-primary" onclick="startGame()">Start Game</button>
+                <button id="cashoutBtn" class="btn btn-success" onclick="cashout()">Cashout</button>
+
+                <div id="status" class="status-text"></div>
             </div>
 
-            <div class="input-group">
-                <label>Bet Amount</label>
-                <input type="number" id="betAmount" value="10.00" step="0.01">
+            <div class="table-area">
+                <div class="grid-container" id="grid"></div>
             </div>
-
-            <div class="input-group">
-                <label>Grid Size</label>
-                <select id="gridSize" onchange="createGrid()">
-                    <option value="5">5x5 (25 Tiles)</option>
-                    <option value="6">6x6 (36 Tiles)</option>
-                    <option value="7">7x7 (49 Tiles)</option>
-                    <option value="8">8x8 (64 Tiles)</option>
-                </select>
-            </div>
-
-            <div class="input-group">
-                <label>Mines: <span id="mineDisplay" style="color:white; font-size:1rem">3</span></label>
-                <input type="range" id="mineSlider" min="1" max="24" value="3" oninput="updateMineMax()">
-            </div>
-
-            <button id="startBtn" class="btn-main" onclick="startGame()">Start Game</button>
-            <button id="cashoutBtn" class="btn-main btn-cashout" onclick="cashout()">Cashout ($0.00)</button>
-            
-            <div id="status" style="margin-top: 20px; text-align: center; font-weight: 900; font-size: 16px; letter-spacing: 1px;"></div>
         </div>
 
-        <div class="grid-container">
-            <div class="mines-grid" id="grid"></div>
+        <div class="how-to-play">
+            <h3>How To Play</h3>
+            <p>Select your bet and the number of mines. Click tiles to reveal gems. Each gem increases your multiplier. Hit a mine, and the round ends. You can cash out any time after finding at least one gem.</p>
         </div>
+
+        <div class="footer">WEBSITE DEVELOPED BY FUSIONZZZ</div>
     </main>
 </div>
 
@@ -189,11 +327,15 @@
         db.ref('users/' + user.name.toLowerCase()).on('value', s => {
             if(s.exists()){
                 user = s.val();
-                document.getElementById('navBal').innerText = `$${user.balance.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+                document.getElementById('navBal').innerText = user.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
             }
         });
         updateMineMax();
         createGrid();
+    }
+
+    function setMaxBet() {
+        if (user) document.getElementById('betAmount').value = user.balance.toFixed(2);
     }
 
     function updateMineMax() {
@@ -209,6 +351,7 @@
         const size = parseInt(document.getElementById('gridSize').value);
         const grid = document.getElementById('grid');
         grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+        grid.style.gridTemplateRows = `repeat(${size}, 1fr)`;
         grid.innerHTML = '';
         
         for (let i = 0; i < size * size; i++) {
@@ -230,7 +373,7 @@
         for (let i = 0; i < revealedCount; i++) {
             multiplier *= (totalTiles - i) / (numGems - i);
         }
-        return multiplier * 0.98; // 2% House Edge (Best in class)
+        return multiplier * 0.98; 
     }
 
     function startGame() {
@@ -242,7 +385,6 @@
         revealedCount = 0;
         mineLocations = [];
         
-        // Lock inputs
         document.getElementById('gridSize').disabled = true;
         document.getElementById('mineSlider').disabled = true;
         document.getElementById('betAmount').disabled = true;
@@ -265,7 +407,7 @@
         
         document.getElementById('startBtn').style.display = 'none';
         document.getElementById('cashoutBtn').style.display = 'block';
-        document.getElementById('multBadge').style.display = 'block';
+        document.getElementById('multBox').style.display = 'block';
         document.getElementById('currentMult').innerText = '1.00x';
         document.getElementById('cashoutBtn').innerText = `Cashout ($${bet.toFixed(2)})`;
         document.getElementById('status').innerText = "";
@@ -302,14 +444,11 @@
 
     function gameOver(isWin) {
         activeGame = false;
-        
-        // Re-enable inputs
         document.getElementById('gridSize').disabled = false;
         document.getElementById('mineSlider').disabled = false;
         document.getElementById('betAmount').disabled = false;
 
         const tiles = document.querySelectorAll('.tile');
-        
         tiles.forEach((t, i) => {
             t.classList.add('disabled');
             if (mineLocations.includes(i)) {
