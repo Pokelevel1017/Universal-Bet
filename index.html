@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal-Bets | Premium Betting</title>
+    <title>Universal-Bets | Home</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -165,7 +165,6 @@
         .reward-ready { border-color: var(--accent-green); background: rgba(0, 231, 1, 0.05); }
         .reward-ready .reward-icon-circle { background: var(--accent-green); box-shadow: 0 0 10px rgba(0, 231, 1, 0.4); animation: pulse-green 2s infinite; }
 
-        /* Spam Click Protection Shake */
         .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
         @keyframes shake {
             10%, 90% { transform: translate3d(-1px, 0, 0); }
@@ -255,7 +254,6 @@
             font-size: 14px;
         }
 
-        /* EMOJI PICKER STYLES */
         .emoji-toggle {
             background: #1a2232;
             border: 1px solid var(--border-color);
@@ -535,6 +533,11 @@
     let knownBalances = {};
     let atomicBonusLock = false;
 
+    // Utility function to enforce 2 decimal places strictly
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function handleAuth() {
         const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
         const pass = document.getElementById('authPassword').value.trim();
@@ -574,7 +577,8 @@
         db.ref('users/' + currentLocalUser.name).on('value', (snap) => {
             if (snap.exists()) {
                 currentLocalUser = snap.val();
-                document.getElementById('navBal').innerText = currentLocalUser.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                // Format display to exactly 2 decimal places
+                document.getElementById('navBal').innerText = parseFloat(currentLocalUser.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
         setInterval(updateTimer, 1000);
@@ -619,7 +623,8 @@
             if (user) {
                 const sNow = Date.now();
                 if (sNow - (user.lastBonus || 0) >= bonusInterval) {
-                    user.balance = (user.balance || 0) + 10.00;
+                    // Update balance and round strictly to 2 decimal places
+                    user.balance = cleanMoney((user.balance || 0) + 10.00);
                     user.lastBonus = sNow;
                     user.lastUpdateType = "bonus";
                     return user;
@@ -654,7 +659,7 @@
                 if (old !== undefined && cur > old) {
                     const diff = cur - old;
                     if (user.lastUpdateType !== "bonus" && diff >= 0.01) {
-                        feedRef.push({ name: user.name, amount: diff, ts: Date.now() });
+                        feedRef.push({ name: user.name, amount: cleanMoney(diff), ts: Date.now() });
                     }
                     if (user.lastUpdateType === "bonus" && user.name === currentLocalUser.name) {
                         db.ref('users/' + user.name + '/lastUpdateType').set(null);
@@ -665,7 +670,6 @@
         });
     }
 
-    /* --- CHAT LOGIC --- */
     function initGlobalChat() {
         const chatBox = document.getElementById('chatMessages');
         db.ref('global_chat').limitToLast(50).on('child_added', (snap) => {
@@ -673,7 +677,6 @@
             const time = new Date(msg.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
             const div = document.createElement('div');
             div.className = 'message';
-            // Username + Text (Text supports unicode emojis)
             div.innerHTML = `<span class="msg-user">${msg.user.toUpperCase()}</span><span class="msg-text">${msg.text}</span><span class="msg-time">${time}</span>`;
             chatBox.appendChild(div);
             chatBox.scrollTop = chatBox.scrollHeight;
@@ -683,7 +686,6 @@
             if (e.key === 'Enter') sendChatMessage();
         });
 
-        // Close emoji picker when clicking outside
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.chat-input-area')) {
                 document.getElementById('emojiPicker').style.display = 'none';
@@ -709,7 +711,7 @@
         
         db.ref('global_chat').push({
             user: currentLocalUser.name,
-            text: text, // Firebase natively supports emoji/unicode strings
+            text: text,
             ts: Date.now()
         });
         input.value = '';
@@ -726,7 +728,6 @@
         } else if(tabId === 'chatTab') {
             document.getElementById('chatTab').style.display = 'flex';
             document.getElementById('chatLink').classList.add('active-link');
-            // Force scroll to bottom when entering chat
             const cb = document.getElementById('chatMessages');
             cb.scrollTop = cb.scrollHeight;
         } else if(tabId === 'rankingsTab') {
@@ -736,7 +737,7 @@
                 let u = []; s.forEach(c => { u.push(c.val()); });
                 u.sort((a,b) => b.balance - a.balance);
                 document.getElementById('leaderboardBody').innerHTML = u.slice(0, 10).map((x, i) => `
-                    <tr><td>#${i+1}</td><td>${x.name.toUpperCase()}</td><td style="text-align:right;">$${x.balance.toFixed(2)}</td></tr>
+                    <tr><td>#${i+1}</td><td>${x.name.toUpperCase()}</td><td style="text-align:right;">$${parseFloat(x.balance).toFixed(2)}</td></tr>
                 `).join('');
             });
         }
