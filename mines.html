@@ -114,19 +114,18 @@
         }
 
         .bet-input-wrapper input, .bet-input-wrapper select {
-            background: #0a0e17; /* Explicit background */
+            background: #0a0e17;
             border: none;
             color: #fff;
             width: 100%;
             font-weight: 700;
             outline: none;
             font-size: 15px;
-            appearance: none; /* Removes default browser arrows */
+            appearance: none;
             -webkit-appearance: none;
             cursor: pointer;
         }
 
-        /* DARK DROPDOWN FIX */
         .bet-input-wrapper select option {
             background-color: var(--bg-sidebar);
             color: #fff;
@@ -322,12 +321,17 @@
     let revealedCount = 0;
     let currentBet = 0;
 
+    // Two-Decimal Enforcer Helper
+    function cleanMoney(val) {
+        return Math.round(val * 100) / 100;
+    }
+
     function init() {
         if (!user) return window.location.href = 'index.html';
         db.ref('users/' + user.name.toLowerCase()).on('value', s => {
             if(s.exists()){
                 user = s.val();
-                document.getElementById('navBal').innerText = user.balance.toLocaleString(undefined, {minimumFractionDigits: 2});
+                document.getElementById('navBal').innerText = parseFloat(user.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
             }
         });
         updateMineMax();
@@ -377,7 +381,7 @@
     }
 
     function startGame() {
-        const bet = parseFloat(document.getElementById('betAmount').value);
+        const bet = cleanMoney(parseFloat(document.getElementById('betAmount').value));
         if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
 
         currentBet = bet;
@@ -389,7 +393,8 @@
         document.getElementById('mineSlider').disabled = true;
         document.getElementById('betAmount').disabled = true;
 
-        db.ref('users/' + user.name.toLowerCase()).update({ balance: user.balance - bet });
+        // Clean deduction
+        db.ref('users/' + user.name.toLowerCase() + '/balance').set(cleanMoney(user.balance - bet));
 
         const size = parseInt(document.getElementById('gridSize').value);
         const total = size * size;
@@ -431,12 +436,10 @@
 
     function cashout() {
         if (!activeGame || revealedCount === 0) return;
-        const winAmount = currentBet * getMultiplier();
+        const winAmount = cleanMoney(currentBet * getMultiplier());
         
-        db.ref('users/' + user.name.toLowerCase()).transaction(u => {
-            if(u) u.balance += winAmount;
-            return u;
-        });
+        // Clean Addition
+        db.ref('users/' + user.name.toLowerCase() + '/balance').set(cleanMoney(user.balance + winAmount));
 
         document.getElementById('status').innerHTML = `<span style="color:var(--accent-green)">WIN +$${(winAmount - currentBet).toFixed(2)}</span>`;
         gameOver(true);
