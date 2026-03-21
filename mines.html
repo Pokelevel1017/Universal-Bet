@@ -631,12 +631,12 @@
         // Probability of surviving k reveals = C(25-mines, k) / C(25, k)
         // Payout = 1 / probability * 0.97
         const safeTiles = GRID_SIZE - totalMines;
-        if(gemsRevealed >= safeTiles) return 9999; // max
+        if(gemsRevealed >= safeTiles) return 25; // max
         let prob = 1;
         for(let i = 0; i < gemsRevealed; i++){
             prob *= (safeTiles - i) / (GRID_SIZE - i);
         }
-        return Math.max(1, parseFloat((0.97 / prob).toFixed(2)));
+        return Math.max(1, parseFloat((0.90 / prob).toFixed(2)));
     }
 
     function calcNextMult(gemsRevealed, totalMines) {
