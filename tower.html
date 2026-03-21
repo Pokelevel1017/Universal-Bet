@@ -7,338 +7,1021 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #0e121b;
-            --bg-sidebar: #131926;
+            --bg-body: #0a0e17;
+            --bg-sidebar: #111723;
             --bg-card: #1a2232;
-            --bg-header: #131926;
+            --bg-chat: #131926;
+            --bg-header: #111723;
             --primary-blue: #007aff;
             --accent-green: #00e701;
-            --danger-red: #e11d48;
+            --accent-red: #ef4444;
+            --accent-gold: #ffc400;
             --text-main: #ffffff;
             --text-muted: #8a96aa;
-            --border-color: #242e42;
+            --border-color: rgba(255,255,255,0.05);
             --font-main: 'Inter', sans-serif;
             --font-condensed: 'Roboto Condensed', sans-serif;
         }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-        body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-main); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-
-        /* --- NAVIGATION --- */
-        nav { background: var(--bg-header); padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; height: 60px; border-bottom: 1px solid var(--border-color); z-index: 1000; }
-        .logo { font-family: var(--font-condensed); font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; color: #fff; text-decoration: none; }
+        /* ── NAV ── */
+        nav {
+            background: var(--bg-header);
+            padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 70px; border-bottom: 1px solid var(--border-color);
+            z-index: 100; flex-shrink: 0;
+        }
+        .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary-blue); }
         .nav-right { display: flex; align-items: center; gap: 12px; }
-        .balance-pill { display: flex; align-items: center; background: #0a0e17; border: 1px solid var(--border-color); border-radius: 50px; padding: 4px 14px 4px 6px; }
-        .currency-icon { width: 22px; height: 22px; background: linear-gradient(135deg, #1d2b44, #121926); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-weight: 800; font-size: 12px; margin-right: 10px; }
-        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 15px; }
+        .balance-pill {
+            display: flex; align-items: center;
+            background: #000; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 6px 16px;
+        }
+        .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 8px; }
+        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
+        .back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 7px 14px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 13px; font-weight: 600; transition: 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-        /* --- LAYOUT --- */
-        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 10px 0; display: flex; flex-direction: column; flex-shrink: 0; }
-        .sidebar-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; padding: 25px 20px 8px; letter-spacing: 1px; }
-        .side-link { padding: 10px 20px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 12px; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
-        .side-link:hover, .active-link { background: rgba(255,255,255,0.03); color: #fff; border-left-color: var(--primary-blue); }
+        /* ── AUTH ── */
+        #authGate {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px; padding: 60px 20px; text-align: center;
+        }
+        .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .auth-gate-logo span { color: var(--primary-blue); }
+        .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+        .auth-gate-card {
+            background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 32px; width: 100%; max-width: 340px;
+        }
+        .auth-gate-card label {
+            display: block; font-size: 11px; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; text-align: left;
+        }
+        .auth-gate-card input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            padding: 12px 14px; color: #fff; border-radius: 8px; outline: none;
+            font-size: 14px; font-family: var(--font-main); margin-bottom: 14px; transition: 0.2s;
+        }
+        .auth-gate-card input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .auth-gate-btn {
+            width: 100%; background: var(--primary-blue); color: #fff; border: none;
+            padding: 13px; font-weight: 800; border-radius: 8px; cursor: pointer;
+            font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+            font-family: var(--font-main); transition: 0.2s;
+        }
+        .auth-gate-btn:hover { background: #006ae6; }
 
-        /* --- TOWER UI --- */
-        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; align-items: center; }
-        .game-layout { display: flex; gap: 20px; width: 100%; max-width: 1100px; min-height: 600px; }
+        /* ── MAIN LAYOUT ── */
+        .main-wrapper { display: none; flex: 1; overflow: hidden; }
 
-        .game-sidebar { width: 300px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; display: flex; flex-direction: column; gap: 20px; }
-        .table-area { flex: 1; background: radial-gradient(circle at center, #1c2536 0%, #0e121b 100%); border: 1px solid var(--border-color); border-radius: 12px; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; position: relative; }
+        /* ── CENTER: TOWER ── */
+        .game-scroll {
+            flex: 1; overflow-y: auto; padding: 24px 20px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
 
-        .section-header { font-family: var(--font-condensed); font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+        .tower-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+            max-width: 380px;
+        }
 
-        /* DIFFICULTY TOGGLES */
-        .diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; background: #0a0e17; padding: 5px; border-radius: 8px; border: 1px solid var(--border-color); }
-        .diff-btn { background: transparent; border: none; color: var(--text-muted); font-size: 10px; font-weight: 800; padding: 8px; cursor: pointer; border-radius: 6px; transition: 0.2s; }
-        .diff-btn.active { background: var(--primary-blue); color: #fff; }
+        /* single row */
+        .tower-row {
+            display: flex;
+            gap: 6px;
+            position: relative;
+        }
 
-        .bet-input-wrapper { background: #0a0e17; border: 1px solid var(--border-color); border-radius: 8px; display: flex; align-items: center; padding: 10px 14px; }
-        .bet-input-wrapper input { background: transparent; border: none; color: #fff; width: 100%; font-weight: 700; outline: none; font-size: 15px; }
+        /* tile */
+        .tower-tile {
+            flex: 1;
+            height: 52px;
+            border-radius: 10px;
+            background: #1a2844;
+            border: 1px solid rgba(255,255,255,0.07);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, transform 0.12s, box-shadow 0.15s;
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .tower-tile::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg, rgba(255,255,255,0.05) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        /* idle hover */
+        .tower-tile.clickable:hover {
+            background: #1f3260;
+            border-color: rgba(0,122,255,0.4);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+        }
+        /* active row glow */
+        .tower-tile.active-row {
+            border-color: rgba(0,122,255,0.25);
+            background: #1c2f52;
+            box-shadow: inset 0 0 0 1px rgba(0,122,255,0.12);
+        }
+        /* cleared / safe */
+        .tower-tile.safe {
+            background: linear-gradient(135deg, #0a2a1a, #0e3d22);
+            border-color: rgba(0,231,1,0.3);
+            cursor: default;
+            animation: tileReveal 0.28s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        /* bomb */
+        .tower-tile.bomb {
+            background: linear-gradient(135deg, #2a0a0a, #3d1010);
+            border-color: rgba(239,68,68,0.6);
+            cursor: default;
+            animation: tileShake 0.35s ease both;
+        }
+        /* revealed bomb (not hit) */
+        .tower-tile.revealed-bomb {
+            background: rgba(239,68,68,0.06);
+            border-color: rgba(239,68,68,0.18);
+            cursor: default;
+            opacity: 0.55;
+        }
+        /* disabled */
+        .tower-tile.disabled { cursor: default; pointer-events: none; }
 
-        .btn-main { width: 100%; padding: 16px; border-radius: 8px; font-weight: 800; font-family: var(--font-condensed); text-transform: uppercase; cursor: pointer; border: none; transition: 0.2s; font-size: 15px; }
-        #startBtn { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 0 #0056b3; }
-        #cashBtn { background: var(--accent-green); color: #000; box-shadow: 0 4px 0 #008f01; display: none; }
-        .btn-main:active { transform: translateY(2px); box-shadow: none; }
-        .btn-main:disabled { opacity: 0.5; cursor: not-allowed; }
+        @keyframes tileReveal {
+            from { transform: scale(0.7); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+        @keyframes tileShake {
+            0%  { transform: scale(1); }
+            20% { transform: scale(1.25) rotate(6deg); }
+            45% { transform: scale(1.1) rotate(-4deg); }
+            70% { transform: scale(1.04); }
+            100%{ transform: scale(1); }
+        }
 
-        /* TOWER GRID */
-        .tower-grid { display: flex; flex-direction: column-reverse; gap: 8px; width: 100%; max-width: 400px; }
-        .tower-row { display: flex; gap: 8px; opacity: 0.2; pointer-events: none; transition: 0.3s; padding: 4px; border-radius: 8px; }
-        .tower-row.active { opacity: 1; pointer-events: all; background: rgba(0, 122, 255, 0.1); border: 1px solid rgba(0, 122, 255, 0.3); }
-        .tower-row.completed { opacity: 0.6; pointer-events: none; }
+        /* multiplier badge on row */
+        .row-mult {
+            position: absolute;
+            right: -52px;
+            top: 50%; transform: translateY(-50%);
+            font-family: var(--font-condensed);
+            font-size: 13px; font-weight: 700;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transition: color 0.2s;
+            width: 48px; text-align: left;
+        }
+        .row-mult.active { color: var(--accent-gold); }
+        .row-mult.cleared { color: var(--accent-green); }
 
-        .row-multiplier { width: 60px; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-weight: 700; font-size: 12px; color: var(--text-muted); background: #0a0e17; border-radius: 4px; }
-        .active .row-multiplier { color: var(--primary-blue); border: 1px solid var(--primary-blue); }
+        /* row index label on left */
+        .row-num {
+            position: absolute;
+            left: -28px;
+            top: 50%; transform: translateY(-50%);
+            font-family: var(--font-condensed);
+            font-size: 11px; font-weight: 700;
+            color: rgba(255,255,255,0.15);
+            width: 22px; text-align: right;
+        }
+        .row-num.active-lbl { color: var(--primary-blue); }
 
-        .tower-cell { flex: 1; height: 50px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; transition: 0.2s; user-select: none; }
-        .tower-cell:hover { background: #242e42; border-color: var(--primary-blue); }
-        .tower-cell.win { background: var(--accent-green) !important; border-color: var(--accent-green); color: #000; }
-        .tower-cell.loss { background: var(--danger-red) !important; border-color: var(--danger-red); }
+        /* current level highlight bar */
+        .tower-row.current-level .tower-tile.active-row {
+            box-shadow: 0 0 0 2px rgba(0,122,255,0.35), inset 0 0 0 1px rgba(0,122,255,0.15);
+        }
 
-        .status-msg { height: 30px; font-family: var(--font-condensed); font-weight: 800; font-size: 20px; margin-bottom: 15px; text-transform: uppercase; }
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            overflow-y: auto; padding: 20px 16px; gap: 16px;
+        }
+        .rp-section-label {
+            font-size: 10px; font-weight: 800; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+        }
 
-        .how-to-play { width: 100%; max-width: 1100px; margin-top: 30px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; }
-        .how-to-play h3 { font-family: var(--font-condensed); text-transform: uppercase; font-size: 16px; margin-top: 0; color: var(--primary-blue); }
-        .how-to-play p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+        /* bet input */
+        .bet-manual-row {
+            display: flex; align-items: center;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s;
+        }
+        .bet-manual-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .bet-prefix {
+            padding: 0 12px; color: var(--accent-green); font-weight: 800;
+            font-family: var(--font-condensed); font-size: 17px; flex-shrink: 0;
+            background: rgba(0,231,1,0.05); border-right: 1px solid rgba(255,255,255,0.06);
+            height: 44px; display: flex; align-items: center;
+        }
+        .bet-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 16px; font-weight: 700; font-family: var(--font-condensed);
+            padding: 0 12px; height: 44px;
+        }
+        .bet-input::-webkit-inner-spin-button,
+        .bet-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+        .bet-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; font-size: 14px; }
 
-        .footer { padding: 30px; text-align: center; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+        .chip-btn {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 8px 4px; text-align: center;
+            font-family: var(--font-condensed); font-size: 13px; font-weight: 700;
+            cursor: pointer; color: var(--text-muted); transition: 0.15s;
+        }
+        .chip-btn:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .chip-btn.c-blue   { color: #60a5fa; border-color: rgba(59,130,246,0.2); }
+        .chip-btn.c-green  { color: var(--accent-green); border-color: rgba(0,231,1,0.2); }
+        .chip-btn.c-yellow { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+        .chip-btn.c-red    { color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .chip-btn.c-purple { color: #c084fc; border-color: rgba(168,85,247,0.2); }
+        .chips-locked .chip-btn { pointer-events: none; opacity: 0.35; }
+
+        .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
+        .bet-mod-btn {
+            flex: 1; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 7px 4px; text-align: center;
+            font-size: 12px; font-weight: 700; color: var(--text-muted);
+            cursor: pointer; transition: 0.15s; font-family: var(--font-main);
+        }
+        .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .chips-locked .bet-mod-btn { pointer-events: none; opacity: 0.35; }
+
+        .rp-divider { height: 1px; background: var(--border-color); }
+
+        /* difficulty */
+        .diff-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+        .diff-btn {
+            padding: 10px 4px; border-radius: 9px; border: 1px solid var(--border-color);
+            background: var(--bg-card); text-align: center; cursor: pointer; transition: 0.15s;
+            font-size: 12px; font-weight: 700; font-family: var(--font-main);
+            color: var(--text-muted);
+        }
+        .diff-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .diff-btn .diff-icon { font-size: 18px; display: block; margin-bottom: 4px; }
+        .diff-btn.selected-easy   { background: rgba(0,231,1,0.1);   border-color: rgba(0,231,1,0.35);   color: var(--accent-green); }
+        .diff-btn.selected-medium { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); color: #f59e0b; }
+        .diff-btn.selected-hard   { background: rgba(239,68,68,0.1);  border-color: rgba(239,68,68,0.35);  color: #f87171; }
+        .diff-locked .diff-btn { pointer-events: none; opacity: 0.35; }
+
+        /* info boxes */
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .info-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 11px 12px; }
+        .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .info-box-val { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: #fff; line-height: 1; }
+        .info-box-val.green { color: var(--accent-green); }
+        .info-box-val.gold  { color: var(--accent-gold); }
+
+        /* action buttons */
+        .action-btn {
+            width: 100%; padding: 15px; border-radius: 10px; border: none;
+            font-size: 14px; font-weight: 800; cursor: pointer;
+            font-family: var(--font-main); text-transform: uppercase;
+            letter-spacing: 0.5px; transition: 0.2s; margin-bottom: 8px;
+        }
+        .action-btn:last-child { margin-bottom: 0; }
+        .action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+        .action-btn:active:not(:disabled) { transform: none; }
+        .action-btn:disabled { opacity: 0.25; cursor: default; transform: none; filter: none; }
+        .btn-start   { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
+        .btn-cashout {
+            background: linear-gradient(135deg,#00b300,#00e701); color: #000;
+            box-shadow: 0 4px 16px rgba(0,231,1,0.2);
+        }
+        .btn-cashout:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(0,231,1,0.35); }
+        .btn-new { background: rgba(0,122,255,0.1); border: 1px solid rgba(0,122,255,0.25); color: var(--primary-blue); }
+
+        /* msg log */
+        .msg-log {
+            font-size: 12px; color: var(--text-muted); text-align: center;
+            background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px;
+            min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4;
+        }
+
+        /* ── CHAT ── */
+        .chat-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease;
+        }
+        .chat-panel.collapsed { width: 48px; min-width: 48px; }
+        .chat-header {
+            padding: 18px 16px; border-bottom: 1px solid var(--border-color);
+            font-weight: 800; display: flex; align-items: center; gap: 10px;
+            cursor: pointer; user-select: none; flex-shrink: 0;
+        }
+        .chat-header:hover { background: rgba(255,255,255,0.02); }
+        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
+        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
+        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
+        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
+        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
+        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
+        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
+        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
+        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
+        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
+        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        .char-counter.near-limit { color: #f59e0b; }
+        .char-counter.at-limit   { color: #ef4444; }
+
+        /* sync badge */
+        #syncBadge {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2);
+            border-radius: 8px; padding: 7px 16px; font-size: 11px;
+            color: var(--accent-green); display: none; z-index: 200; white-space: nowrap;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1100px) { .chat-panel { display: none; } }
+        @media (max-width: 800px) {
+            body { height: auto; overflow-y: auto; overflow-x: hidden; }
+            .main-wrapper { height: auto; flex-direction: column; }
+            .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
+            .game-scroll { overflow: visible; padding: 16px 28px; justify-content: flex-start; }
+            .tower-tile { height: 46px; font-size: 18px; }
+        }
+        @media (max-width: 480px) {
+            .game-scroll { padding: 12px 36px; }
+            .tower-tile { height: 40px; font-size: 16px; }
+        }
     </style>
 </head>
 <body>
 
 <nav>
-    <a href="index.html" class="logo">UNIVERSAL-<span>BETS</span></a>
+    <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
     <div class="nav-right">
-        <div class="balance-pill">
-            <div class="currency-icon">$</div>
-            <span class="nav-bal" id="balDisp">0.00</span>
+        <div class="balance-pill" id="navBalWrap" style="display:none;">
+            <span class="currency-icon">$</span>
+            <span class="nav-bal" id="navBal">0.00</span>
         </div>
+        <a class="back-btn" href="index.html">← Lobby</a>
     </div>
 </nav>
 
-<div class="main-wrapper">
-    <aside class="sidebar">
-        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
-        <div class="sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
-        <a href="crash.html" class="side-link"><span>🚀</span> Crash</a>
-        <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
-        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
-        <a href="slots.html" class="side-link"><span>🎰</span> Slots</a>
-        <a href="tower.html" class="side-link active-link"><span>🗼</span> Tower</a>
+<!-- AUTH -->
+<div id="authGate">
+    <div>
+        <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
+        <div class="auth-gate-sub">Sign in to play Tower with your real balance</div>
+    </div>
+    <div class="auth-gate-card">
+        <label>Username</label>
+        <input type="text" id="authUsername" placeholder="Enter your username">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
+        <button class="auth-gate-btn" onclick="doAuth()">Access Tower</button>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- TOWER (center) -->
+    <div class="game-scroll">
+        <div class="tower-wrap" id="towerWrap">
+            <!-- rows injected by JS -->
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel" id="rightPanel">
+
+        <div class="msg-log" id="msgLog">Choose difficulty, place a bet, and start.</div>
+
+        <!-- BET -->
+        <div>
+            <div class="rp-section-label">Bet Amount</div>
+            <div class="bet-manual-row" id="betRow">
+                <div class="bet-prefix">$</div>
+                <input type="number" id="betInput" class="bet-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
+            </div>
+            <div class="chip-grid" id="chipGrid">
+                <div class="chip-btn c-blue"   onclick="setBet(1)">$1</div>
+                <div class="chip-btn c-green"  onclick="setBet(5)">$5</div>
+                <div class="chip-btn c-green"  onclick="setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
+                <div class="chip-btn c-red"    onclick="setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
+                <div class="chip-btn"          onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            </div>
+            <div class="bet-mod-row" id="betModRow">
+                <div class="bet-mod-btn" onclick="modBet(0.5)">½</div>
+                <div class="bet-mod-btn" onclick="modBet(2)">2×</div>
+                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- DIFFICULTY -->
+        <div>
+            <div class="rp-section-label">Difficulty</div>
+            <div class="diff-grid" id="diffGrid">
+                <div class="diff-btn selected-easy" id="diff-easy" onclick="setDiff('easy')">
+                    <span class="diff-icon">🟢</span>Easy
+                    <div style="font-size:9px;color:var(--text-muted);margin-top:3px;font-weight:400;">1 bomb / 3</div>
+                </div>
+                <div class="diff-btn" id="diff-medium" onclick="setDiff('medium')">
+                    <span class="diff-icon">🟡</span>Medium
+                    <div style="font-size:9px;color:var(--text-muted);margin-top:3px;font-weight:400;">1 bomb / 2</div>
+                </div>
+                <div class="diff-btn" id="diff-hard" onclick="setDiff('hard')">
+                    <span class="diff-icon">🔴</span>Hard
+                    <div style="font-size:9px;color:var(--text-muted);margin-top:3px;font-weight:400;">2 bombs / 3</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- ROUND INFO -->
+        <div>
+            <div class="rp-section-label">Round Info</div>
+            <div class="info-row" style="margin-bottom:8px;">
+                <div class="info-box">
+                    <div class="info-box-label">Current Multi</div>
+                    <div class="info-box-val gold" id="infoMult">1.00×</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Cashout Now</div>
+                    <div class="info-box-val green" id="infoCashout">$0.00</div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-box">
+                    <div class="info-box-label">Floor</div>
+                    <div class="info-box-val" id="infoFloor">0 / 0</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Next Multi</div>
+                    <div class="info-box-val gold" id="infoNextMult">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- ACTIONS -->
+        <div>
+            <button class="action-btn btn-start"   id="btnStart"   onclick="startGame()">Start Game</button>
+            <button class="action-btn btn-cashout" id="btnCashout" onclick="cashout()" disabled>Cash Out</button>
+            <button class="action-btn btn-new"     id="btnNew"     onclick="newRound()" style="display:none;">New Round</button>
+        </div>
+
     </aside>
 
-    <main class="content-scroll">
-        <div class="game-layout">
-            <div class="game-sidebar">
-                <div>
-                    <div class="section-header">Difficulty</div>
-                    <div class="diff-grid">
-                        <button class="diff-btn active" id="diff-easy" onclick="setDiff('easy')">EASY</button>
-                        <button class="diff-btn" id="diff-medium" onclick="setDiff('medium')">MED</button>
-                        <button class="diff-btn" id="diff-hard" onclick="setDiff('hard')">HARD</button>
-                    </div>
+    <!-- CHAT -->
+    <aside class="chat-panel" id="chatPanel">
+        <div class="chat-header" onclick="toggleChat()">
+            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span class="chat-header-label">Global Chat</span>
+            <span class="chat-toggle-arrow">◀</span>
+        </div>
+        <div class="chat-body">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
+                    <button class="chat-send-btn" onclick="sendChat()">→</button>
                 </div>
-
-                <div>
-                    <div class="section-header">Bet Amount</div>
-                    <div class="bet-input-wrapper">
-                        <input type="number" id="betAmt" value="10.00" step="0.01">
-                        <button style="background:var(--border-color); border:none; color:#fff; font-size:10px; padding:5px 10px; border-radius:4px; cursor:pointer;" onclick="setMaxBet()">MAX</button>
-                    </div>
-                </div>
-
-                <button id="startBtn" class="btn-main" onclick="startGame()">Start Game</button>
-                <button id="cashBtn" class="btn-main" onclick="cashout()">Cashout ($0.00)</button>
-                
-                <div id="status-text" class="status-msg" style="text-align: center;"></div>
-            </div>
-
-            <div class="table-area">
-                <div class="tower-grid" id="towerGrid"></div>
+                <div class="char-counter" id="charCounter">0 / 50</div>
             </div>
         </div>
+    </aside>
 
-        <div class="how-to-play">
-            <h3>How To Play</h3>
-            <p>Climb the tower to increase your multiplier! Choose one tile per floor. If you find a diamond, you move up; if you hit a bomb, the tower collapses and you lose your bet. You can cash out at any time after successfully clearing at least one floor. Higher difficulties have more bombs but offer massive rewards!</p>
-        </div>
-
-        <div class="footer">WEBSITE DEVELOPED BY FUSIONZZZ</div>
-    </main>
 </div>
+
+<div id="syncBadge">✓ Balance synced</div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
 <script>
-    const firebaseConfig = { 
-        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0", 
-        authDomain: "universalbet-427ce.firebaseapp.com", 
-        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com", 
-        projectId: "universalbet-427ce", 
-        storageBucket: "universalbet-427ce.firebasestorage.app", 
-        messagingSenderId: "804592033030", 
-        appId: "1:804592033030:web:352d7f4e8a75fb3f215287" 
+    const firebaseConfig = {
+        apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
+        authDomain: "universalbet-427ce.firebaseapp.com",
+        databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com",
+        projectId: "universalbet-427ce",
+        storageBucket: "universalbet-427ce.firebasestorage.app",
+        messagingSenderId: "804592033030",
+        appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
     };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    let currentBal = 0;
-    let currentLevel = 0;
-    let isPlaying = false;
-    let difficulty = 'easy';
-
-    const gameSettings = {
-        easy:   { tiles: 3, bombs: 1, mults: [1.45, 2.18, 3.27, 4.91, 7.37, 11.0, 16.5, 24.8] },
-        medium: { tiles: 2, bombs: 1, mults: [1.96, 3.92, 7.84, 15.6, 31.3, 62.7, 125, 250] },
-        hard:   { tiles: 3, bombs: 2, mults: [2.94, 8.82, 26.4, 79.3, 238, 714, 2142, 6426] }
+    /* ─────────────────────────────────────────────────────────────
+       DIFFICULTY CONFIGS
+       tilesPerRow : total tiles shown in each row
+       bombsPerRow : how many are bombs
+       floors      : number of rows in the tower
+       House edge ~3% baked into multiplier
+    ───────────────────────────────────────────────────────────── */
+    const DIFFICULTIES = {
+        easy:   { tilesPerRow: 3, bombsPerRow: 1, floors: 8,  label: 'Easy'   },
+        medium: { tilesPerRow: 2, bombsPerRow: 1, floors: 10, label: 'Medium' },
+        hard:   { tilesPerRow: 3, bombsPerRow: 2, floors: 12, label: 'Hard'   },
     };
 
-    function cleanMoney(val) {
-        return Math.round(val * 100) / 100;
+    /* ── STATE ── */
+    let currentUser  = null;
+    let bet          = 0;
+    let diff         = 'easy';
+    let gameActive   = false;
+    let currentFloor = 0;   // 0 = bottom row, increases upward
+    let totalFloors  = 0;
+    let bombMap      = [];  // bombMap[floor] = Set of bomb indices (0-based)
+    let chatCollapsed = false;
+    let syncTimeout   = null;
+
+    /* ── UTILS ── */
+    function cleanMoney(v) { return Math.round(v*100)/100; }
+    function fmt$(v) { return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    /* ── MULTIPLIER TABLES ──
+       Hand-tuned per floor. Index 0 = after clearing floor 1, etc.
+       Easy   : 3 tiles, 1 bomb  — 8 floors
+       Medium : 2 tiles, 1 bomb  — 10 floors
+       Hard   : 3 tiles, 2 bombs — 12 floors
+    ── */
+    const MULT_TABLES = {
+        easy:   [1.10, 1.25, 1.45, 1.70, 2.00, 2.40, 2.90, 3.50],
+        medium: [1.30, 1.70, 2.20, 2.90, 3.80, 5.00, 6.50, 8.50, 11.00, 14.00],
+        hard:   [1.50, 2.20, 3.20, 4.60, 6.50, 9.00, 12.50, 17.00, 23.00, 31.00, 41.00, 55.00],
+    };
+
+    function multAfterFloors(k) {
+        const table = MULT_TABLES[diff];
+        if(k <= 0) return 1.00;
+        if(k > table.length) return table[table.length - 1];
+        return table[k - 1];
     }
 
-    function init() {
-        if(!user) return window.location.href = 'index.html';
-        
-        db.ref('users/' + user.name.toLowerCase()).on('value', (s) => {
-            if(s.exists()){
-                currentBal = s.val().balance;
-                document.getElementById('balDisp').innerText = currentBal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            }
-        });
-        createGrid();
-    }
-
-    function setDiff(d) {
-        if (isPlaying) return;
-        difficulty = d;
-        document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(`diff-${d}`).classList.add('active');
-        createGrid();
-    }
-
-    function setMaxBet() { 
-        document.getElementById('betAmt').value = currentBal.toFixed(2); 
-    }
-
-    function createGrid() {
-        const grid = document.getElementById('towerGrid');
-        grid.innerHTML = '';
-        const config = gameSettings[difficulty];
-
-        for (let i = 0; i < 8; i++) {
-            const row = document.createElement('div');
-            row.className = 'tower-row';
-            row.id = `row-${i}`;
-            
-            const mult = document.createElement('div');
-            mult.className = 'row-multiplier';
-            mult.innerText = config.mults[i] + 'x';
-            row.appendChild(mult);
-
-            for (let j = 0; j < config.tiles; j++) {
-                const cell = document.createElement('div');
-                cell.className = 'tower-cell';
-                cell.onclick = () => handleChoice(i, j);
-                row.appendChild(cell);
-            }
-            grid.appendChild(row);
-        }
-    }
-
-    async function startGame() {
-        const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
-        if (isNaN(bet) || bet > currentBal || bet <= 0) return alert("Invalid Bet or Insufficient Balance");
-
-        // Deduct Bet
-        await db.ref('users/' + user.name.toLowerCase()).update({ balance: cleanMoney(currentBal - bet) });
-        
-        isPlaying = true;
-        currentLevel = 0;
-        document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('cashBtn').style.display = 'block';
-        document.getElementById('cashBtn').innerText = `Cashout ($0.00)`;
-        document.getElementById('status-text').innerText = "";
-        document.querySelectorAll('.diff-btn').forEach(b => b.disabled = true);
-        
-        createGrid();
-        updateActiveRow();
-    }
-
-    function updateActiveRow() {
-        document.querySelectorAll('.tower-row').forEach(r => {
-            r.classList.remove('active', 'completed');
-            const rowIdx = parseInt(r.id.split('-')[1]);
-            if(rowIdx < currentLevel) r.classList.add('completed');
-        });
-        const row = document.getElementById(`row-${currentLevel}`);
-        if(row) row.classList.add('active');
-    }
-
-    function handleChoice(rowIdx, cellIdx) {
-        if (!isPlaying || rowIdx !== currentLevel) return;
-
-        const config = gameSettings[difficulty];
-        // Generate random bomb positions for this specific row click
-        let bombIndices = [];
-        while(bombIndices.length < config.bombs) {
-            let r = Math.floor(Math.random() * config.tiles);
-            if(!bombIndices.includes(r)) bombIndices.push(r);
-        }
-
-        const rowEl = document.getElementById(`row-${rowIdx}`);
-        const cells = rowEl.querySelectorAll('.tower-cell');
-
-        if (!bombIndices.includes(cellIdx)) {
-            // Hit a Diamond
-            cells[cellIdx].classList.add('win');
-            cells[cellIdx].innerText = '💎';
-            currentLevel++;
-            
-            const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
-            const currentWin = cleanMoney(bet * config.mults[currentLevel-1]);
-            document.getElementById('cashBtn').innerText = `Cashout ($${currentWin.toFixed(2)})`;
-            
-            if (currentLevel === 8) {
-                cashout(); // Auto cashout at top
+    /* ── AUTH ── */
+    function doAuth() {
+        const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+        const pass = document.getElementById('authPassword').value.trim();
+        if(name.length < 3){ alert('Username must be at least 3 characters.'); return; }
+        db.ref('users/'+name).once('value').then(snap => {
+            if(snap.exists()){
+                const u = snap.val();
+                if(u.password !== pass){ alert('Incorrect password.'); return; }
+                finalizeLogin(u);
             } else {
-                updateActiveRow();
+                const nu = {name, password:pass, balance:100, lastBonus:0, createdAt:Date.now()};
+                db.ref('users/'+name).set(nu).then(() => finalizeLogin(nu));
             }
+        });
+    }
+
+    function finalizeLogin(user) {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('mainWrapper').style.display = 'flex';
+        document.getElementById('navBalWrap').style.display = 'flex';
+        db.ref('users/'+user.name).on('value', snap => {
+            if(snap.exists()){ currentUser = snap.val(); updateNavBal(); }
+        });
+        updateNavBal();
+        buildTowerPreview();
+        updateInfo();
+        initChat();
+    }
+
+    function updateNavBal() {
+        if(!currentUser) return;
+        document.getElementById('navBal').textContent = fmt$(currentUser.balance);
+    }
+
+    /* ── DIFFICULTY ── */
+    function setDiff(d) {
+        if(gameActive) return;
+        diff = d;
+        ['easy','medium','hard'].forEach(k => {
+            const el = document.getElementById('diff-'+k);
+            el.className = 'diff-btn' + (k===d ? ' selected-'+k : '');
+        });
+        buildTowerPreview();
+        updateInfo();
+    }
+
+    /* ── BET ── */
+    function onBetInput() {
+        const raw = parseFloat(document.getElementById('betInput').value);
+        bet = isNaN(raw)||raw<0 ? 0 : cleanMoney(Math.min(raw, currentUser?currentUser.balance:99999));
+        updateInfo();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function setBet(amount) {
+        if(gameActive) return;
+        bet = cleanMoney(Math.min(amount, currentUser?currentUser.balance:99999));
+        document.getElementById('betInput').value = bet;
+        updateInfo();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function setBetMax() {
+        if(!currentUser || gameActive) return;
+        setBet(currentUser.balance);
+    }
+    function modBet(factor) {
+        if(gameActive) return;
+        bet = cleanMoney(Math.min(bet*factor, currentUser?currentUser.balance:99999));
+        if(bet < 0) bet = 0;
+        document.getElementById('betInput').value = bet > 0 ? bet : '';
+        updateInfo();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function clearBet() {
+        if(gameActive) return;
+        bet = 0;
+        document.getElementById('betInput').value = '';
+        updateInfo();
+        document.getElementById('btnStart').disabled = true;
+    }
+
+    /* ── TOWER BUILDING ── */
+    function buildTowerPreview() {
+        const cfg = DIFFICULTIES[diff];
+        totalFloors = cfg.floors;
+        const wrap = document.getElementById('towerWrap');
+        wrap.innerHTML = '';
+        // Build rows top to bottom visually, but floor 0 = bottom = last rendered
+        for(let f = totalFloors - 1; f >= 0; f--) {
+            wrap.appendChild(makeRow(f, cfg.tilesPerRow, false));
+        }
+        scrollToBottom();
+    }
+
+    function makeRow(floor, tileCount, active) {
+        const row = document.createElement('div');
+        row.className = 'tower-row';
+        row.id = 'row-'+floor;
+        row.style.position = 'relative';
+
+        // Row number label
+        const num = document.createElement('div');
+        num.className = 'row-num';
+        num.id = 'rownum-'+floor;
+        num.textContent = floor + 1;
+        row.appendChild(num);
+
+        for(let t = 0; t < tileCount; t++) {
+            const tile = document.createElement('div');
+            tile.className = 'tower-tile' + (active ? ' active-row clickable' : ' disabled');
+            tile.id = `tile-${floor}-${t}`;
+            tile.dataset.floor = floor;
+            tile.dataset.idx = t;
+            tile.onclick = () => clickTile(floor, t);
+            row.appendChild(tile);
+        }
+
+        // Multiplier badge
+        const mult = document.createElement('div');
+        mult.className = 'row-mult';
+        mult.id = 'mult-'+floor;
+        mult.textContent = multAfterFloors(floor+1).toFixed(2)+'×';
+        row.appendChild(mult);
+
+        return row;
+    }
+
+    function scrollToBottom() {
+        const scroll = document.querySelector('.game-scroll');
+        if(scroll) setTimeout(() => scroll.scrollTop = scroll.scrollHeight, 50);
+    }
+
+    /* ── GAME START ── */
+    function startGame() {
+        if(bet <= 0){ setMsg('Enter a bet first.'); return; }
+        if(!currentUser || bet > currentUser.balance){ setMsg('Not enough balance.'); return; }
+
+        const cfg = DIFFICULTIES[diff];
+        totalFloors = cfg.floors;
+        currentFloor = 0;
+        gameActive = true;
+
+        // Pre-generate bomb positions for ALL floors
+        bombMap = [];
+        for(let f = 0; f < totalFloors; f++){
+            const bombs = new Set();
+            const pool = Array.from({length: cfg.tilesPerRow}, (_,i)=>i);
+            // shuffle and take first bombsPerRow
+            for(let i = pool.length-1; i > 0; i--){
+                const j = Math.floor(Math.random()*(i+1));
+                [pool[i],pool[j]] = [pool[j],pool[i]];
+            }
+            for(let b = 0; b < cfg.bombsPerRow; b++) bombs.add(pool[b]);
+            bombMap.push(bombs);
+        }
+
+        // Reset visuals
+        buildTowerPreview();
+        activateRow(currentFloor);
+        lockControls(true);
+
+        document.getElementById('btnStart').style.display   = 'none';
+        document.getElementById('btnCashout').style.display = 'block';
+        document.getElementById('btnCashout').disabled      = true;
+        document.getElementById('btnNew').style.display     = 'none';
+
+        setMsg(`Floor 1 of ${totalFloors} — pick a tile!`);
+        updateInfo();
+        scrollToBottom();
+    }
+
+    function activateRow(floor) {
+        const cfg = DIFFICULTIES[diff];
+        const rowEl = document.getElementById('row-'+floor);
+        if(!rowEl) return;
+        rowEl.classList.add('current-level');
+
+        const numEl = document.getElementById('rownum-'+floor);
+        if(numEl) numEl.className = 'row-num active-lbl';
+
+        const multEl = document.getElementById('mult-'+floor);
+        if(multEl) multEl.className = 'row-mult active';
+
+        for(let t = 0; t < cfg.tilesPerRow; t++){
+            const tile = document.getElementById(`tile-${floor}-${t}`);
+            if(tile){
+                tile.classList.remove('disabled');
+                tile.classList.add('active-row','clickable');
+            }
+        }
+    }
+
+    /* ── TILE CLICK ── */
+    function clickTile(floor, idx) {
+        if(!gameActive || floor !== currentFloor) return;
+        const cfg = DIFFICULTIES[diff];
+
+        // Disable entire row immediately
+        for(let t = 0; t < cfg.tilesPerRow; t++){
+            const tile = document.getElementById(`tile-${floor}-${t}`);
+            if(tile) tile.classList.add('disabled');
+        }
+
+        const tile = document.getElementById(`tile-${floor}-${idx}`);
+        const isBomb = bombMap[floor].has(idx);
+
+        if(isBomb){
+            // Show bomb
+            tile.classList.remove('active-row','clickable');
+            tile.classList.add('bomb');
+            tile.textContent = '💣';
+            // Reveal remaining bombs on this row
+            bombMap[floor].forEach(bi => {
+                if(bi !== idx){
+                    const bt = document.getElementById(`tile-${floor}-${bi}`);
+                    if(bt){ bt.classList.add('revealed-bomb'); bt.textContent = '💣'; }
+                }
+            });
+            // Reveal all remaining rows' bomb positions
+            revealAllBombs(floor);
+            gameOver();
         } else {
-            // Hit a Bomb
-            cells[cellIdx].classList.add('loss');
-            cells[cellIdx].innerText = '💥';
-            
-            // Show other bombs in this row
-            bombIndices.forEach(idx => {
-                cells[idx].innerText = '💥';
-                cells[idx].classList.add('loss');
+            // Safe tile
+            tile.classList.remove('active-row','clickable');
+            tile.classList.add('safe');
+            tile.textContent = '💎';
+
+            // Reveal bombs on this row (non-chosen)
+            bombMap[floor].forEach(bi => {
+                const bt = document.getElementById(`tile-${floor}-${bi}`);
+                if(bt){ bt.classList.add('revealed-bomb'); bt.textContent = '💣'; }
             });
 
-            gameOver();
+            // Update mult label
+            const multEl = document.getElementById('mult-'+floor);
+            if(multEl) multEl.className = 'row-mult cleared';
+
+            currentFloor++;
+            document.getElementById('btnCashout').disabled = false;
+
+            if(currentFloor >= totalFloors){
+                // Cleared entire tower!
+                gameActive = false;
+                lockControls(false);
+                const profit = cleanMoney(bet * multAfterFloors(totalFloors) - bet);
+                setMsg(`🏆 Tower cleared! You won $${fmt$(profit)}!`);
+                setTimeout(() => cashout(), 300);
+            } else {
+                activateRow(currentFloor);
+                setMsg(`Floor ${currentFloor+1} of ${totalFloors} — keep going or cash out!`);
+            }
+            updateInfo();
         }
     }
 
+    function revealAllBombs(fromFloor) {
+        const cfg = DIFFICULTIES[diff];
+        for(let f = fromFloor+1; f < totalFloors; f++){
+            bombMap[f].forEach(bi => {
+                const bt = document.getElementById(`tile-${f}-${bi}`);
+                if(bt){
+                    bt.classList.add('revealed-bomb','disabled');
+                    bt.textContent = '💣';
+                }
+            });
+        }
+    }
+
+    /* ── CASHOUT ── */
+    function cashout() {
+        if(!gameActive && currentFloor === 0) return;
+        gameActive = false;
+
+        const floorsCleared = currentFloor;
+        const mult = multAfterFloors(floorsCleared);
+        const payout = cleanMoney(bet * mult);
+        const profit = cleanMoney(payout - bet);
+
+        lockControls(false);
+        revealAllBombs(currentFloor - 1);
+
+        document.getElementById('btnCashout').style.display = 'none';
+        document.getElementById('btnStart').style.display   = 'none';
+        document.getElementById('btnNew').style.display     = 'block';
+
+        setMsg(`✅ Cashed out at ×${mult.toFixed(2)}! Profit: +$${fmt$(profit)}`);
+        updateInfo();
+        saveBalance(profit);
+    }
+
+    /* ── GAME OVER (bomb hit) ── */
     function gameOver() {
-        isPlaying = false;
-        document.getElementById('status-text').innerText = "COLLAPSED";
-        document.getElementById('status-text').style.color = "var(--danger-red)";
-        
-        setTimeout(() => {
-            resetUI();
-        }, 2000);
+        gameActive = false;
+        lockControls(false);
+
+        document.getElementById('btnCashout').style.display = 'none';
+        document.getElementById('btnStart').style.display   = 'none';
+        document.getElementById('btnNew').style.display     = 'block';
+
+        setMsg(`💥 Bomb hit on floor ${currentFloor+1}! You lost $${fmt$(bet)}.`);
+        updateInfo();
+        saveBalance(-bet);
     }
 
-    async function cashout() {
-        if (!isPlaying || currentLevel === 0) return;
-        
-        const bet = cleanMoney(parseFloat(document.getElementById('betAmt').value));
-        const win = cleanMoney(bet * gameSettings[difficulty].mults[currentLevel-1]);
-        
-        await db.ref('users/' + user.name.toLowerCase() + '/balance').transaction(curr => cleanMoney((curr || 0) + win));
+    /* ── NEW ROUND ── */
+    function newRound() {
+        gameActive = false;
+        currentFloor = 0;
+        bombMap = [];
+        lockControls(false);
+        buildTowerPreview();
+        updateInfo();
 
-        document.getElementById('status-text').innerText = `+$${win.toFixed(2)}`;
-        document.getElementById('status-text').style.color = "var(--accent-green)";
-        isPlaying = false;
-        
-        setTimeout(() => {
-            resetUI();
-        }, 2000);
+        document.getElementById('btnStart').style.display   = 'block';
+        document.getElementById('btnStart').disabled        = (bet <= 0);
+        document.getElementById('btnCashout').style.display = 'block';
+        document.getElementById('btnCashout').disabled      = true;
+        document.getElementById('btnNew').style.display     = 'none';
+        setMsg('Choose difficulty, place a bet, and start.');
     }
 
-    function resetUI() {
-        document.getElementById('startBtn').style.display = 'block';
-        document.getElementById('cashBtn').style.display = 'none';
-        document.querySelectorAll('.diff-btn').forEach(b => b.disabled = false);
-        createGrid();
+    /* ── INFO UPDATE ── */
+    function updateInfo() {
+        const floorsCleared = gameActive ? currentFloor : 0;
+        const cfg = DIFFICULTIES[diff];
+        const mult = multAfterFloors(Math.max(floorsCleared, 1));
+        const cashoutVal = gameActive && currentFloor > 0
+            ? cleanMoney(bet * multAfterFloors(currentFloor))
+            : 0;
+        const nextMult = multAfterFloors(currentFloor + 1);
+
+        document.getElementById('infoMult').textContent     = gameActive && currentFloor > 0 ? multAfterFloors(currentFloor).toFixed(2)+'×' : '1.00×';
+        document.getElementById('infoCashout').textContent  = '$'+fmt$(cashoutVal);
+        document.getElementById('infoFloor').textContent    = `${gameActive?currentFloor:0} / ${cfg.floors}`;
+        document.getElementById('infoNextMult').textContent = gameActive ? nextMult.toFixed(2)+'×' : multAfterFloors(1).toFixed(2)+'×';
     }
 
-    init();
+    /* ── LOCK CONTROLS ── */
+    function lockControls(lock) {
+        const chipGrid  = document.getElementById('chipGrid');
+        const betModRow = document.getElementById('betModRow');
+        const betRow    = document.getElementById('betRow');
+        const diffGrid  = document.getElementById('diffGrid');
+
+        if(lock){
+            chipGrid.classList.add('chips-locked');
+            betModRow.classList.add('chips-locked');
+            diffGrid.classList.add('diff-locked');
+            betRow.style.pointerEvents = 'none'; betRow.style.opacity = '0.4';
+        } else {
+            chipGrid.classList.remove('chips-locked');
+            betModRow.classList.remove('chips-locked');
+            diffGrid.classList.remove('diff-locked');
+            betRow.style.pointerEvents = 'auto'; betRow.style.opacity = '1';
+        }
+    }
+
+    function setMsg(t) { document.getElementById('msgLog').textContent = t; }
+
+    /* ── FIREBASE ── */
+    function saveBalance(delta) {
+        db.ref('users/'+currentUser.name).transaction(u => {
+            if(!u) return u;
+            u.balance = cleanMoney((u.balance||0) + delta);
+            return u;
+        }, (err, committed) => {
+            if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now()});
+            if(committed && delta !== 0) showSyncBadge();
+        });
+    }
+    function showSyncBadge() {
+        const el = document.getElementById('syncBadge');
+        el.style.display = 'block';
+        clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => { el.style.display='none'; }, 2200);
+    }
+
+    /* ── CHAT ── */
+    function initChat() {
+        const box = document.getElementById('chatMessages');
+        db.ref('global_chat').limitToLast(50).on('child_added', snap => {
+            const msg = snap.val();
+            const time = new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        });
+        const input = document.getElementById('chatInput');
+        const counter = document.getElementById('charCounter');
+        input.addEventListener('keypress', e => { if(e.key==='Enter') sendChat(); });
+        input.addEventListener('input', () => {
+            const len = input.value.length;
+            counter.textContent = `${len} / 50`;
+            counter.className = 'char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');
+        });
+    }
+    function sendChat() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim().slice(0,50);
+        if(!text||!currentUser) return;
+        db.ref('global_chat').push({user:currentUser.name, text, ts:Date.now()});
+        input.value = '';
+        document.getElementById('charCounter').textContent = '0 / 50';
+        document.getElementById('charCounter').className = 'char-counter';
+    }
+    function toggleChat() {
+        chatCollapsed = !chatCollapsed;
+        document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
+    }
+
+    /* ── AUTO LOGIN ── */
+    const cached = localStorage.getItem('currentUser');
+    if(cached) {
+        const u = JSON.parse(cached);
+        db.ref('users/'+u.name).once('value', snap => {
+            if(snap.exists()&&snap.val().password===u.password) finalizeLogin(snap.val());
+        });
+    }
 </script>
 </body>
 </html>
