@@ -7,310 +7,611 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #0e121b;
-            --bg-sidebar: #131926;
+            --bg-body: #0a0e17;
+            --bg-sidebar: #111723;
             --bg-card: #1a2232;
-            --bg-header: #131926;
+            --bg-chat: #131926;
+            --bg-header: #111723;
             --primary-blue: #007aff;
             --accent-green: #00e701;
-            --danger-red: #e11d48;
+            --accent-red: #ef4444;
+            --accent-gold: #ffc400;
             --text-main: #ffffff;
             --text-muted: #8a96aa;
-            --border-color: #242e42;
+            --border-color: rgba(255,255,255,0.05);
             --font-main: 'Inter', sans-serif;
             --font-condensed: 'Roboto Condensed', sans-serif;
         }
-
-        body { 
-            background-color: var(--bg-body); 
-            color: var(--text-main); 
-            font-family: var(--font-main); 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
         }
 
-        /* --- NAVIGATION --- */
-        nav { 
-            background: var(--bg-header); 
-            padding: 0 1.5rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            height: 60px; 
-            border-bottom: 1px solid var(--border-color); 
-            z-index: 1000; 
+        /* ── NAV ── */
+        nav {
+            background: var(--bg-header);
+            padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 70px; border-bottom: 1px solid var(--border-color);
+            z-index: 100; flex-shrink: 0;
         }
-        .logo { font-family: var(--font-condensed); font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; color: #fff; text-decoration: none; }
+        .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary-blue); }
         .nav-right { display: flex; align-items: center; gap: 12px; }
-        .balance-pill { display: flex; align-items: center; background: #0a0e17; border: 1px solid var(--border-color); border-radius: 50px; padding: 4px 14px 4px 6px; }
-        .currency-icon { width: 22px; height: 22px; background: linear-gradient(135deg, #1d2b44, #121926); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-weight: 800; font-size: 12px; margin-right: 10px; }
-        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 15px; }
+        .balance-pill {
+            display: flex; align-items: center;
+            background: #000; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 6px 16px;
+        }
+        .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 8px; }
+        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
+        .back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 7px 14px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 13px; font-weight: 600; transition: 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-        /* --- LAYOUT --- */
-        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 10px 0; display: flex; flex-direction: column; overflow-y: auto; }
-        .sidebar-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; padding: 25px 20px 8px; letter-spacing: 1px; }
-        .side-link { padding: 10px 20px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 12px; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
-        .side-link:hover, .active-link { background: rgba(255,255,255,0.03); color: #fff; border-left-color: var(--primary-blue); }
+        /* ── AUTH ── */
+        #authGate {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px; padding: 60px 20px; text-align: center;
+        }
+        .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .auth-gate-logo span { color: var(--primary-blue); }
+        .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+        .auth-gate-card {
+            background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 32px; width: 100%; max-width: 340px;
+        }
+        .auth-gate-card label {
+            display: block; font-size: 11px; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; text-align: left;
+        }
+        .auth-gate-card input {
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            padding: 12px 14px; color: #fff; border-radius: 8px; outline: none;
+            font-size: 14px; font-family: var(--font-main); margin-bottom: 14px; transition: 0.2s;
+        }
+        .auth-gate-card input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .auth-gate-btn {
+            width: 100%; background: var(--primary-blue); color: #fff; border: none;
+            padding: 13px; font-weight: 800; border-radius: 8px; cursor: pointer;
+            font-size: 13px; text-transform: uppercase; letter-spacing: 1px;
+            font-family: var(--font-main); transition: 0.2s;
+        }
+        .auth-gate-btn:hover { background: #006ae6; }
 
-        /* --- DICE SPECIFIC UI --- */
-        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; align-items: center; }
-        
-        .game-layout {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            height: 500px;
+        /* ── MAIN LAYOUT ── */
+        .main-wrapper { display: none; flex: 1; overflow: hidden; }
+
+        /* ── CENTER GAME ── */
+        .game-scroll {
+            flex: 1; overflow-y: auto; padding: 28px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .game-sidebar {
-            width: 300px;
+        .dice-game-area {
+            width: 100%; max-width: 640px;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        /* ── RESULT NUMBER ── */
+        .result-display {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .table-area {
-            flex: 1;
-            background: radial-gradient(circle at center, #1a2232 0%, #0e121b 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            border-radius: 16px;
+            padding: 28px 24px 24px;
+            text-align: center;
             position: relative;
+            overflow: hidden;
         }
-
-        .section-header {
+        .result-display::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(0,122,255,0.05) 0%, transparent 65%);
+            pointer-events: none;
+        }
+        .result-eyebrow {
+            font-size: 10px; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;
+        }
+        .result-number {
             font-family: var(--font-condensed);
-            font-size: 12px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .bet-input-wrapper {
-            background: #0a0e17;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            padding: 8px 12px;
-        }
-
-        .bet-input-wrapper input {
-            background: transparent;
-            border: none;
+            font-size: 88px; font-weight: 700; line-height: 1;
             color: #fff;
-            width: 100%;
-            font-weight: 700;
-            outline: none;
-            font-size: 16px;
+            transition: color 0.25s;
+            position: relative; z-index: 1;
+            text-shadow: 0 0 40px rgba(255,255,255,0.08);
         }
-
-        .max-btn {
-            background: var(--border-color);
-            border: none;
-            color: var(--text-muted);
-            font-size: 10px;
-            font-weight: 800;
-            padding: 4px 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .max-btn:hover { background: var(--primary-blue); color: #fff; }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border-radius: 6px;
-            font-weight: 800;
+        .result-number.win  { color: var(--accent-green); text-shadow: 0 0 30px rgba(0,231,1,0.3); animation: numPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+        .result-number.lose { color: var(--accent-red);   text-shadow: 0 0 30px rgba(239,68,68,0.3);  animation: numPop 0.35s cubic-bezier(0.34,1.56,0.64,1) both; }
+        @keyframes numPop { from { transform: scale(0.75); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .result-verdict {
             font-family: var(--font-condensed);
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
+            font-size: 16px; font-weight: 700;
+            margin-top: 6px; letter-spacing: 1px;
+            min-height: 22px; transition: color 0.2s;
         }
-        .btn-primary { background: var(--primary-blue); color: #fff; }
-        .btn-primary:hover { background: #006ae6; }
+        .result-verdict.win  { color: var(--accent-green); }
+        .result-verdict.lose { color: var(--accent-red); }
+        .result-verdict.idle { color: var(--text-muted); }
 
-        /* Stats & Sliders */
-        .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .stat-card {
-            background: #0a0e17;
+        /* ── SLIDER TRACK ── */
+        .slider-section {
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 10px;
-            text-align: center;
-        }
-        .stat-card .val { font-family: var(--font-condensed); font-weight: 700; color: #fff; font-size: 16px; }
-
-        .roll-display {
-            background: rgba(0,0,0,0.3);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 20px 40px;
-            font-family: var(--font-condensed);
-            font-size: 72px;
-            font-weight: 800;
-            color: #fff;
-            margin-bottom: 40px;
-            min-width: 200px;
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .slider-box { width: 80%; max-width: 600px; }
-        
-        input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 12px;
-            background: #0a0e17;
-            border-radius: 10px;
-            outline: none;
-            border: 1px solid var(--border-color);
-        }
-
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 30px;
-            height: 30px;
-            background: var(--primary-blue);
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid var(--bg-card);
-            box-shadow: 0 0 15px rgba(0,0,0,0.5);
-            margin-top: -10px; /* center thumb vertically */
-        }
-        input[type=range]::-webkit-slider-runnable-track {
-            height: 12px;
-            border-radius: 10px;
-            background: linear-gradient(to right, var(--danger-red) var(--range-pct, 50%), var(--accent-green) var(--range-pct, 50%));
+            border-radius: 16px;
+            padding: 24px 24px 20px;
         }
 
         .slider-labels {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            color: var(--text-muted);
-            font-weight: 800;
-            font-size: 12px;
-            font-family: var(--font-condensed);
-            padding: 0 10px; /* aligns labels with track edges */
+            display: flex; justify-content: space-between;
+            font-size: 10px; font-weight: 700; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
         }
 
-        .how-to-play {
-            width: 100%;
-            max-width: 1100px;
-            margin-top: 30px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 20px;
+        /* track */
+        .track-wrap { position: relative; height: 40px; display: flex; align-items: center; margin-bottom: 14px; }
+        .track-bg {
+            position: absolute; left: 0; right: 0; height: 10px;
+            border-radius: 99px; background: rgba(255,255,255,0.05);
+            overflow: hidden;
         }
-        .how-to-play h3 { font-family: var(--font-condensed); text-transform: uppercase; font-size: 16px; margin-top: 0; color: var(--primary-blue); }
-        .how-to-play p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+        .track-lose-zone { /* left of threshold — lose zone for OVER mode; colored dynamically */
+            position: absolute; left: 0; height: 100%; border-radius: 99px 0 0 99px;
+            transition: width 0.1s;
+        }
+        .track-win-zone {
+            position: absolute; height: 100%; border-radius: 0 99px 99px 0;
+            transition: left 0.1s, width 0.1s;
+        }
+        /* Needle marker */
+        .track-needle {
+            position: absolute;
+            width: 3px; height: 22px; border-radius: 2px;
+            background: #fff;
+            top: 50%; transform: translate(-50%, -50%);
+            transition: left 0.08s;
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+            z-index: 3;
+            pointer-events: none;
+        }
+        /* roll result dot */
+        .track-result-dot {
+            position: absolute;
+            width: 16px; height: 16px; border-radius: 50%;
+            top: 50%; transform: translate(-50%, -50%);
+            z-index: 4; pointer-events: none;
+            display: none;
+            border: 2px solid #fff;
+            transition: left 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
 
-        .footer { padding: 30px; text-align: center; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        input[type=range].dice-slider {
+            position: relative; z-index: 5;
+            width: 100%; -webkit-appearance: none; appearance: none;
+            background: transparent; cursor: pointer; height: 40px; margin: 0;
+        }
+        input[type=range].dice-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #fff;
+            border: 3px solid var(--bg-body);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            cursor: grab;
+        }
+        input[type=range].dice-slider:active::-webkit-slider-thumb { cursor: grabbing; }
+        input[type=range].dice-slider::-moz-range-thumb {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: #fff; border: 3px solid var(--bg-body);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5); cursor: grab;
+        }
+
+        /* Roll mode toggle */
+        .mode-toggle {
+            display: flex; gap: 6px; justify-content: center; margin-bottom: 0;
+        }
+        .mode-btn {
+            flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid var(--border-color);
+            font-size: 12px; font-weight: 700; cursor: pointer; font-family: var(--font-main);
+            text-transform: uppercase; letter-spacing: 0.5px; transition: 0.15s;
+            background: rgba(255,255,255,0.03); color: var(--text-muted);
+        }
+        .mode-btn.active-over  { background: rgba(0,231,1,0.12); border-color: rgba(0,231,1,0.3); color: var(--accent-green); }
+        .mode-btn.active-under { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
+
+        /* Stat bar */
+        .stat-bar {
+            display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 12px; overflow: hidden;
+        }
+        .stat-cell { padding: 14px 10px; text-align: center; }
+        .stat-cell-div { background: var(--border-color); }
+        .stat-cell-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .stat-cell-val { font-family: var(--font-condensed); font-size: 17px; font-weight: 700; color: #fff; line-height: 1; }
+        .stat-cell-val.green { color: var(--accent-green); }
+        .stat-cell-val.red   { color: var(--accent-red); }
+        .stat-cell-val.gold  { color: var(--accent-gold); }
+
+        /* history pills */
+        .history-row {
+            display: flex; gap: 6px; flex-wrap: wrap; min-height: 28px;
+        }
+        .hist-pill {
+            font-family: var(--font-condensed); font-size: 12px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px;
+            animation: pillIn 0.2s ease both;
+        }
+        @keyframes pillIn { from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);} }
+        .hist-pill.win  { background: rgba(0,231,1,0.1); color: var(--accent-green); border: 1px solid rgba(0,231,1,0.2); }
+        .hist-pill.lose { background: rgba(239,68,68,0.1); color: var(--accent-red);   border: 1px solid rgba(239,68,68,0.2); }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow-y: auto;
+            padding: 20px 16px; gap: 16px;
+        }
+        .rp-section-label {
+            font-size: 10px; font-weight: 800; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+        .bet-manual-row {
+            display: flex; align-items: center;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s;
+        }
+        .bet-manual-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .bet-manual-prefix {
+            padding: 0 12px; color: var(--accent-green); font-weight: 800;
+            font-family: var(--font-condensed); font-size: 17px; flex-shrink: 0;
+            background: rgba(0,231,1,0.05); border-right: 1px solid rgba(255,255,255,0.06);
+            height: 44px; display: flex; align-items: center;
+        }
+        .bet-manual-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 16px; font-weight: 700; font-family: var(--font-condensed);
+            padding: 0 12px; height: 44px;
+        }
+        .bet-manual-input::-webkit-inner-spin-button,
+        .bet-manual-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+        .bet-manual-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; font-size: 14px; }
+        .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+        .chip-btn {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 8px 4px; text-align: center;
+            font-family: var(--font-condensed); font-size: 13px; font-weight: 700;
+            cursor: pointer; color: var(--text-muted); transition: 0.15s;
+        }
+        .chip-btn:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .chip-btn.c-blue   { color: #60a5fa; border-color: rgba(59,130,246,0.2); }
+        .chip-btn.c-green  { color: var(--accent-green); border-color: rgba(0,231,1,0.2); }
+        .chip-btn.c-yellow { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+        .chip-btn.c-red    { color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .chip-btn.c-purple { color: #c084fc; border-color: rgba(168,85,247,0.2); }
+        .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
+        .bet-mod-btn {
+            flex: 1; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 7px 4px; text-align: center;
+            font-size: 12px; font-weight: 700; color: var(--text-muted);
+            cursor: pointer; transition: 0.15s; font-family: var(--font-main);
+        }
+        .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .rp-divider { height: 1px; background: var(--border-color); }
+
+        /* Threshold input */
+        .threshold-row {
+            display: flex; align-items: center;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s;
+        }
+        .threshold-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .threshold-prefix {
+            padding: 0 10px; color: var(--text-muted); font-weight: 700;
+            font-family: var(--font-condensed); font-size: 13px; flex-shrink: 0;
+            background: rgba(255,255,255,0.03); border-right: 1px solid rgba(255,255,255,0.06);
+            height: 40px; display: flex; align-items: center; white-space: nowrap;
+        }
+        .threshold-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 15px; font-weight: 700; font-family: var(--font-condensed);
+            padding: 0 12px; height: 40px;
+        }
+        .threshold-input::-webkit-inner-spin-button,
+        .threshold-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+        /* Info boxes */
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .info-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 11px 12px; }
+        .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .info-box-val { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: #fff; line-height: 1; }
+        .info-box-val.green { color: var(--accent-green); }
+        .info-box-val.gold  { color: var(--accent-gold); }
+        .info-box-val.red   { color: var(--accent-red); }
+
+        /* Roll button */
+        .action-btn {
+            width: 100%; padding: 16px; border-radius: 10px; border: none;
+            font-size: 15px; font-weight: 800; cursor: pointer;
+            font-family: var(--font-main); text-transform: uppercase;
+            letter-spacing: 0.5px; transition: 0.2s;
+        }
+        .action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+        .action-btn:active:not(:disabled) { transform: none; }
+        .action-btn:disabled { opacity: 0.3; cursor: default; transform: none; filter: none; }
+        .btn-roll { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
+
+        /* msg log */
+        .msg-log {
+            font-size: 12px; color: var(--text-muted); text-align: center;
+            background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px;
+            min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4;
+        }
+
+        /* ── CHAT ── */
+        .chat-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease;
+        }
+        .chat-panel.collapsed { width: 48px; min-width: 48px; }
+        .chat-header {
+            padding: 18px 16px; border-bottom: 1px solid var(--border-color);
+            font-weight: 800; display: flex; align-items: center; gap: 10px;
+            cursor: pointer; user-select: none; flex-shrink: 0;
+        }
+        .chat-header:hover { background: rgba(255,255,255,0.02); }
+        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
+        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
+        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
+        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
+        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
+        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
+        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
+        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
+        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
+        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
+        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        .char-counter.near-limit { color: #f59e0b; }
+        .char-counter.at-limit   { color: #ef4444; }
+
+        /* ── SYNC ── */
+        #syncBadge {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2);
+            border-radius: 8px; padding: 7px 16px; font-size: 11px;
+            color: var(--accent-green); display: none; z-index: 200; white-space: nowrap;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1100px) { .chat-panel { display: none; } }
+        @media (max-width: 800px) {
+            body { height: auto; overflow-y: auto; overflow-x: hidden; }
+            .main-wrapper { height: auto; flex-direction: column; }
+            .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
+            .game-scroll { overflow: visible; padding: 16px; justify-content: flex-start; }
+            .result-number { font-size: 64px; }
+        }
     </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-    <a href="index.html" class="logo">UNIVERSAL-<span>BETS</span></a>
+    <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
     <div class="nav-right">
-        <div class="balance-pill">
-            <div class="currency-icon">$</div>
+        <div class="balance-pill" id="navBalWrap" style="display:none;">
+            <span class="currency-icon">$</span>
             <span class="nav-bal" id="navBal">0.00</span>
         </div>
+        <a class="back-btn" href="index.html">← Lobby</a>
     </div>
 </nav>
 
-<div class="main-wrapper">
-    <aside class="sidebar">
-        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
-        <div class="sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
-        <a href="crash.html" class="side-link"><span>🚀</span> Crash</a>
-        <a href="dice.html" class="side-link active-link"><span>🎲</span> Dice</a>
-        <a href="mines.html" class="side-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
-        <a href="slots.html" class="side-link"><span>🎰</span> Slots</a>
-        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
+<!-- AUTH GATE -->
+<div id="authGate">
+    <div>
+        <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
+        <div class="auth-gate-sub">Sign in to play Dice with your real balance</div>
+    </div>
+    <div class="auth-gate-card">
+        <label>Username</label>
+        <input type="text" id="authUsername" placeholder="Enter your username">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
+        <button class="auth-gate-btn" onclick="doAuth()">Access Dice</button>
+    </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- CENTER -->
+    <div class="game-scroll">
+    <div class="dice-game-area">
+
+        <!-- Roll result -->
+        <div class="result-display">
+            <div class="result-eyebrow">Roll Result</div>
+            <div class="result-number" id="resultNumber">—</div>
+            <div class="result-verdict idle" id="resultVerdict">Waiting for roll</div>
+        </div>
+
+        <!-- Slider -->
+        <div class="slider-section">
+            <div class="slider-labels">
+                <span>0</span>
+                <span>25</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+            </div>
+
+            <div class="track-wrap">
+                <div class="track-bg">
+                    <div class="track-lose-zone" id="trackLose"></div>
+                    <div class="track-win-zone"  id="trackWin"></div>
+                </div>
+                <div class="track-needle" id="trackNeedle"></div>
+                <div class="track-result-dot" id="trackDot"></div>
+                <input type="range" class="dice-slider" id="diceSlider"
+                       min="2" max="98" value="50" step="1"
+                       oninput="onSliderChange()">
+            </div>
+
+            <div class="mode-toggle">
+                <button class="mode-btn active-over" id="modeOver"  onclick="setMode('over')">Roll Over</button>
+                <button class="mode-btn"             id="modeUnder" onclick="setMode('under')">Roll Under</button>
+            </div>
+        </div>
+
+        <!-- Stat bar -->
+        <div class="stat-bar">
+            <div class="stat-cell">
+                <div class="stat-cell-label">Win Chance</div>
+                <div class="stat-cell-val" id="statChance">50.00%</div>
+            </div>
+            <div class="stat-cell-div"></div>
+            <div class="stat-cell">
+                <div class="stat-cell-label">Multiplier</div>
+                <div class="stat-cell-val gold" id="statMult">1.94×</div>
+            </div>
+            <div class="stat-cell-div"></div>
+            <div class="stat-cell">
+                <div class="stat-cell-label">Payout</div>
+                <div class="stat-cell-val green" id="statPayout">$0.00</div>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div class="history-row" id="historyRow"></div>
+
+    </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel">
+
+        <div class="msg-log" id="msgLog">Set your bet and roll.</div>
+
+        <!-- BET -->
+        <div>
+            <div class="rp-section-label">Bet Amount</div>
+            <div class="bet-manual-row" id="betManualRow">
+                <div class="bet-manual-prefix">$</div>
+                <input type="number" id="betInput" class="bet-manual-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
+            </div>
+            <div class="chip-grid">
+                <div class="chip-btn c-blue"   onclick="setBet(1)">$1</div>
+                <div class="chip-btn c-green"  onclick="setBet(5)">$5</div>
+                <div class="chip-btn c-green"  onclick="setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
+                <div class="chip-btn c-red"    onclick="setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
+                <div class="chip-btn"          onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            </div>
+            <div class="bet-mod-row">
+                <div class="bet-mod-btn" onclick="modBet(0.5)">½</div>
+                <div class="bet-mod-btn" onclick="modBet(2)">2×</div>
+                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- THRESHOLD -->
+        <div>
+            <div class="rp-section-label">Threshold</div>
+            <div class="threshold-row">
+                <div class="threshold-prefix" id="thresholdPrefix">Roll Over</div>
+                <input type="number" id="thresholdInput" class="threshold-input"
+                       min="2" max="98" value="50" oninput="onThresholdInput()">
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- PAYOUT INFO -->
+        <div>
+            <div class="rp-section-label">Round Info</div>
+            <div class="info-row" style="margin-bottom:10px;">
+                <div class="info-box">
+                    <div class="info-box-label">Multiplier</div>
+                    <div class="info-box-val gold" id="rpMult">1.94×</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Win Chance</div>
+                    <div class="info-box-val" id="rpChance">50%</div>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="info-box">
+                    <div class="info-box-label">Profit (Win)</div>
+                    <div class="info-box-val green" id="rpProfit">$0.00</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Loss (Lose)</div>
+                    <div class="info-box-val red" id="rpLoss">$0.00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROLL BUTTON -->
+        <div>
+            <button class="action-btn btn-roll" id="btnRoll" onclick="roll()" disabled>Roll Dice</button>
+        </div>
+
     </aside>
 
-    <main class="content-scroll">
-        <div class="game-layout">
-            <div class="game-sidebar">
-                <div>
-                    <div class="section-header">Bet Amount</div>
-                    <div class="bet-input-wrapper">
-                        <input type="number" id="betAmount" value="10.00" step="0.01">
-                        <button class="max-btn" onclick="setMaxBet()">MAX</button>
-                    </div>
+    <!-- CHAT -->
+    <aside class="chat-panel" id="chatPanel">
+        <div class="chat-header" onclick="toggleChat()">
+            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span class="chat-header-label">Global Chat</span>
+            <span class="chat-toggle-arrow">◀</span>
+        </div>
+        <div class="chat-body">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
+                    <button class="chat-send-btn" onclick="sendChat()">→</button>
                 </div>
-
-                <div class="stats-row">
-                    <div class="stat-card">
-                        <div class="section-header" style="font-size: 9px;">Multiplier</div>
-                        <div class="val" id="multiplier">2.00x</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="section-header" style="font-size: 9px;">Win Chance</div>
-                        <div class="val" id="winChance">49.50%</div>
-                    </div>
-                </div>
-
-                <button class="btn btn-primary" onclick="rollDice()">Roll Dice</button>
-            </div>
-
-            <div class="table-area">
-                <div class="roll-display" id="rollResult">50.00</div>
-                
-                <div class="slider-box">
-                    <div class="section-header" style="text-align: center; margin-bottom: 20px;">Roll Over <span id="targetDisplay" style="color:#fff">50</span></div>
-                    <input type="range" id="rollSlider" min="2" max="98" value="50" oninput="updateStats()">
-                    <div class="slider-labels">
-                        <span>0</span>
-                        <span>25</span>
-                        <span>50</span>
-                        <span>75</span>
-                        <span>100</span>
-                    </div>
-                </div>
+                <div class="char-counter" id="charCounter">0 / 50</div>
             </div>
         </div>
+    </aside>
 
-        <div class="how-to-play">
-            <h3>How To Play</h3>
-            <p>Set your "Roll Over" target using the slider. The goal is to roll a number higher than your target. Lowering your win chance increases the multiplier. Click "Roll Dice" to test your luck!</p>
-        </div>
-
-        <div class="footer">WEBSITE DEVELOPED BY FUSIONZZZ</div>
-    </main>
 </div>
+
+<div id="syncBadge">✓ Balance synced</div>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
@@ -321,77 +622,325 @@
         messagingSenderId: "804592033030",
         appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let currentLocalUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // Two-Decimal Enforcer
-    function cleanMoney(val) {
-        return Math.round(val * 100) / 100;
+    /* ── STATE ── */
+    let currentUser   = null;
+    let bet           = 0;
+    let mode          = 'over';   // 'over' | 'under'
+    let threshold     = 50;       // 2–98
+    let rolling       = false;
+    let chatCollapsed = false;
+    let syncTimeout   = null;
+    const HOUSE_EDGE  = 0.03;
+    const MAX_HISTORY = 20;
+    let history       = [];
+
+    /* ── UTILS ── */
+    function cleanMoney(v) { return Math.round(v*100)/100; }
+    function fmt$(v) { return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    /* ── MULTIPLIER MATH ── */
+    function getWinChance() {
+        // Roll is 0–100 (float). Over: win if roll > threshold. Under: win if roll < threshold.
+        if(mode === 'over')  return (100 - threshold) / 100;
+        else                 return threshold / 100;
     }
+    function getMultiplier() {
+        const chance = getWinChance();
+        if(chance <= 0) return 9999;
+        return parseFloat(((1 / chance) * (1 - HOUSE_EDGE)).toFixed(4));
+    }
+    function getPayout() { return cleanMoney(bet * getMultiplier()); }
+    function getProfit() { return cleanMoney(getPayout() - bet); }
 
-    function init() {
-        if (!currentLocalUser) return window.location.href = 'index.html';
-        db.ref('users/' + currentLocalUser.name).on('value', snap => {
-            if (snap.exists()) {
-                currentLocalUser = snap.val();
-                document.getElementById('navBal').innerText = parseFloat(currentLocalUser.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    /* ── AUTH ── */
+    function doAuth() {
+        const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+        const pass = document.getElementById('authPassword').value.trim();
+        if(name.length < 3){ alert('Username must be at least 3 characters.'); return; }
+        db.ref('users/'+name).once('value').then(snap => {
+            if(snap.exists()){
+                const u = snap.val();
+                if(u.password !== pass){ alert('Incorrect password.'); return; }
+                finalizeLogin(u);
+            } else {
+                const nu = {name, password:pass, balance:100, lastBonus:0, createdAt:Date.now()};
+                db.ref('users/'+name).set(nu).then(() => finalizeLogin(nu));
             }
         });
+    }
+
+    function finalizeLogin(user) {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('mainWrapper').style.display = 'flex';
+        document.getElementById('navBalWrap').style.display = 'flex';
+        db.ref('users/'+user.name).on('value', snap => {
+            if(snap.exists()){ currentUser = snap.val(); updateNavBal(); }
+        });
+        updateNavBal();
+        updateSliderVisuals();
+        updateStats();
+        initChat();
+    }
+
+    function updateNavBal() {
+        if(!currentUser) return;
+        document.getElementById('navBal').textContent = fmt$(currentUser.balance);
+    }
+
+    /* ── BET ── */
+    function onBetInput() {
+        const raw = parseFloat(document.getElementById('betInput').value);
+        bet = isNaN(raw)||raw<0 ? 0 : cleanMoney(Math.min(raw, currentUser?currentUser.balance:99999));
+        updateStats();
+        document.getElementById('btnRoll').disabled = (bet <= 0);
+    }
+    function setBet(amount) {
+        bet = cleanMoney(Math.min(amount, currentUser?currentUser.balance:99999));
+        document.getElementById('betInput').value = bet;
+        updateStats();
+        document.getElementById('btnRoll').disabled = (bet <= 0);
+    }
+    function setBetMax() {
+        if(!currentUser) return;
+        setBet(currentUser.balance);
+    }
+    function modBet(factor) {
+        bet = cleanMoney(Math.min(bet*factor, currentUser?currentUser.balance:99999));
+        if(bet < 0) bet = 0;
+        document.getElementById('betInput').value = bet > 0 ? bet : '';
+        updateStats();
+        document.getElementById('btnRoll').disabled = (bet <= 0);
+    }
+    function clearBet() {
+        bet = 0;
+        document.getElementById('betInput').value = '';
+        updateStats();
+        document.getElementById('btnRoll').disabled = true;
+    }
+
+    /* ── SLIDER & MODE ── */
+    function setMode(m) {
+        mode = m;
+        document.getElementById('modeOver').className  = 'mode-btn' + (m==='over'  ? ' active-over'  : '');
+        document.getElementById('modeUnder').className = 'mode-btn' + (m==='under' ? ' active-under' : '');
+        document.getElementById('thresholdPrefix').textContent = m==='over' ? 'Roll Over' : 'Roll Under';
+        updateSliderVisuals();
         updateStats();
     }
 
-    function setMaxBet() {
-        if (currentLocalUser) {
-            document.getElementById('betAmount').value = currentLocalUser.balance.toFixed(2);
-        }
+    function onSliderChange() {
+        threshold = parseInt(document.getElementById('diceSlider').value);
+        document.getElementById('thresholdInput').value = threshold;
+        updateSliderVisuals();
+        updateStats();
     }
 
-    function updateStats() {
-        const slider = document.getElementById('rollSlider');
-        const val = slider.value;
-        document.getElementById('targetDisplay').innerText = val;
-        
-        slider.style.setProperty('--range-pct', val + '%');
-
-        const chance = 100 - val;
-        const mult = (99 / chance).toFixed(4);
-        document.getElementById('multiplier').innerText = mult + 'x';
-        document.getElementById('winChance').innerText = chance.toFixed(2) + '%';
+    function onThresholdInput() {
+        let val = parseInt(document.getElementById('thresholdInput').value);
+        if(isNaN(val)) return;
+        val = Math.max(2, Math.min(98, val));
+        threshold = val;
+        document.getElementById('diceSlider').value = val;
+        updateSliderVisuals();
+        updateStats();
     }
 
-    function rollDice() {
-        const bet = cleanMoney(parseFloat(document.getElementById('betAmount').value));
-        const target = parseFloat(document.getElementById('rollSlider').value);
-        
-        if (isNaN(bet) || bet <= 0 || bet > currentLocalUser.balance) return alert("Invalid Bet");
+    function updateSliderVisuals() {
+        const pct = (threshold - 2) / 96; // 0..1 mapped from 2..98
+        const pctStr = (pct * 100).toFixed(2) + '%';
 
-        // Deduct bet safely
-        const balanceAfterBet = cleanMoney(currentLocalUser.balance - bet);
-        db.ref('users/' + currentLocalUser.name + '/balance').set(balanceAfterBet);
+        const needle = document.getElementById('trackNeedle');
+        needle.style.left = pctStr;
 
-        const result = (Math.random() * 100).toFixed(2);
-        const display = document.getElementById('rollResult');
-        display.innerText = result;
+        const loseZone = document.getElementById('trackLose');
+        const winZone  = document.getElementById('trackWin');
 
-        const chance = 100 - target;
-        const mult = 99 / chance;
-
-        if (parseFloat(result) > target) {
-            const winAmount = cleanMoney(bet * mult);
-            display.style.color = 'var(--accent-green)';
-            display.style.borderColor = 'var(--accent-green)';
-            
-            // Add win to the balance we had AFTER the bet was deducted
-            db.ref('users/' + currentLocalUser.name + '/balance').set(cleanMoney(balanceAfterBet + winAmount));
+        if(mode === 'over') {
+            // left of needle = lose, right = win
+            loseZone.style.width = pctStr;
+            loseZone.style.left  = '0';
+            loseZone.style.background = 'rgba(239,68,68,0.35)';
+            winZone.style.left  = pctStr;
+            winZone.style.width = (100 - pct*100).toFixed(2) + '%';
+            winZone.style.borderRadius = '0 99px 99px 0';
+            winZone.style.background = 'rgba(0,231,1,0.35)';
         } else {
-            display.style.color = 'var(--danger-red)';
-            display.style.borderColor = 'var(--danger-red)';
+            // left of needle = win, right = lose
+            loseZone.style.width = pctStr;
+            loseZone.style.left  = '0';
+            loseZone.style.background = 'rgba(0,231,1,0.35)';
+            winZone.style.left  = pctStr;
+            winZone.style.width = (100 - pct*100).toFixed(2) + '%';
+            winZone.style.borderRadius = '0 99px 99px 0';
+            winZone.style.background = 'rgba(239,68,68,0.35)';
         }
     }
 
-    init();
+    /* ── STATS UPDATE ── */
+    function updateStats() {
+        const chance = getWinChance() * 100;
+        const mult   = getMultiplier();
+        const profit = getProfit();
+
+        document.getElementById('statChance').textContent  = chance.toFixed(2) + '%';
+        document.getElementById('statMult').textContent    = mult.toFixed(2) + '×';
+        document.getElementById('statPayout').textContent  = '$' + fmt$(getPayout());
+        document.getElementById('rpMult').textContent      = mult.toFixed(2) + '×';
+        document.getElementById('rpChance').textContent    = chance.toFixed(2) + '%';
+        document.getElementById('rpProfit').textContent    = '$' + fmt$(profit);
+        document.getElementById('rpLoss').textContent      = '$' + fmt$(bet);
+    }
+
+    /* ── ROLL ── */
+    function roll() {
+        if(rolling) return;
+        if(bet <= 0){ setMsg('Enter a valid bet.'); return; }
+        if(!currentUser || bet > currentUser.balance){ setMsg('Not enough balance.'); return; }
+        rolling = true;
+        document.getElementById('btnRoll').disabled = true;
+
+        // Animate number rapidly then settle
+        const result = parseFloat((Math.random() * 100).toFixed(2));
+        animateRoll(result, () => {
+            resolveRoll(result);
+            rolling = false;
+            document.getElementById('btnRoll').disabled = (bet <= 0);
+        });
+    }
+
+    function animateRoll(finalVal, cb) {
+        const el = document.getElementById('resultNumber');
+        const dot = document.getElementById('trackDot');
+        let ticks = 0;
+        const totalTicks = 18;
+        const interval = setInterval(() => {
+            ticks++;
+            const fakeVal = parseFloat((Math.random() * 100).toFixed(2));
+            el.textContent = fakeVal.toFixed(2);
+            el.className = 'result-number';
+            if(ticks >= totalTicks) {
+                clearInterval(interval);
+                el.textContent = finalVal.toFixed(2);
+                // Position dot on track
+                const pct = finalVal / 100;
+                dot.style.left = (pct * 100).toFixed(2) + '%';
+                const won = isWin(finalVal);
+                dot.style.background = won ? 'var(--accent-green)' : 'var(--accent-red)';
+                dot.style.display = 'block';
+                el.className = 'result-number ' + (won ? 'win' : 'lose');
+                cb();
+            }
+        }, 40);
+    }
+
+    function isWin(rollVal) {
+        if(mode === 'over')  return rollVal > threshold;
+        else                 return rollVal < threshold;
+    }
+
+    function resolveRoll(rollVal) {
+        const won = isWin(rollVal);
+        const mult = getMultiplier();
+        const delta = won ? getProfit() : -bet;
+
+        // Update verdict
+        const verdict = document.getElementById('resultVerdict');
+        if(won) {
+            verdict.textContent = `WIN  ×${mult.toFixed(2)}  +$${fmt$(getProfit())}`;
+            verdict.className = 'result-verdict win';
+        } else {
+            verdict.textContent = `LOSE  −$${fmt$(bet)}`;
+            verdict.className = 'result-verdict lose';
+        }
+
+        updateStats();
+        addHistory(rollVal, won);
+        setMsg(won ? `🎲 ${rollVal.toFixed(2)} — WIN! +$${fmt$(getProfit())}` : `🎲 ${rollVal.toFixed(2)} — Loss. -$${fmt$(bet)}`);
+        saveBalance(delta);
+    }
+
+    function addHistory(val, won) {
+        history.unshift({val, won});
+        if(history.length > MAX_HISTORY) history.pop();
+        const row = document.getElementById('historyRow');
+        row.innerHTML = '';
+        history.forEach(h => {
+            const p = document.createElement('div');
+            p.className = 'hist-pill ' + (h.won ? 'win' : 'lose');
+            p.textContent = h.val.toFixed(2);
+            row.appendChild(p);
+        });
+    }
+
+    /* ── FIREBASE ── */
+    function saveBalance(delta) {
+        db.ref('users/'+currentUser.name).transaction(u => {
+            if(!u) return u;
+            u.balance = cleanMoney((u.balance||0) + delta);
+            return u;
+        }, (err, committed) => {
+            if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now()});
+            if(committed && delta !== 0) showSyncBadge();
+        });
+    }
+    function showSyncBadge() {
+        const el = document.getElementById('syncBadge');
+        el.style.display = 'block';
+        clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => { el.style.display='none'; }, 2000);
+    }
+
+    /* ── CHAT ── */
+    function initChat() {
+        const box = document.getElementById('chatMessages');
+        db.ref('global_chat').limitToLast(50).on('child_added', snap => {
+            const msg = snap.val();
+            const time = new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        });
+        const input = document.getElementById('chatInput');
+        const counter = document.getElementById('charCounter');
+        input.addEventListener('keypress', e => { if(e.key==='Enter') sendChat(); });
+        input.addEventListener('input', () => {
+            const len = input.value.length;
+            counter.textContent = `${len} / 50`;
+            counter.className = 'char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');
+        });
+    }
+    function sendChat() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim().slice(0,50);
+        if(!text||!currentUser) return;
+        db.ref('global_chat').push({user:currentUser.name, text, ts:Date.now()});
+        input.value = '';
+        document.getElementById('charCounter').textContent = '0 / 50';
+        document.getElementById('charCounter').className = 'char-counter';
+    }
+    function toggleChat() {
+        chatCollapsed = !chatCollapsed;
+        document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
+    }
+
+    function setMsg(t) { document.getElementById('msgLog').textContent = t; }
+
+    /* ── AUTO LOGIN ── */
+    const cached = localStorage.getItem('currentUser');
+    if(cached) {
+        const u = JSON.parse(cached);
+        db.ref('users/'+u.name).once('value', snap => {
+            if(snap.exists()&&snap.val().password===u.password) finalizeLogin(snap.val());
+        });
+    }
 </script>
 </body>
 </html>
