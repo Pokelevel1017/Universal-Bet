@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal-Bets | Plinko</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #0a0e17;
+            --bg-sidebar: #111723;
+            --bg-card: #1a2232;
+            --bg-chat: #131926;
+            --bg-header: #111723;
+            --primary-blue: #007aff;
+            --accent-green: #00e701;
+            --accent-red: #ef4444;
+            --accent-gold: #ffc400;
+            --text-main: #ffffff;
+            --text-muted: #8a96aa;
+            --border-color: rgba(255,255,255,0.05);
+            --font-main: 'Inter', sans-serif;
+            --font-condensed: 'Roboto Condensed', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        nav {
+            background: var(--bg-header);
+            padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            height: 70px; border-bottom: 1px solid var(--border-color);
+            z-index: 100; flex-shrink: 0;
+        }
+        .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
+        .logo span { color: var(--primary-blue); }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .balance-pill { display: flex; align-items: center; background: #000; border: 1px solid var(--border-color); border-radius: 12px; padding: 6px 16px; }
+        .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 8px; }
+        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
+        .back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 7px 14px; color: var(--text-muted);
+            text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+        /* AUTH */
+        #authGate {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px; padding: 60px 20px; text-align: center;
+        }
+        .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .auth-gate-logo span { color: var(--primary-blue); }
+        .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+        .auth-gate-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 32px; width: 100%; max-width: 340px; }
+        .auth-gate-card label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; text-align: left; }
+        .auth-gate-card input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 12px 14px; color: #fff; border-radius: 8px; outline: none; font-size: 14px; font-family: var(--font-main); margin-bottom: 14px; transition: 0.2s; }
+        .auth-gate-card input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .auth-gate-btn { width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-main); transition: 0.2s; }
+        .auth-gate-btn:hover:not(:disabled) { background: #006ae6; }
+        .auth-gate-btn:disabled { opacity: 0.6; cursor: default; }
+
+        /* MAIN */
+        .main-wrapper { flex: 1; overflow: hidden; }
+
+        .game-scroll {
+            flex: 1; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 16px;
+        }
+
+        #plinkoCanvas { display: block; border-radius: 14px; }
+
+        /* RIGHT PANEL */
+        .right-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column;
+            overflow-y: auto; padding: 20px 16px; gap: 16px;
+        }
+        .rp-section-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
+        .bet-manual-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s; }
+        .bet-manual-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .bet-prefix { padding: 0 12px; color: var(--accent-green); font-weight: 800; font-family: var(--font-condensed); font-size: 17px; flex-shrink: 0; background: rgba(0,231,1,0.05); border-right: 1px solid rgba(255,255,255,0.06); height: 44px; display: flex; align-items: center; }
+        .bet-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 16px; font-weight: 700; font-family: var(--font-condensed); padding: 0 12px; height: 44px; }
+        .bet-input::-webkit-inner-spin-button, .bet-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+        .bet-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; font-size: 14px; }
+        .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+        .chip-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 4px; text-align: center; font-family: var(--font-condensed); font-size: 13px; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: 0.15s; }
+        .chip-btn:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .chip-btn.c-blue   { color: #60a5fa; border-color: rgba(59,130,246,0.2); }
+        .chip-btn.c-green  { color: var(--accent-green); border-color: rgba(0,231,1,0.2); }
+        .chip-btn.c-yellow { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+        .chip-btn.c-red    { color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .chip-btn.c-purple { color: #c084fc; border-color: rgba(168,85,247,0.2); }
+        .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
+        .bet-mod-btn { flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 7px 4px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.15s; font-family: var(--font-main); }
+        .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .rp-divider { height: 1px; background: var(--border-color); }
+        .risk-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 7px; }
+        .risk-btn { padding: 9px 4px; border-radius: 9px; border: 1px solid var(--border-color); background: var(--bg-card); text-align: center; cursor: pointer; transition: 0.15s; font-size: 12px; font-weight: 700; font-family: var(--font-main); color: var(--text-muted); }
+        .risk-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .risk-btn.sel-low    { background: rgba(0,231,1,0.1);   border-color: rgba(0,231,1,0.35);   color: var(--accent-green); }
+        .risk-btn.sel-medium { background: rgba(245,158,11,0.1); border-color: rgba(245,158,11,0.35); color: #f59e0b; }
+        .risk-btn.sel-high   { background: rgba(239,68,68,0.1);  border-color: rgba(239,68,68,0.35);  color: #f87171; }
+        .rows-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+        .rows-btn { padding: 8px 4px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-card); text-align: center; cursor: pointer; transition: 0.15s; font-size: 13px; font-weight: 700; font-family: var(--font-condensed); color: var(--text-muted); }
+        .rows-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .rows-btn.sel-rows { background: rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.35); color: var(--primary-blue); }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .info-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 11px 12px; }
+        .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .info-box-val { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: #fff; line-height: 1; }
+        .info-box-val.green { color: var(--accent-green); }
+        .info-box-val.gold  { color: var(--accent-gold); }
+        .info-box-val.red   { color: var(--accent-red); }
+        .action-btn { width: 100%; padding: 15px; border-radius: 10px; border: none; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; }
+        .action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+        .action-btn:active:not(:disabled) { transform: none; }
+        .action-btn:disabled { opacity: 0.3; cursor: default; transform: none; filter: none; }
+        .btn-drop { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
+        .msg-log { font-size: 12px; color: var(--text-muted); text-align: center; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px; min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
+
+        /* Locked state */
+        .panel-locked .chip-btn,
+        .panel-locked .bet-mod-btn,
+        .panel-locked .risk-btn,
+        .panel-locked .rows-btn { pointer-events: none; opacity: 0.35; }
+        .panel-locked .bet-manual-row { pointer-events: none; opacity: 0.35; }
+
+        /* CHAT */
+        .chat-panel { width: 280px; flex-shrink: 0; background: var(--bg-chat); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease; }
+        .chat-panel.collapsed { width: 48px; min-width: 48px; }
+        .chat-header { padding: 18px 16px; border-bottom: 1px solid var(--border-color); font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; flex-shrink: 0; }
+        .chat-header:hover { background: rgba(255,255,255,0.02); }
+        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
+        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
+        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
+        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
+        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
+        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
+        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
+        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
+        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
+        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
+        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        .char-counter.near-limit { color: #f59e0b; }
+        .char-counter.at-limit   { color: #ef4444; }
+
+        #syncBadge { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2); border-radius: 8px; padding: 7px 16px; font-size: 11px; color: var(--accent-green); display: none; z-index: 200; white-space: nowrap; }
+
+        @media (max-width: 1100px) { .chat-panel { display: none; } }
+        @media (max-width: 800px) {
+            body { height: auto; overflow-y: auto; }
+            .main-wrapper { height: auto; flex-direction: column; }
+            .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
+            .game-scroll { min-height: 360px; overflow: visible; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
+    <div class="nav-right">
+        <div class="balance-pill" id="navBalWrap" style="display:none;">
+            <span class="currency-icon">$</span>
+            <span class="nav-bal" id="navBal">0.00</span>
+        </div>
+        <a class="back-btn" href="index.html">← Lobby</a>
+    </div>
+</nav>
+
+<!-- Both sections start hidden; JS shows the right one -->
+<div id="authGate" style="display:none;">
+    <div>
+        <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
+        <div class="auth-gate-sub">Sign in to play Plinko with your real balance</div>
+    </div>
+    <div class="auth-gate-card">
+        <label>Username</label>
+        <input type="text" id="authUsername" placeholder="Enter your username">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
+        <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Access Plinko</button>
+    </div>
+</div>
+
+<div class="main-wrapper" id="mainWrapper" style="display:none;">
+    <div class="game-scroll" id="gameScroll">
+        <canvas id="plinkoCanvas"></canvas>
+    </div>
+
+    <aside class="right-panel" id="rightPanel">
+        <div class="msg-log" id="msgLog">Set bet, risk &amp; rows, then drop!</div>
+
+        <div>
+            <div class="rp-section-label">Bet Amount</div>
+            <div class="bet-manual-row">
+                <div class="bet-prefix">$</div>
+                <input type="number" id="betInput" class="bet-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
+            </div>
+            <div class="chip-grid">
+                <div class="chip-btn c-blue"   onclick="setBet(1)">$1</div>
+                <div class="chip-btn c-green"  onclick="setBet(5)">$5</div>
+                <div class="chip-btn c-green"  onclick="setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
+                <div class="chip-btn c-red"    onclick="setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
+                <div class="chip-btn"          onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            </div>
+            <div class="bet-mod-row">
+                <div class="bet-mod-btn" onclick="modBet(0.5)">½</div>
+                <div class="bet-mod-btn" onclick="modBet(2)">2×</div>
+                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <div>
+            <div class="rp-section-label">Risk</div>
+            <div class="risk-grid">
+                <div class="risk-btn sel-low" id="risk-low"    onclick="setRisk('low')">Low</div>
+                <div class="risk-btn"         id="risk-medium" onclick="setRisk('medium')">Medium</div>
+                <div class="risk-btn"         id="risk-high"   onclick="setRisk('high')">High</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <div>
+            <div class="rp-section-label">Rows</div>
+            <div class="rows-grid">
+                <div class="rows-btn"          id="rows-8"  onclick="setRows(8)">8</div>
+                <div class="rows-btn sel-rows" id="rows-12" onclick="setRows(12)">12</div>
+                <div class="rows-btn"          id="rows-14" onclick="setRows(14)">14</div>
+                <div class="rows-btn"          id="rows-16" onclick="setRows(16)">16</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <div>
+            <div class="rp-section-label">Last Drop</div>
+            <div class="info-row">
+                <div class="info-box">
+                    <div class="info-box-label">Multiplier</div>
+                    <div class="info-box-val gold" id="infoMult">—</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Payout</div>
+                    <div class="info-box-val" id="infoPayout">—</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <div>
+            <button class="action-btn btn-drop" id="btnDrop" onclick="dropBall()" disabled>Drop Ball</button>
+        </div>
+    </aside>
+
+    <aside class="chat-panel" id="chatPanel">
+        <div class="chat-header" onclick="toggleChat()">
+            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span class="chat-header-label">Global Chat</span>
+            <span class="chat-toggle-arrow">◀</span>
+        </div>
+        <div class="chat-body">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
+                    <button class="chat-send-btn" onclick="sendChat()">→</button>
+                </div>
+                <div class="char-counter" id="charCounter">0 / 50</div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<div id="syncBadge">✓ Balance synced</div>
+
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+<script>
+// ── FIREBASE ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+    apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
+    authDomain: "universalbet-427ce.firebaseapp.com",
+    databaseURL: "https://universalbet-427ce-default-rtdb.firebaseio.com",
+    projectId: "universalbet-427ce",
+    storageBucket: "universalbet-427ce.firebasestorage.app",
+    messagingSenderId: "804592033030",
+    appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ── MULTIPLIER TABLES ─────────────────────────────────────────────────
+const MULT_TABLES = {
+    low: {
+        8:  [3.0, 1.5, 1.1, 0.8, 0.5, 0.8, 1.1, 1.5, 3.0],
+        12: [4.5, 2.0, 1.3, 1.0, 0.8, 0.5, 0.5, 0.8, 1.0, 1.3, 2.0, 4.5],
+        14: [5.0, 2.5, 1.5, 1.1, 0.9, 0.7, 0.4, 0.4, 0.7, 0.9, 1.1, 1.5, 2.5, 5.0],
+        16: [7.0, 4.0, 1.8, 1.3, 1.1, 1.0, 0.8, 0.5, 0.5, 0.8, 1.0, 1.1, 1.3, 1.8, 4.0, 7.0],
+    },
+    medium: {
+        8:  [7.0, 2.0, 1.1, 0.5, 0.3, 0.5, 1.1, 2.0, 7.0],
+        12: [14, 5.0, 2.5, 1.4, 0.8, 0.4, 0.4, 0.8, 1.4, 2.5, 5.0, 14],
+        14: [22, 8.0, 4.0, 1.8, 1.2, 0.7, 0.3, 0.3, 0.7, 1.2, 1.8, 4.0, 8.0, 22],
+        16: [40, 16, 7.0, 3.5, 2.0, 1.2, 0.7, 0.3, 0.3, 0.7, 1.2, 2.0, 3.5, 7.0, 16, 40],
+    },
+    high: {
+        8:  [15, 3.0, 1.2, 0.2, 0.2, 0.2, 1.2, 3.0, 15],
+        12: [55, 12, 5.0, 1.5, 0.6, 0.2, 0.2, 0.6, 1.5, 5.0, 12, 55],
+        14: [80, 24, 8.0, 3.0, 1.3, 0.5, 0.2, 0.2, 0.5, 1.3, 3.0, 8.0, 24, 80],
+        16: [150, 50, 15, 6.0, 2.5, 1.2, 0.4, 0.2, 0.2, 0.4, 1.2, 2.5, 6.0, 15, 50, 150],
+    },
+};
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let currentUser   = null;
+let bet           = 0;
+let risk          = 'low';
+let rows          = 12;
+let chatCollapsed = false;
+let syncTimeout   = null;
+let loopStarted   = false;
+let animFrame     = null;
+
+let W = 500, H = 500;
+let pegs    = [];
+let balls   = [];
+let buckets = [];
+
+const PEG_R      = 4;
+const BALL_R     = 7;
+const GRAVITY    = 0.32;
+const DAMPEN     = 0.55;
+const HORIZ_RAND = 0.6;
+
+// ── UTILS ─────────────────────────────────────────────────────────────
+function cleanMoney(v) { return Math.round(v * 100) / 100; }
+function fmt$(v) { return parseFloat(v || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function setMsg(t) { document.getElementById('msgLog').textContent = t; }
+
+function showAuth()  {
+    document.getElementById('authGate').style.display   = 'flex';
+    document.getElementById('mainWrapper').style.display = 'none';
+}
+function showGame()  {
+    document.getElementById('authGate').style.display   = 'none';
+    document.getElementById('mainWrapper').style.display = 'flex';
+}
+
+// ── AUTH ──────────────────────────────────────────────────────────────
+function doAuth() {
+    const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass = document.getElementById('authPassword').value.trim();
+    if (name.length < 3) { alert('Username must be at least 3 characters.'); return; }
+
+    const btn = document.getElementById('authBtn');
+    btn.textContent = 'Connecting...';
+    btn.disabled = true;
+    const reset = () => { btn.textContent = 'Access Plinko'; btn.disabled = false; };
+
+    db.ref('users/' + name).once('value').then(snap => {
+        if (snap.exists()) {
+            const u = snap.val();
+            if (u.password !== pass) { alert('Incorrect password.'); reset(); return; }
+            finalizeLogin(u);
+        } else {
+            const nu = { name, password: pass, balance: 100, lastBonus: 0, createdAt: Date.now() };
+            db.ref('users/' + name).set(nu).then(() => finalizeLogin(nu)).catch(e => { alert('Error: ' + e.message); reset(); });
+        }
+    }).catch(e => { alert('Connection failed: ' + e.message); reset(); });
+}
+
+function finalizeLogin(user) {
+    currentUser = user;
+    localStorage.setItem('currentUser', JSON.stringify(user));
+
+    showGame();
+    document.getElementById('navBalWrap').style.display = 'flex';
+
+    db.ref('users/' + user.name).on('value', snap => {
+        if (snap.exists()) { currentUser = snap.val(); updateNavBal(); }
+    });
+
+    updateNavBal();
+    initChat();
+
+    // Wait one frame so the DOM is painted and has real dimensions
+    requestAnimationFrame(() => {
+        initBoard();
+        if (!loopStarted) {
+            loopStarted = true;
+            (function loop() { animFrame = requestAnimationFrame(loop); update(); draw(); })();
+        }
+    });
+}
+
+function updateNavBal() {
+    if (!currentUser) return;
+    document.getElementById('navBal').textContent = fmt$(currentUser.balance);
+}
+
+// ── BET ───────────────────────────────────────────────────────────────
+function onBetInput() {
+    const raw = parseFloat(document.getElementById('betInput').value);
+    bet = isNaN(raw) || raw < 0 ? 0 : cleanMoney(Math.min(raw, currentUser ? currentUser.balance : 99999));
+    document.getElementById('btnDrop').disabled = (bet <= 0);
+}
+function setBet(amount) {
+    bet = cleanMoney(Math.min(amount, currentUser ? currentUser.balance : 99999));
+    document.getElementById('betInput').value = bet;
+    document.getElementById('btnDrop').disabled = (bet <= 0);
+}
+function setBetMax() { if (currentUser) setBet(currentUser.balance); }
+function modBet(f) {
+    bet = cleanMoney(Math.min(bet * f, currentUser ? currentUser.balance : 99999));
+    if (bet < 0) bet = 0;
+    document.getElementById('betInput').value = bet > 0 ? bet : '';
+    document.getElementById('btnDrop').disabled = (bet <= 0);
+}
+function clearBet() {
+    bet = 0;
+    document.getElementById('betInput').value = '';
+    document.getElementById('btnDrop').disabled = true;
+}
+
+// ── RISK / ROWS ───────────────────────────────────────────────────────
+function setRisk(r) {
+    if (document.getElementById('rightPanel').classList.contains('panel-locked')) return;
+    risk = r;
+    ['low','medium','high'].forEach(k => {
+        document.getElementById('risk-' + k).className = 'risk-btn' + (k === r ? ' sel-' + k : '');
+    });
+    initBoard();
+}
+function setRows(n) {
+    if (document.getElementById('rightPanel').classList.contains('panel-locked')) return;
+    rows = n;
+    [8, 12, 14, 16].forEach(k => {
+        document.getElementById('rows-' + k).className = 'rows-btn' + (k === n ? ' sel-rows' : '');
+    });
+    initBoard();
+}
+
+// ── BOARD ─────────────────────────────────────────────────────────────
+function initBoard() {
+    const canvas = document.getElementById('plinkoCanvas');
+    const scroll = document.getElementById('gameScroll');
+
+    const availW = Math.max(scroll.clientWidth  - 32, 200);
+    const availH = Math.max(scroll.clientHeight - 32, 200);
+
+    const mults    = MULT_TABLES[risk][rows];
+    const pegCols  = rows + 1;
+    const bucketH  = 44;
+
+    const pegSpX = Math.min(44, Math.floor(availW / (pegCols + 1)));
+    const pegSpY = Math.min(36, Math.floor((availH - bucketH - 20) / (rows + 1)));
+
+    W = Math.min(pegSpX * (pegCols + 1), availW);
+    H = Math.min(pegSpY * (rows + 1) + bucketH + 20, availH);
+
+    canvas.width  = W;
+    canvas.height = H;
+
+    const usableH = H - bucketH - 20;
+    const bW      = W / mults.length;
+
+    pegs = [];
+    for (let row = 0; row < rows; row++) {
+        const numP  = row + 2;
+        const rowY  = 30 + (usableH / rows) * row;
+        const span  = (numP - 1) * (W / (rows + 1));
+        const startX = (W - span) / 2;
+        for (let col = 0; col < numP; col++) {
+            pegs.push({ x: startX + col * (W / (rows + 1)), y: rowY });
+        }
+    }
+
+    buckets = mults.map((mult, i) => ({ x: i * bW, y: H - bucketH, w: bW, h: bucketH, mult, lit: 0 }));
+}
+
+// ── DROP ──────────────────────────────────────────────────────────────
+function dropBall() {
+    if (bet <= 0)                                   { setMsg('Enter a bet first.'); return; }
+    if (!currentUser || bet > currentUser.balance)  { setMsg('Not enough balance.'); return; }
+
+    lockPanel(true);
+    balls.push({
+        x:    W / 2 + (Math.random() - 0.5) * 4,
+        y:    10,
+        vx:   (Math.random() - 0.5) * 0.5,
+        vy:   1,
+        r:    BALL_R,
+        done: false,
+        color:`hsl(${200 + Math.random() * 40},90%,65%)`,
+        trail:[],
+        _doneFrames: 0,
+    });
+}
+
+// ── LOCK ─────────────────────────────────────────────────────────────
+function lockPanel(lock) {
+    const rp = document.getElementById('rightPanel');
+    if (lock) rp.classList.add('panel-locked');
+    else      rp.classList.remove('panel-locked');
+    document.getElementById('btnDrop').disabled = lock || bet <= 0;
+}
+
+// ── PHYSICS ───────────────────────────────────────────────────────────
+function update() {
+    const canvas = document.getElementById('plinkoCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    for (const ball of balls) {
+        if (ball.done) { ball._doneFrames++; continue; }
+
+        ball.trail.push({ x: ball.x, y: ball.y });
+        if (ball.trail.length > 8) ball.trail.shift();
+
+        ball.vy += GRAVITY;
+        ball.x  += ball.vx;
+        ball.y  += ball.vy;
+
+        if (ball.x - ball.r < 0)  { ball.x = ball.r;      ball.vx =  Math.abs(ball.vx); }
+        if (ball.x + ball.r > W)  { ball.x = W - ball.r;  ball.vx = -Math.abs(ball.vx); }
+
+        for (const peg of pegs) {
+            const dx = ball.x - peg.x, dy = ball.y - peg.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            const min  = ball.r + PEG_R + 1;
+            if (dist < min && dist > 0.01) {
+                const nx = dx / dist, ny = dy / dist;
+                ball.x = peg.x + nx * min;
+                ball.y = peg.y + ny * min;
+                const dot = ball.vx * nx + ball.vy * ny;
+                ball.vx = (ball.vx - 2 * dot * nx) * DAMPEN;
+                ball.vy = (ball.vy - 2 * dot * ny) * DAMPEN;
+                ball.vx += (Math.random() - 0.5) * HORIZ_RAND;
+                if (ball.vy < 0.5) ball.vy = 0.5;
+            }
+        }
+
+        if (ball.y + ball.r >= buckets[0].y) {
+            const idx = Math.max(0, Math.min(buckets.length - 1, Math.floor(ball.x / (W / buckets.length))));
+            const bucket = buckets[idx];
+            ball.done = true;
+            bucket.lit = 45;
+
+            const mult  = bucket.mult;
+            const payout = cleanMoney(bet * mult);
+            const delta  = cleanMoney(payout - bet);
+
+            document.getElementById('infoMult').textContent   = mult.toFixed(2) + '×';
+            const payEl = document.getElementById('infoPayout');
+            payEl.textContent = (delta >= 0 ? '+' : '') + '$' + fmt$(Math.abs(delta));
+            payEl.className   = 'info-box-val ' + (delta >= 0 ? 'green' : 'red');
+
+            setMsg(delta >= 0
+                ? `💰 ${mult.toFixed(2)}× — Won $${fmt$(payout)}!`
+                : `😬 ${mult.toFixed(2)}× — Lost $${fmt$(bet)}.`
+            );
+            saveBalance(delta);
+        }
+    }
+
+    for (const b of buckets) { if (b.lit > 0) b.lit--; }
+    balls = balls.filter(b => !b.done || b._doneFrames < 40);
+    if (balls.length === 0) lockPanel(false);
+}
+
+// ── DRAW ──────────────────────────────────────────────────────────────
+function draw() {
+    const canvas = document.getElementById('plinkoCanvas');
+    const ctx    = canvas.getContext('2d');
+
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#0d1520';
+    ctx.beginPath(); ctx.roundRect(0, 0, W, H, 14); ctx.fill();
+
+    // Buckets
+    for (const b of buckets) {
+        const m   = b.mult;
+        const lit = b.lit > 0;
+        let bg, border, text;
+        if      (m >= 10) { bg='rgba(239,68,68,0.18)';  border='rgba(239,68,68,0.6)';  text='#f87171'; }
+        else if (m >= 3)  { bg='rgba(245,158,11,0.15)'; border='rgba(245,158,11,0.5)'; text='#f59e0b'; }
+        else if (m >= 1)  { bg='rgba(0,231,1,0.12)';    border='rgba(0,231,1,0.4)';    text='#00e701'; }
+        else              { bg='rgba(255,255,255,0.04)'; border='rgba(255,255,255,0.15)';text='#8a96aa'; }
+
+        ctx.fillStyle   = lit ? border : bg;
+        ctx.strokeStyle = lit ? '#fff'  : border;
+        ctx.lineWidth   = lit ? 2 : 1;
+        ctx.beginPath();
+        ctx.roundRect(b.x + 2, b.y + 4, b.w - 4, b.h - 8, 6);
+        ctx.fill(); ctx.stroke();
+
+        ctx.fillStyle    = lit ? '#fff' : text;
+        ctx.font         = `bold ${b.w < 38 ? 9 : 11}px 'Roboto Condensed', sans-serif`;
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(m >= 10 ? m.toFixed(0)+'×' : m.toFixed(1)+'×', b.x + b.w / 2, b.y + b.h / 2);
+    }
+
+    // Pegs
+    for (const peg of pegs) {
+        ctx.beginPath();
+        ctx.arc(peg.x, peg.y, PEG_R, 0, Math.PI * 2);
+        ctx.fillStyle   = 'rgba(255,255,255,0.55)';
+        ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+        ctx.lineWidth   = 1;
+        ctx.fill(); ctx.stroke();
+    }
+
+    // Balls
+    for (const ball of balls) {
+        if (ball.done && ball._doneFrames > 20) continue;
+
+        // Trail
+        for (let i = 0; i < ball.trail.length; i++) {
+            const a = (i / ball.trail.length) * 0.3;
+            const r = ball.r * (i / ball.trail.length) * 0.7;
+            if (r < 0.5) continue;
+            ctx.beginPath();
+            ctx.arc(ball.trail[i].x, ball.trail[i].y, r, 0, Math.PI * 2);
+            ctx.fillStyle = ball.color.replace('hsl(', 'hsla(').replace(')', `,${a})`);
+            ctx.fill();
+        }
+
+        // Glow
+        const grd = ctx.createRadialGradient(ball.x, ball.y, 0, ball.x, ball.y, ball.r * 2.5);
+        grd.addColorStop(0, ball.color.replace('hsl(','hsla(').replace(')',',0.2)'));
+        grd.addColorStop(1, 'transparent');
+        ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = grd; ctx.fill();
+
+        // Ball body
+        const bg = ctx.createRadialGradient(ball.x - ball.r*0.3, ball.y - ball.r*0.3, 0, ball.x, ball.y, ball.r);
+        bg.addColorStop(0, '#ffffff');
+        bg.addColorStop(0.4, ball.color);
+        bg.addColorStop(1, ball.color.replace('65%', '35%'));
+        ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2);
+        ctx.fillStyle = bg; ctx.fill();
+    }
+}
+
+// ── FIREBASE SAVE ─────────────────────────────────────────────────────
+function saveBalance(delta) {
+    db.ref('users/' + currentUser.name).transaction(u => {
+        if (!u) return u;
+        u.balance = cleanMoney((u.balance || 0) + delta);
+        return u;
+    }, (err, committed) => {
+        if (committed && delta > 0) db.ref('recent_wins').push({ name: currentUser.name, amount: delta, ts: Date.now() });
+        if (committed && delta !== 0) showSyncBadge();
+    });
+}
+function showSyncBadge() {
+    const el = document.getElementById('syncBadge');
+    el.style.display = 'block';
+    clearTimeout(syncTimeout);
+    syncTimeout = setTimeout(() => { el.style.display = 'none'; }, 2000);
+}
+
+// ── RESIZE ────────────────────────────────────────────────────────────
+window.addEventListener('resize', () => { if (currentUser) initBoard(); });
+
+// ── CHAT ─────────────────────────────────────────────────────────────
+function initChat() {
+    const box = document.getElementById('chatMessages');
+    db.ref('global_chat').limitToLast(50).on('child_added', snap => {
+        const msg  = snap.val();
+        const time = new Date(msg.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+        const div  = document.createElement('div');
+        div.className = 'message';
+        div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
+        box.appendChild(div);
+        box.scrollTop = box.scrollHeight;
+    });
+    const input = document.getElementById('chatInput');
+    const ctr   = document.getElementById('charCounter');
+    input.addEventListener('keypress', e => { if (e.key === 'Enter') sendChat(); });
+    input.addEventListener('input', () => {
+        const len = input.value.length;
+        ctr.textContent = `${len} / 50`;
+        ctr.className   = 'char-counter' + (len >= 50 ? ' at-limit' : len >= 40 ? ' near-limit' : '');
+    });
+}
+function sendChat() {
+    const input = document.getElementById('chatInput');
+    const text  = input.value.trim().slice(0, 50);
+    if (!text || !currentUser) return;
+    db.ref('global_chat').push({ user: currentUser.name, text, ts: Date.now() });
+    input.value = '';
+    document.getElementById('charCounter').textContent = '0 / 50';
+    document.getElementById('charCounter').className   = 'char-counter';
+}
+function toggleChat() {
+    chatCollapsed = !chatCollapsed;
+    document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────────
+// Try auto-login from localStorage, otherwise show auth gate
+(function boot() {
+    const raw = localStorage.getItem('currentUser');
+    if (!raw) { showAuth(); return; }
+    let u;
+    try { u = JSON.parse(raw); } catch(e) { localStorage.removeItem('currentUser'); showAuth(); return; }
+    db.ref('users/' + u.name).once('value').then(snap => {
+        if (snap.exists() && snap.val().password === u.password) {
+            finalizeLogin(snap.val());
+        } else {
+            localStorage.removeItem('currentUser');
+            showAuth();
+        }
+    }).catch(() => { showAuth(); });
+})();
+</script>
+</body>
+</html>
