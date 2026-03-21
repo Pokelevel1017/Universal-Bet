@@ -7,301 +7,586 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #0e121b;
-            --bg-sidebar: #131926;
+            --bg-body: #0a0e17;
+            --bg-sidebar: #111723;
             --bg-card: #1a2232;
-            --bg-header: #131926;
+            --bg-chat: #131926;
+            --bg-header: #111723;
             --primary-blue: #007aff;
             --accent-green: #00e701;
-            --danger-red: #e11d48;
+            --accent-red: #ef4444;
+            --accent-gold: #ffc400;
             --text-main: #ffffff;
             --text-muted: #8a96aa;
-            --border-color: #242e42;
+            --border-color: rgba(255,255,255,0.05);
             --font-main: 'Inter', sans-serif;
             --font-condensed: 'Roboto Condensed', sans-serif;
-            --tile-bg: #242e42;
-            --tile-hover: #2c394f;
+            --tile-unrevealed: #1e2d45;
+            --tile-border: rgba(255,255,255,0.07);
         }
 
-        body { 
-            background-color: var(--bg-body); 
-            color: var(--text-main); 
-            font-family: var(--font-main); 
-            margin: 0; 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* --- NAVIGATION --- */
-        nav { 
-            background: var(--bg-header); 
-            padding: 0 1.5rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            height: 60px; 
-            border-bottom: 1px solid var(--border-color); 
-            z-index: 1000; 
-        }
-        .logo { font-family: var(--font-condensed); font-size: 1.4rem; font-weight: 700; letter-spacing: 1px; cursor: pointer; color: #fff; text-decoration: none; }
-        .logo span { color: var(--primary-blue); }
-        .nav-right { display: flex; align-items: center; gap: 12px; }
-        .balance-pill { display: flex; align-items: center; background: #0a0e17; border: 1px solid var(--border-color); border-radius: 50px; padding: 4px 14px 4px 6px; }
-        .currency-icon { width: 22px; height: 22px; background: linear-gradient(135deg, #1d2b44, #121926); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-weight: 800; font-size: 12px; margin-right: 10px; }
-        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 15px; }
-
-        /* --- LAYOUT --- */
-        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 240px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 10px 0; display: flex; flex-direction: column; flex-shrink: 0; }
-        .sidebar-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; padding: 25px 20px 8px; letter-spacing: 1px; }
-        .side-link { padding: 10px 20px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 12px; transition: 0.2s; border-left: 3px solid transparent; cursor: pointer; }
-        .side-link:hover, .active-link { background: rgba(255,255,255,0.03); color: #fff; border-left-color: var(--primary-blue); }
-
-        /* --- MINES GAME ENGINE UI --- */
-        .content-scroll { flex: 1; overflow-y: auto; padding: 30px; display: flex; flex-direction: column; align-items: center; }
-        
-        .game-layout {
-            display: flex;
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
-            height: 540px;
-            align-items: stretch;
-        }
-
-        .game-sidebar {
-            width: 300px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
+        body {
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-main);
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            flex-shrink: 0; 
+            overflow: hidden;
         }
 
-        .table-area {
-            flex: 1;
-            background: radial-gradient(circle at center, #1c2536 0%, #0e121b 100%);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+        /* ── NAV ── */
+        nav {
+            background: var(--bg-header);
+            padding: 0 2rem;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            height: 70px;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 100;
+            flex-shrink: 0;
+        }
+        .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
+        .logo span { color: var(--primary-blue); }
+        .nav-right { display: flex; align-items: center; gap: 12px; }
+        .balance-pill {
+            display: flex; align-items: center;
+            background: #000; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 6px 16px;
+        }
+        .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 8px; }
+        .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
+        .back-btn {
+            display: flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.04); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 7px 14px;
+            color: var(--text-muted); text-decoration: none;
+            font-size: 13px; font-weight: 600; transition: 0.2s;
+        }
+        .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+
+        /* ── AUTH GATE ── */
+        #authGate {
+            flex: 1; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 20px; padding: 60px 20px; text-align: center;
+        }
+        .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
+        .auth-gate-logo span { color: var(--primary-blue); }
+        .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+        .auth-gate-card {
+            background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px; padding: 32px; width: 100%; max-width: 340px;
+        }
+        .auth-gate-card label {
+            display: block; font-size: 11px; font-weight: 700;
+            color: var(--text-muted); text-transform: uppercase;
+            letter-spacing: 1px; margin-bottom: 8px; text-align: left;
+        }
+        .auth-gate-card input {
+            width: 100%; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 12px 14px; color: #fff; border-radius: 8px;
+            outline: none; font-size: 14px; font-family: var(--font-main);
+            margin-bottom: 14px; transition: 0.2s;
+        }
+        .auth-gate-card input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .auth-gate-btn {
+            width: 100%; background: var(--primary-blue); color: #fff;
+            border: none; padding: 13px; font-weight: 800; border-radius: 8px;
+            cursor: pointer; font-size: 13px; text-transform: uppercase;
+            letter-spacing: 1px; font-family: var(--font-main); transition: 0.2s;
+        }
+        .auth-gate-btn:hover { background: #006ae6; }
+
+        /* ── MAIN LAYOUT ── */
+        .main-wrapper { display: none; flex: 1; overflow: hidden; }
+
+        /* ── GAME SCROLL (center) ── */
+        .game-scroll {
+            flex: 1; overflow-y: auto;
+            padding: 28px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+
+        /* ── MINES GRID ── */
+        .mines-grid-wrap {
             position: relative;
         }
 
-        .section-header {
-            font-family: var(--font-condensed);
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 8px;
-        }
-
-        .bet-input-wrapper {
-            background: #0a0e17;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            padding: 10px 14px;
-        }
-
-        .bet-input-wrapper input, .bet-input-wrapper select {
-            background: #0a0e17;
-            border: none;
-            color: #fff;
-            width: 100%;
-            font-weight: 700;
-            outline: none;
-            font-size: 15px;
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-
-        .bet-input-wrapper select option {
-            background-color: var(--bg-sidebar);
-            color: #fff;
-            padding: 10px;
-        }
-
-        .max-btn {
-            background: var(--border-color);
-            border: none;
-            color: #fff;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 5px 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-        .max-btn:hover { background: var(--primary-blue); }
-
-        .btn {
-            width: 100%;
-            padding: 16px;
-            border-radius: 8px;
-            font-weight: 800;
-            font-family: var(--font-condensed);
-            text-transform: uppercase;
-            cursor: pointer;
-            border: none;
-            transition: 0.2s;
-            font-size: 15px;
-        }
-        .btn-primary { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 0 #0056b3; }
-        .btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 #0056b3; }
-        
-        .btn-success { background: var(--accent-green); color: #000; display: none; box-shadow: 0 4px 0 #009e01; }
-        .btn-success:active { transform: translateY(2px); box-shadow: 0 2px 0 #009e01; }
-
-        .multiplier-display {
-            background: #0a0e17;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-        .multiplier-display .val { font-family: var(--font-condensed); font-weight: 800; color: var(--accent-green); font-size: 24px; }
-
-        .grid-container {
-            width: 460px;
-            height: 460px;
+        .mines-grid {
             display: grid;
-            gap: 10px;
-            padding: 10px;
-            box-sizing: border-box;
+            gap: 8px;
+            /* columns set by JS */
         }
 
+        /* Single tile */
         .tile {
-            background: var(--tile-bg);
-            border-radius: 8px;
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            background: var(--tile-unrevealed);
+            border: 1px solid var(--tile-border);
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            transition: 0.2s;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.4);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px;
             position: relative;
+            transition: background 0.15s, border-color 0.15s, transform 0.12s;
+            user-select: none;
+            overflow: hidden;
         }
-        .tile:hover { background: var(--tile-hover); transform: translateY(-2px); }
-        .tile.revealed { cursor: default; box-shadow: none; transform: none; }
-        .tile.gem { background: rgba(0, 231, 1, 0.1); border: 2px solid var(--accent-green); box-shadow: inset 0 0 15px rgba(0, 231, 1, 0.2); }
-        .tile.mine { background: rgba(225, 29, 72, 0.1); border: 2px solid var(--danger-red); }
-        .tile.dimmed { opacity: 0.2; transform: scale(0.9); }
-        .disabled { pointer-events: none; }
-
-        .status-text { text-align: center; font-family: var(--font-condensed); font-weight: 800; font-size: 18px; margin-top: 10px; }
-
-        .how-to-play {
-            width: 100%;
-            max-width: 1100px;
-            margin-top: 30px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 24px;
+        .tile::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(160deg, rgba(255,255,255,0.04) 0%, transparent 60%);
+            border-radius: 10px;
+            pointer-events: none;
         }
-        .how-to-play h3 { font-family: var(--font-condensed); text-transform: uppercase; font-size: 16px; margin-top: 0; color: var(--primary-blue); }
-        .how-to-play p { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+        .tile:hover:not(.revealed):not(.disabled) {
+            background: #253450;
+            border-color: rgba(0,122,255,0.3);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        .tile.revealed-gem {
+            background: linear-gradient(135deg, #0a2a1a 0%, #0e3d22 100%);
+            border-color: rgba(0,231,1,0.3);
+            cursor: default;
+            animation: gemReveal 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes gemReveal {
+            from { transform: scale(0.6) rotate(-10deg); opacity: 0; }
+            to   { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        .tile.revealed-mine {
+            background: linear-gradient(135deg, #2a0a0a 0%, #3d1010 100%);
+            border-color: rgba(239,68,68,0.5);
+            cursor: default;
+            animation: mineReveal 0.25s ease both;
+        }
+        @keyframes mineReveal {
+            0%   { transform: scale(1); }
+            30%  { transform: scale(1.2); }
+            60%  { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
+        .tile.show-mine {
+            background: rgba(239,68,68,0.06);
+            border-color: rgba(239,68,68,0.15);
+            cursor: default;
+            opacity: 0.55;
+        }
+        .tile.disabled { cursor: default; }
+        .tile.hit-mine {
+            background: linear-gradient(135deg, #3d0000 0%, #5a0000 100%) !important;
+            border-color: rgba(239,68,68,0.8) !important;
+            box-shadow: 0 0 20px rgba(239,68,68,0.4) !important;
+            animation: mineHit 0.4s ease both;
+        }
+        @keyframes mineHit {
+            0%   { transform: scale(1); }
+            20%  { transform: scale(1.3) rotate(8deg); }
+            40%  { transform: scale(1.1) rotate(-5deg); }
+            70%  { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
 
-        .footer { padding: 30px; text-align: center; color: var(--text-muted); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+        /* Multiplier ring on gem */
+        .tile-mult {
+            position: absolute;
+            bottom: 4px; right: 5px;
+            font-size: 8px;
+            font-weight: 800;
+            color: var(--accent-green);
+            font-family: var(--font-condensed);
+            letter-spacing: 0px;
+            opacity: 0.85;
+        }
 
-        input[type=range] { -webkit-appearance: none; width: 100%; background: transparent; }
-        input[type=range]::-webkit-slider-runnable-track { width: 100%; height: 8px; background: #0a0e17; border-radius: 10px; border: 1px solid var(--border-color); }
-        input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; height: 20px; width: 20px; border-radius: 50%; background: var(--primary-blue); cursor: pointer; margin-top: -7px; box-shadow: 0 0 10px rgba(0,0,0,0.5); }
+        /* Game over overlay on grid */
+        .grid-overlay {
+            position: absolute; inset: 0;
+            background: rgba(10,14,23,0.75);
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            flex-direction: column; gap: 8px;
+            backdrop-filter: blur(4px);
+            animation: fadeIn 0.25s ease;
+            z-index: 5;
+        }
+        @keyframes fadeIn { from{opacity:0;}to{opacity:1;} }
+        .overlay-title {
+            font-family: var(--font-condensed);
+            font-size: 34px; font-weight: 700;
+            letter-spacing: 1px;
+        }
+        .overlay-title.win  { color: var(--accent-green); }
+        .overlay-title.lose { color: var(--accent-red); }
+        .overlay-sub { font-size: 13px; color: var(--text-muted); }
+
+        /* ── RIGHT PANEL ── */
+        .right-panel {
+            width: 280px;
+            flex-shrink: 0;
+            background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            padding: 20px 16px;
+            gap: 16px;
+        }
+
+        .rp-section-label {
+            font-size: 10px; font-weight: 800; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px;
+        }
+
+        /* Bet input */
+        .bet-manual-row {
+            display: flex; align-items: center;
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s;
+        }
+        .bet-manual-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
+        .bet-manual-prefix {
+            padding: 0 12px; color: var(--accent-green); font-weight: 800;
+            font-family: var(--font-condensed); font-size: 17px; flex-shrink: 0;
+            background: rgba(0,231,1,0.05); border-right: 1px solid rgba(255,255,255,0.06);
+            height: 44px; display: flex; align-items: center;
+        }
+        .bet-manual-input {
+            flex: 1; background: transparent; border: none; outline: none;
+            color: #fff; font-size: 16px; font-weight: 700; font-family: var(--font-condensed);
+            padding: 0 12px; height: 44px;
+        }
+        .bet-manual-input::-webkit-inner-spin-button,
+        .bet-manual-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+        .bet-manual-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; font-size: 14px; }
+
+        /* Quick chips */
+        .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
+        .chip-btn {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 8px 4px; text-align: center;
+            font-family: var(--font-condensed); font-size: 13px; font-weight: 700;
+            cursor: pointer; color: var(--text-muted); transition: 0.15s;
+        }
+        .chip-btn:hover { background: rgba(255,255,255,0.06); color: #fff; border-color: rgba(255,255,255,0.12); transform: translateY(-1px); }
+        .chip-btn.c-blue   { color: #60a5fa; border-color: rgba(59,130,246,0.2); }
+        .chip-btn.c-green  { color: var(--accent-green); border-color: rgba(0,231,1,0.2); }
+        .chip-btn.c-yellow { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
+        .chip-btn.c-red    { color: #f87171; border-color: rgba(239,68,68,0.2); }
+        .chip-btn.c-purple { color: #c084fc; border-color: rgba(168,85,247,0.2); }
+
+        /* Bet modifiers */
+        .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
+        .bet-mod-btn {
+            flex: 1; background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 8px; padding: 7px 4px; text-align: center;
+            font-size: 12px; font-weight: 700; color: var(--text-muted);
+            cursor: pointer; transition: 0.15s; font-family: var(--font-main);
+        }
+        .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+
+        /* Mines count selector */
+        .mines-selector {
+            display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; margin-bottom: 4px;
+        }
+        .mine-opt {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 7px; padding: 7px 4px; text-align: center;
+            font-family: var(--font-condensed); font-size: 13px; font-weight: 700;
+            cursor: pointer; color: var(--text-muted); transition: 0.15s;
+        }
+        .mine-opt:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .mine-opt.selected {
+            background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.35);
+            color: #f87171;
+        }
+
+        /* Info boxes */
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .info-box {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 11px 12px;
+        }
+        .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
+        .info-box-val { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: #fff; line-height: 1; }
+        .info-box-val.green { color: var(--accent-green); }
+        .info-box-val.gold  { color: var(--accent-gold); }
+        .info-box-val.red   { color: var(--accent-red); }
+
+        /* Multiplier progress bar */
+        .mult-progress-wrap {
+            background: rgba(0,0,0,0.2); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 12px;
+        }
+        .mult-progress-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+        .mult-progress-bar-bg {
+            background: rgba(255,255,255,0.06); border-radius: 99px; height: 6px; overflow: hidden;
+        }
+        .mult-progress-bar-fill {
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
+            height: 100%; border-radius: 99px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .rp-divider { height: 1px; background: var(--border-color); }
+
+        /* Action buttons */
+        .action-btn {
+            width: 100%; padding: 14px; border-radius: 10px; border: none;
+            font-size: 14px; font-weight: 800; cursor: pointer;
+            font-family: var(--font-main); text-transform: uppercase;
+            letter-spacing: 0.5px; transition: 0.2s; margin-bottom: 8px;
+        }
+        .action-btn:last-child { margin-bottom: 0; }
+        .action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
+        .action-btn:active:not(:disabled) { transform: none; }
+        .action-btn:disabled { opacity: 0.25; cursor: default; transform: none; filter: none; }
+        .btn-start  { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
+        .btn-cashout {
+            background: linear-gradient(135deg, #00b300, #00e701);
+            color: #000;
+            box-shadow: 0 4px 16px rgba(0,231,1,0.2);
+        }
+        .btn-cashout:hover:not(:disabled) { filter: brightness(1.1); box-shadow: 0 6px 20px rgba(0,231,1,0.35); }
+        .btn-new    { background: rgba(0,122,255,0.1); border: 1px solid rgba(0,122,255,0.25); color: var(--primary-blue); }
+
+        /* Msg log */
+        .msg-log {
+            font-size: 12px; color: var(--text-muted); text-align: center;
+            background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px;
+            min-height: 38px; display: flex; align-items: center; justify-content: center;
+            line-height: 1.4;
+        }
+
+        /* disabled state for bet/mine controls */
+        .controls-locked .chip-btn,
+        .controls-locked .bet-mod-btn,
+        .controls-locked .mine-opt,
+        .controls-locked .bet-manual-row { pointer-events: none; opacity: 0.35; }
+
+        /* ── GLOBAL CHAT ── */
+        .chat-panel {
+            width: 280px; flex-shrink: 0; background: var(--bg-chat);
+            border-left: 1px solid var(--border-color);
+            display: flex; flex-direction: column; overflow: hidden;
+            transition: width 0.3s ease;
+        }
+        .chat-panel.collapsed { width: 48px; min-width: 48px; }
+        .chat-header {
+            padding: 18px 16px; border-bottom: 1px solid var(--border-color);
+            font-weight: 800; display: flex; align-items: center; gap: 10px;
+            cursor: pointer; user-select: none; flex-shrink: 0;
+        }
+        .chat-header:hover { background: rgba(255,255,255,0.02); }
+        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
+        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
+        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
+        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
+        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
+        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
+        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
+        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
+        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
+        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
+        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
+        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        .char-counter.near-limit { color: #f59e0b; }
+        .char-counter.at-limit   { color: #ef4444; }
+
+        /* ── SYNC BADGE ── */
+        #syncBadge {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2);
+            border-radius: 8px; padding: 7px 16px; font-size: 11px;
+            color: var(--accent-green); display: none; z-index: 200; white-space: nowrap;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 1100px) { .chat-panel { display: none; } }
+        @media (max-width: 800px) {
+            body { height: auto; overflow-y: auto; overflow-x: hidden; }
+            .main-wrapper { height: auto; flex-direction: column; }
+            .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
+            .game-scroll { overflow: visible; padding: 16px; justify-content: flex-start; }
+            .tile { width: 58px; height: 58px; font-size: 22px; }
+            .mines-grid { gap: 6px; }
+        }
+        @media (max-width: 480px) {
+            .tile { width: 48px; height: 48px; font-size: 18px; }
+            .mines-grid { gap: 5px; }
+        }
     </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
-    <a href="index.html" class="logo">UNIVERSAL-<span>BETS</span></a>
+    <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
     <div class="nav-right">
-        <div class="balance-pill">
-            <div class="currency-icon">$</div>
+        <div class="balance-pill" id="navBalWrap" style="display:none;">
+            <span class="currency-icon">$</span>
             <span class="nav-bal" id="navBal">0.00</span>
         </div>
+        <a class="back-btn" href="index.html">← Lobby</a>
     </div>
 </nav>
 
-<div class="main-wrapper">
-    <aside class="sidebar">
-        <a href="index.html" class="side-link"><span>🏠</span> Home</a>
-        <div class="sidebar-label">Games</div>
-        <a href="blackjack.html" class="side-link"><span>🃏</span> Blackjack</a>
-        <a href="crash.html" class="side-link"><span>🚀</span> Crash</a>
-        <a href="dice.html" class="side-link"><span>🎲</span> Dice</a>
-        <a href="mines.html" class="side-link active-link"><span>💣</span> Mines</a>
-        <a href="rps.html" class="side-link"><span>✊</span> Rock Paper Scissors</a>
-        <a href="slots.html" class="side-link"><span>🎰</span> Slots</a>
-        <a href="tower.html" class="side-link"><span>🗼</span> Tower</a>
-    </aside>
-
-    <main class="content-scroll">
-        <div class="game-layout">
-            <div class="game-sidebar">
-                <div id="multBox" class="multiplier-display" style="display:none">
-                    <div class="section-header" style="font-size:9px">Current Payout</div>
-                    <div class="val" id="currentMult">1.00x</div>
-                </div>
-
-                <div>
-                    <div class="section-header">Bet Amount</div>
-                    <div class="bet-input-wrapper">
-                        <input type="number" id="betAmount" value="10.00" step="0.01">
-                        <button class="max-btn" onclick="setMaxBet()">MAX</button>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="section-header">Grid Size</div>
-                    <div class="bet-input-wrapper">
-                        <select id="gridSize" onchange="createGrid()">
-                            <option value="5">5x5 Grid</option>
-                            <option value="6">6x6 Grid</option>
-                            <option value="7">7x7 Grid</option>
-                            <option value="8">8x8 Grid</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <div class="section-header">Number of Mines: <span id="mineDisplay" style="color:#fff">3</span></div>
-                    <input type="range" id="mineSlider" min="1" max="24" value="3" oninput="updateMineMax()">
-                </div>
-
-                <button id="startBtn" class="btn btn-primary" onclick="startGame()">Start Game</button>
-                <button id="cashoutBtn" class="btn btn-success" onclick="cashout()">Cashout</button>
-
-                <div id="status" class="status-text"></div>
-            </div>
-
-            <div class="table-area">
-                <div class="grid-container" id="grid"></div>
-            </div>
-        </div>
-
-        <div class="how-to-play">
-            <h3>How To Play</h3>
-            <p>Select your bet and the number of mines. Click tiles to reveal gems. Each gem increases your multiplier. Hit a mine, and the round ends. You can cash out any time after finding at least one gem.</p>
-        </div>
-
-        <div class="footer">WEBSITE DEVELOPED BY FUSIONZZZ</div>
-    </main>
+<!-- AUTH GATE -->
+<div id="authGate">
+    <div>
+        <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
+        <div class="auth-gate-sub">Sign in to play Mines with your real balance</div>
+    </div>
+    <div class="auth-gate-card">
+        <label>Username</label>
+        <input type="text" id="authUsername" placeholder="Enter your username">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
+        <button class="auth-gate-btn" onclick="doAuth()">Access Mines</button>
+    </div>
 </div>
 
+<!-- MAIN LAYOUT -->
+<div class="main-wrapper" id="mainWrapper">
+
+    <!-- GRID (center) -->
+    <div class="game-scroll">
+        <div class="mines-grid-wrap">
+            <div class="mines-grid" id="minesGrid"></div>
+            <!-- overlay injected by JS -->
+        </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <aside class="right-panel" id="rightPanel">
+
+        <div class="msg-log" id="msgLog">Set your bet and mines, then start.</div>
+
+        <!-- BET -->
+        <div id="betSection">
+            <div class="rp-section-label">Bet Amount</div>
+            <div class="bet-manual-row" id="betManualRow">
+                <div class="bet-manual-prefix">$</div>
+                <input type="number" id="betInput" class="bet-manual-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
+            </div>
+            <div class="chip-grid" id="chipGrid">
+                <div class="chip-btn c-blue"   onclick="setBet(1)">$1</div>
+                <div class="chip-btn c-green"  onclick="setBet(5)">$5</div>
+                <div class="chip-btn c-green"  onclick="setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
+                <div class="chip-btn c-red"    onclick="setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
+                <div class="chip-btn"          onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            </div>
+            <div class="bet-mod-row" id="betModRow">
+                <div class="bet-mod-btn" onclick="modBet(0.5)">½</div>
+                <div class="bet-mod-btn" onclick="modBet(2)">2×</div>
+                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- MINES COUNT -->
+        <div id="minesSection">
+            <div class="rp-section-label">Mines Count</div>
+            <div class="mines-selector" id="minesSelector">
+                <!-- 1–24 options injected by JS in groups -->
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- LIVE STATS -->
+        <div>
+            <div class="rp-section-label">Round Info</div>
+            <div class="info-row" style="margin-bottom:10px;">
+                <div class="info-box">
+                    <div class="info-box-label">Next Multi</div>
+                    <div class="info-box-val gold" id="infoNextMult">—</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Profit If Won</div>
+                    <div class="info-box-val green" id="infoPayout">—</div>
+                </div>
+            </div>
+            <div class="info-row" style="margin-bottom:10px;">
+                <div class="info-box">
+                    <div class="info-box-label">Tiles Left</div>
+                    <div class="info-box-val" id="infoSafe">25</div>
+                </div>
+                <div class="info-box">
+                    <div class="info-box-label">Gems Found</div>
+                    <div class="info-box-val green" id="infoGems">0</div>
+                </div>
+            </div>
+            <div class="mult-progress-wrap">
+                <div class="mult-progress-label">
+                    <span>Progress</span>
+                    <span id="progressLabel">0 / 0 gems</span>
+                </div>
+                <div class="mult-progress-bar-bg">
+                    <div class="mult-progress-bar-fill" id="progressFill"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rp-divider"></div>
+
+        <!-- ACTIONS -->
+        <div>
+            <button class="action-btn btn-start"   id="btnStart"   onclick="startGame()">Start Game</button>
+            <button class="action-btn btn-cashout" id="btnCashout" onclick="cashout()" disabled>Cash Out</button>
+            <button class="action-btn btn-new"     id="btnNew"     onclick="newRound()" style="display:none;">New Round</button>
+        </div>
+
+    </aside>
+
+    <!-- GLOBAL CHAT -->
+    <aside class="chat-panel" id="chatPanel">
+        <div class="chat-header" onclick="toggleChat()">
+            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <ellipse cx="12" cy="12" rx="4" ry="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+            <span class="chat-header-label">Global Chat</span>
+            <span class="chat-toggle-arrow">◀</span>
+        </div>
+        <div class="chat-body">
+            <div id="chatMessages" class="chat-messages"></div>
+            <div class="chat-input-area">
+                <div class="chat-input-wrapper">
+                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
+                    <button class="chat-send-btn" onclick="sendChat()">→</button>
+                </div>
+                <div class="char-counter" id="charCounter">0 / 50</div>
+            </div>
+        </div>
+    </aside>
+
+</div>
+
+<div id="syncBadge">✓ Balance synced</div>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-
 <script>
     const firebaseConfig = {
         apiKey: "AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
@@ -312,166 +597,393 @@
         messagingSenderId: "804592033030",
         appId: "1:804592033030:web:352d7f4e8a75fb3f215287"
     };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
-    let user = JSON.parse(localStorage.getItem('currentUser'));
-    
-    let activeGame = false;
-    let mineLocations = [];
-    let revealedCount = 0;
-    let currentBet = 0;
 
-    // Two-Decimal Enforcer Helper
-    function cleanMoney(val) {
-        return Math.round(val * 100) / 100;
+    /* ── CONSTANTS ── */
+    const GRID_SIZE  = 25; // 5×5
+    const GRID_COLS  = 5;
+    const GEM_EMOJI  = '💎';
+    const MINE_EMOJI = '💣';
+
+    /* ── STATE ── */
+    let currentUser   = null;
+    let bet           = 0;
+    let mineCount     = 3;
+    let gameActive    = false;
+    let minePositions = new Set();
+    let revealed      = new Set();   // indices of revealed tiles
+    let gemsFound     = 0;
+    let currentMult   = 1.0;
+    let chatCollapsed = false;
+    let syncTimeout   = null;
+
+    /* ── UTILS ── */
+    function cleanMoney(v) { return Math.round(v*100)/100; }
+    function fmt$(v) { return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    /* ── MULTIPLIER MATH ──
+       Uses a house-edge model based on hypergeometric probability.
+       mult after k gems = product of (safe_remaining / total_remaining) inverted × 0.97 house factor
+    */
+    function calcMult(gemsRevealed, totalMines) {
+        // Probability of surviving k reveals = C(25-mines, k) / C(25, k)
+        // Payout = 1 / probability * 0.97
+        const safeTiles = GRID_SIZE - totalMines;
+        if(gemsRevealed >= safeTiles) return 9999; // max
+        let prob = 1;
+        for(let i = 0; i < gemsRevealed; i++){
+            prob *= (safeTiles - i) / (GRID_SIZE - i);
+        }
+        return Math.max(1, parseFloat((0.97 / prob).toFixed(2)));
     }
 
-    function init() {
-        if (!user) return window.location.href = 'index.html';
-        db.ref('users/' + user.name.toLowerCase()).on('value', s => {
-            if(s.exists()){
-                user = s.val();
-                document.getElementById('navBal').innerText = parseFloat(user.balance).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    function calcNextMult(gemsRevealed, totalMines) {
+        return calcMult(gemsRevealed + 1, totalMines);
+    }
+
+    /* ── AUTH ── */
+    function doAuth() {
+        const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+        const pass = document.getElementById('authPassword').value.trim();
+        if(name.length < 3){ alert('Username must be at least 3 characters.'); return; }
+        db.ref('users/'+name).once('value').then(snap => {
+            if(snap.exists()){
+                const u = snap.val();
+                if(u.password !== pass){ alert('Incorrect password.'); return; }
+                finalizeLogin(u);
+            } else {
+                const nu = {name, password:pass, balance:100, lastBonus:0, createdAt:Date.now()};
+                db.ref('users/'+name).set(nu).then(() => finalizeLogin(nu));
             }
         });
-        updateMineMax();
-        createGrid();
     }
 
-    function setMaxBet() {
-        if (user) document.getElementById('betAmount').value = user.balance.toFixed(2);
+    function finalizeLogin(user) {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        document.getElementById('authGate').style.display = 'none';
+        document.getElementById('mainWrapper').style.display = 'flex';
+        document.getElementById('navBalWrap').style.display = 'flex';
+        db.ref('users/'+user.name).on('value', snap => {
+            if(snap.exists()){ currentUser = snap.val(); updateNavBal(); }
+        });
+        updateNavBal();
+        buildMinesSelector();
+        buildGrid();
+        updateStats();
+        initChat();
     }
 
-    function updateMineMax() {
-        const size = parseInt(document.getElementById('gridSize').value);
-        const maxMines = (size * size) - 1;
-        const slider = document.getElementById('mineSlider');
-        if (parseInt(slider.value) >= maxMines) slider.value = maxMines - 1;
-        slider.max = maxMines;
-        document.getElementById('mineDisplay').innerText = slider.value;
+    function updateNavBal() {
+        if(!currentUser) return;
+        document.getElementById('navBal').textContent = fmt$(currentUser.balance);
     }
 
-    function createGrid() {
-        const size = parseInt(document.getElementById('gridSize').value);
-        const grid = document.getElementById('grid');
-        grid.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-        grid.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+    /* ── MINES SELECTOR ── */
+    function buildMinesSelector() {
+        const sel = document.getElementById('minesSelector');
+        sel.innerHTML = '';
+        // Show 1–24 (max mines = 24, 1 must be safe)
+        for(let i = 1; i <= 24; i++){
+            const d = document.createElement('div');
+            d.className = 'mine-opt' + (i === mineCount ? ' selected' : '');
+            d.textContent = i;
+            d.onclick = () => selectMines(i);
+            sel.appendChild(d);
+        }
+    }
+
+    function selectMines(n) {
+        if(gameActive) return;
+        mineCount = n;
+        document.querySelectorAll('.mine-opt').forEach((el, i) => {
+            el.classList.toggle('selected', i+1 === n);
+        });
+        updateStats();
+    }
+
+    /* ── BET ── */
+    function onBetInput() {
+        const raw = parseFloat(document.getElementById('betInput').value);
+        bet = isNaN(raw)||raw<0 ? 0 : cleanMoney(Math.min(raw, currentUser ? currentUser.balance : 99999));
+        updateStats();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function setBet(amount) {
+        if(gameActive) return;
+        bet = cleanMoney(Math.min(amount, currentUser ? currentUser.balance : 99999));
+        document.getElementById('betInput').value = bet;
+        updateStats();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function setBetMax() {
+        if(!currentUser || gameActive) return;
+        setBet(currentUser.balance);
+    }
+    function modBet(factor) {
+        if(gameActive) return;
+        bet = cleanMoney(Math.min(bet * factor, currentUser ? currentUser.balance : 99999));
+        if(bet < 0) bet = 0;
+        document.getElementById('betInput').value = bet > 0 ? bet : '';
+        updateStats();
+        document.getElementById('btnStart').disabled = (bet <= 0);
+    }
+    function clearBet() {
+        if(gameActive) return;
+        bet = 0;
+        document.getElementById('betInput').value = '';
+        updateStats();
+        document.getElementById('btnStart').disabled = true;
+    }
+
+    /* ── GRID ── */
+    function buildGrid() {
+        const grid = document.getElementById('minesGrid');
+        grid.style.gridTemplateColumns = `repeat(${GRID_COLS}, auto)`;
         grid.innerHTML = '';
-        
-        for (let i = 0; i < size * size; i++) {
+        for(let i = 0; i < GRID_SIZE; i++){
             const tile = document.createElement('div');
-            tile.className = 'tile disabled';
-            tile.onclick = () => revealTile(i, tile);
+            tile.className = 'tile';
+            tile.dataset.index = i;
+            tile.onclick = () => clickTile(i);
             grid.appendChild(tile);
         }
-        updateMineMax();
+        removeOverlay();
     }
 
-    function getMultiplier() {
-        const size = parseInt(document.getElementById('gridSize').value);
-        const totalTiles = size * size;
-        const numMines = parseInt(document.getElementById('mineSlider').value);
-        const numGems = totalTiles - numMines;
-        
-        let multiplier = 1;
-        for (let i = 0; i < revealedCount; i++) {
-            multiplier *= (totalTiles - i) / (numGems - i);
-        }
-        return multiplier * 0.98; 
-    }
+    function getTile(i) { return document.querySelector(`.tile[data-index="${i}"]`); }
 
+    /* ── GAME START ── */
     function startGame() {
-        const bet = cleanMoney(parseFloat(document.getElementById('betAmount').value));
-        if (bet > user.balance || bet <= 0) return alert("Insufficient Balance");
+        if(bet <= 0){ setMsg('Enter a bet first.'); return; }
+        if(!currentUser || bet > currentUser.balance){ setMsg('Not enough balance.'); return; }
 
-        currentBet = bet;
-        activeGame = true;
-        revealedCount = 0;
-        mineLocations = [];
-        
-        document.getElementById('gridSize').disabled = true;
-        document.getElementById('mineSlider').disabled = true;
-        document.getElementById('betAmount').disabled = true;
-
-        // Clean deduction
-        db.ref('users/' + user.name.toLowerCase() + '/balance').set(cleanMoney(user.balance - bet));
-
-        const size = parseInt(document.getElementById('gridSize').value);
-        const total = size * size;
-        const numMines = parseInt(document.getElementById('mineSlider').value);
-
-        while(mineLocations.length < numMines) {
-            let r = Math.floor(Math.random() * total);
-            if(!mineLocations.includes(r)) mineLocations.push(r);
+        // Place mines randomly
+        minePositions = new Set();
+        while(minePositions.size < mineCount){
+            minePositions.add(Math.floor(Math.random() * GRID_SIZE));
         }
+        revealed = new Set();
+        gemsFound = 0;
+        currentMult = 1.0;
+        gameActive = true;
 
-        document.querySelectorAll('.tile').forEach(t => {
-            t.className = 'tile';
-            t.innerText = '';
-        });
-        
-        document.getElementById('startBtn').style.display = 'none';
-        document.getElementById('cashoutBtn').style.display = 'block';
-        document.getElementById('multBox').style.display = 'block';
-        document.getElementById('currentMult').innerText = '1.00x';
-        document.getElementById('cashoutBtn').innerText = `Cashout ($${bet.toFixed(2)})`;
-        document.getElementById('status').innerText = "";
+        buildGrid(); // reset visuals
+        lockControls(true);
+
+        document.getElementById('btnStart').style.display   = 'none';
+        document.getElementById('btnCashout').style.display = 'block';
+        document.getElementById('btnCashout').disabled      = true; // enable after first gem
+        document.getElementById('btnNew').style.display     = 'none';
+
+        setMsg('Tap any tile — find gems, avoid mines!');
+        updateStats();
     }
 
-    function revealTile(index, tileEl) {
-        if (!activeGame || tileEl.classList.contains('revealed')) return;
+    /* ── TILE CLICK ── */
+    function clickTile(index) {
+        if(!gameActive) return;
+        if(revealed.has(index)) return;
 
-        if (mineLocations.includes(index)) {
-            gameOver(false);
+        revealed.add(index);
+        const tile = getTile(index);
+        tile.classList.add('disabled');
+
+        if(minePositions.has(index)){
+            // HIT A MINE
+            tile.classList.add('hit-mine');
+            tile.textContent = MINE_EMOJI;
+            revealAllMines(index);
+            gameActive = false;
+            lockControls(false);
+            document.getElementById('btnCashout').disabled = true;
+            document.getElementById('btnCashout').style.display = 'none';
+            document.getElementById('btnStart').style.display   = 'none';
+            document.getElementById('btnNew').style.display     = 'block';
+            const lost = bet;
+            setMsg(`💥 Mine hit! You lost $${fmt$(lost)}.`);
+            showOverlay('lose', `BOOM!`, `-$${fmt$(lost)}`);
+            saveBalance(-lost);
         } else {
-            revealedCount++;
-            tileEl.classList.add('revealed', 'gem');
-            tileEl.innerText = '💎';
-            
-            const m = getMultiplier();
-            document.getElementById('currentMult').innerText = m.toFixed(2) + 'x';
-            document.getElementById('cashoutBtn').innerText = `Cashout ($${(currentBet * m).toFixed(2)})`;
-        }
-    }
+            // GEM!
+            gemsFound++;
+            currentMult = calcMult(gemsFound, mineCount);
+            tile.classList.add('revealed-gem');
+            tile.textContent = GEM_EMOJI;
+            // Show multiplier on tile
+            const multEl = document.createElement('span');
+            multEl.className = 'tile-mult';
+            multEl.textContent = currentMult.toFixed(2)+'×';
+            tile.appendChild(multEl);
 
-    function cashout() {
-        if (!activeGame || revealedCount === 0) return;
-        const winAmount = cleanMoney(currentBet * getMultiplier());
-        
-        // Clean Addition
-        db.ref('users/' + user.name.toLowerCase() + '/balance').set(cleanMoney(user.balance + winAmount));
+            document.getElementById('btnCashout').disabled = false;
 
-        document.getElementById('status').innerHTML = `<span style="color:var(--accent-green)">WIN +$${(winAmount - currentBet).toFixed(2)}</span>`;
-        gameOver(true);
-    }
-
-    function gameOver(isWin) {
-        activeGame = false;
-        document.getElementById('gridSize').disabled = false;
-        document.getElementById('mineSlider').disabled = false;
-        document.getElementById('betAmount').disabled = false;
-
-        const tiles = document.querySelectorAll('.tile');
-        tiles.forEach((t, i) => {
-            t.classList.add('disabled');
-            if (mineLocations.includes(i)) {
-                t.classList.add('revealed', 'mine');
-                t.innerText = '💣';
-            } else if (!t.classList.contains('revealed')) {
-                t.classList.add('dimmed');
+            // Check if all safe tiles found (auto-cashout)
+            const safeTiles = GRID_SIZE - mineCount;
+            if(gemsFound >= safeTiles){
+                setMsg('🎉 All gems found! Auto-cashing out!');
+                setTimeout(cashout, 400);
+            } else {
+                setMsg(`💎 Gem! ×${currentMult.toFixed(2)} — Cash out or keep going.`);
             }
-        });
-
-        if(!isWin) {
-            document.getElementById('status').innerHTML = `<span style="color:var(--danger-red)">BUSTED!</span>`;
+            updateStats();
         }
-        
-        document.getElementById('startBtn').style.display = 'block';
-        document.getElementById('cashoutBtn').style.display = 'none';
     }
 
-    init();
+    function revealAllMines(hitIndex) {
+        minePositions.forEach(i => {
+            if(i === hitIndex) return; // already shown as hit
+            const tile = getTile(i);
+            tile.classList.add('show-mine', 'disabled');
+            tile.textContent = MINE_EMOJI;
+        });
+    }
+
+    /* ── CASHOUT ── */
+    function cashout() {
+        if(!gameActive) return;
+        gameActive = false;
+        lockControls(false);
+        revealAllMines(-1);
+
+        const payout = cleanMoney(bet * currentMult);
+        const profit = cleanMoney(payout - bet);
+
+        document.getElementById('btnCashout').style.display = 'none';
+        document.getElementById('btnStart').style.display   = 'none';
+        document.getElementById('btnNew').style.display     = 'block';
+
+        setMsg(`✅ Cashed out at ×${currentMult.toFixed(2)}! Won $${fmt$(profit)}.`);
+        showOverlay('win', `×${currentMult.toFixed(2)}`, `+$${fmt$(profit)}`);
+        saveBalance(profit);
+        updateStats();
+    }
+
+    /* ── NEW ROUND ── */
+    function newRound() {
+        gemsFound = 0; currentMult = 1.0;
+        gameActive = false;
+        buildGrid();
+        lockControls(false);
+        document.getElementById('btnStart').style.display   = 'block';
+        document.getElementById('btnStart').disabled        = (bet <= 0);
+        document.getElementById('btnCashout').style.display = 'block';
+        document.getElementById('btnCashout').disabled      = true;
+        document.getElementById('btnNew').style.display     = 'none';
+        setMsg('Set your bet and mines, then start.');
+        updateStats();
+    }
+
+    /* ── STATS ── */
+    function updateStats() {
+        const safeTiles = GRID_SIZE - mineCount;
+        const nextMult  = calcNextMult(gemsFound, mineCount);
+        const payout    = cleanMoney(bet * calcMult(gemsFound + 1, mineCount));
+        const profit    = cleanMoney(payout - bet);
+        const remaining = safeTiles - gemsFound;
+
+        document.getElementById('infoNextMult').textContent = gameActive ? `×${nextMult.toFixed(2)}` : `×${calcNextMult(0,mineCount).toFixed(2)}`;
+        document.getElementById('infoPayout').textContent   = bet > 0 ? `$${fmt$(profit)}` : '—';
+        document.getElementById('infoSafe').textContent     = remaining;
+        document.getElementById('infoGems').textContent     = gemsFound;
+        document.getElementById('progressLabel').textContent = `${gemsFound} / ${safeTiles} gems`;
+
+        const pct = safeTiles > 0 ? (gemsFound / safeTiles) * 100 : 0;
+        document.getElementById('progressFill').style.width = pct + '%';
+    }
+
+    /* ── OVERLAY ── */
+    function showOverlay(type, title, sub) {
+        removeOverlay();
+        const wrap = document.querySelector('.mines-grid-wrap');
+        const ov = document.createElement('div');
+        ov.className = 'grid-overlay';
+        ov.id = 'gridOverlay';
+        ov.innerHTML = `<div class="overlay-title ${type}">${title}</div><div class="overlay-sub">${sub}</div>`;
+        wrap.appendChild(ov);
+    }
+    function removeOverlay() {
+        const ov = document.getElementById('gridOverlay');
+        if(ov) ov.remove();
+    }
+
+    /* ── LOCK CONTROLS ── */
+    function lockControls(lock) {
+        const rp = document.getElementById('rightPanel');
+        if(lock) rp.classList.add('controls-locked');
+        else     rp.classList.remove('controls-locked');
+        // bet input
+        const betRow = document.getElementById('betManualRow');
+        betRow.style.pointerEvents = lock ? 'none' : 'auto';
+        betRow.style.opacity       = lock ? '0.4'  : '1';
+    }
+
+    /* ── MSG ── */
+    function setMsg(t) { document.getElementById('msgLog').textContent = t; }
+
+    /* ── FIREBASE SAVE ── */
+    function saveBalance(delta) {
+        db.ref('users/'+currentUser.name).transaction(u => {
+            if(!u) return u;
+            u.balance = cleanMoney((u.balance||0) + delta);
+            return u;
+        }, (err, committed) => {
+            if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now()});
+            if(committed && delta !== 0) showSyncBadge();
+        });
+    }
+    function showSyncBadge() {
+        const el = document.getElementById('syncBadge');
+        el.style.display = 'block';
+        clearTimeout(syncTimeout);
+        syncTimeout = setTimeout(() => { el.style.display = 'none'; }, 2200);
+    }
+
+    /* ── CHAT ── */
+    function initChat() {
+        const box = document.getElementById('chatMessages');
+        db.ref('global_chat').limitToLast(50).on('child_added', snap => {
+            const msg = snap.val();
+            const time = new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+            const div = document.createElement('div');
+            div.className = 'message';
+            div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
+            box.appendChild(div);
+            box.scrollTop = box.scrollHeight;
+        });
+        const input = document.getElementById('chatInput');
+        const counter = document.getElementById('charCounter');
+        input.addEventListener('keypress', e => { if(e.key === 'Enter') sendChat(); });
+        input.addEventListener('input', () => {
+            const len = input.value.length;
+            counter.textContent = `${len} / 50`;
+            counter.className = 'char-counter' + (len>=50?' at-limit':len>=40?' near-limit':'');
+        });
+    }
+    function sendChat() {
+        const input = document.getElementById('chatInput');
+        const text = input.value.trim().slice(0,50);
+        if(!text || !currentUser) return;
+        db.ref('global_chat').push({user:currentUser.name, text, ts:Date.now()});
+        input.value = '';
+        document.getElementById('charCounter').textContent = '0 / 50';
+        document.getElementById('charCounter').className = 'char-counter';
+    }
+    function toggleChat() {
+        chatCollapsed = !chatCollapsed;
+        document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
+    }
+
+    /* ── AUTO LOGIN ── */
+    const cached = localStorage.getItem('currentUser');
+    if(cached) {
+        const u = JSON.parse(cached);
+        db.ref('users/'+u.name).once('value', snap => {
+            if(snap.exists() && snap.val().password === u.password) finalizeLogin(snap.val());
+        });
+    }
 </script>
 </body>
 </html>
