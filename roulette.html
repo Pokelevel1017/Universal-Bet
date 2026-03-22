@@ -23,24 +23,9 @@
             --font-condensed: 'Roboto Condensed', sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            background: var(--bg-body);
-            color: var(--text-main);
-            font-family: var(--font-main);
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
+        body { background: var(--bg-body); color: var(--text-main); font-family: var(--font-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* ── NAV ── */
-        nav {
-            background: var(--bg-header);
-            padding: 0 2rem;
-            display: flex; justify-content: space-between; align-items: center;
-            height: 70px; border-bottom: 1px solid var(--border-color);
-            z-index: 100; flex-shrink: 0;
-        }
+        nav { background: var(--bg-header); padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; border-bottom: 1px solid var(--border-color); z-index: 100; flex-shrink: 0; }
         .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary-blue); }
         .nav-right { display: flex; align-items: center; gap: 12px; }
@@ -50,12 +35,8 @@
         .back-btn { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 10px; padding: 7px 14px; color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; }
         .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-        /* ── AUTH ── */
-        #authGate {
-            flex: 1; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 20px; padding: 60px 20px; text-align: center;
-        }
+        /* AUTH */
+        #authGate { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 60px 20px; text-align: center; }
         .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
         .auth-gate-logo span { color: var(--primary-blue); }
         .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
@@ -67,104 +48,62 @@
         .auth-gate-btn:hover:not(:disabled) { background: #006ae6; }
         .auth-gate-btn:disabled { opacity: 0.6; cursor: default; }
 
-        /* ── MAIN LAYOUT ── */
+        /* MAIN */
         .main-wrapper { display: none; flex: 1; overflow: hidden; }
-        .game-scroll { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+        .game-scroll { flex: 1; overflow-y: auto; padding: 16px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
-        /* ── WHEEL ── */
-        .wheel-wrap {
-            position: relative; display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        #wheelCanvas { display: block; border-radius: 50%; box-shadow: 0 0 0 6px rgba(212,160,23,0.4), 0 0 40px rgba(0,0,0,0.8); }
+        /* WHEEL */
+        .wheel-wrap { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        #wheelCanvas { display: block; border-radius: 50%; box-shadow: 0 0 0 5px rgba(212,160,23,0.35), 0 0 40px rgba(0,0,0,0.8); }
 
-        /* ── RESULT ROW ── */
+        /* RESULT ROW */
         .result-row { display: flex; align-items: center; justify-content: center; gap: 14px; flex-shrink: 0; }
-        .result-ball {
-            width: 56px; height: 56px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-condensed); font-size: 24px; font-weight: 700;
-            background: rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.12);
-            transition: all 0.35s;
-        }
-        .result-ball.r { background: rgba(160,0,0,0.5); border-color: #c10000; color: #ff7070; }
-        .result-ball.b { background: rgba(10,10,10,0.8); border-color: #555; color: #ddd; }
-        .result-ball.g { background: rgba(0,120,0,0.5); border-color: #006600; color: var(--accent-green); }
+        .result-ball { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-size: 24px; font-weight: 700; background: rgba(0,0,0,0.35); border: 2px solid rgba(255,255,255,0.12); transition: all 0.35s; }
+        .result-ball.r { background: rgba(160,0,0,0.6); border-color: #c10000; color: #ff9090; }
+        .result-ball.b { background: rgba(20,20,20,0.9); border-color: #666; color: #ddd; }
+        .result-ball.g { background: rgba(0,120,0,0.6); border-color: #006600; color: var(--accent-green); }
         .result-meta { text-align: left; }
         .result-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 3px; }
         .result-payout { font-family: var(--font-condensed); font-size: 20px; font-weight: 700; color: var(--accent-green); }
         .result-payout.loss { color: var(--accent-red); }
 
-        /* ── HISTORY ── */
+        /* HISTORY */
         .hist-strip { display: flex; gap: 5px; overflow-x: auto; width: 100%; flex-shrink: 0; padding-bottom: 2px; }
         .hist-strip::-webkit-scrollbar { height: 3px; }
         .hist-strip::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
-        .h-ball { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-size: 11px; font-weight: 700; animation: ballIn .2s ease both; }
+        .h-ball { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-size: 11px; font-weight: 700; animation: ballIn .2s ease both; }
         @keyframes ballIn { from{opacity:0;transform:scale(.5)} to{opacity:1;transform:scale(1)} }
-        .h-ball.r { background: #a00; color: #fff; }
-        .h-ball.b { background: #111; border: 1px solid #444; color: #fff; }
-        .h-ball.g { background: #060; color: #fff; }
+        .h-ball.r { background: #900; color: #fff; }
+        .h-ball.b { background: #1a1a1a; border: 1px solid #555; color: #fff; }
+        .h-ball.g { background: #070; color: #fff; }
 
-        /* ── BET TABLE ── */
-        .table-card {
-            width: 100%;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
+        /* BET TABLE — larger, clearer cells */
+        .table-card { width: 100%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.1); border-radius: 14px; overflow: hidden; flex-shrink: 0; }
         .bet-table { border-collapse: collapse; width: 100%; table-layout: fixed; user-select: none; }
-        .bet-table td {
-            border: 1px solid rgba(255,255,255,0.08);
-            text-align: center; cursor: pointer;
-            position: relative; transition: filter .12s;
-            vertical-align: middle;
-        }
-        .bet-table td:hover { filter: brightness(1.5); }
+        .bet-table td { border: 1px solid rgba(255,255,255,0.12); text-align: center; cursor: pointer; position: relative; transition: filter .12s, transform .08s; vertical-align: middle; }
+        .bet-table td:hover { filter: brightness(1.7); }
+        .bet-table td:active { transform: scale(0.95); }
 
-        /* Number cells */
-        .num-cell { height: 52px; font-family: var(--font-condensed); font-size: 16px; font-weight: 700; }
-        .rc { background: linear-gradient(135deg,#8b0000,#c00000); }
-        .bc { background: linear-gradient(135deg,#111,#222); }
-        .gc { background: linear-gradient(135deg,#004d00,#007a00); }
+        /* Number cells — taller, bigger font */
+        .num-cell { height: 60px; font-family: var(--font-condensed); font-size: 20px; font-weight: 700; letter-spacing: 0.5px; }
+        .rc { background: linear-gradient(160deg,#6b0000,#b00000); color: #ffcccc; }
+        .bc { background: linear-gradient(160deg,#0d0d0d,#262626); color: #e0e0e0; }
+        .gc { background: linear-gradient(160deg,#003d00,#007000); color: #aaffaa; }
 
-        /* Outside cells */
-        .oc {
-            height: 42px;
-            font-family: var(--font-condensed); font-size: 13px; font-weight: 700;
-            color: rgba(255,255,255,0.8);
-            background: rgba(255,255,255,0.03);
-        }
-        .oc.rcol { background: linear-gradient(135deg,rgba(139,0,0,0.5),rgba(180,0,0,0.5)); }
-        .oc.bcol { background: linear-gradient(135deg,rgba(10,10,10,0.6),rgba(30,30,30,0.6)); }
+        /* Outside cells — more padding, clearer labels */
+        .oc { height: 48px; font-family: var(--font-condensed); font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.04); letter-spacing: 0.5px; }
+        .oc.rcol { background: linear-gradient(160deg,rgba(100,0,0,0.6),rgba(150,0,0,0.6)); color: #ffaaaa; }
+        .oc.bcol { background: linear-gradient(160deg,rgba(15,15,15,0.8),rgba(35,35,35,0.8)); color: #cccccc; }
 
-        /* Selected */
-        .sel { outline: 3px solid var(--accent-gold); outline-offset: -3px; filter: brightness(1.5); }
+        /* Selected & chip */
+        .sel { outline: 3px solid var(--accent-gold); outline-offset: -2px; filter: brightness(1.6); }
+        .bet-chip { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 26px; height: 26px; border-radius: 50%; background: var(--accent-gold); border: 2px solid #fff; font-size: 9px; font-weight: 800; color: #000; display: flex; align-items: center; justify-content: center; pointer-events: none; font-family: var(--font-condensed); box-shadow: 0 2px 8px rgba(0,0,0,0.6); z-index: 5; }
 
-        /* Chip on cell */
-        .bet-chip {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-            width: 24px; height: 24px; border-radius: 50%;
-            background: var(--accent-gold); border: 2px solid #fff;
-            font-size: 9px; font-weight: 800; color: #000;
-            display: flex; align-items: center; justify-content: center;
-            pointer-events: none; font-family: var(--font-condensed);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.6); z-index: 5;
-        }
-
-        /* ── RIGHT PANEL ── */
-        .right-panel {
-            width: 280px; flex-shrink: 0;
-            background: var(--bg-chat); border-left: 1px solid var(--border-color);
-            display: flex; flex-direction: column; overflow-y: auto;
-            padding: 20px 16px; gap: 16px;
-        }
+        /* RIGHT PANEL */
+        .right-panel { width: 280px; flex-shrink: 0; background: var(--bg-chat); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; padding: 20px 16px; gap: 16px; }
         .rp-section-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
         .rp-divider { height: 1px; background: var(--border-color); }
         .msg-log { font-size: 12px; color: var(--text-muted); text-align: center; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px; min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
-
-        /* Bet input — identical to mines/plinko etc */
         .bet-manual-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s; }
         .bet-manual-row:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
         .bet-manual-prefix { padding: 0 12px; color: var(--accent-green); font-weight: 800; font-family: var(--font-condensed); font-size: 17px; flex-shrink: 0; background: rgba(0,231,1,0.05); border-right: 1px solid rgba(255,255,255,0.06); height: 44px; display: flex; align-items: center; }
@@ -182,24 +121,18 @@
         .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
         .bet-mod-btn { flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 7px 4px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.15s; font-family: var(--font-main); }
         .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
-
-        /* Info boxes */
         .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .info-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 11px 12px; }
         .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
         .info-box-val { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: #fff; line-height: 1; }
         .info-box-val.green { color: var(--accent-green); }
         .info-box-val.gold  { color: var(--accent-gold); }
-
-        /* Active bets list */
         .bet-list { display: flex; flex-direction: column; gap: 5px; max-height: 160px; overflow-y: auto; }
         .bet-item { display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.15); border-radius: 7px; padding: 6px 10px; font-size: 12px; }
         .bet-item-name { color: var(--text-muted); }
         .bet-item-amt { font-family: var(--font-condensed); font-weight: 700; color: #fff; }
         .bet-item-del { color: var(--accent-red); cursor: pointer; font-size: 14px; line-height: 1; padding: 0 4px; }
         .bet-item-del:hover { color: #ff8080; }
-
-        /* Actions */
         .action-btn { width: 100%; padding: 14px; border-radius: 10px; border: none; font-size: 14px; font-weight: 800; cursor: pointer; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 0.5px; transition: 0.2s; margin-bottom: 8px; }
         .action-btn:last-child { margin-bottom: 0; }
         .action-btn:hover:not(:disabled) { transform: translateY(-2px); filter: brightness(1.1); }
@@ -208,48 +141,75 @@
         .btn-spin  { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
         .btn-rebet { background: rgba(255,196,0,0.1); border: 1px solid rgba(255,196,0,0.25); color: var(--accent-gold); }
         .btn-clear { background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-muted); }
+        .panel-locked .bet-manual-row, .panel-locked .chip-btn, .panel-locked .bet-mod-btn, .panel-locked .bet-item-del { pointer-events: none; opacity: 0.35; }
 
-        /* Locked during spin */
-        .panel-locked .bet-manual-row,
-        .panel-locked .chip-btn,
-        .panel-locked .bet-mod-btn,
-        .panel-locked .bet-item-del { pointer-events: none; opacity: 0.35; }
-
-        /* ── CHAT ── */
-        .chat-panel { width: 280px; flex-shrink: 0; background: var(--bg-chat); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease; }
-        .chat-panel.collapsed { width: 48px; min-width: 48px; }
-        .chat-header { padding: 18px 16px; border-bottom: 1px solid var(--border-color); font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; flex-shrink: 0; }
-        .chat-header:hover { background: rgba(255,255,255,0.02); }
-        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
-        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
-        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
-        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
-        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
-        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
-        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
-        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
-        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
-        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
-        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
-        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
-        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
-        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        /* NEW TABBED CHAT PANEL */
+        .chat-panel { width: 300px; background: #0d1220; border-left: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; height: 100%; transition: width 0.3s ease; overflow: hidden; flex-shrink: 0; }
+        .chat-panel.collapsed { width: 52px; }
+        .rp-tab-bar { display: flex; align-items: stretch; border-bottom: 1px solid rgba(255,255,255,0.06); background: #0b0f1c; flex-shrink: 0; height: 48px; }
+        .rp-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s, background 0.15s; user-select: none; position: relative; padding: 0 4px; }
+        .rp-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+        .rp-tab:hover { color: #c8d0dc; background: rgba(255,255,255,0.02); }
+        .rp-tab.active { color: var(--primary-blue); border-bottom-color: var(--primary-blue); }
+        .rp-tab-label { white-space: nowrap; }
+        .rp-notif-badge { position: absolute; top: 8px; right: 8px; min-width: 16px; height: 16px; background: #ef4444; border-radius: 8px; font-size: 9px; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; box-shadow: 0 0 0 2px #0b0f1c; pointer-events: none; }
+        .rp-notif-badge.hidden { display: none; }
+        .rp-collapsed-strip { display: none; flex-direction: column; align-items: center; padding: 8px 0; gap: 2px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+        .chat-panel.collapsed .rp-collapsed-strip { display: flex; }
+        .chat-panel.collapsed .rp-tab-bar { display: none; }
+        .rp-col-btn { width: 38px; height: 38px; border-radius: 10px; border: 1px solid transparent; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; position: relative; }
+        .rp-col-btn svg { width: 16px; height: 16px; }
+        .rp-col-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .rp-col-btn.active { background: rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.2); color: var(--primary-blue); }
+        .rp-col-notif-badge { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1220; pointer-events: none; }
+        .rp-col-notif-badge.hidden { display: none; }
+        .chat-panel.collapsed .rp-content { display: none; }
+        .rp-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+        .rp-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+        .rp-panel.active { display: flex; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 2px; }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        .message { padding: 8px 12px 6px; border-radius: 10px; background: rgba(255,255,255,0.025); margin-bottom: 4px; }
+        .message:hover { background: rgba(255,255,255,0.04); }
+        .msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+        .msg-user { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .msg-time { font-size: 9px; color: rgba(138,150,170,0.6); }
+        .msg-text { font-size: 13px; line-height: 1.45; color: #b8c2d4; word-break: break-word; white-space: pre-wrap; }
+        .chat-input-area { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+        .chat-input-wrapper { display: flex; gap: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 4px 4px 4px 12px; transition: border-color 0.2s; }
+        .chat-input-wrapper:focus-within { border-color: rgba(0,122,255,0.35); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 13px; font-family: var(--font-main); padding: 6px 0; }
+        .chat-input-wrapper input::placeholder { color: rgba(138,150,170,0.5); }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; color: #fff; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
+        .chat-send-btn:hover { background: #006ae6; }
+        .char-counter { font-size: 10px; color: rgba(138,150,170,0.5); text-align: right; padding: 4px 2px 0; }
         .char-counter.near-limit { color: #f59e0b; }
         .char-counter.at-limit   { color: #ef4444; }
+        .notif-list { flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+        .notif-list::-webkit-scrollbar { width: 4px; }
+        .notif-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        .notif-card { display: flex; align-items: flex-start; gap: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 13px 14px; position: relative; transition: 0.15s; animation: notifSlide 0.25s ease both; }
+        @keyframes notifSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+        .notif-card.unread { border-color: rgba(0,122,255,0.2); background: rgba(0,122,255,0.06); }
+        .notif-card.unread::before { content:''; position:absolute; top:14px; right:14px; width:6px; height:6px; border-radius:50%; background: var(--primary-blue); box-shadow: 0 0 6px var(--primary-blue); }
+        .notif-icon { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .notif-icon.money   { background: rgba(0,231,1,0.1); }
+        .notif-icon.rank    { background: rgba(255,196,0,0.1); }
+        .notif-icon.welcome { background: rgba(0,122,255,0.1); }
+        .notif-icon.giveaway { background: rgba(255,100,0,0.1); }
+        .notif-body { flex: 1; min-width: 0; }
+        .notif-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.3; }
+        .notif-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+        .notif-time { font-size: 10px; color: rgba(138,150,170,0.5); margin-top: 5px; }
+        .notif-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 40px 16px; }
+        .notif-clear-btn { display: block; width: calc(100% - 24px); margin: 0 12px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); border-radius: 8px; padding: 9px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; font-family: var(--font-main); transition: 0.15s; flex-shrink: 0; }
+        .notif-clear-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
         #syncBadge { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2); border-radius: 8px; padding: 7px 16px; font-size: 11px; color: var(--accent-green); display: none; z-index: 200; white-space: nowrap; }
 
         @media (max-width: 1100px) { .chat-panel { display: none; } }
-        @media (max-width: 800px) {
-            body { height: auto; overflow-y: auto; }
-            .main-wrapper { height: auto; flex-direction: column; }
-            .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); }
-            .game-scroll { overflow: visible; }
-            .num-cell { height: 40px; font-size: 13px; }
-            .oc { height: 34px; font-size: 11px; }
-        }
+        @media (max-width: 800px) { body { height: auto; overflow-y: auto; } .main-wrapper { height: auto; flex-direction: column; } .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); } .game-scroll { overflow: visible; } .num-cell { height: 46px; font-size: 15px; } .oc { height: 38px; font-size: 12px; } }
     </style>
 </head>
 <body>
@@ -281,15 +241,14 @@
 
 <div class="main-wrapper" id="mainWrapper">
 
-    <!-- CENTER -->
     <div class="game-scroll">
 
         <!-- Wheel -->
-        <div class="wheel-wrap">
+        <div class="wheel-wrap" id="wheelWrap">
             <canvas id="wheelCanvas"></canvas>
         </div>
 
-        <!-- Result + history -->
+        <!-- Result -->
         <div class="result-row">
             <div class="result-ball" id="resultBall">—</div>
             <div class="result-meta">
@@ -308,10 +267,7 @@
 
     <!-- RIGHT PANEL -->
     <aside class="right-panel" id="rightPanel">
-
         <div class="msg-log" id="msgLog">Click numbers or outside bets to place wagers!</div>
-
-        <!-- BET INPUT -->
         <div>
             <div class="rp-section-label">Bet Per Click</div>
             <div class="bet-manual-row">
@@ -335,62 +291,71 @@
                 <div class="bet-mod-btn" onclick="clearBetInput()">Clear</div>
             </div>
         </div>
-
         <div class="rp-divider"></div>
-
-        <!-- ROUND INFO -->
         <div>
             <div class="rp-section-label">Round Info</div>
             <div class="info-row" style="margin-bottom:8px;">
-                <div class="info-box">
-                    <div class="info-box-label">Total Bet</div>
-                    <div class="info-box-val gold" id="infoTotal">$0.00</div>
-                </div>
-                <div class="info-box">
-                    <div class="info-box-label">Max Win</div>
-                    <div class="info-box-val green" id="infoMaxWin">$0.00</div>
-                </div>
+                <div class="info-box"><div class="info-box-label">Total Bet</div><div class="info-box-val gold" id="infoTotal">$0.00</div></div>
+                <div class="info-box"><div class="info-box-label">Max Win</div><div class="info-box-val green" id="infoMaxWin">$0.00</div></div>
             </div>
         </div>
-
         <div class="rp-divider"></div>
-
-        <!-- ACTIVE BETS -->
         <div>
             <div class="rp-section-label">Active Bets</div>
             <div class="bet-list" id="betList"></div>
         </div>
-
         <div class="rp-divider"></div>
-
-        <!-- ACTIONS -->
         <div>
-            <button class="action-btn btn-spin"  id="btnSpin"  onclick="spin()">Spin the Wheel</button>
-            <button class="action-btn btn-rebet" id="btnRebet" onclick="rebet()" disabled>Re-Bet Last</button>
+            <button class="action-btn btn-spin"  id="btnSpin"     onclick="spin()">Spin the Wheel</button>
+            <button class="action-btn btn-rebet" id="btnRebet"    onclick="rebet()" disabled>Re-Bet Last</button>
             <button class="action-btn btn-clear" id="btnClearAll" onclick="clearAllBets()">Clear All Bets</button>
         </div>
-
     </aside>
 
-    <!-- CHAT -->
+    <!-- NEW TABBED CHAT PANEL -->
     <aside class="chat-panel" id="chatPanel">
-        <div class="chat-header" onclick="toggleChat()">
-            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/><ellipse cx="12" cy="12" rx="4" ry="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-            <span class="chat-header-label">Global Chat</span>
-            <span class="chat-toggle-arrow">◀</span>
+        <div class="rp-tab-bar">
+            <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                <span class="rp-tab-label">Chat</span>
+            </div>
+            <div class="rp-tab" id="tab-notif" onclick="switchRpTab('notif')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="rp-tab-label">Alerts</span>
+                <span class="rp-notif-badge hidden" id="rpNotifBadge">0</span>
+            </div>
+            <div class="rp-tab" style="flex:0;padding:0 12px;" onclick="toggleChat()" title="Collapse">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
         </div>
-        <div class="chat-body">
-            <div id="chatMessages" class="chat-messages"></div>
-            <div class="chat-input-area">
-                <div class="chat-input-wrapper">
-                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
-                    <button class="chat-send-btn" onclick="sendChat()">→</button>
+        <div class="rp-collapsed-strip">
+            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')" title="Chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </button>
+            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')" title="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span>
+            </button>
+            <button class="rp-col-btn" onclick="toggleChat()" title="Expand" style="margin-top:4px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+        </div>
+        <div class="rp-content">
+            <div class="rp-panel active" id="rp-chat">
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chatInput" placeholder="Send a message…" maxlength="50">
+                        <button class="chat-send-btn" onclick="sendChat()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                        </button>
+                    </div>
+                    <div class="char-counter" id="charCounter">0 / 50</div>
                 </div>
-                <div class="char-counter" id="charCounter">0 / 50</div>
+            </div>
+            <div class="rp-panel" id="rp-notif">
+                <div class="notif-list" id="notifList"><div class="notif-empty">No notifications yet</div></div>
+                <button class="notif-clear-btn" onclick="clearNotifications()">Mark all as read</button>
             </div>
         </div>
     </aside>
@@ -412,7 +377,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ── ROULETTE CONSTANTS ────────────────────────────────────────
+// ── CONSTANTS ─────────────────────────────────────────────────
 const WHEEL_ORDER = [0,32,15,19,4,21,2,25,17,34,6,27,13,36,11,30,8,23,10,5,24,16,33,1,20,14,31,9,22,18,29,7,28,12,35,3,26];
 const RED_NUMS    = new Set([1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36]);
 const TABLE_ROWS  = [
@@ -420,313 +385,181 @@ const TABLE_ROWS  = [
     [2,5,8,11,14,17,20,23,26,29,32,35],
     [1,4,7,10,13,16,19,22,25,28,31,34],
 ];
-
-function numColor(n) {
-    if (n === 0) return 'g';
-    return RED_NUMS.has(n) ? 'r' : 'b';
-}
+function numColor(n) { if (n===0) return 'g'; return RED_NUMS.has(n)?'r':'b'; }
 
 // ── STATE ─────────────────────────────────────────────────────
-let currentUser = null, spinning = false, chatCollapsed = false, syncTimeout = null;
-let betPerClick = 0;
-let bets = {}, lastBets = {}, history = [];
-let wheelAngle = 0, ballAngle = 0, ballR = 0; // ball physics
-let animId = null;
+let currentUser=null, spinning=false, chatCollapsed=false, syncTimeout=null;
+let betPerClick=0, bets={}, lastBets={}, history=[];
+let wheelAngle=0, animId=null;
 
 // ── UTILS ─────────────────────────────────────────────────────
-function cleanMoney(v) { return Math.round(v * 100) / 100; }
+function cleanMoney(v) { return Math.round(v*100)/100; }
 function fmt$(v) { return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
 function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function setMsg(t) { document.getElementById('msgLog').textContent = t; }
-
+function setMsg(t) { document.getElementById('msgLog').textContent=t; }
 function showAuth() { document.getElementById('authGate').style.display='flex'; document.getElementById('mainWrapper').style.display='none'; }
 function showGame() { document.getElementById('authGate').style.display='none'; document.getElementById('mainWrapper').style.display='flex'; }
 
 // ── AUTH ──────────────────────────────────────────────────────
 function doAuth() {
-    const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const pass = document.getElementById('authPassword').value.trim();
-    if (name.length < 3) { alert('Username must be at least 3 characters.'); return; }
-    const btn = document.getElementById('authBtn');
-    btn.textContent = 'Connecting...'; btn.disabled = true;
-    const reset = () => { btn.textContent = 'Access Roulette'; btn.disabled = false; };
-    db.ref('users/'+name).once('value').then(snap => {
-        if (snap.exists()) {
-            const u = snap.val();
-            if (u.password !== pass) { alert('Incorrect password.'); reset(); return; }
-            finalizeLogin(u);
-        } else {
-            const nu = {name, password:pass, balance:100, lastBonus:0, createdAt:Date.now()};
-            db.ref('users/'+name).set(nu).then(() => finalizeLogin(nu)).catch(e => { alert('Error: '+e.message); reset(); });
-        }
-    }).catch(e => { alert('Connection failed: '+e.message); reset(); });
+    const name=document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass=document.getElementById('authPassword').value.trim();
+    if (name.length<3){alert('Username must be at least 3 characters.');return;}
+    const btn=document.getElementById('authBtn');
+    btn.textContent='Connecting...';btn.disabled=true;
+    const reset=()=>{btn.textContent='Access Roulette';btn.disabled=false;};
+    db.ref('users/'+name).once('value').then(snap=>{
+        if(snap.exists()){const u=snap.val();if(u.password!==pass){alert('Incorrect password.');reset();return;}finalizeLogin(u);}
+        else{const nu={name,password:pass,balance:100,lastBonus:0,createdAt:Date.now()};db.ref('users/'+name).set(nu).then(()=>finalizeLogin(nu)).catch(e=>{alert('Error: '+e.message);reset();});}
+    }).catch(e=>{alert('Connection failed: '+e.message);reset();});
 }
 
 function finalizeLogin(user) {
-    currentUser = user;
-    localStorage.setItem('currentUser', JSON.stringify(user));
+    currentUser=user;
+    localStorage.setItem('currentUser',JSON.stringify(user));
     showGame();
-    document.getElementById('navBalWrap').style.display = 'flex';
-    db.ref('users/'+user.name).on('value', snap => { if (snap.exists()) { currentUser = snap.val(); updateNavBal(); } });
+    document.getElementById('navBalWrap').style.display='flex';
+    db.ref('users/'+user.name).on('value',snap=>{if(snap.exists()){currentUser=snap.val();updateNavBal();}});
     updateNavBal();
-    requestAnimationFrame(() => { buildTable(); initWheel(); initChat(); });
+    requestAnimationFrame(()=>{buildTable();initWheel();initChat();initNotifications();});
 }
-
-function updateNavBal() {
-    if (!currentUser) return;
-    document.getElementById('navBal').textContent = fmt$(currentUser.balance);
-}
+function updateNavBal(){if(!currentUser)return;document.getElementById('navBal').textContent=fmt$(currentUser.balance);}
 
 // ── BET CONTROLS ──────────────────────────────────────────────
-function onBetInput() {
-    const raw = parseFloat(document.getElementById('betInput').value);
-    betPerClick = isNaN(raw) || raw < 0 ? 0 : cleanMoney(Math.min(raw, currentUser ? currentUser.balance : 99999));
-}
-function setBet(a) {
-    betPerClick = cleanMoney(Math.min(a, currentUser ? currentUser.balance : 99999));
-    document.getElementById('betInput').value = betPerClick;
-}
-function setBetMax() { if (currentUser) setBet(currentUser.balance); }
-function modBet(f) {
-    betPerClick = cleanMoney(Math.min(betPerClick * f, currentUser ? currentUser.balance : 99999));
-    if (betPerClick < 0) betPerClick = 0;
-    document.getElementById('betInput').value = betPerClick > 0 ? betPerClick : '';
-}
-function clearBetInput() { betPerClick = 0; document.getElementById('betInput').value = ''; }
+function onBetInput(){const raw=parseFloat(document.getElementById('betInput').value);betPerClick=isNaN(raw)||raw<0?0:cleanMoney(Math.min(raw,currentUser?currentUser.balance:99999));}
+function setBet(a){betPerClick=cleanMoney(Math.min(a,currentUser?currentUser.balance:99999));document.getElementById('betInput').value=betPerClick;}
+function setBetMax(){if(currentUser)setBet(currentUser.balance);}
+function modBet(f){betPerClick=cleanMoney(Math.min(betPerClick*f,currentUser?currentUser.balance:99999));if(betPerClick<0)betPerClick=0;document.getElementById('betInput').value=betPerClick>0?betPerClick:'';}
+function clearBetInput(){betPerClick=0;document.getElementById('betInput').value='';}
 
 // ── TABLE BUILD ───────────────────────────────────────────────
 function buildTable() {
-    const tbl = document.getElementById('betTable');
-    tbl.innerHTML = '';
-
-    // 3 number rows + zero
-    TABLE_ROWS.forEach((row, ri) => {
-        const tr = document.createElement('tr');
-
-        if (ri === 0) {
-            const z = document.createElement('td');
-            z.rowSpan = 3; z.className = 'num-cell gc'; z.textContent = '0';
-            z.id = 'cell-straight:0'; z.onclick = () => addBet('straight:0','0',35);
-            tr.appendChild(z);
-        }
-
-        row.forEach(n => {
-            const td = document.createElement('td');
-            td.className = 'num-cell ' + (numColor(n) === 'r' ? 'rc' : 'bc');
-            td.textContent = n;
-            td.id = 'cell-straight:' + n;
-            td.onclick = () => addBet('straight:'+n, String(n), 35);
-            tr.appendChild(td);
-        });
-
-        // 2:1 at end
-        const col = document.createElement('td');
-        col.className = 'oc'; col.textContent = '2:1';
-        col.id = 'cell-column:'+(ri+1);
-        col.onclick = () => addBet('column:'+(ri+1), ['Col 1','Col 2','Col 3'][ri], 2);
-        tr.appendChild(col);
+    const tbl=document.getElementById('betTable');tbl.innerHTML='';
+    TABLE_ROWS.forEach((row,ri)=>{
+        const tr=document.createElement('tr');
+        if(ri===0){const z=document.createElement('td');z.rowSpan=3;z.className='num-cell gc';z.textContent='0';z.id='cell-straight:0';z.onclick=()=>addBet('straight:0','0',35);tr.appendChild(z);}
+        row.forEach(n=>{const td=document.createElement('td');td.className='num-cell '+(numColor(n)==='r'?'rc':'bc');td.textContent=n;td.id='cell-straight:'+n;td.onclick=()=>addBet('straight:'+n,String(n),35);tr.appendChild(td);});
+        const col=document.createElement('td');col.className='oc';col.textContent='2:1';col.id='cell-column:'+(ri+1);col.onclick=()=>addBet('column:'+(ri+1),['Col 1','Col 2','Col 3'][ri],2);tr.appendChild(col);
         tbl.appendChild(tr);
     });
-
-    // Dozens
-    const d = document.createElement('tr');
-    [['dozen:1','1 to 12',2],['dozen:2','13 to 24',2],['dozen:3','25 to 36',2]].forEach(([k,l,o]) => {
-        const td = document.createElement('td'); td.colSpan = 4;
-        td.className = 'oc'; td.textContent = l;
-        td.id = 'cell-'+k; td.onclick = () => addBet(k, l, o);
-        d.appendChild(td);
-    });
-    const ph = document.createElement('td'); ph.className='oc'; ph.textContent=''; d.appendChild(ph);
-    tbl.appendChild(d);
-
-    // Even money
-    const e = document.createElement('tr');
-    [['low','1–18',1],['even','Even',1],['red','Red',1],['black','Black',1],['odd','Odd',1],['high','19–36',1]].forEach(([k,l,o]) => {
-        const td = document.createElement('td'); td.colSpan = 2;
-        td.className = 'oc' + (k==='red'?' rcol':k==='black'?' bcol':'');
-        td.textContent = l;
-        td.id = 'cell-'+k; td.onclick = () => addBet(k, l, o);
-        e.appendChild(td);
-    });
-    const ph2 = document.createElement('td'); ph2.className='oc'; ph2.textContent=''; e.appendChild(ph2);
-    tbl.appendChild(e);
+    const d=document.createElement('tr');
+    [['dozen:1','1 to 12',2],['dozen:2','13 to 24',2],['dozen:3','25 to 36',2]].forEach(([k,l,o])=>{const td=document.createElement('td');td.colSpan=4;td.className='oc';td.textContent=l;td.id='cell-'+k;td.onclick=()=>addBet(k,l,o);d.appendChild(td);});
+    const ph=document.createElement('td');ph.className='oc';ph.textContent='';d.appendChild(ph);tbl.appendChild(d);
+    const e=document.createElement('tr');
+    [['low','1–18',1],['even','Even',1],['red','Red',1],['black','Black',1],['odd','Odd',1],['high','19–36',1]].forEach(([k,l,o])=>{const td=document.createElement('td');td.colSpan=2;td.className='oc'+(k==='red'?' rcol':k==='black'?' bcol':'');td.textContent=l;td.id='cell-'+k;td.onclick=()=>addBet(k,l,o);e.appendChild(td);});
+    const ph2=document.createElement('td');ph2.className='oc';ph2.textContent='';e.appendChild(ph2);tbl.appendChild(e);
 }
 
 // ── BET MANAGEMENT ────────────────────────────────────────────
-function addBet(key, label, odds) {
-    if (spinning) return;
-    if (betPerClick <= 0) { setMsg('Set a bet amount first!'); return; }
-    const total = Object.values(bets).reduce((a,b) => a+b, 0);
-    if (total + betPerClick > (currentUser ? currentUser.balance : 0)) { setMsg('Not enough balance!'); return; }
-    bets[key] = cleanMoney((bets[key] || 0) + betPerClick);
-    refreshTableUI();
-    refreshBetUI();
+function addBet(key,label,odds){if(spinning)return;if(betPerClick<=0){setMsg('Set a bet amount first!');return;}const total=Object.values(bets).reduce((a,b)=>a+b,0);if(total+betPerClick>(currentUser?currentUser.balance:0)){setMsg('Not enough balance!');return;}bets[key]=cleanMoney((bets[key]||0)+betPerClick);refreshTableUI();refreshBetUI();}
+function removeBet(key){if(spinning)return;delete bets[key];refreshTableUI();refreshBetUI();}
+function clearAllBets(){if(spinning)return;bets={};refreshTableUI();refreshBetUI();setMsg('All bets cleared.');}
+function rebet(){if(spinning)return;clearAllBets();bets={...lastBets};refreshTableUI();refreshBetUI();setMsg("Last round's bets restored!");}
+
+function refreshTableUI(){
+    document.querySelectorAll('.sel').forEach(el=>el.classList.remove('sel'));
+    document.querySelectorAll('.bet-chip').forEach(el=>el.remove());
+    for(const[key,amt]of Object.entries(bets)){if(amt<=0)continue;const el=document.getElementById('cell-'+key);if(!el)continue;el.classList.add('sel');const chip=document.createElement('div');chip.className='bet-chip';chip.textContent=amt>=1000?Math.round(amt/100)+'H':amt>=100?Math.round(amt/100)+'C':amt;el.appendChild(chip);}
 }
 
-function removeBet(key) {
-    if (spinning) return;
-    delete bets[key];
-    refreshTableUI();
-    refreshBetUI();
+function refreshBetUI(){
+    const total=Object.values(bets).reduce((a,b)=>a+b,0);
+    document.getElementById('infoTotal').textContent='$'+fmt$(total);
+    let maxWin=0;for(const[key,amt]of Object.entries(bets)){const odds=getOdds(key);maxWin=Math.max(maxWin,cleanMoney(amt*(odds+1)));}
+    document.getElementById('infoMaxWin').textContent='$'+fmt$(maxWin);
+    const list=document.getElementById('betList');list.innerHTML='';
+    for(const[key,amt]of Object.entries(bets)){if(amt<=0)continue;const div=document.createElement('div');div.className='bet-item';div.innerHTML=`<span class="bet-item-name">${betLabel(key)}</span><span class="bet-item-amt">$${fmt$(amt)}</span><span class="bet-item-del" onclick="removeBet('${key}')">✕</span>`;list.appendChild(div);}
+    document.getElementById('btnSpin').disabled=total<=0;
+    document.getElementById('btnRebet').disabled=Object.keys(lastBets).length===0;
 }
 
-function clearAllBets() {
-    if (spinning) return;
-    bets = {};
-    refreshTableUI();
-    refreshBetUI();
-    setMsg('All bets cleared.');
-}
+function getOdds(key){if(key.startsWith('straight:'))return 35;if(key.startsWith('column:')||key.startsWith('dozen:'))return 2;return 1;}
+function betLabel(key){const m={'column:1':'Col 1','column:2':'Col 2','column:3':'Col 3','dozen:1':'1–12','dozen:2':'13–24','dozen:3':'25–36','low':'1–18','high':'19–36','even':'Even','odd':'Odd','red':'Red','black':'Black'};if(key.startsWith('straight:'))return 'Number '+key.split(':')[1];return m[key]||key;}
 
-function rebet() {
-    if (spinning) return;
-    clearAllBets();
-    bets = {...lastBets};
-    refreshTableUI();
-    refreshBetUI();
-    setMsg('Last round\'s bets restored!');
-}
-
-function refreshTableUI() {
-    // Clear selections + chips
-    document.querySelectorAll('.sel').forEach(el => el.classList.remove('sel'));
-    document.querySelectorAll('.bet-chip').forEach(el => el.remove());
-
-    for (const [key, amt] of Object.entries(bets)) {
-        if (amt <= 0) continue;
-        const el = document.getElementById('cell-' + key);
-        if (!el) continue;
-        el.classList.add('sel');
-        const chip = document.createElement('div');
-        chip.className = 'bet-chip';
-        chip.textContent = amt >= 1000 ? Math.round(amt/100)+'H' : amt >= 100 ? Math.round(amt/100)+'C' : amt;
-        el.appendChild(chip);
-    }
-}
-
-function refreshBetUI() {
-    const total = Object.values(bets).reduce((a,b) => a+b, 0);
-    document.getElementById('infoTotal').textContent = '$' + fmt$(total);
-
-    let maxWin = 0;
-    for (const [key, amt] of Object.entries(bets)) {
-        const odds = getOdds(key);
-        maxWin = Math.max(maxWin, cleanMoney(amt * (odds + 1)));
-    }
-    document.getElementById('infoMaxWin').textContent = '$' + fmt$(maxWin);
-
-    const list = document.getElementById('betList');
-    list.innerHTML = '';
-    for (const [key, amt] of Object.entries(bets)) {
-        if (amt <= 0) continue;
-        const div = document.createElement('div'); div.className = 'bet-item';
-        div.innerHTML = `<span class="bet-item-name">${betLabel(key)}</span><span class="bet-item-amt">$${fmt$(amt)}</span><span class="bet-item-del" onclick="removeBet('${key}')">✕</span>`;
-        list.appendChild(div);
-    }
-
-    document.getElementById('btnSpin').disabled  = total <= 0;
-    document.getElementById('btnRebet').disabled = Object.keys(lastBets).length === 0;
-}
-
-function getOdds(key) {
-    if (key.startsWith('straight:')) return 35;
-    if (key.startsWith('column:') || key.startsWith('dozen:')) return 2;
-    return 1;
-}
-
-function betLabel(key) {
-    const m = {'column:1':'Col 1','column:2':'Col 2','column:3':'Col 3','dozen:1':'1–12','dozen:2':'13–24','dozen:3':'25–36','low':'1–18','high':'19–36','even':'Even','odd':'Odd','red':'Red','black':'Black'};
-    if (key.startsWith('straight:')) return 'Number ' + key.split(':')[1];
-    return m[key] || key;
-}
-
-function isWin(key, result) {
-    const c = numColor(result);
-    if (key === 'straight:'+result) return true;
-    if (key === 'red'    && c === 'r') return true;
-    if (key === 'black'  && c === 'b') return true;
-    if (key === 'even'   && result !== 0 && result % 2 === 0) return true;
-    if (key === 'odd'    && result % 2 === 1) return true;
-    if (key === 'low'    && result >= 1 && result <= 18) return true;
-    if (key === 'high'   && result >= 19) return true;
-    if (key === 'dozen:1'&& result >= 1 && result <= 12) return true;
-    if (key === 'dozen:2'&& result >= 13 && result <= 24) return true;
-    if (key === 'dozen:3'&& result >= 25) return true;
-    if (key === 'column:1' && result !== 0 && result % 3 === 0) return true;
-    if (key === 'column:2' && result !== 0 && result % 3 === 2) return true;
-    if (key === 'column:3' && result !== 0 && result % 3 === 1) return true;
+function isWin(key,result){
+    const c=numColor(result);
+    if(key==='straight:'+result)return true;
+    if(key==='red'&&c==='r')return true;if(key==='black'&&c==='b')return true;
+    if(key==='even'&&result!==0&&result%2===0)return true;if(key==='odd'&&result%2===1)return true;
+    if(key==='low'&&result>=1&&result<=18)return true;if(key==='high'&&result>=19)return true;
+    if(key==='dozen:1'&&result>=1&&result<=12)return true;if(key==='dozen:2'&&result>=13&&result<=24)return true;if(key==='dozen:3'&&result>=25)return true;
+    if(key==='column:1'&&result!==0&&result%3===0)return true;if(key==='column:2'&&result!==0&&result%3===2)return true;if(key==='column:3'&&result!==0&&result%3===1)return true;
     return false;
 }
 
-// ── WHEEL + BALL ANIMATION ────────────────────────────────────
-const WHEEL_POCKETS = 37;
-const SLICE = 360 / WHEEL_POCKETS;
+// ── WHEEL ─────────────────────────────────────────────────────
+const WHEEL_POCKETS=37, SLICE=360/WHEEL_POCKETS;
 
-function initWheel() {
-    const canvas = document.getElementById('wheelCanvas');
-    const area   = document.querySelector('.wheel-wrap');
-    const size   = Math.min(240, area.clientWidth - 20);
-    canvas.width = size; canvas.height = size;
-    ballR = (size / 2) * 0.82; // ball orbits at 82% of outer radius
-    drawWheelFrame();
+function initWheel(){
+    const canvas=document.getElementById('wheelCanvas');
+    const wrap=document.getElementById('wheelWrap');
+    const size=Math.min(240,wrap.clientWidth-20);
+    canvas.width=size; canvas.height=size;
+    drawWheel(wheelAngle, -90);
 }
-window.addEventListener('resize', () => { if (currentUser) initWheel(); });
+window.addEventListener('resize',()=>{if(currentUser)initWheel();});
 
-function drawWheelFrame() {
+// drawWheel(wheelRotDeg, arrowAngleDeg)
+// wheelRotDeg  — how much the wheel has rotated (degrees)
+// arrowAngleDeg— angle of the arrow around the outside (degrees, 0=right, -90=top)
+function drawWheel(wheelRotDeg, arrowAngleDeg) {
     const canvas = document.getElementById('wheelCanvas');
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    const W = canvas.width, H = canvas.height;
-    const cx = W/2, cy = H/2, outerR = W/2-2, innerR = outerR*0.3;
-    const n = WHEEL_POCKETS, slice = Math.PI*2/n;
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height, cx = W/2, cy = H/2;
+    const outerR  = W/2 - 14;  // leave room for arrow outside
+    const innerR  = outerR * 0.3;
+    const n       = WHEEL_POCKETS;
+    const sliceRad = Math.PI * 2 / n;
+    const rotRad  = wheelRotDeg * Math.PI / 180;
 
-    ctx.clearRect(0,0,W,H);
+    ctx.clearRect(0, 0, W, H);
 
-    // Gold outer rim
-    const rim = ctx.createRadialGradient(cx,cy,outerR-10,cx,cy,outerR);
-    rim.addColorStop(0,'#7a5010'); rim.addColorStop(0.45,'#D4A017'); rim.addColorStop(1,'#7a5010');
-    ctx.beginPath(); ctx.arc(cx,cy,outerR,0,Math.PI*2); ctx.fillStyle=rim; ctx.fill();
+    // Gold rim
+    const rimR = outerR + 10;
+    const rim = ctx.createRadialGradient(cx,cy,outerR,cx,cy,rimR);
+    rim.addColorStop(0,'#7a5010'); rim.addColorStop(0.5,'#D4A017'); rim.addColorStop(1,'#7a5010');
+    ctx.beginPath(); ctx.arc(cx,cy,rimR,0,Math.PI*2); ctx.fillStyle=rim; ctx.fill();
 
     // Pockets
     for (let i = 0; i < n; i++) {
         const num = WHEEL_ORDER[i];
-        const a0  = wheelAngle*Math.PI/180 + i*slice - Math.PI/2;
-        const a1  = a0 + slice;
+        const a0  = rotRad + i * sliceRad - Math.PI/2;
+        const a1  = a0 + sliceRad;
         const c   = numColor(num);
-        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,outerR-10,a0,a1); ctx.closePath();
-        ctx.fillStyle = c==='r'?'#8b0000':c==='b'?'#0a0a0a':'#005500';
-        ctx.fill();
-        ctx.strokeStyle='rgba(212,160,23,0.5)'; ctx.lineWidth=1; ctx.stroke();
 
-        // Number text
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.arc(cx,cy,outerR,a0,a1); ctx.closePath();
+        ctx.fillStyle = c==='r' ? '#8b0000' : c==='b' ? '#111111' : '#005500';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(212,160,23,0.5)'; ctx.lineWidth = 1; ctx.stroke();
+
+        // number text
         ctx.save();
-        ctx.translate(cx,cy); ctx.rotate(a0+slice/2);
-        ctx.translate(outerR*0.72,0); ctx.rotate(Math.PI/2);
-        ctx.fillStyle='#fff';
-        ctx.font=`bold ${Math.max(7,W/30)}px Roboto Condensed,sans-serif`;
-        ctx.textAlign='center'; ctx.textBaseline='middle';
-        ctx.fillText(num,0,0);
+        ctx.translate(cx, cy);
+        ctx.rotate(a0 + sliceRad/2);
+        ctx.translate(outerR * 0.74, 0);
+        ctx.rotate(Math.PI/2);
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.max(8, W/26)}px Roboto Condensed,sans-serif`;
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillText(num, 0, 0);
         ctx.restore();
     }
 
-    // Inner decorative rings
-    // Outer separator ring
+    // Separator ring
     ctx.beginPath(); ctx.arc(cx,cy,innerR*1.3,0,Math.PI*2);
     ctx.strokeStyle='rgba(212,160,23,0.6)'; ctx.lineWidth=2; ctx.stroke();
 
-    // Green hub
+    // Hub
     const hub = ctx.createRadialGradient(cx,cy,0,cx,cy,innerR);
     hub.addColorStop(0,'#1d5c1d'); hub.addColorStop(0.6,'#0d3d0d'); hub.addColorStop(1,'#000');
     ctx.beginPath(); ctx.arc(cx,cy,innerR,0,Math.PI*2); ctx.fillStyle=hub; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx,cy,innerR,0,Math.PI*2); ctx.strokeStyle='#D4A017'; ctx.lineWidth=2.5; ctx.stroke();
 
-    // Gold hub ring
-    ctx.beginPath(); ctx.arc(cx,cy,innerR,0,Math.PI*2);
-    ctx.strokeStyle='#D4A017'; ctx.lineWidth=2.5; ctx.stroke();
-
-    // Decorative inner cross spokes
+    // Spokes
     ctx.strokeStyle='rgba(212,160,23,0.3)'; ctx.lineWidth=1;
-    for (let i=0; i<8; i++) {
-        const a = i*Math.PI/4;
+    for (let i=0;i<8;i++){
+        const a=i*Math.PI/4;
         ctx.beginPath();
         ctx.moveTo(cx+Math.cos(a)*innerR*0.3, cy+Math.sin(a)*innerR*0.3);
         ctx.lineTo(cx+Math.cos(a)*innerR*0.9, cy+Math.sin(a)*innerR*0.9);
@@ -739,213 +572,208 @@ function drawWheelFrame() {
     dot.addColorStop(0,'#fff'); dot.addColorStop(1,'#D4A017');
     ctx.fillStyle=dot; ctx.fill();
 
-    // Pointer (ball marker at top)
-    ctx.fillStyle='#e8e8e8';
-    ctx.beginPath(); ctx.moveTo(cx,cy-outerR+1); ctx.lineTo(cx-6,cy-outerR+13); ctx.lineTo(cx+6,cy-outerR+13); ctx.closePath(); ctx.fill();
-    ctx.strokeStyle='#D4A017'; ctx.lineWidth=1.5; ctx.stroke();
-}
+    // ── ARROW — orbits outside the rim, tip points inward toward wheel ──
+    const arrowRad  = arrowAngleDeg * Math.PI / 180;
+    const arrowDist = rimR + 8;   // pivot = base of arrow, just outside rim
+    const ax = cx + Math.cos(arrowRad) * arrowDist;
+    const ay = cy + Math.sin(arrowRad) * arrowDist;
 
-// Ball state
-let ballAngleAbs = 0;   // absolute angle of ball in degrees
-let ballRadiusCur = 0;  // current radius from center
+    ctx.save();
+    ctx.translate(ax, ay);
+    // Rotate so local +Y axis points AWAY from centre (so tip at -Y points toward centre)
+    ctx.rotate(arrowRad + Math.PI/2);
 
-function drawBall(ctx, cx, cy, angle, radius) {
-    const bx = cx + Math.cos(angle*Math.PI/180)*radius;
-    const by = cy + Math.sin(angle*Math.PI/180)*radius;
-    const br = Math.max(4, document.getElementById('wheelCanvas').width/28);
+    const aw = Math.max(6, W/26);   // arrowhead half-width
+    const al = Math.max(12, W/13);  // total arrow length
+    const as = aw * 0.4;            // shaft half-width
 
-    // Glow
-    const grd = ctx.createRadialGradient(bx,by,0,bx,by,br*2.5);
-    grd.addColorStop(0,'rgba(255,255,255,0.3)'); grd.addColorStop(1,'transparent');
-    ctx.beginPath(); ctx.arc(bx,by,br*2.5,0,Math.PI*2); ctx.fillStyle=grd; ctx.fill();
+    ctx.shadowColor = '#ef4444';
+    ctx.shadowBlur  = 8;
 
-    // Ball body
-    const bg = ctx.createRadialGradient(bx-br*0.3,by-br*0.3,0,bx,by,br);
-    bg.addColorStop(0,'#ffffff'); bg.addColorStop(0.4,'#cccccc'); bg.addColorStop(1,'#888888');
-    ctx.beginPath(); ctx.arc(bx,by,br,0,Math.PI*2);
-    ctx.fillStyle=bg; ctx.fill();
-    ctx.strokeStyle='rgba(0,0,0,0.4)'; ctx.lineWidth=1; ctx.stroke();
+    ctx.beginPath();
+    // Tip at (0, -al) — pointing TOWARD centre (negative Y = inward)
+    // Body extends up toward (0, 0) = away from centre
+    ctx.moveTo(0, -al);              // tip (pointing inward)
+    ctx.lineTo(-aw, -al * 0.55);    // left wing
+    ctx.lineTo(-as, -al * 0.55);    // shaft left
+    ctx.lineTo(-as, 0);             // shaft base left
+    ctx.lineTo( as, 0);             // shaft base right
+    ctx.lineTo( as, -al * 0.55);    // shaft right
+    ctx.lineTo( aw, -al * 0.55);    // right wing
+    ctx.closePath();
+
+    ctx.fillStyle   = '#ef4444';
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth   = 1.5;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.stroke();
+    ctx.restore();
 }
 
 // ── SPIN ──────────────────────────────────────────────────────
+// Wheel rotates clockwise. Arrow orbits counter-clockwise.
+// Arrow always ends at -90° (top). Wheel rotates so result pocket is at top.
 function spin() {
     if (spinning) return;
-    const total = Object.values(bets).reduce((a,b) => a+b, 0);
-    if (total <= 0) { setMsg('Place bets first!'); return; }
+    const total = Object.values(bets).reduce((a,b)=>a+b, 0);
+    if (total <= 0)                  { setMsg('Place bets first!'); return; }
     if (total > currentUser.balance) { setMsg('Not enough balance!'); return; }
 
     spinning = true;
     lastBets = {...bets};
-    document.getElementById('btnSpin').disabled  = true;
-    document.getElementById('btnRebet').disabled = true;
+    document.getElementById('btnSpin').disabled     = true;
+    document.getElementById('btnRebet').disabled    = true;
     document.getElementById('btnClearAll').disabled = true;
     document.getElementById('rightPanel').classList.add('panel-locked');
     setMsg('🎰 The wheel is spinning...');
 
-    const result   = Math.floor(Math.random()*37);
-    const resultIdx= WHEEL_ORDER.indexOf(result);
+    const result    = Math.floor(Math.random() * 37);
+    const resultIdx = WHEEL_ORDER.indexOf(result);
 
-    // Wheel spins clockwise, ball spins counter-clockwise then slows into pocket
-    const wheelSpins  = 5 + Math.floor(Math.random()*3);
-    const wheelTarget = wheelAngle + wheelSpins*360;
+    // Arrow always stops at -90° (top of wheel).
+    // Arrow starts at a random position and does several CCW orbits.
+    const arrowStart  = Math.random() * 360;
+    const arrowOrbits = 4 + Math.floor(Math.random() * 3);
+    // Arrow travels CCW to reach -90° after arrowOrbits full rotations
+    // Net travel = -arrowOrbits*360 + adjustment to land at -90
+    const arrowStop   = -90; // degrees
+    const arrowTravel = -arrowOrbits * 360 + ((arrowStop - arrowStart % 360 + 360) % 360 - 360);
+    const arrowFinal  = arrowStart + arrowTravel;
 
-    // Ball: starts at outer edge, spins fast counter-clockwise, decelerates into pocket
-    const ballSpins   = 8 + Math.floor(Math.random()*4);
-    // Final ball angle = angle of pocket on the wheel
-    const pocketAngleOnWheel = -90 + resultIdx*SLICE; // same formula as pocket drawing
-    const ballFinalAngle = pocketAngleOnWheel + wheelTarget - wheelAngle; // adjusted for wheel movement
+    // Wheel: rotate CW so pocket resultIdx lands at -90° (where arrow points).
+    // Pocket i is at angle: (wheelRot + i*SLICE - 90)°.
+    // We want: wheelFinal + resultIdx*SLICE - 90 = -90
+    // => wheelFinal = -resultIdx * SLICE  (+extra CW spins)
+    const wheelExtraSpins = (5 + Math.floor(Math.random() * 3)) * 360;
+    const pocketAlign = -resultIdx * SLICE;
+    const startWA     = wheelAngle;
+    // Calculate CW travel needed from startWA to reach pocketAlign
+    const wheelDiff   = ((pocketAlign - startWA) % 360 + 360) % 360;
+    const wheelFinal  = startWA + wheelDiff + wheelExtraSpins;
 
-    const canvas   = document.getElementById('wheelCanvas');
-    const outerR   = canvas.width/2 - 2;
-    const ballStart= outerR * 0.88;
-    const ballEnd  = outerR * 0.72;
+    const duration  = 4500 + Math.random() * 600;
+    const startTime = Date.now();
 
-    const startWheelAngle = wheelAngle;
-    const startBallAngle  = ballAngleAbs || 0;
-    const startBallR      = ballStart;
-
-    const duration = 5000 + Math.random()*1000;
-    const startTime= Date.now();
-
-    function easeOut(t) { return 1 - Math.pow(1-t, 4); }
-    function easeIn(t)  { return t*t; }
+    function easeOut(t) { return 1 - Math.pow(1 - t, 4); }
 
     if (animId) cancelAnimationFrame(animId);
 
     (function frame() {
         const elapsed = Date.now() - startTime;
-        const t = Math.min(elapsed / duration, 1);
-        const eased = easeOut(t);
+        const t       = Math.min(elapsed / duration, 1);
+        const e       = easeOut(t);
 
-        // Wheel angle
-        wheelAngle = startWheelAngle + eased * (wheelTarget - startWheelAngle);
+        wheelAngle           = startWA     + e * (wheelFinal  - startWA);
+        const arrowAngle     = arrowStart  + e * arrowTravel;
 
-        // Ball spins opposite direction, decelerates
-        const ballT = easeOut(t);
-        ballAngleAbs = startBallAngle - ballSpins*360*ballT + (ballFinalAngle - startBallAngle + ballSpins*360)*ballT;
-
-        // Ball radius decreases as it slows (drops into pocket)
-        ballRadiusCur = startBallR + easeIn(t) * (ballEnd - startBallR);
-
-        // Draw
-        drawWheelFrame();
-        const ctx2 = canvas.getContext('2d');
-        drawBall(ctx2, canvas.width/2, canvas.height/2, ballAngleAbs, ballRadiusCur);
+        drawWheel(wheelAngle, arrowAngle);
 
         if (t < 1) {
             animId = requestAnimationFrame(frame);
         } else {
-            wheelAngle = wheelTarget;
-            // Ball settles in pocket
-            ballAngleAbs = -90 + resultIdx*SLICE + (wheelTarget - startWheelAngle);
-            ballRadiusCur = ballEnd;
-            drawWheelFrame();
-            const ctx3 = canvas.getContext('2d');
-            drawBall(ctx3, canvas.width/2, canvas.height/2, ballAngleAbs, ballRadiusCur);
-            resolveResult(result);
+            wheelAngle = wheelFinal;
+            drawWheel(wheelFinal, arrowFinal);
+            setTimeout(() => resolveResult(result), 500);
         }
     })();
 }
 
-function resolveResult(result) {
-    spinning = false;
-    const col = numColor(result);
-
-    // Update result ball
-    const rb = document.getElementById('resultBall');
-    rb.textContent = result;
-    rb.className   = 'result-ball ' + col;
-
-    // Calculate winnings
-    const totalBet = Object.values(bets).reduce((a,b) => a+b, 0);
-    let totalWin = 0;
-    for (const [key, amt] of Object.entries(bets)) {
-        if (isWin(key, result)) totalWin = cleanMoney(totalWin + amt*(getOdds(key)+1));
-    }
-    const profit = cleanMoney(totalWin - totalBet);
-
-    const payEl = document.getElementById('resultPayout');
-    if (totalWin > 0) {
-        payEl.textContent = `+$${fmt$(profit)} — Won $${fmt$(totalWin)}!`;
-        payEl.className   = 'result-payout';
-        setMsg(`🎉 ${result} ${col==='r'?'RED':col==='b'?'BLACK':'GREEN'}! You won $${fmt$(totalWin)}!`);
-    } else {
-        payEl.textContent = `-$${fmt$(totalBet)}`;
-        payEl.className   = 'result-payout loss';
-        setMsg(`${result} ${col==='r'?'Red':col==='b'?'Black':'Green'} — no win. Better luck next spin!`);
-    }
-
-    // History
-    history.unshift({n:result, c:col});
-    if (history.length > 20) history.pop();
-    document.getElementById('histStrip').innerHTML = history.map(h =>
-        `<div class="h-ball ${h.c}">${h.n}</div>`
-    ).join('');
-
+function resolveResult(result){
+    spinning=false;
+    const col=numColor(result);
+    const rb=document.getElementById('resultBall');
+    rb.textContent=result;rb.className='result-ball '+col;
+    const totalBet=Object.values(bets).reduce((a,b)=>a+b,0);
+    let totalWin=0;
+    for(const[key,amt]of Object.entries(bets)){if(isWin(key,result))totalWin=cleanMoney(totalWin+amt*(getOdds(key)+1));}
+    const profit=cleanMoney(totalWin-totalBet);
+    const payEl=document.getElementById('resultPayout');
+    if(totalWin>0){payEl.textContent=`+$${fmt$(profit)} — Won $${fmt$(totalWin)}!`;payEl.className='result-payout';setMsg(`🎉 ${result} ${col==='r'?'RED':col==='b'?'BLACK':'GREEN'}! You won $${fmt$(totalWin)}!`);}
+    else{payEl.textContent=`-$${fmt$(totalBet)}`;payEl.className='result-payout loss';setMsg(`${result} ${col==='r'?'Red':col==='b'?'Black':'Green'} — no win. Better luck next spin!`);}
+    history.unshift({n:result,c:col});if(history.length>20)history.pop();
+    document.getElementById('histStrip').innerHTML=history.map(h=>`<div class="h-ball ${h.c}">${h.n}</div>`).join('');
     saveBalance(profit);
-
-    document.getElementById('btnSpin').disabled     = false;
-    document.getElementById('btnRebet').disabled    = false;
-    document.getElementById('btnClearAll').disabled = false;
+    document.getElementById('btnSpin').disabled=false;
+    document.getElementById('btnRebet').disabled=false;
+    document.getElementById('btnClearAll').disabled=false;
     document.getElementById('rightPanel').classList.remove('panel-locked');
     refreshBetUI();
 }
 
 // ── FIREBASE ──────────────────────────────────────────────────
-function saveBalance(delta) {
-    db.ref('users/'+currentUser.name).transaction(u => {
-        if (!u) return u;
-        u.balance = cleanMoney((u.balance||0)+delta);
-        return u;
-    }, (err, committed) => {
-        if (committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name,amount:delta,ts:Date.now()});
-        if (committed && delta !== 0) showSyncBadge();
+function saveBalance(delta){
+    db.ref('users/'+currentUser.name).transaction(u=>{if(!u)return u;u.balance=cleanMoney((u.balance||0)+delta);return u;},(err,committed)=>{
+        if(committed&&delta>0)db.ref('recent_wins').push({name:currentUser.name,amount:delta,ts:Date.now(),source:'Roulette'});
+        if(committed&&delta!==0)showSyncBadge();
     });
 }
-function showSyncBadge() {
-    const el = document.getElementById('syncBadge');
-    el.style.display = 'block'; clearTimeout(syncTimeout);
-    syncTimeout = setTimeout(() => { el.style.display='none'; }, 2000);
+function showSyncBadge(){const el=document.getElementById('syncBadge');el.style.display='block';clearTimeout(syncTimeout);syncTimeout=setTimeout(()=>{el.style.display='none';},2000);}
+
+// ── RIGHT PANEL TABS ──────────────────────────────────────────
+let currentRpTab='chat';
+function switchRpTab(tab){
+    currentRpTab=tab;
+    ['chat','notif'].forEach(t=>{
+        const tabEl=document.getElementById('tab-'+t);
+        const panelEl=document.getElementById('rp-'+t);
+        const colBtn=document.getElementById('colBtn-'+t);
+        if(tabEl)tabEl.classList.toggle('active',t===tab);
+        if(panelEl)panelEl.classList.toggle('active',t===tab);
+        if(colBtn)colBtn.classList.toggle('active',t===tab);
+    });
+    if(tab==='notif')markNotifsRead();
+}
+function toggleChat(){chatCollapsed=!chatCollapsed;document.getElementById('chatPanel').classList.toggle('collapsed',chatCollapsed);if(!chatCollapsed)switchRpTab(currentRpTab);}
+function expandRpTo(tab){chatCollapsed=false;document.getElementById('chatPanel').classList.remove('collapsed');switchRpTab(tab);}
+
+// ── NOTIFICATIONS ─────────────────────────────────────────────
+let unreadNotifCount=0;
+function addNotification(type,title,sub){const key='notifs_'+(currentUser?currentUser.name:'guest');const stored=JSON.parse(localStorage.getItem(key)||'[]');stored.unshift({type,title,sub,ts:Date.now(),read:false,id:Date.now()+Math.random()});localStorage.setItem(key,JSON.stringify(stored.slice(0,30)));renderNotifications();}
+function renderNotifications(){
+    const key='notifs_'+(currentUser?currentUser.name:'guest');
+    const stored=JSON.parse(localStorage.getItem(key)||'[]');
+    const listEl=document.getElementById('notifList');if(!listEl)return;
+    unreadNotifCount=stored.filter(n=>!n.read).length;updateNotifBadge();
+    if(stored.length===0){listEl.innerHTML='<div class="notif-empty">🔔<br><br>No notifications yet</div>';return;}
+    const iconMap={money:'💸',rank:'🏆',welcome:'👋',giveaway:'🎉'};
+    listEl.innerHTML=stored.map(n=>`<div class="notif-card${n.read?'':' unread'}"><div class="notif-icon ${n.type}">${iconMap[n.type]||'🔔'}</div><div class="notif-body"><div class="notif-title">${n.title}</div><div class="notif-sub">${n.sub}</div><div class="notif-time">${timeSince(n.ts)}</div></div></div>`).join('');
+}
+function markNotifsRead(){const key='notifs_'+(currentUser?currentUser.name:'guest');const stored=JSON.parse(localStorage.getItem(key)||'[]');stored.forEach(n=>n.read=true);localStorage.setItem(key,JSON.stringify(stored));unreadNotifCount=0;updateNotifBadge();renderNotifications();}
+function clearNotifications(){markNotifsRead();}
+function updateNotifBadge(){const badge=document.getElementById('rpNotifBadge');const colBadge=document.getElementById('rpColNotifBadge');if(unreadNotifCount>0){if(badge){badge.textContent=unreadNotifCount>9?'9+':unreadNotifCount;badge.classList.remove('hidden');}if(colBadge)colBadge.classList.remove('hidden');}else{if(badge)badge.classList.add('hidden');if(colBadge)colBadge.classList.add('hidden');}}
+function timeSince(ts){const s=Math.floor((Date.now()-ts)/1000);if(s<60)return 'Just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
+function initNotifications(){
+    renderNotifications();
+    const wk='welcomed_'+currentUser.name;
+    if(!localStorage.getItem(wk)){localStorage.setItem(wk,'1');addNotification('welcome','Welcome to Universal-Bets! 👋','Your account has been created with $100.00. Good luck on the tables!');}
+    let _seenRec=currentUser.lastReceived?currentUser.lastReceived.ts:null;
+    db.ref('users/'+currentUser.name+'/lastReceived').on('value',snap=>{if(!snap.exists())return;const lr=snap.val();if(!lr||!lr.ts||lr.ts===_seenRec)return;_seenRec=lr.ts;if(Date.now()-lr.ts<30000)addNotification('money',`You received $${fmt$(lr.amount)}!`,`${lr.from.toUpperCase()} sent you money.`);});
+    let _seenGiv=null;
+    db.ref('giveaway/lastWinnerTs').on('value',snap=>{if(!snap.exists())return;const ts=snap.val();if(!ts||ts===_seenGiv)return;_seenGiv=ts;db.ref('giveaway/lastWinner').once('value',ws=>{if(ws.exists()&&ws.val()===currentUser.name&&(Date.now()-ts)<30000)addNotification('giveaway','🎉 You won the Giveaway!','$100.00 has been added to your balance. Congrats!');});});
+    let wasInTop10=false;
+    setInterval(()=>{db.ref('users').once('value',snap=>{const all=[];snap.forEach(c=>all.push(c.val()));all.sort((a,b)=>b.balance-a.balance);const rank=all.findIndex(u=>u.name===currentUser.name)+1;const inTop10=rank>0&&rank<=10;if(inTop10&&!wasInTop10)addNotification('rank',`You're #${rank} on the Leaderboard!`,`Keep playing to climb higher.`);wasInTop10=inTop10;});},60000);
 }
 
 // ── CHAT ──────────────────────────────────────────────────────
-function initChat() {
-    const box = document.getElementById('chatMessages');
-    db.ref('global_chat').limitToLast(50).on('child_added', snap => {
-        const msg  = snap.val();
-        const time = new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-        const div  = document.createElement('div'); div.className='message';
-        div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
-        box.appendChild(div); box.scrollTop=box.scrollHeight;
-    });
-    const input = document.getElementById('chatInput'), ctr=document.getElementById('charCounter');
-    input.addEventListener('keypress', e => { if (e.key==='Enter') sendChat(); });
-    input.addEventListener('input', () => {
-        const len=input.value.length;
-        ctr.textContent=`${len} / 50`;
-        ctr.className='char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');
-    });
+function initChat(){
+    const box=document.getElementById('chatMessages');
+    db.ref('global_chat').limitToLast(50).on('child_added',snap=>{const msg=snap.val();const time=new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});const div=document.createElement('div');div.className='message';div.innerHTML=`<div class="msg-header"><span class="msg-user">${escHtml(msg.user)}</span><span class="msg-time">${time}</span></div><div class="msg-text">${escHtml(msg.text)}</div>`;box.appendChild(div);box.scrollTop=box.scrollHeight;});
+    const input=document.getElementById('chatInput'),ctr=document.getElementById('charCounter');
+    input.addEventListener('keypress',e=>{if(e.key==='Enter')sendChat();});
+    input.addEventListener('input',()=>{const len=input.value.length;ctr.textContent=`${len} / 50`;ctr.className='char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');});
 }
-function sendChat() {
-    const input=document.getElementById('chatInput');
-    const text=input.value.trim().slice(0,50);
-    if (!text||!currentUser) return;
-    db.ref('global_chat').push({user:currentUser.name,text,ts:Date.now()});
-    input.value=''; document.getElementById('charCounter').textContent='0 / 50';
-    document.getElementById('charCounter').className='char-counter';
-}
-function toggleChat() { chatCollapsed=!chatCollapsed; document.getElementById('chatPanel').classList.toggle('collapsed',chatCollapsed); }
+function sendChat(){const input=document.getElementById('chatInput');const text=input.value.trim().slice(0,50);if(!text||!currentUser)return;db.ref('global_chat').push({user:currentUser.name,text,ts:Date.now()});input.value='';document.getElementById('charCounter').textContent='0 / 50';document.getElementById('charCounter').className='char-counter';}
 
 // ── BOOT ──────────────────────────────────────────────────────
-(function boot() {
+(function boot(){
     showAuth();
-    const raw = localStorage.getItem('currentUser');
-    if (!raw) return;
-    let u; try { u=JSON.parse(raw); } catch(e) { localStorage.removeItem('currentUser'); return; }
-    db.ref('users/'+u.name).once('value').then(snap => {
-        if (snap.exists() && snap.val().password===u.password) finalizeLogin(snap.val());
+    const raw=localStorage.getItem('currentUser');if(!raw)return;
+    let u;try{u=JSON.parse(raw);}catch(e){localStorage.removeItem('currentUser');return;}
+    db.ref('users/'+u.name).once('value').then(snap=>{
+        if(snap.exists()&&snap.val().password===u.password)finalizeLogin(snap.val());
         else localStorage.removeItem('currentUser');
-    }).catch(() => {});
+    }).catch(()=>{});
 })();
 </script>
 </body>
