@@ -67,12 +67,55 @@
         .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 10px; }
         .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
         .main-wrapper { display: flex; flex: 1; overflow: hidden; }
-        .sidebar { width: 220px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 16px 0; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; }
-        .sidebar-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; padding: 20px 20px 8px; letter-spacing: 1.5px; }
-        .side-link { padding: 10px 20px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: background 0.15s, color 0.15s; cursor: pointer; border-radius: 0 10px 10px 0; margin-right: 12px; border-left: 3px solid transparent; user-select: none; }
+        /* ── SIDEBAR ── */
+        .sidebar { width: 228px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.3s ease; }
+        .sidebar.collapsed { width: 52px; }
+
+        /* Pinned nav at top — never hidden */
+        .sidebar-nav-pinned { padding: 12px 0 4px; flex-shrink: 0; }
+        .sidebar-nav-pinned .side-link { border-radius: 0 10px 10px 0; margin-right: 10px; }
+
+        /* Collapse toggle button */
+        .sidebar-toggle { display: flex; align-items: center; justify-content: flex-end; padding: 10px 12px 4px; flex-shrink: 0; }
+        .sidebar-toggle-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; flex-shrink: 0; }
+        .sidebar-toggle-btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
+        .sidebar-toggle-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
+
+        /* Divider */
+        .sidebar-divider { height: 1px; background: var(--border-color); margin: 8px 14px; flex-shrink: 0; }
+
+        /* Section header with collapse arrow */
+        .sidebar-section { flex-shrink: 0; overflow: hidden; }
+        .sidebar-section-header { display: flex; align-items: center; padding: 8px 20px 6px; cursor: pointer; user-select: none; gap: 6px; }
+        .sidebar-section-header:hover .sidebar-section-label { color: #c8d0dc; }
+        .sidebar-section-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; flex: 1; white-space: nowrap; transition: color 0.15s; }
+        .sidebar-section-arrow { font-size: 9px; color: var(--text-muted); transition: transform 0.25s; flex-shrink: 0; }
+        .sidebar-section.open .sidebar-section-arrow { transform: rotate(90deg); }
+        .sidebar-section-body { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
+        .sidebar-section.open .sidebar-section-body { max-height: 600px; }
+
+        /* Live dot */
+        .sb-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 5px var(--accent-green); animation: pulse 2s infinite; flex-shrink: 0; }
+
+        /* side-link */
+        .side-link { padding: 9px 18px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: background 0.15s, color 0.15s; cursor: pointer; border-radius: 0 10px 10px 0; margin-right: 10px; border-left: 3px solid transparent; user-select: none; white-space: nowrap; overflow: hidden; }
         .side-link:hover { background: rgba(255, 255, 255, 0.04); color: #c8d0dc; }
         .side-link.active-link { background: rgba(0, 122, 255, 0.1); color: var(--primary-blue); font-weight: 600; border-left-color: var(--primary-blue); }
         .side-link.active-link:hover { background: rgba(0, 122, 255, 0.14); color: var(--primary-blue); }
+        .side-link-icon { font-size: 15px; flex-shrink: 0; }
+        .side-link-text { flex: 1; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.2s; }
+
+        /* Collapsed state: hide text, keep icons */
+        .sidebar.collapsed .side-link { padding: 9px 0; justify-content: center; margin-right: 0; border-left: none; border-radius: 10px; margin: 2px 7px; }
+        .sidebar.collapsed .side-link-text { display: none; }
+        .sidebar.collapsed .sidebar-section-header { padding: 6px 0; justify-content: center; }
+        .sidebar.collapsed .sidebar-section-label { display: none; }
+        .sidebar.collapsed .sidebar-section-arrow { display: none; }
+        .sidebar.collapsed .sb-live-dot { display: none; }
+        .sidebar.collapsed .sidebar-divider { margin: 6px 10px; }
+        .sidebar.collapsed .sidebar-section-body { max-height: 600px !important; }
+        .sidebar.collapsed .sidebar-toggle { justify-content: center; }
         /* ── RIGHT PANEL ─────────────────────────────────────────────── */
         .right-chat-panel {
             width: 300px;
@@ -538,21 +581,57 @@
 </nav>
 
 <div class="main-wrapper" id="mainLayout" style="display:none;">
-    <aside class="sidebar">
-        <div class="sidebar-label">Navigation</div>
-        <a class="side-link active-link" id="link-news" onclick="switchTab('news')">🏠 Home</a>
-        <a class="side-link" id="link-rankingsTab" onclick="switchTab('rankingsTab')">🏆 Leaderboard</a>
-        <a class="side-link" id="link-giveawayTab" onclick="switchTab('giveawayTab')">🎁 Giveaway</a>
-        <div class="sidebar-label">Games</div>
-        <a class="side-link" href="blackjack.html">🃏 Blackjack</a>
-        <a class="side-link" href="mines.html">💣 Mines</a>
-        <a class="side-link" href="dice.html">🎲 Dice</a>
-        <a class="side-link" href="tower.html">🗼 Tower</a>
-        <a class="side-link" href="rps.html">✂️ Rock Paper Scissors</a>
-        <a class="side-link" href="plinko.html">⚪ Plinko</a>
-        <a class="side-link" href="crash.html">🚀 Crash</a>
-        <a class="side-link" href="keno.html">💎 Keno</a>
-        <a class="side-link" href="roulette.html">🛞 Roulette</a>
+    <aside class="sidebar" id="mainSidebar">
+
+        <!-- Collapse toggle -->
+        <div class="sidebar-toggle">
+            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Collapse sidebar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+        </div>
+
+        <!-- Pinned nav — always visible -->
+        <div class="sidebar-nav-pinned">
+            <a class="side-link active-link" id="link-news" onclick="switchTab('news')"><span class="side-link-icon">🏠</span><span class="side-link-text">Home</span></a>
+            <a class="side-link" id="link-rankingsTab" onclick="switchTab('rankingsTab')"><span class="side-link-icon">🏆</span><span class="side-link-text">Leaderboard</span></a>
+            <a class="side-link" id="link-giveawayTab" onclick="switchTab('giveawayTab')"><span class="side-link-icon">🎁</span><span class="side-link-text">Giveaway</span></a>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Live Games section — collapsible -->
+        <div class="sidebar-section open" id="section-live">
+            <div class="sidebar-section-header" onclick="toggleSection('live')">
+                <div class="sb-live-dot"></div>
+                <span class="sidebar-section-label">Live Games</span>
+                <span class="sidebar-section-arrow">▶</span>
+            </div>
+            <div class="sidebar-section-body">
+                <a class="side-link" href="uno.html"><span class="side-link-icon">🎴</span><span class="side-link-text">UNO Online</span></a>
+            </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Games section — collapsible -->
+        <div class="sidebar-section open" id="section-games">
+            <div class="sidebar-section-header" onclick="toggleSection('games')">
+                <span class="sidebar-section-label">Games</span>
+                <span class="sidebar-section-arrow">▶</span>
+            </div>
+            <div class="sidebar-section-body">
+                <a class="side-link" href="blackjack.html"><span class="side-link-icon">🃏</span><span class="side-link-text">Blackjack</span></a>
+                <a class="side-link" href="mines.html"><span class="side-link-icon">💣</span><span class="side-link-text">Mines</span></a>
+                <a class="side-link" href="dice.html"><span class="side-link-icon">🎲</span><span class="side-link-text">Dice</span></a>
+                <a class="side-link" href="tower.html"><span class="side-link-icon">🗼</span><span class="side-link-text">Tower</span></a>
+                <a class="side-link" href="rps.html"><span class="side-link-icon">✂️</span><span class="side-link-text">Rock Paper Scissors</span></a>
+                <a class="side-link" href="plinko.html"><span class="side-link-icon">⚪</span><span class="side-link-text">Plinko</span></a>
+                <a class="side-link" href="crash.html"><span class="side-link-icon">🚀</span><span class="side-link-text">Crash</span></a>
+                <a class="side-link" href="keno.html"><span class="side-link-icon">💎</span><span class="side-link-text">Keno</span></a>
+                <a class="side-link" href="roulette.html"><span class="side-link-icon">🛞</span><span class="side-link-text">Roulette</span></a>
+            </div>
+        </div>
+
     </aside>
 
     <main class="content-scroll">
@@ -905,6 +984,7 @@
             'Blackjack': '🃏', 'Crash': '🚀', 'Dice': '🎲',
             'Mines': '💣', 'Plinko': '⚪', 'Keno': '💎',
             'Tower': '🗼', 'RPS': '✂️', 'Roulette': '🛞',
+            'UNO': '🎴',
         };
 
         db.ref('recent_wins').limitToLast(10).on('value', (snap) => {
@@ -1358,6 +1438,30 @@
     }
 
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfile(); });
+
+    // ── SIDEBAR COLLAPSE + SECTIONS ─────────────────────────────────────────
+    function toggleSidebar() {
+        const sb = document.getElementById('mainSidebar');
+        sb.classList.toggle('collapsed');
+        localStorage.setItem('sidebarCollapsed', sb.classList.contains('collapsed') ? '1' : '0');
+    }
+    function toggleSection(id) {
+        const sec = document.getElementById('section-' + id);
+        if (!sec) return;
+        sec.classList.toggle('open');
+        localStorage.setItem('sbSection_' + id, sec.classList.contains('open') ? '1' : '0');
+    }
+    // Restore sidebar state
+    (function() {
+        const sb = document.getElementById('mainSidebar');
+        if (localStorage.getItem('sidebarCollapsed') === '1') sb.classList.add('collapsed');
+        ['live','games'].forEach(id => {
+            const sec = document.getElementById('section-' + id);
+            if (!sec) return;
+            // default open; only close if explicitly stored as closed
+            if (localStorage.getItem('sbSection_' + id) === '0') sec.classList.remove('open');
+        });
+    })();
 
     const cached = localStorage.getItem('currentUser');
     if (cached) {
