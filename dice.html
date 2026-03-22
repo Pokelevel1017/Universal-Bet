@@ -160,14 +160,13 @@
             text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px;
         }
 
-        /* track */
         .track-wrap { position: relative; height: 40px; display: flex; align-items: center; margin-bottom: 14px; }
         .track-bg {
             position: absolute; left: 0; right: 0; height: 10px;
             border-radius: 99px; background: rgba(255,255,255,0.05);
             overflow: hidden;
         }
-        .track-lose-zone { /* left of threshold — lose zone for OVER mode; colored dynamically */
+        .track-lose-zone {
             position: absolute; left: 0; height: 100%; border-radius: 99px 0 0 99px;
             transition: width 0.1s;
         }
@@ -175,7 +174,6 @@
             position: absolute; height: 100%; border-radius: 0 99px 99px 0;
             transition: left 0.1s, width 0.1s;
         }
-        /* Needle marker */
         .track-needle {
             position: absolute;
             width: 3px; height: 22px; border-radius: 2px;
@@ -186,7 +184,6 @@
             z-index: 3;
             pointer-events: none;
         }
-        /* roll result dot */
         .track-result-dot {
             position: absolute;
             width: 16px; height: 16px; border-radius: 50%;
@@ -217,7 +214,6 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.5); cursor: grab;
         }
 
-        /* Roll mode toggle */
         .mode-toggle {
             display: flex; gap: 6px; justify-content: center; margin-bottom: 0;
         }
@@ -230,7 +226,6 @@
         .mode-btn.active-over  { background: rgba(0,231,1,0.12); border-color: rgba(0,231,1,0.3); color: var(--accent-green); }
         .mode-btn.active-under { background: rgba(239,68,68,0.12); border-color: rgba(239,68,68,0.3); color: var(--accent-red); }
 
-        /* Stat bar */
         .stat-bar {
             display: grid; grid-template-columns: 1fr 1px 1fr 1px 1fr;
             background: var(--bg-card); border: 1px solid var(--border-color);
@@ -244,7 +239,6 @@
         .stat-cell-val.red   { color: var(--accent-red); }
         .stat-cell-val.gold  { color: var(--accent-gold); }
 
-        /* history pills */
         .history-row {
             display: flex; gap: 6px; flex-wrap: wrap; min-height: 28px;
         }
@@ -311,7 +305,6 @@
         .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
         .rp-divider { height: 1px; background: var(--border-color); }
 
-        /* Threshold input */
         .threshold-row {
             display: flex; align-items: center;
             background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08);
@@ -332,7 +325,6 @@
         .threshold-input::-webkit-inner-spin-button,
         .threshold-input::-webkit-outer-spin-button { -webkit-appearance: none; }
 
-        /* Info boxes */
         .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
         .info-box { background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 10px; padding: 11px 12px; }
         .info-box-label { font-size: 9px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 3px; }
@@ -341,7 +333,6 @@
         .info-box-val.gold  { color: var(--accent-gold); }
         .info-box-val.red   { color: var(--accent-red); }
 
-        /* Roll button */
         .action-btn {
             width: 100%; padding: 16px; border-radius: 10px; border: none;
             font-size: 15px; font-weight: 800; cursor: pointer;
@@ -353,44 +344,145 @@
         .action-btn:disabled { opacity: 0.3; cursor: default; transform: none; filter: none; }
         .btn-roll { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
 
-        /* msg log */
         .msg-log {
             font-size: 12px; color: var(--text-muted); text-align: center;
             background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px;
             min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4;
         }
 
-        /* ── CHAT ── */
+        /* ── NEW TABBED CHAT PANEL ── */
         .chat-panel {
-            width: 280px; flex-shrink: 0; background: var(--bg-chat);
-            border-left: 1px solid var(--border-color);
-            display: flex; flex-direction: column; overflow: hidden; transition: width 0.3s ease;
+            width: 300px;
+            background: #0d1220;
+            border-left: 1px solid rgba(255,255,255,0.06);
+            display: flex; flex-direction: column;
+            height: 100%; transition: width 0.3s ease;
+            overflow: hidden; flex-shrink: 0;
         }
-        .chat-panel.collapsed { width: 48px; min-width: 48px; }
-        .chat-header {
-            padding: 18px 16px; border-bottom: 1px solid var(--border-color);
-            font-weight: 800; display: flex; align-items: center; gap: 10px;
-            cursor: pointer; user-select: none; flex-shrink: 0;
+        .chat-panel.collapsed { width: 52px; }
+
+        .rp-tab-bar {
+            display: flex; align-items: stretch;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            background: #0b0f1c; flex-shrink: 0; height: 48px;
         }
-        .chat-header:hover { background: rgba(255,255,255,0.02); }
-        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
-        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 13px; }
-        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s; flex-shrink: 0; }
-        .chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
-        .chat-body { display: flex; flex-direction: column; flex: 1; overflow: hidden; transition: opacity 0.2s; }
-        .chat-panel.collapsed .chat-body { opacity: 0; pointer-events: none; }
-        .chat-messages { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; }
-        .message { background: rgba(255,255,255,0.02); padding: 9px 12px; border-radius: 10px; border-bottom-left-radius: 2px; }
-        .msg-user { color: var(--primary-blue); font-weight: 800; font-size: 10px; display: block; margin-bottom: 3px; text-transform: uppercase; }
-        .msg-text { font-size: 12px; line-height: 1.4; color: #d1d5db; word-break: break-word; white-space: pre-wrap; }
-        .msg-time { font-size: 9px; color: var(--text-muted); float: right; margin-top: 4px; }
-        .chat-input-area { padding: 12px 14px; border-top: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 5px; }
-        .chat-input-wrapper { display: flex; gap: 7px; background: #0a0e17; padding: 3px; border-radius: 9px; border: 1px solid var(--border-color); }
-        .chat-input-wrapper input { flex: 1; background: transparent; border: none; padding: 8px; color: #fff; outline: none; font-size: 12px; }
-        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; border-radius: 7px; cursor: pointer; color: #fff; font-size: 15px; }
-        .char-counter { font-size: 10px; color: var(--text-muted); text-align: right; }
+        .rp-tab {
+            flex: 1; display: flex; align-items: center; justify-content: center;
+            gap: 6px; cursor: pointer; color: var(--text-muted);
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border-color 0.15s, background 0.15s;
+            user-select: none; position: relative; padding: 0 4px;
+        }
+        .rp-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
+        .rp-tab:hover { color: #c8d0dc; background: rgba(255,255,255,0.02); }
+        .rp-tab.active { color: var(--primary-blue); border-bottom-color: var(--primary-blue); }
+        .rp-tab-label { white-space: nowrap; }
+        .rp-notif-badge {
+            position: absolute; top: 8px; right: 8px;
+            min-width: 16px; height: 16px; background: #ef4444;
+            border-radius: 8px; font-size: 9px; font-weight: 800; color: #fff;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 4px; line-height: 1; box-shadow: 0 0 0 2px #0b0f1c; pointer-events: none;
+        }
+        .rp-notif-badge.hidden { display: none; }
+
+        .rp-collapsed-strip {
+            display: none; flex-direction: column; align-items: center;
+            padding: 8px 0; gap: 2px;
+            border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;
+        }
+        .chat-panel.collapsed .rp-collapsed-strip { display: flex; }
+        .chat-panel.collapsed .rp-tab-bar { display: none; }
+        .rp-col-btn {
+            width: 38px; height: 38px; border-radius: 10px;
+            border: 1px solid transparent; background: transparent;
+            color: var(--text-muted); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.15s; position: relative;
+        }
+        .rp-col-btn svg { width: 16px; height: 16px; }
+        .rp-col-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .rp-col-btn.active { background: rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.2); color: var(--primary-blue); }
+        .rp-col-notif-badge {
+            position: absolute; top: 4px; right: 4px;
+            width: 8px; height: 8px; background: #ef4444;
+            border-radius: 50%; border: 2px solid #0d1220; pointer-events: none;
+        }
+        .rp-col-notif-badge.hidden { display: none; }
+        .chat-panel.collapsed .rp-content { display: none; }
+
+        .rp-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+        .rp-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
+        .rp-panel.active { display: flex; }
+
+        /* Chat */
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 2px; }
+        .chat-messages::-webkit-scrollbar { width: 4px; }
+        .chat-messages::-webkit-scrollbar-track { background: transparent; }
+        .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        .message { padding: 8px 12px 6px; border-radius: 10px; background: rgba(255,255,255,0.025); margin-bottom: 4px; transition: background 0.15s; }
+        .message:hover { background: rgba(255,255,255,0.04); }
+        .msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
+        .msg-user { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; }
+        .msg-user:hover { text-decoration: underline; }
+        .msg-time { font-size: 9px; color: rgba(138,150,170,0.6); }
+        .msg-text { font-size: 13px; line-height: 1.45; color: #b8c2d4; word-break: break-word; white-space: pre-wrap; }
+        .chat-input-area { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+        .chat-input-wrapper {
+            display: flex; gap: 8px; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.07); border-radius: 10px;
+            padding: 4px 4px 4px 12px; transition: border-color 0.2s;
+        }
+        .chat-input-wrapper:focus-within { border-color: rgba(0,122,255,0.35); }
+        .chat-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 13px; font-family: var(--font-main); padding: 6px 0; }
+        .chat-input-wrapper input::placeholder { color: rgba(138,150,170,0.5); }
+        .chat-send-btn {
+            background: var(--primary-blue); border: none; width: 34px; height: 34px;
+            border-radius: 8px; cursor: pointer; color: #fff;
+            display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0;
+        }
+        .chat-send-btn:hover { background: #006ae6; }
+        .char-counter { font-size: 10px; color: rgba(138,150,170,0.5); text-align: right; padding: 4px 2px 0; }
         .char-counter.near-limit { color: #f59e0b; }
         .char-counter.at-limit   { color: #ef4444; }
+
+        /* Notifications */
+        .notif-list { flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+        .notif-list::-webkit-scrollbar { width: 4px; }
+        .notif-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        .notif-card {
+            display: flex; align-items: flex-start; gap: 11px;
+            background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px; padding: 13px 14px;
+            position: relative; transition: 0.15s;
+            animation: notifSlide 0.25s ease both;
+        }
+        @keyframes notifSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+        .notif-card.unread { border-color: rgba(0,122,255,0.2); background: rgba(0,122,255,0.06); }
+        .notif-card.unread::before {
+            content:''; position:absolute; top:14px; right:14px;
+            width:6px; height:6px; border-radius:50%;
+            background: var(--primary-blue); box-shadow: 0 0 6px var(--primary-blue);
+        }
+        .notif-icon { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .notif-icon.money   { background: rgba(0,231,1,0.1); }
+        .notif-icon.rank    { background: rgba(255,196,0,0.1); }
+        .notif-icon.welcome { background: rgba(0,122,255,0.1); }
+        .notif-icon.giveaway { background: rgba(255,100,0,0.1); }
+        .notif-body { flex: 1; min-width: 0; }
+        .notif-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 3px; line-height: 1.3; }
+        .notif-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+        .notif-time { font-size: 10px; color: rgba(138,150,170,0.5); margin-top: 5px; }
+        .notif-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 40px 16px; }
+        .notif-clear-btn {
+            display: block; width: calc(100% - 24px); margin: 0 12px 12px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+            color: var(--text-muted); border-radius: 8px; padding: 9px;
+            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+            cursor: pointer; font-family: var(--font-main); transition: 0.15s; flex-shrink: 0;
+        }
+        .notif-clear-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
         /* ── SYNC ── */
         #syncBadge {
@@ -447,23 +539,16 @@
     <div class="game-scroll">
     <div class="dice-game-area">
 
-        <!-- Roll result -->
         <div class="result-display">
             <div class="result-eyebrow">Roll Result</div>
             <div class="result-number" id="resultNumber">—</div>
             <div class="result-verdict idle" id="resultVerdict">Waiting for roll</div>
         </div>
 
-        <!-- Slider -->
         <div class="slider-section">
             <div class="slider-labels">
-                <span>0</span>
-                <span>25</span>
-                <span>50</span>
-                <span>75</span>
-                <span>100</span>
+                <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
             </div>
-
             <div class="track-wrap">
                 <div class="track-bg">
                     <div class="track-lose-zone" id="trackLose"></div>
@@ -475,14 +560,12 @@
                        min="2" max="98" value="50" step="1"
                        oninput="onSliderChange()">
             </div>
-
             <div class="mode-toggle">
                 <button class="mode-btn active-over" id="modeOver"  onclick="setMode('over')">Roll Over</button>
                 <button class="mode-btn"             id="modeUnder" onclick="setMode('under')">Roll Under</button>
             </div>
         </div>
 
-        <!-- Stat bar -->
         <div class="stat-bar">
             <div class="stat-cell">
                 <div class="stat-cell-label">Win Chance</div>
@@ -500,7 +583,6 @@
             </div>
         </div>
 
-        <!-- History -->
         <div class="history-row" id="historyRow"></div>
 
     </div>
@@ -511,7 +593,6 @@
 
         <div class="msg-log" id="msgLog">Set your bet and roll.</div>
 
-        <!-- BET -->
         <div>
             <div class="rp-section-label">Bet Amount</div>
             <div class="bet-manual-row" id="betManualRow">
@@ -538,7 +619,6 @@
 
         <div class="rp-divider"></div>
 
-        <!-- THRESHOLD -->
         <div>
             <div class="rp-section-label">Threshold</div>
             <div class="threshold-row">
@@ -550,7 +630,6 @@
 
         <div class="rp-divider"></div>
 
-        <!-- PAYOUT INFO -->
         <div>
             <div class="rp-section-label">Round Info</div>
             <div class="info-row" style="margin-bottom:10px;">
@@ -575,34 +654,86 @@
             </div>
         </div>
 
-        <!-- ROLL BUTTON -->
         <div>
             <button class="action-btn btn-roll" id="btnRoll" onclick="roll()" disabled>Roll Dice</button>
         </div>
 
     </aside>
 
-    <!-- CHAT -->
+    <!-- NEW TABBED CHAT PANEL -->
     <aside class="chat-panel" id="chatPanel">
-        <div class="chat-header" onclick="toggleChat()">
-            <svg class="globe-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"/>
-                <ellipse cx="12" cy="12" rx="4" ry="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-            <span class="chat-header-label">Global Chat</span>
-            <span class="chat-toggle-arrow">◀</span>
-        </div>
-        <div class="chat-body">
-            <div id="chatMessages" class="chat-messages"></div>
-            <div class="chat-input-area">
-                <div class="chat-input-wrapper">
-                    <input type="text" id="chatInput" placeholder="Write a message..." maxlength="50">
-                    <button class="chat-send-btn" onclick="sendChat()">→</button>
-                </div>
-                <div class="char-counter" id="charCounter">0 / 50</div>
+
+        <!-- Tab bar -->
+        <div class="rp-tab-bar">
+            <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <span class="rp-tab-label">Chat</span>
             </div>
+            <div class="rp-tab" id="tab-notif" onclick="switchRpTab('notif')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="rp-tab-label">Alerts</span>
+                <span class="rp-notif-badge hidden" id="rpNotifBadge">0</span>
+            </div>
+            <div class="rp-tab" style="flex:0;padding:0 12px;" onclick="toggleChat()" title="Collapse">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
+                    <polyline points="9 18 15 12 9 6"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Collapsed icon strip -->
+        <div class="rp-collapsed-strip">
+            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')" title="Chat">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+            </button>
+            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')" title="Notifications">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                <span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span>
+            </button>
+            <button class="rp-col-btn" onclick="toggleChat()" title="Expand" style="margin-top:4px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Panel content -->
+        <div class="rp-content">
+
+            <!-- CHAT -->
+            <div class="rp-panel active" id="rp-chat">
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input-area">
+                    <div class="chat-input-wrapper">
+                        <input type="text" id="chatInput" placeholder="Send a message…" maxlength="50">
+                        <button class="chat-send-btn" onclick="sendChat()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
+                                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="char-counter" id="charCounter">0 / 50</div>
+                </div>
+            </div>
+
+            <!-- NOTIFICATIONS -->
+            <div class="rp-panel" id="rp-notif">
+                <div class="notif-list" id="notifList">
+                    <div class="notif-empty">No notifications yet</div>
+                </div>
+                <button class="notif-clear-btn" onclick="clearNotifications()">Mark all as read</button>
+            </div>
+
         </div>
     </aside>
 
@@ -628,8 +759,8 @@
     /* ── STATE ── */
     let currentUser   = null;
     let bet           = 0;
-    let mode          = 'over';   // 'over' | 'under'
-    let threshold     = 50;       // 2–98
+    let mode          = 'over';
+    let threshold     = 50;
     let rolling       = false;
     let chatCollapsed = false;
     let syncTimeout   = null;
@@ -644,9 +775,8 @@
 
     /* ── MULTIPLIER MATH ── */
     function getWinChance() {
-        // Roll is 0–100 (float). Over: win if roll > threshold. Under: win if roll < threshold.
-        if(mode === 'over')  return (100 - threshold) / 100;
-        else                 return threshold / 100;
+        if(mode === 'over') return (100 - threshold) / 100;
+        else                return threshold / 100;
     }
     function getMultiplier() {
         const chance = getWinChance();
@@ -686,6 +816,7 @@
         updateSliderVisuals();
         updateStats();
         initChat();
+        initNotifications();
     }
 
     function updateNavBal() {
@@ -706,10 +837,7 @@
         updateStats();
         document.getElementById('btnRoll').disabled = (bet <= 0);
     }
-    function setBetMax() {
-        if(!currentUser) return;
-        setBet(currentUser.balance);
-    }
+    function setBetMax() { if(!currentUser) return; setBet(currentUser.balance); }
     function modBet(factor) {
         bet = cleanMoney(Math.min(bet*factor, currentUser?currentUser.balance:99999));
         if(bet < 0) bet = 0;
@@ -752,33 +880,21 @@
     }
 
     function updateSliderVisuals() {
-        const pct = (threshold - 2) / 96; // 0..1 mapped from 2..98
+        const pct = (threshold - 2) / 96;
         const pctStr = (pct * 100).toFixed(2) + '%';
-
-        const needle = document.getElementById('trackNeedle');
-        needle.style.left = pctStr;
-
+        document.getElementById('trackNeedle').style.left = pctStr;
         const loseZone = document.getElementById('trackLose');
         const winZone  = document.getElementById('trackWin');
-
         if(mode === 'over') {
-            // left of needle = lose, right = win
-            loseZone.style.width = pctStr;
-            loseZone.style.left  = '0';
+            loseZone.style.width = pctStr; loseZone.style.left = '0';
             loseZone.style.background = 'rgba(239,68,68,0.35)';
-            winZone.style.left  = pctStr;
-            winZone.style.width = (100 - pct*100).toFixed(2) + '%';
-            winZone.style.borderRadius = '0 99px 99px 0';
-            winZone.style.background = 'rgba(0,231,1,0.35)';
+            winZone.style.left = pctStr; winZone.style.width = (100 - pct*100).toFixed(2) + '%';
+            winZone.style.borderRadius = '0 99px 99px 0'; winZone.style.background = 'rgba(0,231,1,0.35)';
         } else {
-            // left of needle = win, right = lose
-            loseZone.style.width = pctStr;
-            loseZone.style.left  = '0';
+            loseZone.style.width = pctStr; loseZone.style.left = '0';
             loseZone.style.background = 'rgba(0,231,1,0.35)';
-            winZone.style.left  = pctStr;
-            winZone.style.width = (100 - pct*100).toFixed(2) + '%';
-            winZone.style.borderRadius = '0 99px 99px 0';
-            winZone.style.background = 'rgba(239,68,68,0.35)';
+            winZone.style.left = pctStr; winZone.style.width = (100 - pct*100).toFixed(2) + '%';
+            winZone.style.borderRadius = '0 99px 99px 0'; winZone.style.background = 'rgba(239,68,68,0.35)';
         }
     }
 
@@ -786,14 +902,12 @@
     function updateStats() {
         const chance = getWinChance() * 100;
         const mult   = getMultiplier();
-        const profit = getProfit();
-
         document.getElementById('statChance').textContent  = chance.toFixed(2) + '%';
         document.getElementById('statMult').textContent    = mult.toFixed(2) + '×';
         document.getElementById('statPayout').textContent  = '$' + fmt$(getPayout());
         document.getElementById('rpMult').textContent      = mult.toFixed(2) + '×';
         document.getElementById('rpChance').textContent    = chance.toFixed(2) + '%';
-        document.getElementById('rpProfit').textContent    = '$' + fmt$(profit);
+        document.getElementById('rpProfit').textContent    = '$' + fmt$(getProfit());
         document.getElementById('rpLoss').textContent      = '$' + fmt$(bet);
     }
 
@@ -804,8 +918,6 @@
         if(!currentUser || bet > currentUser.balance){ setMsg('Not enough balance.'); return; }
         rolling = true;
         document.getElementById('btnRoll').disabled = true;
-
-        // Animate number rapidly then settle
         const result = parseFloat((Math.random() * 100).toFixed(2));
         animateRoll(result, () => {
             resolveRoll(result);
@@ -827,7 +939,6 @@
             if(ticks >= totalTicks) {
                 clearInterval(interval);
                 el.textContent = finalVal.toFixed(2);
-                // Position dot on track
                 const pct = finalVal / 100;
                 dot.style.left = (pct * 100).toFixed(2) + '%';
                 const won = isWin(finalVal);
@@ -840,16 +951,14 @@
     }
 
     function isWin(rollVal) {
-        if(mode === 'over')  return rollVal > threshold;
-        else                 return rollVal < threshold;
+        if(mode === 'over') return rollVal > threshold;
+        else                return rollVal < threshold;
     }
 
     function resolveRoll(rollVal) {
         const won = isWin(rollVal);
         const mult = getMultiplier();
         const delta = won ? getProfit() : -bet;
-
-        // Update verdict
         const verdict = document.getElementById('resultVerdict');
         if(won) {
             verdict.textContent = `WIN  ×${mult.toFixed(2)}  +$${fmt$(getProfit())}`;
@@ -858,7 +967,6 @@
             verdict.textContent = `LOSE  −$${fmt$(bet)}`;
             verdict.className = 'result-verdict lose';
         }
-
         updateStats();
         addHistory(rollVal, won);
         setMsg(won ? `🎲 ${rollVal.toFixed(2)} — WIN! +$${fmt$(getProfit())}` : `🎲 ${rollVal.toFixed(2)} — Loss. -$${fmt$(bet)}`);
@@ -885,7 +993,7 @@
             u.balance = cleanMoney((u.balance||0) + delta);
             return u;
         }, (err, committed) => {
-            if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now()});
+            if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now(), source:'Dice'});
             if(committed && delta !== 0) showSyncBadge();
         });
     }
@@ -896,6 +1004,141 @@
         syncTimeout = setTimeout(() => { el.style.display='none'; }, 2000);
     }
 
+    /* ── RIGHT PANEL TAB SYSTEM ── */
+    let currentRpTab = 'chat';
+
+    function switchRpTab(tab) {
+        currentRpTab = tab;
+        ['chat','notif'].forEach(t => {
+            const tabEl = document.getElementById('tab-' + t);
+            const panelEl = document.getElementById('rp-' + t);
+            const colBtn = document.getElementById('colBtn-' + t);
+            if (tabEl) tabEl.classList.toggle('active', t === tab);
+            if (panelEl) panelEl.classList.toggle('active', t === tab);
+            if (colBtn) colBtn.classList.toggle('active', t === tab);
+        });
+        if (tab === 'notif') markNotifsRead();
+    }
+
+    function toggleChat() {
+        chatCollapsed = !chatCollapsed;
+        document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
+        if (!chatCollapsed) switchRpTab(currentRpTab);
+    }
+
+    function expandRpTo(tab) {
+        chatCollapsed = false;
+        document.getElementById('chatPanel').classList.remove('collapsed');
+        switchRpTab(tab);
+    }
+
+    /* ── NOTIFICATIONS ── */
+    let unreadNotifCount = 0;
+
+    function addNotification(type, title, sub) {
+        const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const notif = { type, title, sub, ts: Date.now(), read: false, id: Date.now() + Math.random() };
+        stored.unshift(notif);
+        localStorage.setItem(key, JSON.stringify(stored.slice(0, 30)));
+        renderNotifications();
+    }
+
+    function renderNotifications() {
+        const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const listEl = document.getElementById('notifList');
+        if (!listEl) return;
+        unreadNotifCount = stored.filter(n => !n.read).length;
+        updateNotifBadge();
+        if (stored.length === 0) { listEl.innerHTML = '<div class="notif-empty">🔔<br><br>No notifications yet</div>'; return; }
+        const iconMap = { money: '💸', rank: '🏆', welcome: '👋', giveaway: '🎉' };
+        listEl.innerHTML = stored.map(n => {
+            const time = timeSince(n.ts);
+            return `<div class="notif-card${n.read ? '' : ' unread'}">
+                <div class="notif-icon ${n.type}">${iconMap[n.type] || '🔔'}</div>
+                <div class="notif-body">
+                    <div class="notif-title">${n.title}</div>
+                    <div class="notif-sub">${n.sub}</div>
+                    <div class="notif-time">${time}</div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function markNotifsRead() {
+        const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        stored.forEach(n => n.read = true);
+        localStorage.setItem(key, JSON.stringify(stored));
+        unreadNotifCount = 0; updateNotifBadge(); renderNotifications();
+    }
+
+    function clearNotifications() { markNotifsRead(); }
+
+    function updateNotifBadge() {
+        const badge = document.getElementById('rpNotifBadge');
+        const colBadge = document.getElementById('rpColNotifBadge');
+        if (unreadNotifCount > 0) {
+            if (badge)    { badge.textContent = unreadNotifCount > 9 ? '9+' : unreadNotifCount; badge.classList.remove('hidden'); }
+            if (colBadge) colBadge.classList.remove('hidden');
+        } else {
+            if (badge)    badge.classList.add('hidden');
+            if (colBadge) colBadge.classList.add('hidden');
+        }
+    }
+
+    function timeSince(ts) {
+        const s = Math.floor((Date.now() - ts) / 1000);
+        if (s < 60)    return 'Just now';
+        if (s < 3600)  return Math.floor(s/60) + 'm ago';
+        if (s < 86400) return Math.floor(s/3600) + 'h ago';
+        return Math.floor(s/86400) + 'd ago';
+    }
+
+    function initNotifications() {
+        renderNotifications();
+        const welcomeKey = 'welcomed_' + currentUser.name;
+        if (!localStorage.getItem(welcomeKey)) {
+            localStorage.setItem(welcomeKey, '1');
+            addNotification('welcome', 'Welcome to Universal-Bets! 👋', 'Your account has been created with $100.00. Good luck on the tables!');
+        }
+        let _seenReceivedTs = currentUser.lastReceived ? currentUser.lastReceived.ts : null;
+        db.ref('users/' + currentUser.name + '/lastReceived').on('value', snap => {
+            if (!snap.exists()) return;
+            const lr = snap.val();
+            if (!lr || !lr.ts || lr.ts === _seenReceivedTs) return;
+            _seenReceivedTs = lr.ts;
+            if (Date.now() - lr.ts < 30000) {
+                addNotification('money', `You received $${fmt$(lr.amount)}!`, `${lr.from.toUpperCase()} sent you money.`);
+            }
+        });
+        let _seenGivTs = null;
+        db.ref('giveaway/lastWinnerTs').on('value', snap => {
+            if (!snap.exists()) return;
+            const ts = snap.val();
+            if (!ts || ts === _seenGivTs) return;
+            _seenGivTs = ts;
+            db.ref('giveaway/lastWinner').once('value', ws => {
+                if (ws.exists() && ws.val() === currentUser.name && (Date.now() - ts) < 30000) {
+                    addNotification('giveaway', '🎉 You won the Giveaway!', `$100.00 has been added to your balance. Congrats!`);
+                }
+            });
+        });
+        let wasInTop10 = false;
+        setInterval(() => {
+            db.ref('users').once('value', snap => {
+                const all = [];
+                snap.forEach(c => all.push(c.val()));
+                all.sort((a,b) => b.balance - a.balance);
+                const rank = all.findIndex(u => u.name === currentUser.name) + 1;
+                const inTop10 = rank > 0 && rank <= 10;
+                if (inTop10 && !wasInTop10) addNotification('rank', `You're #${rank} on the Leaderboard!`, `Keep playing to climb higher.`);
+                wasInTop10 = inTop10;
+            });
+        }, 60000);
+    }
+
     /* ── CHAT ── */
     function initChat() {
         const box = document.getElementById('chatMessages');
@@ -904,7 +1147,7 @@
             const time = new Date(msg.ts).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
             const div = document.createElement('div');
             div.className = 'message';
-            div.innerHTML = `<span class="msg-user">${escHtml(msg.user)}</span><span class="msg-text">${escHtml(msg.text)}</span><span class="msg-time">${time}</span>`;
+            div.innerHTML = `<div class="msg-header"><span class="msg-user">${escHtml(msg.user)}</span><span class="msg-time">${time}</span></div><div class="msg-text">${escHtml(msg.text)}</div>`;
             box.appendChild(div);
             box.scrollTop = box.scrollHeight;
         });
@@ -917,6 +1160,7 @@
             counter.className = 'char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');
         });
     }
+
     function sendChat() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim().slice(0,50);
@@ -925,10 +1169,6 @@
         input.value = '';
         document.getElementById('charCounter').textContent = '0 / 50';
         document.getElementById('charCounter').className = 'char-counter';
-    }
-    function toggleChat() {
-        chatCollapsed = !chatCollapsed;
-        document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
     }
 
     function setMsg(t) { document.getElementById('msgLog').textContent = t; }
