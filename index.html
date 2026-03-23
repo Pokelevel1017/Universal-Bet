@@ -66,7 +66,7 @@
         .balance-pill { display: flex; align-items: center; background: #000; border: 1px solid var(--border-color); border-radius: 12px; padding: 6px 16px; }
         .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 10px; }
         .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
-        .main-wrapper { display: flex; flex: 1; overflow: hidden; }
+        .main-wrapper { display: flex; flex: 1; overflow: hidden; position: relative; }
         /* ── SIDEBAR ── */
         .sidebar { width: 228px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.3s ease; }
         .sidebar.collapsed { width: 52px; }
@@ -116,6 +116,56 @@
         .sidebar.collapsed .sidebar-divider { margin: 6px 10px; }
         .sidebar.collapsed .sidebar-section-body { max-height: 600px !important; }
         .sidebar.collapsed .sidebar-toggle { justify-content: center; }
+        /* ── OFFLINE OVERLAY ── */
+        #offlineOverlay {
+            display: none;
+            position: absolute;
+            top: 0; left: 0; bottom: 0;
+            right: 300px; /* stop before the right chat panel */
+            z-index: 800;
+            background: rgba(10,14,23,0.92);
+            backdrop-filter: blur(3px);
+            -webkit-backdrop-filter: blur(3px);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            pointer-events: all;
+        }
+        #offlineOverlay.show { display: flex; }
+        .offline-icon { font-size: 56px; line-height: 1; filter: grayscale(0.3); }
+        .offline-title {
+            font-family: var(--font-condensed);
+            font-size: 2.2rem; font-weight: 900;
+            color: #fff; letter-spacing: 1px; text-align: center;
+        }
+        .offline-sub {
+            font-size: 14px; color: var(--text-muted);
+            text-align: center; max-width: 320px; line-height: 1.6;
+        }
+        .offline-badge {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(239,68,68,0.1);
+            border: 1px solid rgba(239,68,68,0.25);
+            border-radius: 10px; padding: 10px 18px;
+            font-size: 13px; font-weight: 700; color: #ef4444;
+        }
+        .offline-badge-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: #ef4444;
+            box-shadow: 0 0 8px #ef4444;
+            animation: offlinePulse 1.5s ease infinite;
+            flex-shrink: 0;
+        }
+        @keyframes offlinePulse {
+            0%,100% { opacity: 1; box-shadow: 0 0 8px #ef4444; }
+            50%      { opacity: 0.4; box-shadow: 0 0 3px #ef4444; }
+        }
+        .offline-chat-hint {
+            font-size: 12px; color: rgba(138,150,170,0.6);
+            text-align: center;
+        }
+
         /* ── RIGHT PANEL ─────────────────────────────────────────────── */
         .right-chat-panel {
             width: 300px;
@@ -581,6 +631,18 @@
 </nav>
 
 <div class="main-wrapper" id="mainLayout" style="display:none;">
+    <!-- OFFLINE OVERLAY — covers content+sidebar but NOT the right chat panel -->
+    <div id="offlineOverlay">
+        <div class="offline-icon">🔌</div>
+        <div class="offline-title">Servers Offline</div>
+        <div class="offline-badge">
+            <div class="offline-badge-dot"></div>
+            Currently Unavailable
+        </div>
+        <div class="offline-sub">We'll be back soon! Thanks for your patience.<br>Your balance is safe and untouched.</div>
+        <div class="offline-chat-hint">💬 Global chat and alerts are still available →</div>
+    </div>
+
     <aside class="sidebar" id="mainSidebar">
 
         <!-- Collapse toggle -->
@@ -905,6 +967,29 @@
         });
     }
 
+    // ── SERVER OFFLINE FLAG ─────────────────────────────────────────────
+    // Set to true to put the site in offline mode.
+    // Chat, alerts and balance still work. Everything else is blocked.
+    const SERVERS_OFFLINE = true;
+
+    function applyOfflineMode() {
+        const overlay = document.getElementById('offlineOverlay');
+        if (!overlay) return;
+        if (SERVERS_OFFLINE) {
+            overlay.classList.add('show');
+            // Disable sidebar links and game links
+            document.querySelectorAll('.side-link, .sidebar-section-header').forEach(el => {
+                el.style.pointerEvents = 'none';
+                el.style.opacity = '0.35';
+            });
+            // Disable reward claim pill
+            const rp = document.getElementById('headerReward');
+            if (rp) { rp.style.pointerEvents = 'none'; rp.style.opacity = '0.4'; }
+        } else {
+            overlay.classList.remove('show');
+        }
+    }
+
     function finalizeLogin(user) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         document.getElementById('authContainer').style.display = 'none';
@@ -917,6 +1002,7 @@
         initGiveaway();
         initNotifications();
         updateNavAvatar();
+        applyOfflineMode();
     }
 
     const BONUS_INTERVAL = 5 * 60 * 1000;
