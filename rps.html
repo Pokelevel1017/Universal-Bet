@@ -179,12 +179,43 @@
 
         #syncBadge { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2); border-radius: 8px; padding: 7px 16px; font-size: 11px; color: var(--accent-green); display: none; z-index: 200; white-space: nowrap; }
 
+        /* PAGE LOADER */
+        #pageLoader{position:fixed;inset:0;background:var(--bg-body);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.4s;}
+        #pageLoader.fade-out{opacity:0;pointer-events:none;}
+        .page-loader-logo{font-family:var(--font-condensed);font-size:2rem;font-weight:700;letter-spacing:3px;}
+        .page-loader-logo span{color:var(--primary-blue);}
+        .page-loader-bar-wrap{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
+        .page-loader-bar{height:100%;width:0%;background:var(--primary-blue);border-radius:3px;transition:width 0.3s ease;}
+        .page-loader-txt{font-size:11px;color:var(--text-muted);}
+        /* AUTH TABS */
+        .auth-tabs{display:flex;background:var(--bg-body);border-radius:10px;padding:3px;gap:3px;margin-bottom:20px;border:1px solid var(--border-color);}
+        .auth-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--text-muted);font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;transition:0.2s;font-family:var(--font-main);}
+        .auth-tab.active{background:var(--primary-blue);color:#fff;box-shadow:0 2px 10px rgba(0,122,255,0.3);}
+        .auth-tab:not(.active):hover{background:rgba(255,255,255,0.05);color:#fff;}
+        .auth-form-panel{display:none;} .auth-form-panel.active{display:block;}
+        .auth-form-title{font-size:18px;font-weight:800;margin:0 0 4px;}
+        .auth-form-sub{color:var(--text-muted);font-size:12px;margin:0 0 16px;}
+        .auth-form-sub strong{color:var(--accent-green);}
+        .auth-gate-card label{display:block;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:left;margin-top:12px;}
+        .auth-gate-card input{width:100%;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.08);padding:11px 14px;color:#fff;border-radius:8px;outline:none;font-size:14px;font-family:var(--font-main);margin-bottom:4px;transition:0.2s;}
+        .auth-gate-card input:focus{border-color:var(--primary-blue);box-shadow:0 0 0 3px rgba(0,122,255,0.1);}
+        .auth-error{font-size:12px;color:#ef4444;min-height:16px;margin-bottom:8px;text-align:left;}
+        .auth-gate-btn{width:100%;background:var(--primary-blue);color:#fff;border:none;padding:13px;font-weight:800;border-radius:8px;cursor:pointer;font-size:13px;text-transform:uppercase;letter-spacing:1px;font-family:var(--font-main);transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
+        .auth-gate-btn:hover:not(:disabled){background:#006ae6;}
+        .auth-gate-btn:disabled{opacity:0.5;cursor:default;}
+        .auth-btn-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:rpsSpin 0.7s linear infinite;display:inline-block;vertical-align:middle;}
+        @keyframes rpsSpin{to{transform:rotate(360deg);}}
+        .auth-bonus-row{display:flex;align-items:center;gap:10px;background:rgba(0,231,1,0.06);border:1px solid rgba(0,231,1,0.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#a0aabc;margin-top:12px;}
+        .auth-bonus-row .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 6px var(--accent-green);flex-shrink:0;}
+        .auth-bonus-row strong{color:var(--accent-green);}
         @media (max-width: 1100px) { .chat-panel { display: none; } }
         @media (max-width: 800px) { body { height: auto; overflow-y: auto; overflow-x: hidden; } .main-wrapper { height: auto; flex-direction: column; } .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); } .game-scroll { overflow: visible; padding: 16px; justify-content: flex-start; } }
         @media (max-width: 480px) { .choice-display { width: 86px; height: 86px; font-size: 40px; } .choice-btn-emoji { font-size: 28px; } }
     </style>
 </head>
 <body>
+
+<div id="pageLoader"><div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div><div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div><div class="page-loader-txt" id="loaderTxt">Connecting...</div></div>
 
 <nav>
     <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
@@ -197,17 +228,39 @@
     </div>
 </nav>
 
-<div id="authGate">
+<div id="authGate" style="display:none;">
     <div>
         <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
         <div class="auth-gate-sub">Sign in to play Rock Paper Scissors</div>
     </div>
     <div class="auth-gate-card">
-        <label>Username</label>
-        <input type="text" id="authUsername" placeholder="Enter your username">
-        <label>Password</label>
-        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
-        <button class="auth-gate-btn" onclick="doAuth()">Access RPS</button>
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="authTabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+            <button class="auth-tab" id="authTabReg" onclick="switchAuthTab('register')">Register</button>
+        </div>
+        <div class="auth-form-panel active" id="authPanelSignin">
+            <div class="auth-form-title">Welcome back</div>
+            <div class="auth-form-sub">Sign in to your account to play.</div>
+            <label>Username</label>
+            <input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')doAuth()">
+            <label>Password</label>
+            <input type="password" id="authPassword" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
+            <div class="auth-error" id="authError"></div>
+            <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Sign In</button>
+        </div>
+        <div class="auth-form-panel" id="authPanelReg">
+            <div class="auth-form-title">Create account</div>
+            <div class="auth-form-sub">New accounts start with <strong>$100.00</strong> free.</div>
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="letters &amp; numbers only" autocomplete="username" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Confirm Password</label>
+            <input type="password" id="regPasswordConfirm" placeholder="repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <div class="auth-error" id="regError"></div>
+            <button class="auth-gate-btn" id="regBtn" onclick="doRegister()">Create Account &amp; Play</button>
+            <div class="auth-bonus-row"><div class="badge-dot"></div>You'll receive <strong>&nbsp;$100.00&nbsp;</strong> instantly!</div>
+        </div>
     </div>
 </div>
 
@@ -377,23 +430,52 @@
     function cleanMoney(v) { return Math.round(v*100)/100; }
     function fmt$(v) { return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
     function escHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-    function randChoice() { return CHOICES[Math.floor(Math.random()*3)]; }
+    // Rigged: house picks the WINNING move 45% of the time, random otherwise
+    // giving ~45% house win, ~20% tie, ~35% player win instead of equal thirds
+    function randChoice(playerChoice) {
+        const r = Math.random();
+        if (r < 0.45) {
+            // pick the move that beats the player
+            return CHOICES.find(c => BEATS[c] === playerChoice);
+        }
+        return CHOICES[Math.floor(Math.random() * 3)];
+    }
     function setMsg(t) { document.getElementById('msgLog').textContent = t; }
 
+    function showPageLoader(txt){const l=document.getElementById('pageLoader'),bar=document.getElementById('loaderBar'),t=document.getElementById('loaderTxt');if(l)l.style.display='flex';if(t)t.textContent=txt||'Loading...';if(bar){bar.style.width='0%';setTimeout(()=>bar.style.width='60%',50);}}
+    function hidePageLoader(){const bar=document.getElementById('loaderBar');if(bar)bar.style.width='100%';setTimeout(()=>{const l=document.getElementById('pageLoader');if(l){l.classList.add('fade-out');setTimeout(()=>{l.style.display='none';l.classList.remove('fade-out');},400);}},300);}
+    function switchAuthTab(tab){document.getElementById('authTabSignIn').classList.toggle('active',tab==='signin');document.getElementById('authTabReg').classList.toggle('active',tab==='register');document.getElementById('authPanelSignin').classList.toggle('active',tab==='signin');document.getElementById('authPanelReg').classList.toggle('active',tab==='register');document.getElementById('authError').textContent='';document.getElementById('regError').textContent='';}
+    function setAuthBtnLoading(id,loading,def){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="auth-btn-spinner"></span> Loading...':def;}
+
     function doAuth() {
-        const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-        const pass = document.getElementById('authPassword').value.trim();
-        if(name.length < 3){ alert('Username must be at least 3 characters.'); return; }
-        db.ref('users/'+name).once('value').then(snap => {
-            if(snap.exists()){
-                const u = snap.val();
-                if(u.password !== pass){ alert('Incorrect password.'); return; }
-                finalizeLogin(u);
-            } else {
-                const nu = {name, password:pass, balance:100, lastBonus:0, createdAt:Date.now()};
-                db.ref('users/'+name).set(nu).then(() => finalizeLogin(nu));
-            }
-        });
+        const name=document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+        const pass=document.getElementById('authPassword').value.trim();
+        const err=document.getElementById('authError');err.textContent='';
+        if(name.length<3){err.textContent='Username must be 3+ characters.';return;}
+        if(!pass){err.textContent='Enter your password.';return;}
+        setAuthBtnLoading('authBtn',true,'Sign In');
+        db.ref('users/'+name).once('value').then(snap=>{
+            if(!snap.exists()){err.textContent='No account found. Try registering.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+            const u=snap.val();
+            if(u.password!==pass){err.textContent='Incorrect password.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+            finalizeLogin(u);
+        }).catch(()=>{err.textContent='Connection error.';setAuthBtnLoading('authBtn',false,'Sign In');});
+    }
+
+    function doRegister(){
+        const name=document.getElementById('regUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+        const pass=document.getElementById('regPassword').value.trim();
+        const confirm=document.getElementById('regPasswordConfirm').value.trim();
+        const err=document.getElementById('regError');err.textContent='';
+        if(name.length<3){err.textContent='Username must be 3+ characters.';return;}
+        if(pass.length<4){err.textContent='Password must be 4+ characters.';return;}
+        if(pass!==confirm){err.textContent='Passwords do not match.';return;}
+        setAuthBtnLoading('regBtn',true,'Create Account &amp; Play');
+        db.ref('users/'+name).once('value').then(snap=>{
+            if(snap.exists()){err.textContent='Username taken.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');return;}
+            const nu={name,password:pass,balance:100,lastBonus:0,createdAt:Date.now()};
+            db.ref('users/'+name).set(nu).then(()=>finalizeLogin(nu));
+        }).catch(()=>{err.textContent='Connection error.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');});
     }
 
     function finalizeLogin(user) {
@@ -405,10 +487,16 @@
         db.ref('users/'+user.name).on('value', snap => {
             if(snap.exists()){ currentUser = snap.val(); updateNavBal(); }
         });
+        const pr = db.ref('presence/'+user.name);
+        pr.set({online:true, lastSeen:Date.now()});
+        pr.onDisconnect().set({online:false, lastSeen:Date.now()});
+        setInterval(()=>pr.update({lastSeen:Date.now()}), 30000);
         updateNavBal();
         updateInfo();
         initChat();
         initNotifications();
+        initAdminAlerts();
+        hidePageLoader();
     }
 
     function updateNavBal() { if(!currentUser) return; document.getElementById('navBal').textContent = fmt$(currentUser.balance); }
@@ -444,8 +532,8 @@
         setEmoji('houseEmoji', '❓', false);
         let ticks = 0;
         const ticker = setInterval(() => {
-            setEmoji('houseEmoji', EMOJI[randChoice()], false);
-            if(++ticks >= 10) { clearInterval(ticker); finalize(playerChoice, randChoice()); }
+            setEmoji('houseEmoji', EMOJI[randChoice(playerChoice)], false);
+            if(++ticks >= 10) { clearInterval(ticker); finalize(playerChoice, randChoice(playerChoice)); }
         }, 80);
     }
 
@@ -485,9 +573,10 @@
     function lockChoices(lock) { CHOICES.forEach(c => document.getElementById('btn-'+c).classList.toggle('disabled', lock)); }
 
     function saveBalance(delta) {
+        if(delta === 0) return;
         db.ref('users/'+currentUser.name).transaction(u => {
             if(!u) return u;
-            u.balance = cleanMoney((u.balance||0) + delta);
+            u.balance = Math.max(0, cleanMoney((u.balance||0) + delta));
             return u;
         }, (err, committed) => {
             if(committed && delta > 0) db.ref('recent_wins').push({name:currentUser.name, amount:delta, ts:Date.now(), source:'RPS'});
@@ -568,10 +657,31 @@
         input.addEventListener('keypress',e=>{if(e.key==='Enter')sendChat();});
         input.addEventListener('input',()=>{const len=input.value.length;counter.textContent=`${len} / 50`;counter.className='char-counter'+(len>=50?' at-limit':len>=40?' near-limit':'');});
     }
-    function sendChat() { const input=document.getElementById('chatInput');const text=input.value.trim().slice(0,50);if(!text||!currentUser)return;db.ref('global_chat').push({user:currentUser.name,text,ts:Date.now()});input.value='';document.getElementById('charCounter').textContent='0 / 50';document.getElementById('charCounter').className='char-counter'; }
+    const BLOCKED_WORDS=['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w=>w.toLowerCase());
+    function containsProfanity(t){const s=t.toLowerCase().replace(/[^a-z0-9 ]/g,' ');return BLOCKED_WORDS.some(w=>new RegExp('\b'+w+'\b').test(s)||s.includes(w));}
+    function sendChat() { const input=document.getElementById('chatInput');const text=input.value.trim().slice(0,50);if(!text||!currentUser)return;if(containsProfanity(text)){input.style.borderColor='#ef4444';input.value='';document.getElementById('charCounter').textContent='0 / 50';setTimeout(()=>input.style.borderColor='',1200);return;}db.ref('global_chat').push({user:currentUser.name,text,ts:Date.now()});input.value='';document.getElementById('charCounter').textContent='0 / 50';document.getElementById('charCounter').className='char-counter'; }
 
-    const cached = localStorage.getItem('currentUser');
-    if(cached) { const u=JSON.parse(cached); db.ref('users/'+u.name).once('value',snap=>{if(snap.exists()&&snap.val().password===u.password)finalizeLogin(snap.val());}); }
+    function initAdminAlerts(){
+        let _last=Date.now();
+        db.ref('admin_alerts').orderByChild('ts').startAt(_last).on('child_added',snap=>{
+            const a=snap.val();if(!a||!a.ts||a.ts<=_last-1000)return;_last=a.ts;
+            const forMe=a.target==='__all__'||(currentUser&&a.target===currentUser.name);
+            if(!forMe)return;
+            addNotification('giveaway','Admin Alert: '+(a.title||''),a.body||'');
+        });
+    }
+
+    (function boot(){
+        const bar=document.getElementById('loaderBar');if(bar)bar.style.width='30%';
+        const raw=localStorage.getItem('currentUser');
+        if(!raw){if(bar)bar.style.width='100%';setTimeout(()=>{hidePageLoader();document.getElementById('authGate').style.display='flex';},500);return;}
+        let u;try{u=JSON.parse(raw);}catch(e){localStorage.removeItem('currentUser');hidePageLoader();document.getElementById('authGate').style.display='flex';return;}
+        if(bar)bar.style.width='55%';document.getElementById('loaderTxt').textContent='Signing in...';
+        db.ref('users/'+u.name).once('value').then(snap=>{
+            if(snap.exists()&&snap.val().password===u.password){if(bar)bar.style.width='85%';finalizeLogin(snap.val());}
+            else{localStorage.removeItem('currentUser');hidePageLoader();document.getElementById('authGate').style.display='flex';}
+        }).catch(()=>{hidePageLoader();document.getElementById('authGate').style.display='flex';});
+    })();
 </script>
 </body>
 </html>
