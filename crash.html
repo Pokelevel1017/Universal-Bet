@@ -381,6 +381,31 @@
         .panel-locked .auto-row,
         .panel-locked .auto-input-row { pointer-events: none; opacity: 0.35; }
 
+        /* ── PAGE LOADER ── */
+        #pageLoader { position: fixed; inset: 0; background: var(--bg-body); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.4s; }
+        #pageLoader.fade-out { opacity: 0; pointer-events: none; }
+        .page-loader-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; letter-spacing: 3px; }
+        .page-loader-logo span { color: var(--primary-blue); }
+        .page-loader-bar-wrap { width: 160px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+        .page-loader-bar { height: 100%; width: 0%; background: var(--primary-blue); border-radius: 3px; transition: width 0.3s ease; }
+        .page-loader-txt { font-size: 11px; color: var(--text-muted); }
+        /* ── AUTH TABS ── */
+        .auth-tabs { display: flex; background: var(--bg-body); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .auth-tab { flex: 1; padding: 9px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; font-family: var(--font-main); }
+        .auth-tab.active { background: var(--primary-blue); color: #fff; box-shadow: 0 2px 10px rgba(0,122,255,0.3); }
+        .auth-tab:not(.active):hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .auth-form-panel { display: none; }
+        .auth-form-panel.active { display: block; }
+        .auth-form-title { font-size: 18px; font-weight: 800; margin: 0 0 4px; }
+        .auth-form-sub { color: var(--text-muted); font-size: 12px; margin: 0 0 16px; }
+        .auth-form-sub strong { color: var(--accent-green); }
+        .auth-error { font-size: 12px; color: #ef4444; min-height: 16px; margin-bottom: 8px; text-align: left; }
+        .auth-btn-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-bonus-row { display: flex; align-items: center; gap: 10px; background: rgba(0,231,1,0.06); border: 1px solid rgba(0,231,1,0.15); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #a0aabc; margin-top: 12px; }
+        .auth-bonus-row .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); flex-shrink: 0; }
+        .auth-bonus-row strong { color: var(--accent-green); }
+
         @media (max-width: 1100px) { .chat-panel { display: none; } }
         @media (max-width: 800px) {
             body { height: auto; overflow-y: auto; }
@@ -392,6 +417,13 @@
     </style>
 </head>
 <body>
+
+<!-- PAGE LOADER -->
+<div id="pageLoader">
+    <div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div>
+    <div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div>
+    <div class="page-loader-txt" id="loaderTxt">Connecting…</div>
+</div>
 
 <nav>
     <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
@@ -411,11 +443,33 @@
         <div class="auth-gate-sub">Sign in to play Crash with your real balance</div>
     </div>
     <div class="auth-gate-card">
-        <label>Username</label>
-        <input type="text" id="authUsername" placeholder="Enter your username">
-        <label>Password</label>
-        <input type="password" id="authPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doAuth()">
-        <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Access Crash</button>
+        <div class="auth-tabs">
+            <button class="auth-tab active" id="authTabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+            <button class="auth-tab" id="authTabReg" onclick="switchAuthTab('register')">Register</button>
+        </div>
+        <div class="auth-form-panel active" id="authPanelSignin">
+            <div class="auth-form-title">Welcome back</div>
+            <div class="auth-form-sub">Sign in to your account to play.</div>
+            <label>Username</label>
+            <input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')doAuth()">
+            <label>Password</label>
+            <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
+            <div class="auth-error" id="authError"></div>
+            <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Sign In</button>
+        </div>
+        <div class="auth-form-panel" id="authPanelReg">
+            <div class="auth-form-title">Create account</div>
+            <div class="auth-form-sub">New accounts start with <strong>$100.00</strong> free.</div>
+            <label>Username</label>
+            <input type="text" id="regUsername" placeholder="letters &amp; numbers only" autocomplete="username" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Confirm Password</label>
+            <input type="password" id="regPasswordConfirm" placeholder="repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <div class="auth-error" id="regError"></div>
+            <button class="auth-gate-btn" id="regBtn" onclick="doRegister()">Create Account &amp; Play</button>
+            <div class="auth-bonus-row"><div class="badge-dot"></div>You'll receive <strong>&nbsp;$100.00&nbsp;</strong> instantly!</div>
+        </div>
     </div>
 </div>
 
@@ -656,24 +710,64 @@ function setMsg(t) { document.getElementById('msgLog').textContent = t; }
 function showAuth() { document.getElementById('authGate').style.display = 'flex'; document.getElementById('mainWrapper').style.display = 'none'; }
 function showGame() { document.getElementById('authGate').style.display = 'none'; document.getElementById('mainWrapper').style.display = 'flex'; }
 
+// ── PAGE LOADER ──────────────────────────────────────────────────────
+function showPageLoader(txt) {
+    const l=document.getElementById('pageLoader'),bar=document.getElementById('loaderBar'),t=document.getElementById('loaderTxt');
+    if(l)l.style.display='flex'; if(t)t.textContent=txt||'Loading…';
+    if(bar){bar.style.width='0%'; setTimeout(()=>bar.style.width='60%',50);}
+}
+function hidePageLoader() {
+    const bar=document.getElementById('loaderBar'); if(bar)bar.style.width='100%';
+    setTimeout(()=>{ const l=document.getElementById('pageLoader'); if(l){l.classList.add('fade-out');setTimeout(()=>{l.style.display='none';l.classList.remove('fade-out');},400);} },300);
+}
+
+// ── AUTH TAB ─────────────────────────────────────────────────────────
+function switchAuthTab(tab) {
+    document.getElementById('authTabSignIn').classList.toggle('active', tab==='signin');
+    document.getElementById('authTabReg').classList.toggle('active', tab==='register');
+    document.getElementById('authPanelSignin').classList.toggle('active', tab==='signin');
+    document.getElementById('authPanelReg').classList.toggle('active', tab==='register');
+    document.getElementById('authError').textContent='';
+    document.getElementById('regError').textContent='';
+}
+function setAuthBtnLoading(id, loading, defaultText) {
+    const btn=document.getElementById(id); if(!btn)return;
+    btn.disabled=loading;
+    btn.innerHTML=loading?'<span class="auth-btn-spinner"></span> Loading…':defaultText;
+}
+
 // ── AUTH ──────────────────────────────────────────────────────────────
 function doAuth() {
-    const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const pass = document.getElementById('authPassword').value.trim();
-    if (name.length < 3) { alert('Username must be at least 3 characters.'); return; }
-    const btn = document.getElementById('authBtn');
-    btn.textContent = 'Connecting...'; btn.disabled = true;
-    const reset = () => { btn.textContent = 'Access Crash'; btn.disabled = false; };
-    db.ref('users/' + name).once('value').then(snap => {
-        if (snap.exists()) {
-            const u = snap.val();
-            if (u.password !== pass) { alert('Incorrect password.'); reset(); return; }
-            finalizeLogin(u);
-        } else {
-            const nu = { name, password: pass, balance: 100, lastBonus: 0, createdAt: Date.now() };
-            db.ref('users/' + name).set(nu).then(() => finalizeLogin(nu)).catch(e => { alert('Error: ' + e.message); reset(); });
-        }
-    }).catch(e => { alert('Connection failed: ' + e.message); reset(); });
+    const name=document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass=document.getElementById('authPassword').value.trim();
+    const err=document.getElementById('authError'); err.textContent='';
+    if(name.length<3){err.textContent='⚠ Username must be 3+ characters.';return;}
+    if(!pass){err.textContent='⚠ Enter your password.';return;}
+    setAuthBtnLoading('authBtn',true,'Sign In');
+    db.ref('users/'+name).once('value').then(snap=>{
+        if(!snap.exists()){err.textContent='⚠ No account found. Try registering.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+        const u=snap.val();
+        if(u.password!==pass){err.textContent='⚠ Incorrect password.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+        finalizeLogin(u);
+    }).catch(()=>{err.textContent='⚠ Connection error.';setAuthBtnLoading('authBtn',false,'Sign In');});
+}
+
+// ── REGISTER ─────────────────────────────────────────────────────────
+function doRegister() {
+    const raw=document.getElementById('regUsername').value.trim();
+    const name=raw.toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass=document.getElementById('regPassword').value.trim();
+    const confirm=document.getElementById('regPasswordConfirm').value.trim();
+    const err=document.getElementById('regError'); err.textContent='';
+    if(name.length<3){err.textContent='⚠ Username must be 3+ characters.';return;}
+    if(pass.length<4){err.textContent='⚠ Password must be 4+ characters.';return;}
+    if(pass!==confirm){err.textContent='⚠ Passwords do not match.';return;}
+    setAuthBtnLoading('regBtn',true,'Create Account &amp; Play');
+    db.ref('users/'+name).once('value').then(snap=>{
+        if(snap.exists()){err.textContent='⚠ Username taken.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');return;}
+        const nu={name,password:pass,balance:100,lastBonus:0,createdAt:Date.now()};
+        db.ref('users/'+name).set(nu).then(()=>finalizeLogin(nu));
+    }).catch(()=>{err.textContent='⚠ Connection error.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');});
 }
 
 function finalizeLogin(user) {
@@ -684,9 +778,16 @@ function finalizeLogin(user) {
     db.ref('users/' + user.name).on('value', snap => {
         if (snap.exists()) { currentUser = snap.val(); updateNavBal(); }
     });
+    // Presence
+    const presRef = db.ref('presence/' + user.name);
+    presRef.set({ online: true, lastSeen: Date.now() });
+    presRef.onDisconnect().set({ online: false, lastSeen: Date.now() });
+    setInterval(() => presRef.update({ lastSeen: Date.now() }), 30000);
     updateNavBal();
     initChat();
     initNotifications();
+    initAdminAlerts();
+    hidePageLoader();
     requestAnimationFrame(() => { resizeCanvas(); startCountdown(); });
 }
 
@@ -698,7 +799,8 @@ function updateNavBal() {
 // ── BET CONTROLS ──────────────────────────────────────────────────────
 function onBetInput() {
     const raw = parseFloat(document.getElementById('betInput').value);
-    bet = isNaN(raw) || raw < 0 ? 0 : cleanMoney(Math.min(raw, currentUser ? currentUser.balance : 99999));
+    const maxBal = currentUser ? cleanMoney(currentUser.balance) : 99999;
+    bet = isNaN(raw) || raw < 0 ? 0 : cleanMoney(Math.min(raw, maxBal));
     document.getElementById('btnBet').disabled = (bet <= 0 || phase !== 'countdown');
 }
 function setBet(amount) {
@@ -750,7 +852,7 @@ function startCountdown() {
 
 function placeBet() {
     if (bet <= 0)                                  { setMsg('Enter a bet first.'); return; }
-    if (!currentUser || bet > currentUser.balance) { setMsg('Not enough balance.'); return; }
+    if (!currentUser || bet > cleanMoney(currentUser.balance)) { setMsg('Not enough balance.'); return; }
     if (phase !== 'countdown')                     { setMsg('Wait for the next round.'); return; }
     betPlaced = true; lockControls(true);
     document.getElementById('btnBet').disabled    = true;
@@ -894,9 +996,10 @@ function lockControls(lock) {
 
 // ── FIREBASE ──────────────────────────────────────────────────────────
 function saveBalance(delta) {
+    if (delta === 0) return;
     db.ref('users/' + currentUser.name).transaction(u => {
         if (!u) return u;
-        u.balance = cleanMoney((u.balance || 0) + delta);
+        u.balance = Math.max(0, cleanMoney((u.balance || 0) + delta));
         return u;
     }, (err, committed) => {
         if (committed && delta > 0) db.ref('recent_wins').push({ name: currentUser.name, amount: delta, ts: Date.now(), source: 'Crash' });
@@ -1066,29 +1169,61 @@ function initChat() {
     });
 }
 
+const BLOCKED_WORDS = ['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w=>w.toLowerCase());
+function containsProfanity(text){const t=text.toLowerCase().replace(/[^a-z0-9 ]/g,' ');return BLOCKED_WORDS.some(w=>new RegExp('\b'+w+'\b').test(t)||t.includes(w));}
+
 function sendChat() {
     const input = document.getElementById('chatInput');
     const text  = input.value.trim().slice(0, 50);
     if (!text || !currentUser) return;
+    if (containsProfanity(text)) {
+        input.style.borderColor='#ef4444'; input.value='';
+        document.getElementById('charCounter').textContent='0 / 50';
+        setTimeout(()=>input.style.borderColor='',1200); return;
+    }
     db.ref('global_chat').push({ user: currentUser.name, text, ts: Date.now() });
     input.value = '';
     document.getElementById('charCounter').textContent = '0 / 50';
     document.getElementById('charCounter').className   = 'char-counter';
 }
 
+// ── ADMIN ALERTS ─────────────────────────────────────────────────────
+function initAdminAlerts() {
+    let _last = Date.now();
+    db.ref('admin_alerts').orderByChild('ts').startAt(_last).on('child_added', snap => {
+        const a = snap.val(); if(!a||!a.ts||a.ts<=_last-1000)return; _last=a.ts;
+        const forMe = a.target==='__all__' || (currentUser && a.target===currentUser.name);
+        if (!forMe) return;
+        addNotification('giveaway', '📢 '+(a.title||'Admin Alert'), a.body||'');
+    });
+}
+
 // ── BOOT ─────────────────────────────────────────────────────────────
 (function boot() {
+    const bar = document.getElementById('loaderBar');
+    if (bar) bar.style.width = '30%';
     const raw = localStorage.getItem('currentUser');
-    if (!raw) { showAuth(); return; }
+    if (!raw) {
+        if (bar) bar.style.width = '100%';
+        setTimeout(() => { hidePageLoader(); document.getElementById('authGate').style.display = 'flex'; }, 500);
+        return;
+    }
     let u;
-    try { u = JSON.parse(raw); } catch(e) { localStorage.removeItem('currentUser'); showAuth(); return; }
+    try { u = JSON.parse(raw); } catch(e) {
+        localStorage.removeItem('currentUser');
+        hidePageLoader(); document.getElementById('authGate').style.display = 'flex'; return;
+    }
+    if (bar) bar.style.width = '55%';
+    document.getElementById('loaderTxt').textContent = 'Signing in…';
     db.ref('users/' + u.name).once('value').then(snap => {
         if (snap.exists() && snap.val().password === u.password) {
+            if (bar) bar.style.width = '85%';
             finalizeLogin(snap.val());
         } else {
-            localStorage.removeItem('currentUser'); showAuth();
+            localStorage.removeItem('currentUser');
+            hidePageLoader(); document.getElementById('authGate').style.display = 'flex';
         }
-    }).catch(() => { showAuth(); });
+    }).catch(() => { hidePageLoader(); document.getElementById('authGate').style.display = 'flex'; });
 })();
 </script>
 </body>
