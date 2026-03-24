@@ -22,34 +22,67 @@
             --glass: rgba(255, 255, 255, 0.03);
         }
         body { background-color: var(--bg-body); color: var(--text-main); font-family: var(--font-main); margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        /* ── AUTH ── */
         #authContainer { position: fixed; inset: 0; background: var(--bg-body); display: flex; z-index: 9999; overflow: hidden; }
         .auth-left { flex: 1; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; position: relative; overflow: hidden; }
         .auth-left::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 50%, rgba(0,122,255,0.08) 0%, transparent 70%); pointer-events: none; }
-        .auth-left-brand { position: relative; z-index: 2; text-align: center; margin-bottom: 60px; }
+        .auth-left-brand { position: relative; z-index: 2; text-align: center; margin-bottom: 48px; }
         .auth-left-logo { font-family: var(--font-condensed); font-size: 2.8rem; font-weight: 700; letter-spacing: 3px; margin-bottom: 10px; }
         .auth-left-logo span { color: var(--primary-blue); text-shadow: 0 0 20px rgba(0,122,255,0.5); }
         .auth-left-tagline { color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 3px; }
         .auth-feature-list { list-style: none; padding: 0; margin: 0; position: relative; z-index: 2; width: 100%; max-width: 320px; }
-        .auth-feature-list li { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 1px solid var(--border-color); font-size: 14px; color: #a0aabc; }
+        .auth-feature-list li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; color: #a0aabc; }
         .auth-feature-list li:last-child { border-bottom: none; }
         .auth-feature-icon { width: 34px; height: 34px; border-radius: 8px; background: rgba(0,122,255,0.1); border: 1px solid rgba(0,122,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-        .auth-right { width: 420px; display: flex; flex-direction: column; justify-content: center; padding: 60px 48px; background: var(--bg-body); }
-        .auth-right-title { font-size: 26px; font-weight: 800; margin: 0 0 6px; letter-spacing: -0.5px; }
-        .auth-right-sub { color: var(--text-muted); font-size: 13px; margin: 0 0 36px; }
-        .auth-right-sub strong { color: var(--accent-green); font-weight: 700; }
-        .input-group { text-align: left; margin-bottom: 18px; }
-        .input-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
-        .auth-card input { width: 100%; background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); padding: 13px 16px; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.25s; font-size: 14px; font-family: var(--font-main); }
+        /* Right panel — tabbed */
+        .auth-right { width: 440px; display: flex; flex-direction: column; justify-content: center; padding: 52px 48px; background: var(--bg-body); }
+        .auth-logo-mobile { display: none; font-family: var(--font-condensed); font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; text-align: center; margin-bottom: 28px; }
+        .auth-logo-mobile span { color: var(--primary-blue); }
+        /* Tab switcher */
+        .auth-tabs { display: flex; background: var(--bg-sidebar); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 28px; border: 1px solid var(--border-color); }
+        .auth-tab { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 700; border-radius: 9px; cursor: pointer; transition: 0.2s; font-family: var(--font-main); }
+        .auth-tab.active { background: var(--primary-blue); color: #fff; box-shadow: 0 2px 12px rgba(0,122,255,0.3); }
+        .auth-tab:not(.active):hover { background: rgba(255,255,255,0.05); color: #fff; }
+        /* Form panels */
+        .auth-form-panel { display: none; }
+        .auth-form-panel.active { display: block; }
+        .auth-form-title { font-size: 22px; font-weight: 800; margin: 0 0 5px; letter-spacing: -0.3px; }
+        .auth-form-sub { color: var(--text-muted); font-size: 13px; margin: 0 0 24px; line-height: 1.5; }
+        .auth-form-sub strong { color: var(--accent-green); }
+        .input-group { text-align: left; margin-bottom: 14px; }
+        .input-group label { display: block; font-size: 10px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .auth-card input { width: 100%; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 12px 14px; color: #fff; border-radius: 8px; box-sizing: border-box; outline: none; transition: 0.2s; font-size: 14px; font-family: var(--font-main); }
         .auth-card input:focus { border-color: var(--primary-blue); background: #0d1420; box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
-        .auth-btn { width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 15px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; transition: 0.25s; box-shadow: 0 4px 20px rgba(0,122,255,0.3); margin-top: 6px; }
-        .auth-btn:hover { background: #006ae6; transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0,122,255,0.4); }
+        .auth-error { font-size: 12px; color: #ef4444; min-height: 16px; margin: 4px 0 8px; display: flex; align-items: center; gap: 5px; }
+        .auth-btn { width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 14px; font-weight: 800; border-radius: 8px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; font-size: 13px; transition: 0.2s; box-shadow: 0 4px 20px rgba(0,122,255,0.25); margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .auth-btn:hover:not(:disabled) { background: #006ae6; transform: translateY(-1px); box-shadow: 0 6px 25px rgba(0,122,255,0.4); }
         .auth-btn:active { transform: translateY(0); }
-        .auth-divider { display: flex; align-items: center; gap: 12px; margin: 24px 0; }
-        .auth-divider-line { flex: 1; height: 1px; background: var(--border-color); }
-        .auth-divider-text { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; white-space: nowrap; }
-        .auth-bonus-badge { display: flex; align-items: center; gap: 10px; background: rgba(0,231,1,0.06); border: 1px solid rgba(0,231,1,0.15); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: #a0aabc; }
-        .auth-bonus-badge .badge-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); flex-shrink: 0; }
-        .auth-bonus-badge strong { color: var(--accent-green); }
+        .auth-btn:disabled { opacity: 0.6; cursor: default; transform: none; }
+        .auth-btn-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .auth-bonus-row { display: flex; align-items: center; gap: 10px; background: rgba(0,231,1,0.06); border: 1px solid rgba(0,231,1,0.15); border-radius: 8px; padding: 11px 14px; font-size: 12px; color: #a0aabc; margin-top: 16px; }
+        .auth-bonus-row .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); flex-shrink: 0; }
+        .auth-bonus-row strong { color: var(--accent-green); }
+        /* Page loading screen */
+        #pageLoader { position: fixed; inset: 0; background: var(--bg-body); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.4s; }
+        #pageLoader.fade-out { opacity: 0; pointer-events: none; }
+        .page-loader-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; letter-spacing: 3px; }
+        .page-loader-logo span { color: var(--primary-blue); }
+        .page-loader-bar-wrap { width: 160px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
+        .page-loader-bar { height: 100%; width: 0%; background: var(--primary-blue); border-radius: 3px; transition: width 0.3s ease; }
+        .page-loader-txt { font-size: 11px; color: var(--text-muted); }
+        /* Section loading skeleton */
+        .skeleton-row { height: 44px; background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; margin-bottom: 8px; }
+        @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+        /* Online / offline status */
+        .profile-status { display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 14px; font-size: 12px; font-weight: 600; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .status-dot.online  { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
+        .status-dot.offline { background: var(--text-muted); }
+        .status-label.online  { color: var(--accent-green); }
+        .status-label.offline { color: var(--text-muted); }
+        /* Owner badge */
+        .owner-badge { display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(135deg, rgba(255,196,0,0.15), rgba(255,150,0,0.1)); border: 1px solid rgba(255,196,0,0.35); color: #ffc400; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
         nav { background: var(--bg-header); padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; border-bottom: 1px solid var(--border-color); z-index: 1000; }
         .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; }
         .logo span { color: var(--primary-blue); }
@@ -68,19 +101,18 @@
         .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
         .main-wrapper { display: flex; flex: 1; overflow: hidden; position: relative; }
         /* ── SIDEBAR ── */
-        .sidebar { width: 228px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; transition: width 0.3s ease; }
-        .sidebar.collapsed { width: 52px; }
+        .sidebar { width: 228px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; overflow-x: hidden; transition: width 0.3s ease; }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 3px; }
+        .sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.13); }
+
 
         /* Pinned nav at top — never hidden */
         .sidebar-nav-pinned { padding: 12px 0 4px; flex-shrink: 0; }
         .sidebar-nav-pinned .side-link { border-radius: 0 10px 10px 0; margin-right: 10px; }
 
         /* Collapse toggle button */
-        .sidebar-toggle { display: flex; align-items: center; justify-content: flex-end; padding: 10px 12px 4px; flex-shrink: 0; }
-        .sidebar-toggle-btn { width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--border-color); background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; flex-shrink: 0; }
-        .sidebar-toggle-btn svg { width: 14px; height: 14px; transition: transform 0.3s; }
-        .sidebar-toggle-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
-        .sidebar.collapsed .sidebar-toggle-btn svg { transform: rotate(180deg); }
+
 
         /* Divider */
         .sidebar-divider { height: 1px; background: var(--border-color); margin: 8px 14px; flex-shrink: 0; }
@@ -107,15 +139,6 @@
         .side-link-text { flex: 1; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.2s; }
 
         /* Collapsed state: hide text, keep icons */
-        .sidebar.collapsed .side-link { padding: 9px 0; justify-content: center; margin-right: 0; border-left: none; border-radius: 10px; margin: 2px 7px; }
-        .sidebar.collapsed .side-link-text { display: none; }
-        .sidebar.collapsed .sidebar-section-header { padding: 6px 0; justify-content: center; }
-        .sidebar.collapsed .sidebar-section-label { display: none; }
-        .sidebar.collapsed .sidebar-section-arrow { display: none; }
-        .sidebar.collapsed .sb-live-dot { display: none; }
-        .sidebar.collapsed .sidebar-divider { margin: 6px 10px; }
-        .sidebar.collapsed .sidebar-section-body { max-height: 600px !important; }
-        .sidebar.collapsed .sidebar-toggle { justify-content: center; }
         /* ── OFFLINE OVERLAY ── */
         #offlineOverlay {
             display: none;
@@ -166,6 +189,66 @@
             text-align: center;
         }
 
+
+        /* ── CODES SIDEBAR SECTION ── */
+        .codes-input-wrap { display: flex; gap: 6px; padding: 6px 12px 10px; }
+        .codes-input { flex: 1; background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; font-family: var(--font-main); outline: none; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
+        .codes-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 2px rgba(0,122,255,.12); }
+        .codes-btn { background: var(--primary-blue); border: none; border-radius: 8px; padding: 0 12px; color: #fff; font-size: 11px; font-weight: 700; cursor: pointer; transition: .15s; white-space: nowrap; font-family: var(--font-main); }
+        .codes-btn:hover { background: #006ae6; }
+        .codes-msg { font-size: 11px; text-align: center; padding: 0 12px 8px; min-height: 16px; }
+        .codes-msg.ok  { color: var(--accent-green); }
+        .codes-msg.err { color: #ef4444; }
+
+        /* ── ADMIN MODAL ── */
+        /* ── ADMIN MODAL — matches site UI ── */
+        #adminModal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 8500; display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn .15s ease; }
+        #adminModal.show { display: flex; }
+        .admin-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: slideUp .2s ease; }
+        .admin-card::-webkit-scrollbar { width: 4px; }
+        .admin-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        /* sticky header */
+        .admin-header { display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: var(--bg-sidebar); z-index: 2; border-radius: 18px 18px 0 0; }
+        .admin-header-crown { font-size: 20px; line-height: 1; }
+        .admin-header-titles { flex: 1; }
+        .admin-header-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-gold, #ffc400); margin-bottom: 2px; }
+        .admin-header-title { font-family: var(--font-condensed); font-size: 1.35rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; margin: 0; }
+        .admin-close { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: .2s; font-family: var(--font-main); }
+        .admin-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
+        /* sections match profile-stats / news-card feel */
+        .admin-section { padding: 18px 24px; border-bottom: 1px solid var(--border-color); }
+        .admin-section:last-child { border-bottom: none; padding-bottom: 22px; }
+        .admin-section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 12px; }
+        .admin-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+        /* inputs match auth-card inputs */
+        .admin-input { flex: 1; min-width: 100px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; font-family: var(--font-main); outline: none; transition: .2s; }
+        .admin-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
+        /* buttons match .lb-refresh-btn / .gw-enter-btn style */
+        .admin-btn { padding: 10px 16px; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font-main); transition: .2s; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
+        .admin-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.08); }
+        .admin-btn:disabled { opacity: .4; cursor: default; }
+        .admin-btn.green  { background: var(--accent-green); color: #000; box-shadow: 0 3px 12px rgba(0,231,1,0.2); }
+        .admin-btn.red    { background: #ef4444; color: #fff; box-shadow: 0 3px 12px rgba(239,68,68,0.2); }
+        .admin-btn.blue   { background: var(--primary-blue); color: #fff; box-shadow: 0 3px 12px rgba(0,122,255,0.2); }
+        .admin-btn.gold   { background: #f59e0b; color: #000; box-shadow: 0 3px 12px rgba(245,158,11,0.2); }
+        .admin-btn.ghost  { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+        .admin-btn.ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .admin-feedback { font-size: 12px; min-height: 18px; margin-top: 6px; display: flex; align-items: center; gap: 5px; }
+        .admin-feedback.ok  { color: var(--accent-green); }
+        .admin-feedback.err { color: #ef4444; }
+        /* textarea matches chat input area */
+        .admin-textarea { width: 100%; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; font-family: var(--font-main); outline: none; resize: vertical; min-height: 64px; transition: .2s; box-sizing: border-box; line-height: 1.45; }
+        .admin-textarea:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
+        /* chat list matches .chat-messages style */
+
+        /* code list rows */
+        .admin-code-row { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px 12px; font-size: 12px; }
+        .admin-code-name { font-family: var(--font-condensed); font-weight: 700; color: #fff; flex: 1; letter-spacing: 1px; }
+        .admin-code-reward { color: var(--accent-green); font-weight: 700; font-family: var(--font-condensed); }
+        .admin-code-uses { color: var(--text-muted); font-size: 11px; }
+        /* crown button at top of sidebar */
+        .sidebar-crown-btn { display: flex; align-items: center; justify-content: center; padding: 10px 0 4px; cursor: pointer; font-size: 20px; opacity: 0.9; transition: opacity .2s, transform .2s; user-select: none; }
+        .sidebar-crown-btn:hover { opacity: 1; transform: scale(1.12); }
         /* ── RIGHT PANEL ─────────────────────────────────────────────── */
         .right-chat-panel {
             width: 300px;
@@ -587,28 +670,58 @@
 </head>
 <body>
 
-<div id="authContainer">
+<!-- PAGE LOADER -->
+<div id="pageLoader">
+    <div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div>
+    <div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div>
+    <div class="page-loader-txt" id="loaderTxt">Connecting…</div>
+</div>
+
+<div id="authContainer" style="display:none;">
     <div class="auth-left">
         <div class="auth-left-brand">
             <div class="auth-left-logo">UNIVERSAL-<span>BETS</span></div>
             <div class="auth-left-tagline">Premium Virtual Casino</div>
         </div>
         <ul class="auth-feature-list">
-            <li><div class="auth-feature-icon">🃏</div>Blackjack, Crash, Dice & more</li>
-            <li><div class="auth-feature-icon">🏆</div>Global leaderboards & rankings</li>
-            <li><div class="auth-feature-icon">⚡</div>Claim free rewards every 5 minutes</li>
-            <li><div class="auth-feature-icon">💬</div>Live global chat with players</li>
+            <li><div class="auth-feature-icon">🃏</div>10+ casino games to play</li>
+            <li><div class="auth-feature-icon">🏆</div>Global leaderboards &amp; rankings</li>
+            <li><div class="auth-feature-icon">⚡</div>Free rewards every 5 minutes</li>
+            <li><div class="auth-feature-icon">💬</div>Live chat with other players</li>
+            <li><div class="auth-feature-icon">🎁</div>Giveaways every 2 hours</li>
         </ul>
     </div>
     <div class="auth-right">
         <div class="auth-card">
-            <p class="auth-right-title">Welcome back</p>
-            <p class="auth-right-sub">Sign in or create a new account to start playing.</p>
-            <div class="input-group"><label>Username</label><input type="text" id="authUsername" placeholder="Enter your username"></div>
-            <div class="input-group"><label>Password</label><input type="password" id="authPassword" placeholder="••••••••"></div>
-            <button class="auth-btn" onclick="handleAuth()">Access Dashboard</button>
-            <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">New player bonus</span><div class="auth-divider-line"></div></div>
-            <div class="auth-bonus-badge"><div class="badge-dot"></div>New accounts receive <strong>&nbsp;$100.00&nbsp;</strong> instantly — no deposit needed.</div>
+            <div class="auth-logo-mobile">UNIVERSAL-<span>BETS</span></div>
+            <!-- Tab switcher -->
+            <div class="auth-tabs">
+                <button class="auth-tab active" id="authTabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
+                <button class="auth-tab" id="authTabRegister" onclick="switchAuthTab('register')">Create Account</button>
+            </div>
+
+            <!-- SIGN IN PANEL -->
+            <div class="auth-form-panel active" id="authPanelSignin">
+                <div class="auth-form-title">Welcome back</div>
+                <div class="auth-form-sub">Sign in to your account to continue playing.</div>
+                <div class="input-group"><label>Username</label><input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')handleAuth()"></div>
+                <div class="input-group"><label>Password</label><input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')handleAuth()"></div>
+                <div class="auth-error" id="authError"></div>
+                <button class="auth-btn" id="authBtn" onclick="handleAuth()">Sign In</button>
+            </div>
+
+            <!-- REGISTER PANEL -->
+            <div class="auth-form-panel" id="authPanelRegister">
+                <div class="auth-form-title">Create your account</div>
+                <div class="auth-form-sub">New accounts start with <strong>$100.00</strong> free — no deposit needed.</div>
+                <div class="input-group"><label>Choose a Username</label><input type="text" id="regUsername" placeholder="letters and numbers only" autocomplete="username" oninput="validateRegUsername()" onkeydown="if(event.key==='Enter')handleRegister()"></div>
+                <div class="auth-error" id="regUsernameError"></div>
+                <div class="input-group"><label>Choose a Password</label><input type="password" id="regPassword" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')handleRegister()"></div>
+                <div class="input-group"><label>Confirm Password</label><input type="password" id="regPasswordConfirm" placeholder="repeat your password" autocomplete="new-password" onkeydown="if(event.key==='Enter')handleRegister()"></div>
+                <div class="auth-error" id="regError"></div>
+                <button class="auth-btn" id="regBtn" onclick="handleRegister()">Create Account &amp; Play</button>
+                <div class="auth-bonus-row"><div class="badge-dot"></div>You'll receive <strong>&nbsp;$100.00&nbsp;</strong> instantly to start playing!</div>
+            </div>
         </div>
     </div>
 </div>
@@ -645,11 +758,22 @@
 
     <aside class="sidebar" id="mainSidebar">
 
-        <!-- Collapse toggle -->
-        <div class="sidebar-toggle">
-            <button class="sidebar-toggle-btn" onclick="toggleSidebar()" title="Collapse sidebar">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
+        <!-- Admin section — only visible after unlocking -->
+        <div id="adminSidebarSection" style="display:none;">
+            <div class="sidebar-section open" id="section-admin">
+                <div class="sidebar-section-header" onclick="toggleSection('admin')">
+                    <span style="font-size:13px;line-height:1;">👑</span>
+                    <span class="sidebar-section-label">Admin</span>
+                    <span class="sidebar-section-arrow">▶</span>
+                </div>
+                <div class="sidebar-section-body">
+                    <a class="side-link" onclick="openAdminPanel()" style="color:#ffc400;cursor:pointer;">
+                        <span class="side-link-icon">⚙️</span>
+                        <span class="side-link-text">Admin Panel</span>
+                    </a>
+                </div>
+            </div>
+            <div class="sidebar-divider"></div>
         </div>
 
         <!-- Pinned nav — always visible -->
@@ -657,6 +781,7 @@
             <a class="side-link active-link" id="link-news" onclick="switchTab('news')"><span class="side-link-icon">🏠</span><span class="side-link-text">Home</span></a>
             <a class="side-link" id="link-rankingsTab" onclick="switchTab('rankingsTab')"><span class="side-link-icon">🏆</span><span class="side-link-text">Leaderboard</span></a>
             <a class="side-link" id="link-giveawayTab" onclick="switchTab('giveawayTab')"><span class="side-link-icon">🎁</span><span class="side-link-text">Giveaway</span></a>
+            <a class="side-link" id="link-codesTab" onclick="switchTab('codesTab')"><span class="side-link-icon">🎟️</span><span class="side-link-text">Redeem Code</span></a>
         </div>
 
         <div class="sidebar-divider"></div>
@@ -693,6 +818,8 @@
                 <a class="side-link" href="roulette.html"><span class="side-link-icon">🛞</span><span class="side-link-text">Roulette</span></a>
             </div>
         </div>
+
+
 
     </aside>
 
@@ -775,6 +902,59 @@
                 <div class="gw-empty-msg">No one has entered yet — be first!</div>
             </div>
         </div>
+
+        <!-- ── CODES TAB ── -->
+        <div id="codesTab" class="tab-content" style="display:none;">
+            <div class="lb-header" style="margin-bottom:20px;">
+                <div><p class="lb-eyebrow">Free Rewards</p><h2 class="lb-title">Redeem a Code</h2></div>
+            </div>
+
+            <!-- Redeem input card -->
+            <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:28px 28px 24px;margin-bottom:24px;">
+                <p class="section-label" style="margin-bottom:14px;">Enter your code</p>
+                <div style="display:flex;gap:10px;margin-bottom:10px;">
+                    <div style="flex:1;display:flex;align-items:center;background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;transition:.2s;" id="codeInputWrap">
+                        <span style="padding:0 14px;color:var(--primary-blue);font-size:18px;flex-shrink:0;">🎟️</span>
+                        <input id="codeInput" type="text" placeholder="Enter code here…" maxlength="20"
+                            style="flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px;font-weight:700;font-family:var(--font-condensed);letter-spacing:2px;padding:13px 0;text-transform:uppercase;"
+                            oninput="this.value=this.value.toUpperCase()"
+                            onkeydown="if(event.key==='Enter')redeemCode()">
+                    </div>
+                    <button onclick="redeemCode()" style="background:var(--primary-blue);color:#fff;border:none;border-radius:10px;padding:0 24px;font-size:13px;font-weight:800;cursor:pointer;font-family:var(--font-main);text-transform:uppercase;letter-spacing:1px;transition:.2s;white-space:nowrap;"
+                        onmouseover="this.style.background='#006ae6'" onmouseout="this.style.background='var(--primary-blue)'">Apply Code</button>
+                </div>
+                <div class="codes-msg" id="codesMsg" style="font-size:13px;min-height:18px;padding:0;margin-top:4px;"></div>
+            </div>
+
+            <!-- How to get codes -->
+            <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:24px 28px;">
+                <p class="section-label" style="margin-bottom:16px;">How to get codes</p>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:10px;">
+                        <span style="font-size:22px;flex-shrink:0;">🔔</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Check your Alerts</div>
+                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Codes are sent out through the Alerts tab on the right panel. Keep an eye out for admin announcements!</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(0,231,1,.05);border:1px solid rgba(0,231,1,.12);border-radius:10px;">
+                        <span style="font-size:22px;flex-shrink:0;">🎁</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Events &amp; Giveaways</div>
+                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Special codes are dropped during events, giveaways, and server milestones. Stay active to catch them!</div>
+                        </div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,196,0,.05);border:1px solid rgba(255,196,0,.12);border-radius:10px;">
+                        <span style="font-size:22px;flex-shrink:0;">⚡</span>
+                        <div>
+                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Each code is one-time use</div>
+                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Every code can only be redeemed once per account. Codes may also have a limited number of total uses across all players.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <aside class="right-chat-panel" id="chatPanel">
@@ -886,6 +1066,77 @@
     </aside>
 </div>
 
+<!-- Admin Modal -->
+<div id="adminModal" onclick="if(event.target===this)closeAdminPanel()">
+    <div class="admin-card">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-header-crown">👑</div>
+            <div class="admin-header-titles">
+                <div class="admin-header-eyebrow">fusionzzz</div>
+                <div class="admin-header-title">Admin Panel</div>
+            </div>
+            <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+        </div>
+
+        <!-- Manage Balance -->
+        <div class="admin-section">
+            <div class="admin-section-title">Balance</div>
+            <div class="admin-row">
+                <input class="admin-input" id="adminBalUser" placeholder="Username" type="text" autocomplete="off">
+                <input class="admin-input" id="adminBalAmt" placeholder="Amount" type="number" min="0" step="0.01" style="max-width:120px;">
+            </div>
+            <div class="admin-row" style="margin-top:0;">
+                <button class="admin-btn green" onclick="adminGiveMoney()" style="flex:1;">Give Money</button>
+                <button class="admin-btn red" onclick="adminRemoveMoney()" style="flex:1;">Remove Money</button>
+            </div>
+            <div class="admin-feedback" id="adminBalFeedback"></div>
+        </div>
+
+        <!-- Broadcast Alert -->
+        <div class="admin-section">
+            <div class="admin-section-title">Broadcast Alert</div>
+            <div class="admin-row">
+                <input class="admin-input" id="adminAlertTitle" placeholder="Alert title…" type="text" autocomplete="off">
+            </div>
+            <textarea class="admin-textarea" id="adminAlertMsg" placeholder="Write a message to send to all players…"></textarea>
+            <div class="admin-row" style="margin-top:8px;">
+                <button class="admin-btn gold" onclick="adminBroadcastAlert()" style="flex:1;">📢 Send to All Players</button>
+            </div>
+            <div class="admin-feedback" id="adminAlertFeedback"></div>
+        </div>
+
+
+        <!-- Create Code -->
+        <div class="admin-section">
+            <div class="admin-section-title">Create Reward Code</div>
+            <div class="admin-row">
+                <input class="admin-input" id="adminCodeName" placeholder="Code name (e.g. SUMMER25)" type="text" oninput="this.value=this.value.toUpperCase()" autocomplete="off">
+            </div>
+            <div class="admin-row">
+                <input class="admin-input" id="adminCodeAmt" placeholder="Reward ($)" type="number" min="1" value="100">
+                <input class="admin-input" id="adminCodeUses" placeholder="Max uses" type="number" min="1">
+            </div>
+            <div class="admin-row">
+                <button class="admin-btn green" onclick="adminCreateCode()" style="flex:1;">Create Code</button>
+                <button class="admin-btn ghost" onclick="adminLoadCodes()" style="flex:1;">View Active Codes</button>
+            </div>
+            <div class="admin-feedback" id="adminCodeFeedback"></div>
+            <div id="adminCodeList" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;"></div>
+        </div>
+
+        <!-- Remove Account -->
+        <div class="admin-section">
+            <div class="admin-section-title">Remove Account</div>
+            <div class="admin-row">
+                <input class="admin-input" id="adminDelUser" placeholder="Username to delete" type="text" autocomplete="off">
+                <button class="admin-btn red" onclick="adminDeleteAccount()">Delete</button>
+            </div>
+            <div class="admin-feedback" id="adminDelFeedback"></div>
+        </div>
+    </div>
+</div>
+
 <!-- Profile modal -->
 <div id="profileModal" style="display:none;" onclick="if(event.target===this)closeProfile()">
     <div class="profile-card" id="profileCard">
@@ -901,7 +1152,12 @@
             <p class="avatar-upload-hint">JPG, PNG, GIF — max 2MB</p>
         </div>
         <div class="profile-name" id="profileName">—</div>
+        <div class="owner-badge" id="profileOwnerBadge" style="display:none;">👑 Owner</div>
         <div class="profile-you-tag" id="profileYouTag" style="display:none;">That's you!</div>
+        <div class="profile-status" id="profileStatus" style="display:none;">
+            <div class="status-dot" id="profileStatusDot"></div>
+            <span class="status-label" id="profileStatusLabel"></span>
+        </div>
         <div class="profile-stats">
             <div class="profile-stat"><div class="profile-stat-val" id="profileBal">—</div><div class="profile-stat-label">Balance</div></div>
             <div class="profile-stat-divider"></div>
@@ -927,7 +1183,7 @@
     <button class="mob-nav-btn active" id="mob-news" onclick="mobileSwitchTab('news')"><span class="mob-icon">🏠</span>Home</button>
     <button class="mob-nav-btn" id="mob-rankingsTab" onclick="mobileSwitchTab('rankingsTab')"><span class="mob-icon">🏆</span>Board</button>
     <button class="mob-nav-btn" id="mob-giveawayTab" onclick="mobileSwitchTab('giveawayTab')"><span class="mob-icon">🎁</span>Giveaway</button>
-    <a class="mob-nav-btn" href="blackjack.html"><span class="mob-icon">🃏</span>Games</a>
+    <button class="mob-nav-btn" id="mob-codesTab" onclick="mobileSwitchTab('codesTab')"><span class="mob-icon">🎟️</span>Codes</button>
 </nav>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -951,26 +1207,99 @@
     function cleanMoney(val) { return Math.round(val * 100) / 100; }
     function fmt$(val) { return parseFloat(val || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
 
+    // ── PAGE LOADER ──────────────────────────────────────────────────────────
+    function showPageLoader(txt) {
+        const l = document.getElementById('pageLoader');
+        const bar = document.getElementById('loaderBar');
+        const t = document.getElementById('loaderTxt');
+        if (l) l.style.display = 'flex';
+        if (t) t.textContent = txt || 'Loading…';
+        if (bar) { bar.style.width = '0%'; setTimeout(() => bar.style.width = '60%', 50); }
+    }
+    function hidePageLoader() {
+        const l = document.getElementById('pageLoader');
+        const bar = document.getElementById('loaderBar');
+        if (bar) bar.style.width = '100%';
+        setTimeout(() => { if (l) { l.classList.add('fade-out'); setTimeout(() => { l.style.display = 'none'; l.classList.remove('fade-out'); }, 400); } }, 300);
+    }
+
+    // ── AUTH TAB SWITCH ───────────────────────────────────────────────────────
+    function switchAuthTab(tab) {
+        document.getElementById('authTabSignIn').classList.toggle('active', tab === 'signin');
+        document.getElementById('authTabRegister').classList.toggle('active', tab === 'register');
+        document.getElementById('authPanelSignin').classList.toggle('active', tab === 'signin');
+        document.getElementById('authPanelRegister').classList.toggle('active', tab === 'register');
+        document.getElementById('authError').textContent = '';
+        document.getElementById('regError').textContent = '';
+    }
+
+    function validateRegUsername() {
+        const raw = document.getElementById('regUsername').value;
+        const clean = raw.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const errEl = document.getElementById('regUsernameError');
+        if (raw !== clean) errEl.textContent = '⚠ Only letters and numbers allowed.';
+        else if (clean.length > 0 && clean.length < 3) errEl.textContent = '⚠ Must be at least 3 characters.';
+        else errEl.textContent = '';
+    }
+
+    function setAuthLoading(btnId, loading) {
+        const btn = document.getElementById(btnId);
+        if (!btn) return;
+        if (loading) {
+            btn.disabled = true;
+            btn.innerHTML = '<div class="auth-btn-spinner"></div> Loading…';
+        } else {
+            btn.disabled = false;
+            btn.innerHTML = btnId === 'authBtn' ? 'Sign In' : 'Create Account &amp; Play';
+        }
+    }
+
     function handleAuth() {
         const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g, "");
         const pass = document.getElementById('authPassword').value.trim();
-        if (name.length < 3) return alert("Username too short.");
+        const errEl = document.getElementById('authError');
+        errEl.textContent = '';
+        if (name.length < 3) { errEl.textContent = '⚠ Username must be at least 3 characters.'; return; }
+        if (!pass) { errEl.textContent = '⚠ Please enter your password.'; return; }
+        setAuthLoading('authBtn', true);
         db.ref('users/' + name).once('value').then((snap) => {
             if (snap.exists()) {
                 const userData = snap.val();
-                if (userData.password === pass) finalizeLogin(userData);
-                else alert("Incorrect password.");
+                if (userData.password === pass) { finalizeLogin(userData); }
+                else { errEl.textContent = '⚠ Incorrect password. Please try again.'; setAuthLoading('authBtn', false); }
+            } else {
+                errEl.textContent = '⚠ No account found. Try creating one instead!';
+                setAuthLoading('authBtn', false);
+            }
+        }).catch(() => { errEl.textContent = '⚠ Connection error. Please try again.'; setAuthLoading('authBtn', false); });
+    }
+
+    function handleRegister() {
+        const rawName = document.getElementById('regUsername').value.trim();
+        const name = rawName.toLowerCase().replace(/[^a-z0-9]/g, '');
+        const pass = document.getElementById('regPassword').value.trim();
+        const confirm = document.getElementById('regPasswordConfirm').value.trim();
+        const errEl = document.getElementById('regError');
+        errEl.textContent = '';
+        if (name.length < 3) { errEl.textContent = '⚠ Username must be at least 3 characters.'; return; }
+        if (pass.length < 4) { errEl.textContent = '⚠ Password must be at least 4 characters.'; return; }
+        if (pass !== confirm) { errEl.textContent = '⚠ Passwords do not match.'; return; }
+        setAuthLoading('regBtn', true);
+        db.ref('users/' + name).once('value').then((snap) => {
+            if (snap.exists()) {
+                errEl.textContent = '⚠ That username is already taken. Try another.';
+                setAuthLoading('regBtn', false);
             } else {
                 const newUser = { name, password: pass, balance: 100.00, lastBonus: 0, createdAt: Date.now() };
                 db.ref('users/' + name).set(newUser).then(() => finalizeLogin(newUser));
             }
-        });
+        }).catch(() => { errEl.textContent = '⚠ Connection error. Please try again.'; setAuthLoading('regBtn', false); });
     }
 
     // ── SERVER OFFLINE FLAG ─────────────────────────────────────────────
     // Set to true to put the site in offline mode.
     // Chat, alerts and balance still work. Everything else is blocked.
-    const SERVERS_OFFLINE = true;
+    const SERVERS_OFFLINE = false;
 
     function applyOfflineMode() {
         const overlay = document.getElementById('offlineOverlay');
@@ -991,18 +1320,32 @@
     }
 
     function finalizeLogin(user) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        document.getElementById('authContainer').style.display = 'none';
-        document.getElementById('mainNav').style.display = 'flex';
-        document.getElementById('mainLayout').style.display = 'flex';
-        currentLocalUser = user;
-        startLiveSync();
-        initGlobalFeed();
-        initGlobalChat();
-        initGiveaway();
-        initNotifications();
-        updateNavAvatar();
-        applyOfflineMode();
+        showPageLoader('Loading dashboard…');
+        setTimeout(() => {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('mainNav').style.display = 'flex';
+            document.getElementById('mainLayout').style.display = 'flex';
+            currentLocalUser = user;
+            startLiveSync();
+            initGlobalFeed();
+            initGlobalChat();
+            initGiveaway();
+            initNotifications();
+            updateNavAvatar();
+            applyOfflineMode();
+            initPresence();
+            initAdminAlerts();
+            hidePageLoader();
+        }, 400);
+    }
+
+    function initPresence() {
+        const presRef = db.ref('presence/' + currentLocalUser.name);
+        presRef.set({ online: true, lastSeen: Date.now() });
+        presRef.onDisconnect().set({ online: false, lastSeen: Date.now() });
+        // Keep alive heartbeat
+        setInterval(() => presRef.update({ lastSeen: Date.now() }), 30000);
     }
 
     const BONUS_INTERVAL = 5 * 60 * 1000;
@@ -1121,10 +1464,23 @@
         });
     }
 
+    const BLOCKED_WORDS = ['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w=>w.toLowerCase());
+    function containsProfanity(text) {
+        const t = text.toLowerCase().replace(/[^a-z0-9 ]/g,' ');
+        return BLOCKED_WORDS.some(w => new RegExp('\\b'+w+'\\b').test(t) || t.includes(w));
+    }
+
     function sendChatMessage() {
         const input = document.getElementById('chatInput');
         const text = input.value.trim().slice(0, 50);
         if (!text) return;
+        if (containsProfanity(text)) {
+            input.style.borderColor = '#ef4444';
+            input.value = '';
+            document.getElementById('charCounter').textContent = '0 / 50';
+            setTimeout(() => input.style.borderColor = '', 1200);
+            return;
+        }
         db.ref('global_chat').push({ user: currentLocalUser.name, text, ts: Date.now() });
         input.value = '';
         document.getElementById('charCounter').textContent = '0 / 50';
@@ -1329,6 +1685,7 @@
         if (mobActive) mobActive.classList.add('active');
         if (tabId === 'rankingsTab') loadLeaderboard();
         if (tabId === 'giveawayTab' && typeof initGiveaway === 'function' && !window._gwInited) { window._gwInited = true; initGiveaway(); }
+        if (tabId === 'codesTab') setTimeout(() => { const ci = document.getElementById('codeInput'); if (ci) ci.focus(); }, 80);
     }
 
     function mobileSwitchTab(tabId) {
@@ -1338,6 +1695,9 @@
     }
 
     function loadLeaderboard() {
+        // Show skeleton
+        document.getElementById('leaderboardBody').innerHTML = Array.from({length:6},()=>'<tr><td colspan="3"><div class="skeleton-row"></div></td></tr>').join('');
+        document.getElementById('lbPodium').innerHTML = Array.from({length:3},()=>'<div style="flex:1;max-width:200px;"><div class="skeleton-row" style="height:120px;border-radius:12px;"></div></div>').join('');
         const medals = ['🥇', '🥈', '🥉'];
         const rankLabels = ['1st Place', '2nd Place', '3rd Place'];
         db.ref('users').once('value', s => {
@@ -1382,10 +1742,16 @@
         document.getElementById('profileYouTag').style.display = 'none';
         document.getElementById('profileEditAvatarBtn').style.display = 'none';
         document.getElementById('profileAvatarPicker').style.display = 'none';
+        document.getElementById('profileOwnerBadge').style.display = 'none';
+        document.getElementById('profileStatus').style.display = 'none';
 
-        db.ref('users').once('value', snap => {
+        // Load user data and presence in parallel
+        Promise.all([
+            db.ref('users').once('value'),
+            db.ref('presence/' + name).once('value')
+        ]).then(([usersSnap, presSnap]) => {
             const allUsers = [];
-            snap.forEach(c => { allUsers.push(c.val()); });
+            usersSnap.forEach(c => { allUsers.push(c.val()); });
             allUsers.sort((a, b) => b.balance - a.balance);
             const rank = allUsers.findIndex(u => u.name === name) + 1;
             const user = allUsers.find(u => u.name === name);
@@ -1395,6 +1761,23 @@
             document.getElementById('profileName').textContent = user.name.toUpperCase();
             document.getElementById('profileBal').textContent = '$' + fmt$(user.balance);
             document.getElementById('profileRank').textContent = rank > 0 ? '#' + rank : '—';
+
+            // Owner badge
+            if (user.name === 'fusionzzz') {
+                document.getElementById('profileOwnerBadge').style.display = 'inline-flex';
+            }
+
+            // Online status
+            const presData = presSnap.exists() ? presSnap.val() : null;
+            const isOnline = presData && presData.online === true && (Date.now() - (presData.lastSeen||0)) < 90000;
+            const statusEl = document.getElementById('profileStatus');
+            const dotEl = document.getElementById('profileStatusDot');
+            const lblEl = document.getElementById('profileStatusLabel');
+            statusEl.style.display = 'flex';
+            dotEl.className = 'status-dot ' + (isOnline ? 'online' : 'offline');
+            lblEl.className = 'status-label ' + (isOnline ? 'online' : 'offline');
+            lblEl.textContent = isOnline ? 'Online' : 'Offline';
+
             if (user.name === currentLocalUser.name) {
                 document.getElementById('profileYouTag').style.display = 'inline-block';
                 document.getElementById('profileEditAvatarBtn').style.display = 'flex';
@@ -1526,11 +1909,7 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfile(); });
 
     // ── SIDEBAR COLLAPSE + SECTIONS ─────────────────────────────────────────
-    function toggleSidebar() {
-        const sb = document.getElementById('mainSidebar');
-        sb.classList.toggle('collapsed');
-        localStorage.setItem('sidebarCollapsed', sb.classList.contains('collapsed') ? '1' : '0');
-    }
+
     function toggleSection(id) {
         const sec = document.getElementById('section-' + id);
         if (!sec) return;
@@ -1540,7 +1919,7 @@
     // Restore sidebar state
     (function() {
         const sb = document.getElementById('mainSidebar');
-        if (localStorage.getItem('sidebarCollapsed') === '1') sb.classList.add('collapsed');
+
         ['live','games'].forEach(id => {
             const sec = document.getElementById('section-' + id);
             if (!sec) return;
@@ -1549,13 +1928,45 @@
         });
     })();
 
-    const cached = localStorage.getItem('currentUser');
-    if (cached) {
-        const user = JSON.parse(cached);
-        db.ref('users/' + user.name).once('value', snap => {
-            if (snap.exists() && snap.val().password === user.password) finalizeLogin(snap.val());
-        });
-    }
+    // ── INITIAL LOAD ─────────────────────────────────────────────────────────
+    (function initLoad() {
+        const loaderBar = document.getElementById('loaderBar');
+        const loaderTxt = document.getElementById('loaderTxt');
+        if (loaderBar) loaderBar.style.width = '30%';
+
+        const cached = localStorage.getItem('currentUser');
+        if (cached) {
+            try {
+                const user = JSON.parse(cached);
+                if (loaderTxt) loaderTxt.textContent = 'Signing in…';
+                if (loaderBar) loaderBar.style.width = '55%';
+                db.ref('users/' + user.name).once('value', snap => {
+                    if (snap.exists() && snap.val().password === user.password) {
+                        if (loaderBar) loaderBar.style.width = '85%';
+                        finalizeLogin(snap.val());
+                    } else {
+                        // Cached user invalid — show auth
+                        localStorage.removeItem('currentUser');
+                        if (loaderBar) loaderBar.style.width = '100%';
+                        setTimeout(() => {
+                            document.getElementById('pageLoader').style.display = 'none';
+                            document.getElementById('authContainer').style.display = 'flex';
+                        }, 300);
+                    }
+                });
+            } catch(e) {
+                document.getElementById('pageLoader').style.display = 'none';
+                document.getElementById('authContainer').style.display = 'flex';
+            }
+        } else {
+            // No cached user — show auth after brief animation
+            if (loaderBar) loaderBar.style.width = '100%';
+            setTimeout(() => {
+                document.getElementById('pageLoader').style.display = 'none';
+                document.getElementById('authContainer').style.display = 'flex';
+            }, 600);
+        }
+    })();
 
     // ── GIVEAWAY — changed to 2 hours ────────────────────────────────────────
     const GW_INTERVAL = 2 * 60 * 60 * 1000; // 2 hours
@@ -1687,6 +2098,176 @@
         amtEl.textContent = `+$${fmt$(GW_PRIZE)}`;
         card.classList.remove('flash'); void card.offsetWidth; card.classList.add('flash');
     }
+
+    // ── CODES ─────────────────────────────────────────────────────────────────
+    const ADMIN_CODE = 'iamthegoat';
+    let adminUnlocked = false;
+
+    function setCodesMsg(msg, type) {
+        const el = document.getElementById('codesMsg');
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'codes-msg ' + (type || '');
+        if (msg) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+    }
+
+    async function redeemCode() {
+        const raw = document.getElementById('codeInput').value.trim().toUpperCase();
+        document.getElementById('codeInput').value = '';
+        if (!raw) return;
+        if (!currentLocalUser) return;
+
+        // Admin code — unlocks panel for session
+        if (raw === ADMIN_CODE.toUpperCase()) {
+            adminUnlocked = true;
+            document.getElementById('adminSidebarSection').style.display = 'block';
+            setCodesMsg('👑 Admin panel unlocked!', 'ok');
+            return;
+        }
+
+        // Check if already redeemed
+        const redeemedSnap = await db.ref('redeemed_codes/' + currentLocalUser.name + '/' + raw).once('value');
+        if (redeemedSnap.exists()) { setCodesMsg('Already redeemed this code.', 'err'); return; }
+
+        // Fetch code from Firebase
+        const codeSnap = await db.ref('codes/' + raw).once('value');
+        if (!codeSnap.exists()) { setCodesMsg('Invalid or expired code.', 'err'); return; }
+        const code = codeSnap.val();
+        if (!code.active) { setCodesMsg('This code has expired.', 'err'); return; }
+
+        // Check uses
+        const uses = code.uses || 0;
+        const maxUses = code.maxUses || 999999;
+        if (uses >= maxUses) { setCodesMsg('This code has reached its limit.', 'err'); return; }
+
+        const reward = code.reward || 0;
+        if (reward <= 0) { setCodesMsg('Invalid code reward.', 'err'); return; }
+
+        // Atomic: increment use count, give money, mark redeemed
+        await db.ref('codes/' + raw + '/uses').transaction(n => (n || 0) + 1);
+        await db.ref('users/' + currentLocalUser.name).transaction(u => {
+            if (!u) return u;
+            u.balance = cleanMoney((u.balance || 0) + reward);
+            return u;
+        });
+        await db.ref('redeemed_codes/' + currentLocalUser.name + '/' + raw).set({ ts: Date.now(), reward });
+        setCodesMsg('🎉 Code redeemed! +$' + fmt$(reward), 'ok');
+        addNotification('money', '🎁 Code Redeemed!', 'You received $' + fmt$(reward) + ' from code ' + raw + '.');
+    }
+
+    // ── ADMIN PANEL ───────────────────────────────────────────────────────────
+    function openAdminPanel() {
+        if (!adminUnlocked) return;
+        document.getElementById('adminModal').classList.add('show');
+    }
+    function closeAdminPanel() {
+        document.getElementById('adminModal').classList.remove('show');
+    }
+
+    function adminFeedback(id, msg, type) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'admin-feedback ' + (type || '');
+        if (msg) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+    }
+
+    async function adminGiveMoney() {
+        const user = document.getElementById('adminBalUser').value.trim().toLowerCase();
+        const amt = parseFloat(document.getElementById('adminBalAmt').value);
+        if (!user || isNaN(amt) || amt <= 0) { adminFeedback('adminBalFeedback', '⚠ Enter a username and amount.', 'err'); return; }
+        const snap = await db.ref('users/' + user).once('value');
+        if (!snap.exists()) { adminFeedback('adminBalFeedback', '⚠ User not found.', 'err'); return; }
+        await db.ref('users/' + user).transaction(u => { if (!u) return u; u.balance = cleanMoney((u.balance || 0) + amt); return u; });
+        adminFeedback('adminBalFeedback', '✓ Gave $' + fmt$(amt) + ' to ' + user + '.', 'ok');
+        // Push alert to that user
+        db.ref('admin_alerts').push({ title: 'Balance Updated', body: 'An admin added $' + fmt$(amt) + ' to your account.', target: user, ts: Date.now() });
+    }
+
+    async function adminRemoveMoney() {
+        const user = document.getElementById('adminBalUser').value.trim().toLowerCase();
+        const amt = parseFloat(document.getElementById('adminBalAmt').value);
+        if (!user || isNaN(amt) || amt <= 0) { adminFeedback('adminBalFeedback', '⚠ Enter a username and amount.', 'err'); return; }
+        const snap = await db.ref('users/' + user).once('value');
+        if (!snap.exists()) { adminFeedback('adminBalFeedback', '⚠ User not found.', 'err'); return; }
+        await db.ref('users/' + user).transaction(u => { if (!u) return u; u.balance = Math.max(0, cleanMoney((u.balance || 0) - amt)); return u; });
+        adminFeedback('adminBalFeedback', '✓ Removed $' + fmt$(amt) + ' from ' + user + '.', 'ok');
+    }
+
+    async function adminBroadcastAlert() {
+        const title = document.getElementById('adminAlertTitle').value.trim();
+        const body  = document.getElementById('adminAlertMsg').value.trim();
+        if (!title || !body) { adminFeedback('adminAlertFeedback', '⚠ Enter a title and message.', 'err'); return; }
+        await db.ref('admin_alerts').push({ title, body, target: '__all__', ts: Date.now(), sender: currentLocalUser.name });
+        document.getElementById('adminAlertTitle').value = '';
+        document.getElementById('adminAlertMsg').value = '';
+        adminFeedback('adminAlertFeedback', '✓ Alert sent to all players.', 'ok');
+    }
+
+    async function adminCreateCode() {
+        const name = document.getElementById('adminCodeName').value.trim().toUpperCase();
+        const reward = parseFloat(document.getElementById('adminCodeAmt').value);
+        const maxUses = parseInt(document.getElementById('adminCodeUses').value) || 100;
+        if (!name || isNaN(reward) || reward <= 0) { adminFeedback('adminCodeFeedback', '⚠ Enter code name and reward.', 'err'); return; }
+        await db.ref('codes/' + name).set({ reward, maxUses, uses: 0, active: true, createdAt: Date.now(), createdBy: currentLocalUser.name });
+        document.getElementById('adminCodeName').value = '';
+        document.getElementById('adminCodeAmt').value = '';
+        document.getElementById('adminCodeUses').value = '';
+        adminFeedback('adminCodeFeedback', '✓ Code ' + name + ' created ($' + fmt$(reward) + ', ' + maxUses + ' uses).', 'ok');
+        adminLoadCodes();
+    }
+
+    function adminLoadCodes() {
+        const listEl = document.getElementById('adminCodeList');
+        listEl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">Loading…</div>';
+        db.ref('codes').once('value', snap => {
+            if (!snap.exists()) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">No codes yet.</div>'; return; }
+            const rows = [];
+            snap.forEach(c => rows.push({ key: c.key, ...c.val() }));
+            listEl.innerHTML = rows.map(r => `
+                <div class="admin-code-row">
+                    <span class="admin-code-name">${r.key}</span>
+                    <span class="admin-code-reward">$${fmt$(r.reward)}</span>
+                    <span class="admin-code-uses">${r.uses||0}/${r.maxUses} used</span>
+                    <button class="admin-msg-del" onclick="adminDeactivateCode('${r.key}')" title="Deactivate">🗑</button>
+                </div>`).join('');
+        });
+    }
+
+    function adminDeactivateCode(key) {
+        db.ref('codes/' + key + '/active').set(false).then(() => {
+            adminFeedback('adminCodeFeedback', '✓ Code ' + key + ' deactivated.', 'ok');
+            adminLoadCodes();
+        });
+    }
+
+    async function adminDeleteAccount() {
+        const user = document.getElementById('adminDelUser').value.trim().toLowerCase();
+        if (!user) { adminFeedback('adminDelFeedback', '⚠ Enter a username.', 'err'); return; }
+        if (user === 'fusionzzz') { adminFeedback('adminDelFeedback', '⚠ Cannot delete owner account.', 'err'); return; }
+        if (user === currentLocalUser.name) { adminFeedback('adminDelFeedback', '⚠ Cannot delete yourself.', 'err'); return; }
+        const snap = await db.ref('users/' + user).once('value');
+        if (!snap.exists()) { adminFeedback('adminDelFeedback', '⚠ User not found.', 'err'); return; }
+        await db.ref('users/' + user).remove();
+        await db.ref('presence/' + user).remove();
+        adminFeedback('adminDelFeedback', '✓ Account ' + user + ' deleted.', 'ok');
+        document.getElementById('adminDelUser').value = '';
+    }
+
+    // ── LISTEN FOR ADMIN ALERTS ───────────────────────────────────────────────
+    function initAdminAlerts() {
+        let _lastAlertTs = Date.now();
+        db.ref('admin_alerts').orderByChild('ts').startAt(_lastAlertTs).on('child_added', snap => {
+            const alert = snap.val();
+            if (!alert || !alert.ts || alert.ts <= _lastAlertTs - 1000) return;
+            _lastAlertTs = alert.ts;
+            const isForMe = alert.target === '__all__' || alert.target === currentLocalUser.name;
+            if (!isForMe) return;
+            addNotification('giveaway', '📢 ' + (alert.title || 'Admin Alert'), alert.body || '');
+        });
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAdminPanel(); } });
 </script>
 </body>
 </html>
