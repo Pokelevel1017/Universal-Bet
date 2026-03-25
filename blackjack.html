@@ -554,7 +554,49 @@
     function getBalance() { return currentUser ? cleanMoney(currentUser.balance) : 0; }
 
     /* ════════════════════════════════════════════════
-       PAGE LOADER
+       WEBSITE THEME — mirrors index.html shop themes
+    ════════════════════════════════════════════════ */
+    const ALL_WEBSITE_THEMES = [
+        { id: 'theme_ocean',    bg: '#061a2e', accent: '#00c4ff' },
+        { id: 'theme_ember',    bg: '#1a0805', accent: '#ff4c0c' },
+        { id: 'theme_midnight', bg: '#0c0820', accent: '#7c3aed' },
+        { id: 'theme_neon',     bg: '#050f0a', accent: '#00ff87' },
+        { id: 'theme_gold',     bg: '#100e00', accent: '#f59e0b' },
+        { id: 'theme_arctic',   bg: '#08101a', accent: '#93c5fd' },
+        { id: 'theme_rose',     bg: '#1a080f', accent: '#f472b6' },
+        { id: 'theme_mint',     bg: '#061510', accent: '#34d399' },
+    ];
+
+    function adjustColor(hex, amount) {
+        const h = hex.replace('#', '');
+        const r = Math.min(255, parseInt(h.substr(0,2), 16) + amount);
+        const g = Math.min(255, parseInt(h.substr(2,2), 16) + amount);
+        const b = Math.min(255, parseInt(h.substr(4,2), 16) + amount);
+        return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+    }
+
+    function applyUserTheme() {
+        if (!currentUser || !currentUser.websiteTheme) {
+            document.documentElement.style.removeProperty('--bg-body');
+            document.documentElement.style.removeProperty('--bg-sidebar');
+            document.documentElement.style.removeProperty('--bg-card');
+            document.documentElement.style.removeProperty('--bg-chat');
+            document.documentElement.style.removeProperty('--bg-header');
+            document.documentElement.style.removeProperty('--primary-blue');
+            return;
+        }
+        const theme = ALL_WEBSITE_THEMES.find(t => t.id === currentUser.websiteTheme);
+        if (!theme) return;
+        const root = document.documentElement;
+        root.style.setProperty('--bg-body',    theme.bg);
+        root.style.setProperty('--bg-sidebar', adjustColor(theme.bg, 10));
+        root.style.setProperty('--bg-card',    adjustColor(theme.bg, 18));
+        root.style.setProperty('--bg-chat',    adjustColor(theme.bg, 8));
+        root.style.setProperty('--bg-header',  adjustColor(theme.bg, 10));
+        root.style.setProperty('--primary-blue', theme.accent);
+    }
+
+    /* ════════════════════════════════════════════════
     ════════════════════════════════════════════════ */
     function showPageLoader(txt) {
         const l = document.getElementById('pageLoader');
@@ -629,13 +671,14 @@
         document.getElementById('mainWrapper').style.display = 'flex';
         document.getElementById('navBalWrap').style.display  = 'flex';
         db.ref('users/' + user.name).on('value', snap => {
-            if (snap.exists()) { currentUser = snap.val(); updateNavBal(); }
+            if (snap.exists()) { currentUser = snap.val(); updateNavBal(); applyUserTheme(); }
         });
         const presRef = db.ref('presence/' + user.name);
         presRef.set({ online: true, lastSeen: Date.now() });
         presRef.onDisconnect().set({ online: false, lastSeen: Date.now() });
         setInterval(() => presRef.update({ lastSeen: Date.now() }), 30000);
         freshShoe();
+        applyUserTheme();
         updateNavBal();
         setMsg('Place a bet and deal to start.');
         setActionPhase('bet');
