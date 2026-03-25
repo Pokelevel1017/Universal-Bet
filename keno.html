@@ -25,7 +25,6 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background: var(--bg-body); color: var(--text-main); font-family: var(--font-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* NAV */
         nav { background: var(--bg-header); padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; border-bottom: 1px solid var(--border-color); z-index: 100; flex-shrink: 0; }
         .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; text-decoration: none; }
         .logo span { color: var(--primary-blue); }
@@ -36,26 +35,35 @@
         .back-btn { display: flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); border-radius: 10px; padding: 7px 14px; color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; transition: 0.2s; }
         .back-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
 
-        /* AUTH */
         #authGate { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; padding: 60px 20px; text-align: center; }
         .auth-gate-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; margin-bottom: 8px; }
         .auth-gate-logo span { color: var(--primary-blue); }
         .auth-gate-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
         .auth-gate-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 32px; width: 100%; max-width: 340px; }
-        .auth-gate-card label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; text-align: left; }
-        .auth-gate-card input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); padding: 12px 14px; color: #fff; border-radius: 8px; outline: none; font-size: 14px; font-family: var(--font-main); margin-bottom: 14px; transition: 0.2s; }
+        .auth-tabs { display: flex; background: var(--bg-body); border-radius: 10px; padding: 3px; gap: 3px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .auth-tab { flex: 1; padding: 9px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 700; border-radius: 8px; cursor: pointer; transition: 0.2s; font-family: var(--font-main); }
+        .auth-tab.active { background: var(--primary-blue); color: #fff; box-shadow: 0 2px 10px rgba(0,122,255,0.3); }
+        .auth-tab:not(.active):hover { background: rgba(255,255,255,0.05); color: #fff; }
+        .auth-form-panel { display: none; } .auth-form-panel.active { display: block; }
+        .auth-form-title { font-size: 18px; font-weight: 800; margin: 0 0 4px; }
+        .auth-form-sub { color: var(--text-muted); font-size: 12px; margin: 0 0 16px; }
+        .auth-form-sub strong { color: var(--accent-green); }
+        .auth-gate-card label { display: block; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; text-align: left; margin-top: 12px; }
+        .auth-gate-card input { width: 100%; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); padding: 11px 14px; color: #fff; border-radius: 8px; outline: none; font-size: 14px; font-family: var(--font-main); margin-bottom: 4px; transition: 0.2s; }
         .auth-gate-card input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
-        .auth-gate-btn { width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-main); transition: 0.2s; }
+        .auth-error { font-size: 12px; color: #ef4444; min-height: 16px; margin-bottom: 8px; text-align: left; }
+        .auth-gate-btn { width: 100%; background: var(--primary-blue); color: #fff; border: none; padding: 13px; font-weight: 800; border-radius: 8px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-family: var(--font-main); transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 4px; }
         .auth-gate-btn:hover:not(:disabled) { background: #006ae6; }
-        .auth-gate-btn:disabled { opacity: 0.6; cursor: default; }
+        .auth-gate-btn:disabled { opacity: 0.5; cursor: default; }
+        .auth-btn-spinner { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff; border-radius: 50%; animation: kenoSpin 0.7s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes kenoSpin { to { transform: rotate(360deg); } }
+        .auth-bonus-row { display: flex; align-items: center; gap: 10px; background: rgba(0,231,1,0.06); border: 1px solid rgba(0,231,1,0.15); border-radius: 8px; padding: 10px 12px; font-size: 12px; color: #a0aabc; margin-top: 12px; }
+        .auth-bonus-row .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); flex-shrink: 0; }
+        .auth-bonus-row strong { color: var(--accent-green); }
 
-        /* MAIN */
         .main-wrapper { display: none; flex: 1; overflow: hidden; }
-
-        /* CENTER */
         .game-scroll { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; }
 
-        /* KENO BOARD */
         .keno-wrap { width: 100%; max-width: 620px; }
         .keno-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-bottom: 14px; }
         .keno-ball { aspect-ratio: 1; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-family: var(--font-condensed); font-size: 15px; font-weight: 700; cursor: pointer; user-select: none; transition: background 0.15s, border-color 0.15s, transform 0.12s; background: #1a2844; border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); position: relative; overflow: hidden; }
@@ -69,7 +77,6 @@
         @keyframes ballHit { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes ballReveal { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
 
-        /* Result bar */
         .result-bar { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .result-bar-text { font-size: 13px; color: var(--text-muted); }
         .result-bar-text strong { color: #fff; }
@@ -78,19 +85,17 @@
         .result-bar-payout.lose { color: var(--accent-red); }
         .result-bar-payout.idle { color: var(--text-muted); font-size: 13px; font-family: var(--font-main); font-weight: 400; }
 
-        /* Payout table */
         .payout-table { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; width: 100%; max-width: 620px; }
         .payout-table-header { padding: 10px 14px; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); display: grid; grid-template-columns: 1fr 1fr 1fr; background: rgba(0,0,0,0.15); }
         .payout-table-header span:last-child { text-align: right; }
         .payout-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 9px 14px; border-bottom: 1px solid var(--border-color); font-size: 13px; transition: background 0.15s; }
         .payout-row:last-child { border-bottom: none; }
-        .payout-row.active-row { background: rgba(0,122,255,0.06); }
+        .payout-row.active-row { background: rgba(0,122,255,0.08); border-left: 2px solid var(--primary-blue); }
         .payout-row .hits { color: var(--text-muted); }
         .payout-row .mult { color: var(--accent-gold); font-family: var(--font-condensed); font-weight: 700; font-size: 14px; }
         .payout-row .pay  { color: var(--accent-green); font-family: var(--font-condensed); font-weight: 700; font-size: 14px; text-align: right; }
-        .payout-row .pay.lose { color: var(--accent-red); }
+        .payout-row .pay.zero { color: var(--text-muted); }
 
-        /* RIGHT PANEL */
         .right-panel { width: 280px; flex-shrink: 0; background: var(--bg-chat); border-left: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; padding: 20px 16px; gap: 16px; }
         .rp-section-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; }
         .bet-manual-row { display: flex; align-items: center; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 10px; transition: 0.2s; }
@@ -101,7 +106,8 @@
         .bet-input::placeholder { color: rgba(255,255,255,0.2); font-weight: 400; font-size: 14px; }
         .chip-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 6px; margin-bottom: 10px; }
         .chip-btn { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px 4px; text-align: center; font-family: var(--font-condensed); font-size: 13px; font-weight: 700; cursor: pointer; color: var(--text-muted); transition: 0.15s; }
-        .chip-btn:hover { background: rgba(255,255,255,0.06); color: #fff; transform: translateY(-1px); }
+        .chip-btn:hover:not([disabled]) { background: rgba(255,255,255,0.06); color: #fff; transform: translateY(-1px); }
+        .chip-btn[disabled] { opacity: 0.35; cursor: not-allowed; transform: none !important; }
         .chip-btn.c-blue   { color: #60a5fa; border-color: rgba(59,130,246,0.2); }
         .chip-btn.c-green  { color: var(--accent-green); border-color: rgba(0,231,1,0.2); }
         .chip-btn.c-yellow { color: #f59e0b; border-color: rgba(245,158,11,0.2); }
@@ -109,7 +115,8 @@
         .chip-btn.c-purple { color: #c084fc; border-color: rgba(168,85,247,0.2); }
         .bet-mod-row { display: flex; gap: 6px; margin-bottom: 4px; }
         .bet-mod-btn { flex: 1; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; padding: 7px 4px; text-align: center; font-size: 12px; font-weight: 700; color: var(--text-muted); cursor: pointer; transition: 0.15s; font-family: var(--font-main); }
-        .bet-mod-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
+        .bet-mod-btn:hover:not([disabled]) { background: rgba(255,255,255,0.06); color: #fff; }
+        .bet-mod-btn[disabled] { opacity: 0.35; cursor: not-allowed; }
         .rp-divider { height: 1px; background: var(--border-color); }
         .pick-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
         .pick-count { font-family: var(--font-condensed); font-size: 22px; font-weight: 700; color: #fff; }
@@ -127,12 +134,10 @@
         .action-btn:active:not(:disabled) { transform: none; }
         .action-btn:disabled { opacity: 0.3; cursor: default; transform: none; filter: none; }
         .btn-play   { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 16px rgba(0,122,255,0.25); }
-        .btn-auto   { background: rgba(0,231,1,0.1); border: 1px solid rgba(0,231,1,0.25); color: var(--accent-green); }
-        .btn-clear  { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); }
         .btn-random { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.25); color: #f59e0b; }
+        .btn-clear  { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted); }
         .msg-log { font-size: 12px; color: var(--text-muted); text-align: center; background: rgba(0,0,0,0.15); border-radius: 8px; padding: 10px 12px; min-height: 38px; display: flex; align-items: center; justify-content: center; line-height: 1.4; }
 
-        /* ── NEW TABBED CHAT PANEL ── */
         .chat-panel { width: 300px; background: #0d1220; border-left: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; height: 100%; transition: width 0.3s ease; overflow: hidden; flex-shrink: 0; }
         .chat-panel.collapsed { width: 52px; }
         .rp-tab-bar { display: flex; align-items: stretch; border-bottom: 1px solid rgba(255,255,255,0.06); background: #0b0f1c; flex-shrink: 0; height: 48px; }
@@ -163,8 +168,7 @@
         .message { padding: 8px 12px 6px; border-radius: 10px; background: rgba(255,255,255,0.025); margin-bottom: 4px; transition: background 0.15s; }
         .message:hover { background: rgba(255,255,255,0.04); }
         .msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
-        .msg-user { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; }
-        .msg-user:hover { text-decoration: underline; }
+        .msg-user { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
         .msg-time { font-size: 9px; color: rgba(138,150,170,0.6); }
         .msg-text { font-size: 13px; line-height: 1.45; color: #b8c2d4; word-break: break-word; white-space: pre-wrap; }
         .chat-input-area { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
@@ -197,38 +201,15 @@
         .notif-clear-btn { display: block; width: calc(100% - 24px); margin: 0 12px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); border-radius: 8px; padding: 9px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; font-family: var(--font-main); transition: 0.15s; flex-shrink: 0; }
         .notif-clear-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
 
+        #pageLoader { position:fixed; inset:0; background:var(--bg-body); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; transition:opacity 0.4s; }
+        #pageLoader.fade-out { opacity:0; pointer-events:none; }
+        .page-loader-logo { font-family:var(--font-condensed); font-size:2rem; font-weight:700; letter-spacing:3px; }
+        .page-loader-logo span { color:var(--primary-blue); }
+        .page-loader-bar-wrap { width:160px; height:3px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden; }
+        .page-loader-bar { height:100%; width:0%; background:var(--primary-blue); border-radius:3px; transition:width 0.3s ease; }
+        .page-loader-txt { font-size:11px; color:var(--text-muted); }
         #syncBadge { position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%); background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.2); border-radius: 8px; padding: 7px 16px; font-size: 11px; color: var(--accent-green); display: none; z-index: 200; white-space: nowrap; }
-        .panel-locked .chip-btn, .panel-locked .bet-mod-btn, .panel-locked .bet-manual-row { pointer-events: none; opacity: 0.35; }
 
-        /* PAGE LOADER */
-        #pageLoader{position:fixed;inset:0;background:var(--bg-body);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.4s;}
-        #pageLoader.fade-out{opacity:0;pointer-events:none;}
-        .page-loader-logo{font-family:var(--font-condensed);font-size:2rem;font-weight:700;letter-spacing:3px;}
-        .page-loader-logo span{color:var(--primary-blue);}
-        .page-loader-bar-wrap{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
-        .page-loader-bar{height:100%;width:0%;background:var(--primary-blue);border-radius:3px;transition:width 0.3s ease;}
-        .page-loader-txt{font-size:11px;color:var(--text-muted);}
-        /* AUTH TABS */
-        .auth-tabs{display:flex;background:var(--bg-body);border-radius:10px;padding:3px;gap:3px;margin-bottom:20px;border:1px solid var(--border-color);}
-        .auth-tab{flex:1;padding:9px;border:none;background:transparent;color:var(--text-muted);font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;transition:0.2s;font-family:var(--font-main);}
-        .auth-tab.active{background:var(--primary-blue);color:#fff;box-shadow:0 2px 10px rgba(0,122,255,0.3);}
-        .auth-tab:not(.active):hover{background:rgba(255,255,255,0.05);color:#fff;}
-        .auth-form-panel{display:none;} .auth-form-panel.active{display:block;}
-        .auth-form-title{font-size:18px;font-weight:800;margin:0 0 4px;}
-        .auth-form-sub{color:var(--text-muted);font-size:12px;margin:0 0 16px;}
-        .auth-form-sub strong{color:var(--accent-green);}
-        .auth-gate-card label{display:block;font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:left;margin-top:12px;}
-        .auth-gate-card input{width:100%;background:rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.08);padding:11px 14px;color:#fff;border-radius:8px;outline:none;font-size:14px;font-family:var(--font-main);margin-bottom:4px;transition:0.2s;}
-        .auth-gate-card input:focus{border-color:var(--primary-blue);box-shadow:0 0 0 3px rgba(0,122,255,0.1);}
-        .auth-error{font-size:12px;color:#ef4444;min-height:16px;margin-bottom:8px;text-align:left;}
-        .auth-gate-btn{width:100%;background:var(--primary-blue);color:#fff;border:none;padding:13px;font-weight:800;border-radius:8px;cursor:pointer;font-size:13px;text-transform:uppercase;letter-spacing:1px;font-family:var(--font-main);transition:0.2s;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px;}
-        .auth-gate-btn:hover:not(:disabled){background:#006ae6;}
-        .auth-gate-btn:disabled{opacity:0.5;cursor:default;}
-        .auth-btn-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:kenoSpin 0.7s linear infinite;display:inline-block;vertical-align:middle;}
-        @keyframes kenoSpin{to{transform:rotate(360deg);}}
-        .auth-bonus-row{display:flex;align-items:center;gap:10px;background:rgba(0,231,1,0.06);border:1px solid rgba(0,231,1,0.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#a0aabc;margin-top:12px;}
-        .auth-bonus-row .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 6px var(--accent-green);flex-shrink:0;}
-        .auth-bonus-row strong{color:var(--accent-green);}
         @media (max-width: 1100px) { .chat-panel { display: none; } }
         @media (max-width: 800px) { body { height: auto; overflow-y: auto; } .main-wrapper { height: auto; flex-direction: column; } .right-panel { width: 100%; border-left: none; border-top: 1px solid var(--border-color); } .game-scroll { overflow: visible; justify-content: flex-start; } .keno-ball { font-size: 13px; } .keno-grid { gap: 4px; } }
         @media (max-width: 480px) { .keno-ball { font-size: 11px; border-radius: 7px; } }
@@ -237,6 +218,7 @@
 <body>
 
 <div id="pageLoader"><div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div><div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div><div class="page-loader-txt" id="loaderTxt">Connecting...</div></div>
+
 <nav>
     <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
     <div class="nav-right">
@@ -248,7 +230,6 @@
     </div>
 </nav>
 
-<!-- AUTH -->
 <div id="authGate" style="display:none;">
     <div>
         <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
@@ -265,7 +246,7 @@
             <label>Username</label>
             <input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')doAuth()">
             <label>Password</label>
-            <input type="password" id="authPassword" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
+            <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
             <div class="auth-error" id="authError"></div>
             <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Sign In</button>
         </div>
@@ -285,9 +266,7 @@
     </div>
 </div>
 
-<!-- MAIN -->
 <div class="main-wrapper" id="mainWrapper">
-
     <div class="game-scroll">
         <div class="keno-wrap">
             <div class="keno-grid" id="kenoGrid"></div>
@@ -304,7 +283,6 @@
         </div>
     </div>
 
-    <!-- RIGHT PANEL -->
     <aside class="right-panel" id="rightPanel">
         <div class="msg-log" id="msgLog">Select numbers, set your bet, and hit Play!</div>
         <div>
@@ -313,21 +291,21 @@
                 <div class="bet-prefix">$</div>
                 <input type="number" id="betInput" class="bet-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
             </div>
-            <div class="chip-grid">
-                <div class="chip-btn c-blue"   onclick="setBet(1)">$1</div>
-                <div class="chip-btn c-green"  onclick="setBet(5)">$5</div>
-                <div class="chip-btn c-green"  onclick="setBet(10)">$10</div>
-                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
-                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
-                <div class="chip-btn c-red"    onclick="setBet(100)">$100</div>
-                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
-                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
-                <div class="chip-btn"          onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            <div class="chip-grid" id="chipGrid">
+                <div class="chip-btn c-blue"   onclick="if(!gameRunning)setBet(1)">$1</div>
+                <div class="chip-btn c-green"  onclick="if(!gameRunning)setBet(5)">$5</div>
+                <div class="chip-btn c-green"  onclick="if(!gameRunning)setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="if(!gameRunning)setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="if(!gameRunning)setBet(50)">$50</div>
+                <div class="chip-btn c-red"    onclick="if(!gameRunning)setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="if(!gameRunning)setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="if(!gameRunning)setBet(500)">$500</div>
+                <div class="chip-btn"          onclick="if(!gameRunning)setBetMax()" style="font-size:11px;">MAX</div>
             </div>
             <div class="bet-mod-row">
-                <div class="bet-mod-btn" onclick="modBet(0.5)">½</div>
-                <div class="bet-mod-btn" onclick="modBet(2)">2×</div>
-                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+                <div class="bet-mod-btn" id="modHalf"   onclick="if(!gameRunning)modBet(0.5)">½</div>
+                <div class="bet-mod-btn" id="modDouble" onclick="if(!gameRunning)modBet(2)">2×</div>
+                <div class="bet-mod-btn" id="modClear"  onclick="if(!gameRunning)clearBet()">Clear</div>
             </div>
         </div>
         <div class="rp-divider"></div>
@@ -347,7 +325,7 @@
             </div>
             <div class="info-row">
                 <div class="info-box"><div class="info-box-label">Best Payout</div><div class="info-box-val gold" id="infoBest">—</div></div>
-                <div class="info-box"><div class="info-box-label">Win Chance</div><div class="info-box-val" id="infoChance">—</div></div>
+                <div class="info-box"><div class="info-box-label">Any Win</div><div class="info-box-val" id="infoChance">—</div></div>
             </div>
         </div>
         <div class="rp-divider"></div>
@@ -358,7 +336,6 @@
         </div>
     </aside>
 
-    <!-- NEW TABBED CHAT PANEL -->
     <aside class="chat-panel" id="chatPanel">
         <div class="rp-tab-bar">
             <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')">
@@ -375,14 +352,14 @@
             </div>
         </div>
         <div class="rp-collapsed-strip">
-            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')" title="Chat">
+            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </button>
-            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')" title="Notifications">
+            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span>
             </button>
-            <button class="rp-col-btn" onclick="toggleChat()" title="Expand" style="margin-top:4px;">
+            <button class="rp-col-btn" onclick="toggleChat()" style="margin-top:4px;">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
         </div>
@@ -405,7 +382,6 @@
             </div>
         </div>
     </aside>
-
 </div>
 
 <div id="syncBadge">✓ Balance synced</div>
@@ -425,27 +401,54 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-// ── PAYOUT TABLES ─────────────────────────────────────────────────────
-// House edge ~22-28%. Multipliers look exciting but expected value is
-// strongly negative. Partial hits almost never pay out. The draw is also
-// biased — see RIGGED_DRAW_BIAS below.
-const PAYOUTS = {
-    1:  { 1: 1.70 },
-    2:  { 2: 3.00,  1: 0.00 },
-    3:  { 3: 9.00,  2: 0.50,  1: 0.00 },
-    4:  { 4: 22.0,  3: 1.50,  2: 0.00,  1: 0.00 },
-    5:  { 5: 55.0,  4: 3.00,  3: 0.00,  2: 0.00,  1: 0.00 },
-    6:  { 6: 110,   5: 7.00,  4: 0.75,  3: 0.00,  2: 0.00,  1: 0.00 },
-    7:  { 7: 200,   6: 14.0,  5: 1.50,  4: 0.00,  3: 0.00,  2: 0.00,  1: 0.00 },
-    8:  { 8: 400,   7: 28.0,  6: 3.00,  5: 0.50,  4: 0.00,  3: 0.00,  2: 0.00,  1: 0.00 },
-    9:  { 9: 900,   8: 55.0,  7: 6.00,  6: 1.00,  5: 0.00,  4: 0.00,  3: 0.00,  2: 0.00,  1: 0.00 },
-    10: { 10: 1500, 9: 100,   8: 15.0,  7: 2.50,  6: 0.00,  5: 0.00,  4: 0.00,  3: 0.00,  2: 0.00,  1: 0.00 },
-};
+// ── WEBSITE THEME (matches homepage & dice) ───────────────────────────
+const ALL_WEBSITE_THEMES = [
+    { id: 'theme_ocean',    bg: '#061a2e', accent: '#00c4ff' },
+    { id: 'theme_ember',    bg: '#1a0805', accent: '#ff4c0c' },
+    { id: 'theme_midnight', bg: '#0c0820', accent: '#7c3aed' },
+    { id: 'theme_neon',     bg: '#050f0a', accent: '#00ff87' },
+    { id: 'theme_gold',     bg: '#100e00', accent: '#f59e0b' },
+    { id: 'theme_arctic',   bg: '#08101a', accent: '#93c5fd' },
+    { id: 'theme_rose',     bg: '#1a080f', accent: '#f472b6' },
+    { id: 'theme_mint',     bg: '#061510', accent: '#34d399' },
+];
+function adjustColor(hex, amount) {
+    const h = hex.replace('#', '');
+    const r = Math.min(255, parseInt(h.substr(0,2),16) + amount);
+    const g = Math.min(255, parseInt(h.substr(2,2),16) + amount);
+    const b = Math.min(255, parseInt(h.substr(4,2),16) + amount);
+    return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+function applyUserTheme() {
+    if (!currentUser || !currentUser.websiteTheme) {
+        ['--bg-body','--bg-sidebar','--bg-card','--bg-chat','--bg-header','--primary-blue'].forEach(v => document.documentElement.style.removeProperty(v));
+        return;
+    }
+    const theme = ALL_WEBSITE_THEMES.find(t => t.id === currentUser.websiteTheme);
+    if (!theme) return;
+    const root = document.documentElement;
+    root.style.setProperty('--bg-body',     theme.bg);
+    root.style.setProperty('--bg-sidebar',  adjustColor(theme.bg, 10));
+    root.style.setProperty('--bg-card',     adjustColor(theme.bg, 18));
+    root.style.setProperty('--bg-chat',     adjustColor(theme.bg, 8));
+    root.style.setProperty('--bg-header',   adjustColor(theme.bg, 10));
+    root.style.setProperty('--primary-blue', theme.accent);
+}
 
-// Rigged draw: when player has picks, bias the draw AWAY from selected
-// numbers — selected balls are drawn with 65% of normal probability.
-// This makes near-misses much more common than pure random would give.
-const RIGGED_DRAW_BIAS = 0.40; // selected balls drawn at 40% of normal probability
+// ── FAIR PAYOUT TABLES (~5% house edge, matching Rainbet-style payouts) ─
+// Draw: 20 balls from 40. Payouts include partial hits and give real value.
+const PAYOUTS = {
+    1:  { 1: 3.80 },
+    2:  { 2: 9.00,   1: 1.00 },
+    3:  { 3: 26.0,   2: 2.50,  1: 0.00 },
+    4:  { 4: 90.0,   3: 6.00,  2: 1.20,  1: 0.00 },
+    5:  { 5: 300,    4: 15.0,  3: 2.50,  2: 0.50,  1: 0.00 },
+    6:  { 6: 900,    5: 35.0,  4: 6.00,  3: 1.10,  2: 0.00,  1: 0.00 },
+    7:  { 7: 2000,   6: 100,   5: 12.0,  4: 2.20,  3: 0.50,  2: 0.00,  1: 0.00 },
+    8:  { 8: 5000,   7: 250,   6: 30.0,  5: 5.00,  4: 1.00,  3: 0.00,  2: 0.00,  1: 0.00 },
+    9:  { 9: 10000,  8: 600,   7: 70.0,  6: 10.0,  5: 2.00,  4: 0.30,  3: 0.00,  2: 0.00,  1: 0.00 },
+    10: { 10: 25000, 9: 2000,  8: 200,   7: 25.0,  6: 4.00,  5: 1.00,  4: 0.20,  3: 0.00,  2: 0.00, 1: 0.00 },
+};
 
 // ── STATE ─────────────────────────────────────────────────────────────
 let currentUser   = null;
@@ -469,40 +472,57 @@ function showAuth() { document.getElementById('authGate').style.display = 'flex'
 function showGame() { document.getElementById('authGate').style.display = 'none'; document.getElementById('mainWrapper').style.display = 'flex'; }
 
 // ── AUTH ──────────────────────────────────────────────────────────────
-function showPageLoader(txt){const l=document.getElementById('pageLoader'),bar=document.getElementById('loaderBar'),t=document.getElementById('loaderTxt');if(l)l.style.display='flex';if(t)t.textContent=txt||'Loading...';if(bar){bar.style.width='0%';setTimeout(()=>bar.style.width='60%',50);}}
-function hidePageLoader(){const bar=document.getElementById('loaderBar');if(bar)bar.style.width='100%';setTimeout(()=>{const l=document.getElementById('pageLoader');if(l){l.classList.add('fade-out');setTimeout(()=>{l.style.display='none';l.classList.remove('fade-out');},400);}},300);}
-function switchAuthTab(tab){document.getElementById('authTabSignIn').classList.toggle('active',tab==='signin');document.getElementById('authTabReg').classList.toggle('active',tab==='register');document.getElementById('authPanelSignin').classList.toggle('active',tab==='signin');document.getElementById('authPanelReg').classList.toggle('active',tab==='register');document.getElementById('authError').textContent='';document.getElementById('regError').textContent='';}
-function setAuthBtnLoading(id,loading,def){const b=document.getElementById(id);if(!b)return;b.disabled=loading;b.innerHTML=loading?'<span class="auth-btn-spinner"></span> Loading...':def;}
+function hidePageLoader() {
+    const bar = document.getElementById('loaderBar');
+    if (bar) bar.style.width = '100%';
+    setTimeout(() => {
+        const l = document.getElementById('pageLoader');
+        if (l) { l.classList.add('fade-out'); setTimeout(() => { l.style.display = 'none'; l.classList.remove('fade-out'); }, 400); }
+    }, 300);
+}
+function switchAuthTab(tab) {
+    document.getElementById('authTabSignIn').classList.toggle('active', tab==='signin');
+    document.getElementById('authTabReg').classList.toggle('active', tab==='register');
+    document.getElementById('authPanelSignin').classList.toggle('active', tab==='signin');
+    document.getElementById('authPanelReg').classList.toggle('active', tab==='register');
+    document.getElementById('authError').textContent = '';
+    document.getElementById('regError').textContent = '';
+}
+function setAuthBtnLoading(id, loading, def) {
+    const b = document.getElementById(id); if (!b) return;
+    b.disabled = loading;
+    b.innerHTML = loading ? '<span class="auth-btn-spinner"></span> Loading...' : def;
+}
 
 function doAuth() {
-    const name=document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const pass=document.getElementById('authPassword').value.trim();
-    const err=document.getElementById('authError');err.textContent='';
-    if(name.length<3){err.textContent='Username must be 3+ characters.';return;}
-    if(!pass){err.textContent='Enter your password.';return;}
-    setAuthBtnLoading('authBtn',true,'Sign In');
-    db.ref('users/'+name).once('value').then(snap=>{
-        if(!snap.exists()){err.textContent='No account found. Try registering.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
-        const u=snap.val();
-        if(u.password!==pass){err.textContent='Incorrect password.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+    const name = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass = document.getElementById('authPassword').value.trim();
+    const err  = document.getElementById('authError'); err.textContent = '';
+    if (name.length < 3) { err.textContent = 'Username must be 3+ characters.'; return; }
+    if (!pass) { err.textContent = 'Enter your password.'; return; }
+    setAuthBtnLoading('authBtn', true, 'Sign In');
+    db.ref('users/' + name).once('value').then(snap => {
+        if (!snap.exists()) { err.textContent = 'No account found.'; setAuthBtnLoading('authBtn', false, 'Sign In'); return; }
+        const u = snap.val();
+        if (u.password !== pass) { err.textContent = 'Incorrect password.'; setAuthBtnLoading('authBtn', false, 'Sign In'); return; }
         finalizeLogin(u);
-    }).catch(()=>{err.textContent='Connection error.';setAuthBtnLoading('authBtn',false,'Sign In');});
+    }).catch(() => { err.textContent = 'Connection error.'; setAuthBtnLoading('authBtn', false, 'Sign In'); });
 }
 
 function doRegister() {
-    const name=document.getElementById('regUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
-    const pass=document.getElementById('regPassword').value.trim();
-    const confirm=document.getElementById('regPasswordConfirm').value.trim();
-    const err=document.getElementById('regError');err.textContent='';
-    if(name.length<3){err.textContent='Username must be 3+ characters.';return;}
-    if(pass.length<4){err.textContent='Password must be 4+ characters.';return;}
-    if(pass!==confirm){err.textContent='Passwords do not match.';return;}
-    setAuthBtnLoading('regBtn',true,'Create Account &amp; Play');
-    db.ref('users/'+name).once('value').then(snap=>{
-        if(snap.exists()){err.textContent='Username taken.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');return;}
-        const nu={name,password:pass,balance:100,lastBonus:0,createdAt:Date.now()};
-        db.ref('users/'+name).set(nu).then(()=>finalizeLogin(nu));
-    }).catch(()=>{err.textContent='Connection error.';setAuthBtnLoading('regBtn',false,'Create Account &amp; Play');});
+    const name    = document.getElementById('regUsername').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
+    const pass    = document.getElementById('regPassword').value.trim();
+    const confirm = document.getElementById('regPasswordConfirm').value.trim();
+    const err     = document.getElementById('regError'); err.textContent = '';
+    if (name.length < 3) { err.textContent = 'Username must be 3+ characters.'; return; }
+    if (pass.length < 4) { err.textContent = 'Password must be 4+ characters.'; return; }
+    if (pass !== confirm) { err.textContent = 'Passwords do not match.'; return; }
+    setAuthBtnLoading('regBtn', true, 'Create Account &amp; Play');
+    db.ref('users/' + name).once('value').then(snap => {
+        if (snap.exists()) { err.textContent = 'Username taken.'; setAuthBtnLoading('regBtn', false, 'Create Account &amp; Play'); return; }
+        const nu = { name, password: pass, balance: 100, lastBonus: 0, createdAt: Date.now() };
+        db.ref('users/' + name).set(nu).then(() => finalizeLogin(nu));
+    }).catch(() => { err.textContent = 'Connection error.'; setAuthBtnLoading('regBtn', false, 'Create Account &amp; Play'); });
 }
 
 function finalizeLogin(user) {
@@ -511,12 +531,13 @@ function finalizeLogin(user) {
     showGame();
     document.getElementById('navBalWrap').style.display = 'flex';
     db.ref('users/' + user.name).on('value', snap => {
-        if (snap.exists()) { currentUser = snap.val(); updateNavBal(); }
+        if (snap.exists()) { currentUser = snap.val(); updateNavBal(); applyUserTheme(); }
     });
     const pr = db.ref('presence/' + user.name);
     pr.set({ online: true, lastSeen: Date.now() });
     pr.onDisconnect().set({ online: false, lastSeen: Date.now() });
     setInterval(() => pr.update({ lastSeen: Date.now() }), 30000);
+    applyUserTheme();
     updateNavBal();
     buildGrid();
     updatePayoutTable();
@@ -534,23 +555,35 @@ function updateNavBal() {
 
 // ── BET ───────────────────────────────────────────────────────────────
 function onBetInput() {
+    if (gameRunning) return;
     const raw = parseFloat(document.getElementById('betInput').value);
     bet = isNaN(raw) || raw < 0 ? 0 : cleanMoney(Math.min(raw, currentUser ? currentUser.balance : 99999));
     updatePayoutTable();
+    updatePickInfo();
 }
 function setBet(amount) {
+    if (gameRunning) return;
     bet = cleanMoney(Math.min(amount, currentUser ? currentUser.balance : 99999));
     document.getElementById('betInput').value = bet;
     updatePayoutTable();
+    updatePickInfo();
 }
-function setBetMax() { if (currentUser) setBet(currentUser.balance); }
+function setBetMax() { if (!gameRunning && currentUser) setBet(currentUser.balance); }
 function modBet(f) {
+    if (gameRunning) return;
     bet = cleanMoney(Math.min(bet * f, currentUser ? currentUser.balance : 99999));
     if (bet < 0) bet = 0;
     document.getElementById('betInput').value = bet > 0 ? bet : '';
     updatePayoutTable();
+    updatePickInfo();
 }
-function clearBet() { bet = 0; document.getElementById('betInput').value = ''; updatePayoutTable(); }
+function clearBet() {
+    if (gameRunning) return;
+    bet = 0;
+    document.getElementById('betInput').value = '';
+    updatePayoutTable();
+    updatePickInfo();
+}
 
 // ── GRID ──────────────────────────────────────────────────────────────
 function buildGrid() {
@@ -572,7 +605,7 @@ function togglePick(n) {
         selected.delete(n);
         document.getElementById('ball-' + n).className = 'keno-ball';
     } else {
-        if (selected.size >= MAX_PICKS) { setMsg(`You can only pick up to ${MAX_PICKS} numbers.`); return; }
+        if (selected.size >= MAX_PICKS) { setMsg(`Max ${MAX_PICKS} picks allowed.`); return; }
         selected.add(n);
         document.getElementById('ball-' + n).className = 'keno-ball selected';
     }
@@ -593,10 +626,17 @@ function pickRandom() {
     if (gameRunning) return;
     clearPicks();
     const count = Math.floor(Math.random() * 8) + 3;
-    const pool = Array.from({length: TOTAL_BALLS}, (_,i) => i+1);
-    for (let i = pool.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [pool[i],pool[j]] = [pool[j],pool[i]]; }
-    pool.slice(0, count).forEach(n => { selected.add(n); document.getElementById('ball-'+n).className = 'keno-ball selected'; });
-    updatePickInfo(); updatePayoutTable();
+    const pool  = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1);
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    pool.slice(0, count).forEach(n => {
+        selected.add(n);
+        document.getElementById('ball-' + n).className = 'keno-ball selected';
+    });
+    updatePickInfo();
+    updatePayoutTable();
     setMsg(`Randomly picked ${count} numbers. Set your bet and play!`);
 }
 
@@ -605,80 +645,112 @@ function updatePickInfo() {
     document.getElementById('pickCount').innerHTML = `${n} <span>/ ${MAX_PICKS}</span>`;
     document.getElementById('infoPicks').textContent = n;
     document.getElementById('btnPlay').disabled = (n === 0 || bet <= 0);
-    if (n === 0) { document.getElementById('infoBest').textContent = '—'; document.getElementById('infoChance').textContent = '—'; return; }
-    const table = PAYOUTS[n];
+    if (n === 0) {
+        document.getElementById('infoBest').textContent = '—';
+        document.getElementById('infoChance').textContent = '—';
+        return;
+    }
+    const table  = PAYOUTS[n];
     const maxMult = Math.max(...Object.values(table));
-    document.getElementById('infoBest').textContent = '×' + maxMult.toFixed(1);
-    const p0 = hypergeomProb(0, n, DRAWN_BALLS, TOTAL_BALLS);
-    document.getElementById('infoChance').textContent = ((1 - p0) * 100).toFixed(1) + '%';
+    document.getElementById('infoBest').textContent = '×' + maxMult.toLocaleString();
+    // Probability of getting at least the minimum paying hit count
+    const minPaying = parseInt(Object.keys(table).filter(k => table[k] > 0).sort((a,b) => a-b)[0]);
+    let winChance = 0;
+    for (let k = minPaying; k <= Math.min(n, DRAWN_BALLS); k++) {
+        winChance += hypergeomProb(k, n, DRAWN_BALLS, TOTAL_BALLS);
+    }
+    document.getElementById('infoChance').textContent = (winChance * 100).toFixed(1) + '%';
 }
 
 function hypergeomProb(k, picks, drawn, total) {
-    return (comb(picks,k) * comb(total-picks, drawn-k)) / comb(total, drawn);
+    return (comb(picks, k) * comb(total - picks, drawn - k)) / comb(total, drawn);
 }
 function comb(n, k) {
     if (k < 0 || k > n) return 0;
     if (k === 0 || k === n) return 1;
     let result = 1;
-    for (let i = 0; i < k; i++) { result *= (n-i); result /= (i+1); }
+    for (let i = 0; i < k; i++) { result *= (n - i); result /= (i + 1); }
     return result;
 }
 
 // ── PAYOUT TABLE ──────────────────────────────────────────────────────
 function updatePayoutTable(activeHits) {
-    const n = selected.size;
+    const n    = selected.size;
     const rows = document.getElementById('payoutRows');
     rows.innerHTML = '';
     if (n === 0) return;
-    const table = PAYOUTS[n];
-    const sortedHits = Object.keys(table).map(Number).sort((a,b) => b-a);
+    const table      = PAYOUTS[n];
+    const sortedHits = Object.keys(table).map(Number).sort((a, b) => b - a);
     sortedHits.forEach(hits => {
         const mult    = table[hits];
         const payout  = cleanMoney(bet * mult);
         const isActive = hits === activeHits;
-        const row = document.createElement('div');
+        const row     = document.createElement('div');
         row.className = 'payout-row' + (isActive ? ' active-row' : '');
-        const payClass = mult >= 1 ? 'pay' : 'pay lose';
-        row.innerHTML = `<span class="hits">${hits} of ${n}</span><span class="mult">×${mult.toFixed(2)}</span><span class="${payClass}">${bet > 0 ? '$'+fmt$(payout) : '—'}</span>`;
+        const payClass = mult > 0 ? 'pay' : 'pay zero';
+        const payText  = mult > 0 ? (bet > 0 ? '$' + fmt$(payout) : '×' + mult.toFixed(2)) : '—';
+        row.innerHTML  = `<span class="hits">${hits} of ${n}</span><span class="mult">×${mult % 1 === 0 ? mult.toLocaleString() : mult.toFixed(2)}</span><span class="${payClass}">${payText}</span>`;
         rows.appendChild(row);
     });
 }
 
+// ── LOCK / UNLOCK CONTROLS ────────────────────────────────────────────
+function lockControls() {
+    document.getElementById('betInput').disabled = true;
+    document.querySelectorAll('#chipGrid .chip-btn').forEach(el => el.setAttribute('disabled', 'true'));
+    document.getElementById('modHalf').setAttribute('disabled', 'true');
+    document.getElementById('modDouble').setAttribute('disabled', 'true');
+    document.getElementById('modClear').setAttribute('disabled', 'true');
+    document.getElementById('btnRandom').disabled = true;
+    document.getElementById('btnClear').disabled  = true;
+    document.getElementById('btnPlay').disabled   = true;
+}
+function unlockControls() {
+    document.getElementById('betInput').disabled = false;
+    document.querySelectorAll('#chipGrid .chip-btn').forEach(el => el.removeAttribute('disabled'));
+    document.getElementById('modHalf').removeAttribute('disabled');
+    document.getElementById('modDouble').removeAttribute('disabled');
+    document.getElementById('modClear').removeAttribute('disabled');
+    document.getElementById('btnRandom').disabled = false;
+    document.getElementById('btnClear').disabled  = false;
+    document.getElementById('btnPlay').disabled   = (selected.size === 0 || bet <= 0);
+}
+
 // ── PLAY ──────────────────────────────────────────────────────────────
 function play() {
+    if (gameRunning) return;
     if (selected.size === 0) { setMsg('Pick at least 1 number.'); return; }
     if (bet <= 0) { setMsg('Enter a bet amount.'); return; }
     if (!currentUser || bet > currentUser.balance) { setMsg('Not enough balance.'); return; }
+
     gameRunning = true;
-    lockControls(true);
-    document.getElementById('btnPlay').disabled   = true;
-    document.getElementById('btnRandom').disabled = true;
-    document.getElementById('btnClear').disabled  = true;
+    lockControls();
     document.getElementById('infoHits').textContent = '...';
     drawn.clear();
+
+    // Reset all balls to disabled state, keep selected style
     for (let n = 1; n <= TOTAL_BALLS; n++) {
         const el = document.getElementById('ball-' + n);
         el.className = 'keno-ball disabled' + (selected.has(n) ? ' selected' : '');
     }
-    // Biased weighted draw — selected numbers drawn less often
-    const weights = [];
-    for (let n = 1; n <= TOTAL_BALLS; n++) {
-        weights.push({ n, w: selected.has(n) ? RIGGED_DRAW_BIAS : 1.0 });
+
+    // ── FAIR DRAW: pure Fisher-Yates shuffle, completely unbiased ──────
+    const pool = Array.from({ length: TOTAL_BALLS }, (_, i) => i + 1);
+    for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
     }
-    const drawnArr = [];
-    const remaining = [...weights];
-    while (drawnArr.length < DRAWN_BALLS) {
-        const totalW = remaining.reduce((s, x) => s + x.w, 0);
-        let r = Math.random() * totalW, cum = 0;
-        for (let i = 0; i < remaining.length; i++) {
-            cum += remaining[i].w;
-            if (r <= cum) { drawnArr.push(remaining[i].n); remaining.splice(i, 1); break; }
-        }
-    }
+    const drawnArr = pool.slice(0, DRAWN_BALLS);
+
+    // Reveal balls one by one
     let revealIdx = 0;
     const revealInterval = setInterval(() => {
-        if (revealIdx >= drawnArr.length) { clearInterval(revealInterval); finishRound(drawnArr); return; }
-        const n = drawnArr[revealIdx];
+        if (revealIdx >= drawnArr.length) {
+            clearInterval(revealInterval);
+            finishRound(drawnArr);
+            return;
+        }
+        const n  = drawnArr[revealIdx];
         drawn.add(n);
         const el = document.getElementById('ball-' + n);
         el.className = selected.has(n) ? 'keno-ball hit disabled' : 'keno-ball drawn-unselected disabled';
@@ -687,49 +759,54 @@ function play() {
 }
 
 function finishRound(drawnArr) {
-    const hits = drawnArr.filter(n => selected.has(n)).length;
-    const n = selected.size;
-    const table = PAYOUTS[n];
-    const mult = table[hits] || 0;
+    const hits   = drawnArr.filter(n => selected.has(n)).length;
+    const n      = selected.size;
+    const table  = PAYOUTS[n];
+    const mult   = table[hits] || 0;
     const payout = cleanMoney(bet * mult);
     const delta  = cleanMoney(payout - bet);
+
     document.getElementById('infoHits').textContent = hits;
     updatePayoutTable(hits);
-    const won = delta >= 0;
-    if (won) {
+
+    if (delta > 0) {
         renderResultBar('win', hits, n, mult, payout);
-        setMsg(`🎉 ${hits} hit${hits !== 1 ? 's' : ''}! ×${mult.toFixed(2)} — You won $${fmt$(payout)}!`);
+        setMsg(`🎉 ${hits} hit${hits !== 1 ? 's' : ''}! ×${mult % 1 === 0 ? mult.toLocaleString() : mult.toFixed(2)} — Won $${fmt$(payout)}!`);
+    } else if (delta === 0 && mult > 0) {
+        renderResultBar('win', hits, n, mult, payout);
+        setMsg(`${hits} hit${hits !== 1 ? 's' : ''}. Broke even.`);
     } else {
         renderResultBar('lose', hits, n, mult, payout);
-        setMsg(`${hits} hit${hits !== 1 ? 's' : ''}. No win. You lost $${fmt$(bet)}.`);
+        setMsg(`${hits} hit${hits !== 1 ? 's' : ''}. No win. Lost $${fmt$(bet)}.`);
     }
+
     saveBalance(delta);
+
     setTimeout(() => {
         gameRunning = false;
-        lockControls(false);
-        document.getElementById('btnPlay').disabled   = (selected.size === 0 || bet <= 0);
-        document.getElementById('btnRandom').disabled = false;
-        document.getElementById('btnClear').disabled  = false;
-    }, 800);
+        unlockControls();
+    }, 600);
 }
 
 function renderResultBar(state, hits, n, mult, payout) {
     const textEl   = document.getElementById('resultText');
     const payoutEl = document.getElementById('resultPayout');
-    if (state === 'idle') { textEl.innerHTML = 'Pick 1–10 numbers, place your bet, and play!'; payoutEl.textContent = '—'; payoutEl.className = 'result-bar-payout idle'; return; }
+    if (state === 'idle') {
+        textEl.innerHTML = 'Pick 1–10 numbers, place your bet, and play!';
+        payoutEl.textContent = '—';
+        payoutEl.className   = 'result-bar-payout idle';
+        return;
+    }
     const delta = cleanMoney(payout - bet);
     if (delta >= 0) {
-        textEl.innerHTML = `<strong>${hits} hit${hits !== 1 ? 's' : ''}</strong> out of ${n} picks — ×${mult.toFixed(2)}`;
-        payoutEl.textContent = '+$' + fmt$(delta); payoutEl.className = 'result-bar-payout win';
+        textEl.innerHTML = `<strong>${hits} hit${hits !== 1 ? 's' : ''}</strong> out of ${n} picks — ×${mult % 1 === 0 ? mult.toLocaleString() : mult.toFixed(2)}`;
+        payoutEl.textContent = '+$' + fmt$(delta > 0 ? delta : 0);
+        payoutEl.className   = 'result-bar-payout win';
     } else {
         textEl.innerHTML = `<strong>${hits} hit${hits !== 1 ? 's' : ''}</strong> out of ${n} picks — No win`;
-        payoutEl.textContent = '-$' + fmt$(bet); payoutEl.className = 'result-bar-payout lose';
+        payoutEl.textContent = '-$' + fmt$(bet);
+        payoutEl.className   = 'result-bar-payout lose';
     }
-}
-
-function lockControls(lock) {
-    const rp = document.getElementById('rightPanel');
-    if (lock) rp.classList.add('panel-locked'); else rp.classList.remove('panel-locked');
 }
 
 // ── FIREBASE ──────────────────────────────────────────────────────────
@@ -746,32 +823,30 @@ function saveBalance(delta) {
 }
 function showSyncBadge() {
     const el = document.getElementById('syncBadge');
-    el.style.display = 'block'; clearTimeout(syncTimeout);
+    el.style.display = 'block';
+    clearTimeout(syncTimeout);
     syncTimeout = setTimeout(() => { el.style.display = 'none'; }, 2000);
 }
 
-// ── RIGHT PANEL TAB SYSTEM ────────────────────────────────────────────
+// ── CHAT PANEL ────────────────────────────────────────────────────────
 let currentRpTab = 'chat';
-
 function switchRpTab(tab) {
     currentRpTab = tab;
     ['chat','notif'].forEach(t => {
-        const tabEl = document.getElementById('tab-' + t);
+        const tabEl   = document.getElementById('tab-' + t);
         const panelEl = document.getElementById('rp-' + t);
-        const colBtn = document.getElementById('colBtn-' + t);
-        if (tabEl) tabEl.classList.toggle('active', t === tab);
+        const colBtn  = document.getElementById('colBtn-' + t);
+        if (tabEl)   tabEl.classList.toggle('active', t === tab);
         if (panelEl) panelEl.classList.toggle('active', t === tab);
-        if (colBtn) colBtn.classList.toggle('active', t === tab);
+        if (colBtn)  colBtn.classList.toggle('active', t === tab);
     });
     if (tab === 'notif') markNotifsRead();
 }
-
 function toggleChat() {
     chatCollapsed = !chatCollapsed;
     document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
     if (!chatCollapsed) switchRpTab(currentRpTab);
 }
-
 function expandRpTo(tab) {
     chatCollapsed = false;
     document.getElementById('chatPanel').classList.remove('collapsed');
@@ -780,18 +855,15 @@ function expandRpTo(tab) {
 
 // ── NOTIFICATIONS ─────────────────────────────────────────────────────
 let unreadNotifCount = 0;
-
 function addNotification(type, title, sub) {
-    const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+    const key    = 'notifs_' + (currentUser ? currentUser.name : 'guest');
     const stored = JSON.parse(localStorage.getItem(key) || '[]');
-    const notif = { type, title, sub, ts: Date.now(), read: false, id: Date.now() + Math.random() };
-    stored.unshift(notif);
+    stored.unshift({ type, title, sub, ts: Date.now(), read: false, id: Date.now() + Math.random() });
     localStorage.setItem(key, JSON.stringify(stored.slice(0, 30)));
     renderNotifications();
 }
-
 function renderNotifications() {
-    const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+    const key    = 'notifs_' + (currentUser ? currentUser.name : 'guest');
     const stored = JSON.parse(localStorage.getItem(key) || '[]');
     const listEl = document.getElementById('notifList');
     if (!listEl) return;
@@ -799,31 +871,21 @@ function renderNotifications() {
     updateNotifBadge();
     if (stored.length === 0) { listEl.innerHTML = '<div class="notif-empty">🔔<br><br>No notifications yet</div>'; return; }
     const iconMap = { money: '💸', rank: '🏆', welcome: '👋', giveaway: '🎉' };
-    listEl.innerHTML = stored.map(n => {
-        const time = timeSince(n.ts);
-        return `<div class="notif-card${n.read ? '' : ' unread'}">
-            <div class="notif-icon ${n.type}">${iconMap[n.type] || '🔔'}</div>
-            <div class="notif-body">
-                <div class="notif-title">${n.title}</div>
-                <div class="notif-sub">${n.sub}</div>
-                <div class="notif-time">${time}</div>
-            </div>
-        </div>`;
-    }).join('');
+    listEl.innerHTML = stored.map(n => `<div class="notif-card${n.read ? '' : ' unread'}">
+        <div class="notif-icon ${n.type}">${iconMap[n.type] || '🔔'}</div>
+        <div class="notif-body"><div class="notif-title">${n.title}</div><div class="notif-sub">${n.sub}</div><div class="notif-time">${timeSince(n.ts)}</div></div>
+    </div>`).join('');
 }
-
 function markNotifsRead() {
-    const key = 'notifs_' + (currentUser ? currentUser.name : 'guest');
+    const key    = 'notifs_' + (currentUser ? currentUser.name : 'guest');
     const stored = JSON.parse(localStorage.getItem(key) || '[]');
     stored.forEach(n => n.read = true);
     localStorage.setItem(key, JSON.stringify(stored));
     unreadNotifCount = 0; updateNotifBadge(); renderNotifications();
 }
-
 function clearNotifications() { markNotifsRead(); }
-
 function updateNotifBadge() {
-    const badge = document.getElementById('rpNotifBadge');
+    const badge    = document.getElementById('rpNotifBadge');
     const colBadge = document.getElementById('rpColNotifBadge');
     if (unreadNotifCount > 0) {
         if (badge)    { badge.textContent = unreadNotifCount > 9 ? '9+' : unreadNotifCount; badge.classList.remove('hidden'); }
@@ -833,7 +895,6 @@ function updateNotifBadge() {
         if (colBadge) colBadge.classList.add('hidden');
     }
 }
-
 function timeSince(ts) {
     const s = Math.floor((Date.now() - ts) / 1000);
     if (s < 60)    return 'Just now';
@@ -841,13 +902,12 @@ function timeSince(ts) {
     if (s < 86400) return Math.floor(s/3600) + 'h ago';
     return Math.floor(s/86400) + 'd ago';
 }
-
 function initNotifications() {
     renderNotifications();
     const welcomeKey = 'welcomed_' + currentUser.name;
     if (!localStorage.getItem(welcomeKey)) {
         localStorage.setItem(welcomeKey, '1');
-        addNotification('welcome', 'Welcome to Universal-Bets! 👋', 'Your account has been created with $100.00. Good luck on the tables!');
+        addNotification('welcome', 'Welcome to Universal-Bets! 👋', 'Your account has been created with $100.00. Good luck!');
     }
     let _seenReceivedTs = currentUser.lastReceived ? currentUser.lastReceived.ts : null;
     db.ref('users/' + currentUser.name + '/lastReceived').on('value', snap => {
@@ -871,10 +931,9 @@ function initNotifications() {
     let wasInTop10 = false;
     setInterval(() => {
         db.ref('users').once('value', snap => {
-            const all = [];
-            snap.forEach(c => all.push(c.val()));
+            const all = []; snap.forEach(c => all.push(c.val()));
             all.sort((a,b) => b.balance - a.balance);
-            const rank = all.findIndex(u => u.name === currentUser.name) + 1;
+            const rank    = all.findIndex(u => u.name === currentUser.name) + 1;
             const inTop10 = rank > 0 && rank <= 10;
             if (inTop10 && !wasInTop10) addNotification('rank', `You're #${rank} on the Leaderboard!`, `Keep playing to climb higher.`);
             wasInTop10 = inTop10;
@@ -882,7 +941,7 @@ function initNotifications() {
     }, 60000);
 }
 
-// ── CHAT ─────────────────────────────────────────────────────────────
+// ── CHAT ──────────────────────────────────────────────────────────────
 function initChat() {
     const box = document.getElementById('chatMessages');
     db.ref('global_chat').limitToLast(50).on('child_added', snap => {
@@ -891,8 +950,7 @@ function initChat() {
         const div  = document.createElement('div');
         div.className = 'message';
         div.innerHTML = `<div class="msg-header"><span class="msg-user">${escHtml(msg.user)}</span><span class="msg-time">${time}</span></div><div class="msg-text">${escHtml(msg.text)}</div>`;
-        box.appendChild(div);
-        box.scrollTop = box.scrollHeight;
+        box.appendChild(div); box.scrollTop = box.scrollHeight;
     });
     const input = document.getElementById('chatInput');
     const ctr   = document.getElementById('charCounter');
@@ -903,10 +961,8 @@ function initChat() {
         ctr.className   = 'char-counter' + (len >= 50 ? ' at-limit' : len >= 40 ? ' near-limit' : '');
     });
 }
-
-const BLOCKED_WORDS=['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w=>w.toLowerCase());
-function containsProfanity(t){const s=t.toLowerCase().replace(/[^a-z0-9 ]/g,' ');return BLOCKED_WORDS.some(w=>new RegExp('\b'+w+'\b').test(s)||s.includes(w));}
-
+const BLOCKED_WORDS = ['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w => w.toLowerCase());
+function containsProfanity(t) { const s = t.toLowerCase().replace(/[^a-z0-9 ]/g,' '); return BLOCKED_WORDS.some(w => s.includes(w)); }
 function sendChat() {
     const input = document.getElementById('chatInput');
     const text  = input.value.trim().slice(0, 50);
@@ -928,22 +984,17 @@ function initAdminAlerts() {
     });
 }
 
-// ── BOOT ─────────────────────────────────────────────────────────────
+// ── BOOT ──────────────────────────────────────────────────────────────
 (function boot() {
     const bar = document.getElementById('loaderBar'); if (bar) bar.style.width = '30%';
     const raw = localStorage.getItem('currentUser');
-    if (!raw) {
-        if (bar) bar.style.width = '100%';
-        setTimeout(() => { hidePageLoader(); showAuth(); }, 500); return;
-    }
+    if (!raw) { if (bar) bar.style.width = '100%'; setTimeout(() => { hidePageLoader(); showAuth(); }, 500); return; }
     let u; try { u = JSON.parse(raw); } catch(e) { localStorage.removeItem('currentUser'); hidePageLoader(); showAuth(); return; }
     if (bar) bar.style.width = '55%';
     document.getElementById('loaderTxt').textContent = 'Signing in...';
     db.ref('users/' + u.name).once('value').then(snap => {
-        if (snap.exists() && snap.val().password === u.password) {
-            if (bar) bar.style.width = '85%';
-            finalizeLogin(snap.val());
-        } else { localStorage.removeItem('currentUser'); hidePageLoader(); showAuth(); }
+        if (snap.exists() && snap.val().password === u.password) { if (bar) bar.style.width = '85%'; finalizeLogin(snap.val()); }
+        else { localStorage.removeItem('currentUser'); hidePageLoader(); showAuth(); }
     }).catch(() => { hidePageLoader(); showAuth(); });
 })();
 </script>
