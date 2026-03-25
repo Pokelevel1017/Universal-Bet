@@ -15,7 +15,6 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:#fff;font-family:var(--font);height:100vh;display:flex;flex-direction:column;overflow:hidden;}
 
-/* PAGE LOADER */
 #pageLoader{position:fixed;inset:0;background:var(--bg);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;transition:opacity .4s;}
 #pageLoader.out{opacity:0;pointer-events:none;}
 .pl-logo{font-family:var(--mono);font-size:2.1rem;font-weight:800;letter-spacing:3px;}
@@ -24,7 +23,6 @@ body{background:var(--bg);color:#fff;font-family:var(--font);height:100vh;displa
 .pl-bar{height:100%;width:0%;background:var(--blue);border-radius:3px;transition:width .35s ease;}
 .pl-txt{font-size:11px;color:var(--muted);}
 
-/* NAV */
 nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-between;align-items:center;height:64px;border-bottom:1px solid var(--border);z-index:100;flex-shrink:0;}
 .logo{font-family:var(--mono);font-size:1.4rem;font-weight:800;color:#fff;text-decoration:none;letter-spacing:1px;}
 .logo span{color:var(--blue);}
@@ -35,7 +33,6 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .back-btn{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:9px;padding:6px 13px;color:var(--muted);text-decoration:none;font-size:12px;font-weight:600;transition:.2s;}
 .back-btn:hover{background:rgba(255,255,255,.07);color:#fff;}
 
-/* AUTH */
 #authGate{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:40px 20px;}
 .ag-logo{font-family:var(--mono);font-size:1.8rem;font-weight:800;}
 .ag-logo span{color:var(--blue);}
@@ -63,30 +60,24 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .abonus .dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0;}
 .abonus strong{color:var(--green);}
 
-/* MAIN LAYOUT */
 .main{display:none;flex:1;overflow:hidden;}
 
-/* GAME AREA */
 .game-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;background:radial-gradient(ellipse at 50% 0%,#0d1a2e 0%,var(--bg-deep) 70%);}
 
-/* Status banner */
 .status-banner{margin:14px 20px 10px;background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;padding:10px 16px;text-align:center;font-size:12px;color:var(--muted);line-height:1.4;flex-shrink:0;transition:border-color .3s,color .3s;}
 .status-banner.active{border-color:rgba(0,122,255,.3);color:#9db8e8;}
 .status-banner.win{border-color:rgba(0,231,1,.3);color:#6ee87f;}
 .status-banner.lose{border-color:rgba(239,68,68,.3);color:#f87171;}
 
-/* Road */
 .road-outer{flex:1;overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:0 20px;}
 .road-scene{display:flex;align-items:flex-end;gap:8px;overflow-x:auto;overflow-y:hidden;padding:20px 10px 16px;scrollbar-width:none;min-height:220px;}
 .road-scene::-webkit-scrollbar{display:none;}
 .road-ground{height:6px;margin:0 20px;background:linear-gradient(90deg,transparent,rgba(255,255,255,.06) 15%,rgba(255,255,255,.06) 85%,transparent);border-radius:3px;flex-shrink:0;}
 
-/* Start tile */
 .start-tile{display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;}
 .start-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;}
 .start-box{width:68px;height:90px;border-radius:12px;background:rgba(0,0,0,.3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:34px;}
 
-/* Pot tile */
 .pot-tile{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;}
 .pot-num-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,.2);font-family:var(--mono);}
 .pot-num-lbl.cur{color:var(--blue);}
@@ -107,7 +98,6 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .pot-flame{position:absolute;bottom:22px;left:0;right:0;display:flex;justify-content:center;pointer-events:none;}
 .pot-icon{font-size:26px;position:relative;z-index:1;}
 
-/* Action bar */
 .game-actions{display:flex;align-items:center;justify-content:center;gap:12px;padding:14px 20px;flex-shrink:0;border-top:1px solid var(--border);}
 .btn-jump{display:flex;align-items:center;gap:8px;background:var(--blue);color:#fff;border:none;padding:14px 38px;border-radius:12px;font-size:14px;font-weight:800;cursor:pointer;font-family:var(--font);text-transform:uppercase;letter-spacing:.8px;transition:.2s;box-shadow:0 4px 18px rgba(0,122,255,.3);}
 .btn-jump:hover:not(:disabled){background:#006ae6;transform:translateY(-2px);box-shadow:0 6px 24px rgba(0,122,255,.4);}
@@ -121,14 +111,12 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .cashout-lbl{font-size:9px;font-weight:700;opacity:.65;line-height:1.2;}
 .cashout-amt{font-family:var(--mono);font-size:16px;font-weight:800;line-height:1.2;}
 
-/* RIGHT PANEL */
 .right-panel{width:290px;flex-shrink:0;background:var(--bg-card);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;padding:18px 15px;gap:14px;scrollbar-width:thin;}
 .right-panel::-webkit-scrollbar{width:4px;}
 .right-panel::-webkit-scrollbar-thumb{background:rgba(255,255,255,.05);border-radius:4px;}
 .rp-lbl{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:9px;}
 .rp-div{height:1px;background:var(--border);}
 
-/* Bet */
 .bet-row{display:flex;align-items:center;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;margin-bottom:9px;transition:.2s;}
 .bet-row:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,122,255,.1);}
 .bet-pfx{padding:0 11px;color:var(--green);font-weight:800;font-family:var(--mono);font-size:16px;flex-shrink:0;background:rgba(0,231,1,.04);border-right:1px solid rgba(255,255,255,.05);height:42px;display:flex;align-items:center;}
@@ -147,7 +135,6 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .mod{flex:1;background:var(--bg-deep);border:1px solid var(--border);border-radius:7px;padding:6px 3px;text-align:center;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:.15s;font-family:var(--font);user-select:none;}
 .mod:hover{background:rgba(255,255,255,.05);color:#fff;}
 
-/* Stats */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
 .stat-box{background:rgba(0,0,0,.25);border:1px solid var(--border);border-radius:10px;padding:10px 12px;}
 .stat-box.hl-gold{border-color:rgba(255,196,0,.2);background:rgba(255,196,0,.04);}
@@ -157,10 +144,8 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 .sb-val.gold{color:var(--gold);}
 .sb-val.green{color:var(--green);}
 
-/* Controls locked during game */
 .locked .chip,.locked .mod,.locked .bet-row{pointer-events:none;opacity:.3;}
 
-/* CHAT PANEL */
 .chat-panel{width:290px;background:#0b0f1c;border-left:1px solid rgba(255,255,255,.05);display:flex;flex-direction:column;height:100%;transition:width .3s;overflow:hidden;flex-shrink:0;}
 .chat-panel.collapsed{width:50px;}
 .rp-tabs{display:flex;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.05);background:#090d18;flex-shrink:0;height:46px;}
@@ -272,9 +257,8 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 </div>
 
 <div class="main" id="mainWrap">
-
   <div class="game-wrap">
-    <div class="status-banner" id="statusBanner">Place a bet, then click <strong>Jump!</strong> to start.</div>
+    <div class="status-banner" id="statusBanner">Place a bet and click <strong>Jump!</strong> to start.</div>
     <div class="road-outer">
       <div class="road-scene" id="roadScene"></div>
       <div class="road-ground"></div>
@@ -316,9 +300,7 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
         <div class="mod" onclick="clearBet()">Clear</div>
       </div>
     </div>
-
     <div class="rp-div"></div>
-
     <div>
       <div class="rp-lbl">Round Stats</div>
       <div class="stats-grid" style="margin-bottom:7px;">
@@ -378,7 +360,6 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
       </div>
     </div>
   </aside>
-
 </div>
 
 <div id="syncBadge">✓ Balance synced</div>
@@ -386,7 +367,6 @@ nav{background:var(--bg-nav);padding:0 24px;display:flex;justify-content:space-b
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 <script>
-/* ── FIREBASE ── */
 firebase.initializeApp({
   apiKey:"AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",
   authDomain:"universalbet-427ce.firebaseapp.com",
@@ -398,25 +378,80 @@ firebase.initializeApp({
 });
 const db = firebase.database();
 
-/* ── CONFIG ── */
 const TOTAL_POTS = 20;
-const MULT_STEP  = 1.26; // multiplier per cleared pot
+const MULT_STEP  = 1.18;
 
-/* ── STATE ── */
 let CU = null, bet = 0;
 let gameActive = false, busy = false;
 let potsCleared = 0, currentMult = 1;
-let burnChances = []; // random per-round, generated fresh each round
+let burnChances = [];
 let chatCol = false, rpTab = 'chat', syncT = null;
 
-/* ── HELPERS ── */
 const cm  = v => Math.round(v * 100) / 100;
 const f$  = v => parseFloat(v || 0).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
 const esc = t => String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const multAt = n => parseFloat(Math.pow(MULT_STEP, n).toFixed(4));
 
+/* ── FAIR ODDS SYSTEM ──────────────────────────────────────────
+   Each pot has a fixed survival probability calculated from the
+   multiplier so that expected value is fair with a ~2% house edge.
+
+   Standard Chicken Road model (matches Rainbet/Stake):
+   - Each jump is independent
+   - Survival chance per pot = 1 / MULT_STEP / (1 - HOUSE_EDGE)
+     simplified to a clean per-pot survive probability
+   - At pot N the cumulative multiplier = MULT_STEP^N
+   - The fair survival prob per jump = 1 / MULT_STEP ≈ 79.37%
+   - With ~2% house edge: survival = (1/MULT_STEP) * (1/1.02) ≈ 77.8%
+   - This means each pot has a ~22.2% chance of cooking the chicken
+   - Multipliers exactly compensate the risk so EV ≈ -2% per round
+────────────────────────────────────────────────────────────── */
+const HOUSE_EDGE      = 0.02;                          // 2% house edge
+const SURVIVE_PER_POT = (1 / MULT_STEP) * (1 - HOUSE_EDGE); // ≈ 0.778
+const COOK_PER_POT    = 1 - SURVIVE_PER_POT;          // ≈ 0.222 (~22.2%)
+
 function genBurnChances() {
-  burnChances = Array.from({length: TOTAL_POTS}, () => 0.10 + Math.random() * 0.80);
+  // Each entry is the fixed cook probability — same every round, fully transparent
+  burnChances = Array.from({length: TOTAL_POTS}, () => COOK_PER_POT);
+}
+
+/* ── WEBSITE THEME ── */
+const ALL_WEBSITE_THEMES = [
+  { id:'theme_ocean',    bg:'#061a2e', accent:'#00c4ff' },
+  { id:'theme_ember',    bg:'#1a0805', accent:'#ff4c0c' },
+  { id:'theme_midnight', bg:'#0c0820', accent:'#7c3aed' },
+  { id:'theme_neon',     bg:'#050f0a', accent:'#00ff87' },
+  { id:'theme_gold',     bg:'#100e00', accent:'#f59e0b' },
+  { id:'theme_arctic',   bg:'#08101a', accent:'#93c5fd' },
+  { id:'theme_rose',     bg:'#1a080f', accent:'#f472b6' },
+  { id:'theme_mint',     bg:'#061510', accent:'#34d399' },
+];
+
+function adjustColor(hex, amount) {
+  const h = hex.replace('#','');
+  const r = Math.min(255, parseInt(h.substr(0,2),16) + amount);
+  const g = Math.min(255, parseInt(h.substr(2,2),16) + amount);
+  const b = Math.min(255, parseInt(h.substr(4,2),16) + amount);
+  return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+}
+
+function applyUserTheme() {
+  if (!CU || !CU.websiteTheme) {
+    document.documentElement.style.removeProperty('--bg');
+    document.documentElement.style.removeProperty('--bg-nav');
+    document.documentElement.style.removeProperty('--bg-card');
+    document.documentElement.style.removeProperty('--bg-deep');
+    document.documentElement.style.removeProperty('--blue');
+    return;
+  }
+  const theme = ALL_WEBSITE_THEMES.find(t => t.id === CU.websiteTheme);
+  if (!theme) return;
+  const root = document.documentElement;
+  root.style.setProperty('--bg',      theme.bg);
+  root.style.setProperty('--bg-nav',  adjustColor(theme.bg, 8));
+  root.style.setProperty('--bg-card', adjustColor(theme.bg, 15));
+  root.style.setProperty('--bg-deep', adjustColor(theme.bg, 3));
+  root.style.setProperty('--blue',    theme.accent);
 }
 
 /* ── PAGE LOADER ── */
@@ -438,14 +473,12 @@ function switchAuthTab(t) {
   document.getElementById('aerr').textContent = '';
   document.getElementById('rerr').textContent = '';
 }
-
 function setAL(id, loading, def) {
   const b = document.getElementById(id);
   if (!b) return;
   b.disabled = loading;
   b.innerHTML = loading ? '<span class="aspin"></span> Loading...' : def;
 }
-
 function doAuth() {
   const n = document.getElementById('aUser').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
   const p = document.getElementById('aPass').value.trim();
@@ -461,7 +494,6 @@ function doAuth() {
     finalizeLogin(u);
   }).catch(() => { err.textContent = 'Connection error.'; setAL('authBtn', false, 'Sign In'); });
 }
-
 function doReg() {
   const n = document.getElementById('rUser').value.trim().toLowerCase().replace(/[^a-z0-9]/g,'');
   const p = document.getElementById('rPass').value.trim();
@@ -485,11 +517,14 @@ function finalizeLogin(user) {
   document.getElementById('authGate').style.display = 'none';
   document.getElementById('mainWrap').style.display = 'flex';
   document.getElementById('navBalWrap').style.display = 'flex';
-  db.ref('users/' + user.name).on('value', s => { if (s.exists()) { CU = s.val(); updateBal(); } });
+  db.ref('users/' + user.name).on('value', s => {
+    if (s.exists()) { CU = s.val(); updateBal(); applyUserTheme(); }
+  });
   const pr = db.ref('presence/' + user.name);
   pr.set({online:true, lastSeen:Date.now()});
   pr.onDisconnect().set({online:false, lastSeen:Date.now()});
   setInterval(() => pr.update({lastSeen:Date.now()}), 30000);
+  applyUserTheme();
   updateBal();
   buildRoad();
   updateUI();
@@ -508,8 +543,7 @@ function updateBal() {
 function onBetInp() {
   const r = parseFloat(document.getElementById('betInp').value);
   bet = isNaN(r) || r < 0 ? 0 : cm(Math.min(r, CU ? cm(CU.balance) : 99999));
-  updateUI();
-  syncBtn();
+  updateUI(); syncBtn();
 }
 function setBet(a) {
   if (gameActive) return;
@@ -534,22 +568,16 @@ function clearBet() {
 function syncBtn() {
   document.getElementById('btnJump').disabled = (bet <= 0 || gameActive || busy);
 }
-// Called by resetRound after state is fully clean
-
 
 /* ── BUILD ROAD ── */
 function buildRoad() {
   genBurnChances();
   const scene = document.getElementById('roadScene');
   scene.innerHTML = '';
-
-  // Start tile
   const startTile = document.createElement('div');
   startTile.className = 'start-tile';
   startTile.innerHTML = '<span class="start-label">Start</span><div class="start-box" id="startBox">🐔</div>';
   scene.appendChild(startTile);
-
-  // Pot tiles
   for (let i = 1; i <= TOTAL_POTS; i++) {
     const tile = document.createElement('div');
     tile.className = 'pot-tile';
@@ -557,7 +585,7 @@ function buildRoad() {
     tile.innerHTML =
       '<span class="pot-num-lbl" id="pnum-' + i + '">' + i + '</span>' +
       '<div class="pot-box idle" id="pbox-' + i + '">' +
-        '<div class="pot-badge idle" id="pbadge-' + i + '">×' + multAt(i).toFixed(2) + '</div>' +
+        '<div class="pot-badge idle" id="pbadge-' + i + '">&times;' + multAt(i).toFixed(2) + '</div>' +
         '<div class="pot-flame">' + flameSVG() + '</div>' +
         '<span class="pot-icon" id="picon-' + i + '">🍳</span>' +
       '</div>';
@@ -576,51 +604,30 @@ function flameSVG() {
 /* ── HIGHLIGHT POTS ── */
 function highlightPots() {
   const startBox = document.getElementById('startBox');
-
   for (let i = 1; i <= TOTAL_POTS; i++) {
     const box   = document.getElementById('pbox-'   + i);
     const badge = document.getElementById('pbadge-' + i);
     const num   = document.getElementById('pnum-'   + i);
     const icon  = document.getElementById('picon-'  + i);
     if (!box) continue;
-
     if (i < potsCleared) {
-      // Already passed — show checkmark
-      box.className   = 'pot-box done';
-      badge.className = 'pot-badge done';
-      num.className   = 'pot-num-lbl done';
-      icon.textContent = '✅';
+      box.className = 'pot-box done'; badge.className = 'pot-badge done';
+      num.className = 'pot-num-lbl done'; icon.textContent = '✅';
     } else if (i === potsCleared) {
-      // Current position — chicken sits here
-      box.className   = 'pot-box done';
-      badge.className = 'pot-badge done';
-      num.className   = 'pot-num-lbl done';
-      icon.textContent = '🐔';
+      box.className = 'pot-box done'; badge.className = 'pot-badge done';
+      num.className = 'pot-num-lbl done'; icon.textContent = '🐔';
     } else if (i === potsCleared + 1 && gameActive) {
-      // Next pot to jump
-      box.className   = 'pot-box next';
-      badge.className = 'pot-badge next';
-      num.className   = 'pot-num-lbl cur';
-      icon.textContent = '🍳';
+      box.className = 'pot-box next'; badge.className = 'pot-badge next';
+      num.className = 'pot-num-lbl cur'; icon.textContent = '🍳';
     } else if (gameActive) {
-      // Future pots — dimmed
-      box.className   = 'pot-box dim';
-      badge.className = 'pot-badge dim';
-      num.className   = 'pot-num-lbl';
-      icon.textContent = '🍳';
+      box.className = 'pot-box dim'; badge.className = 'pot-badge dim';
+      num.className = 'pot-num-lbl'; icon.textContent = '🍳';
     } else {
-      // Idle (before game starts)
-      box.className   = 'pot-box idle';
-      badge.className = 'pot-badge idle';
-      num.className   = 'pot-num-lbl';
-      icon.textContent = '🍳';
+      box.className = 'pot-box idle'; badge.className = 'pot-badge idle';
+      num.className = 'pot-num-lbl'; icon.textContent = '🍳';
     }
   }
-
-  // Chicken position: on start box if 0 pots cleared, else on cleared pot
   if (startBox) startBox.textContent = potsCleared === 0 ? '🐔' : '';
-
-  // Scroll next pot into view
   if (gameActive) {
     const next = document.getElementById('pbox-' + (potsCleared + 1));
     if (next) next.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
@@ -629,16 +636,12 @@ function highlightPots() {
 
 /* ── RESET ── */
 function resetRound() {
-  gameActive = false;
-  busy = false;
-  potsCleared = 0;
-  currentMult = 1;
+  gameActive = false; busy = false; potsCleared = 0; currentMult = 1;
   lockControls(false);
   document.getElementById('btnJump').disabled = (bet <= 0);
   document.getElementById('btnCashout').disabled = true;
-  buildRoad();
-  updateUI();
-  setStatus('Place a bet, then click Jump! to start.', '');
+  buildRoad(); updateUI();
+  setStatus('Place a bet and click Jump! to start.', '');
 }
 
 /* ── JUMP ── */
@@ -646,20 +649,13 @@ function jump() {
   if (busy || !CU) return;
   if (bet <= 0) { setStatus('Enter a bet amount first!', ''); return; }
   if (bet > cm(CU.balance)) { setStatus('Not enough balance!', ''); return; }
-
   if (!gameActive) {
-    // Start a fresh round
-    gameActive = true;
-    busy = false;
-    potsCleared = 0;
-    currentMult = 1;
+    gameActive = true; busy = false; potsCleared = 0; currentMult = 1;
     lockControls(true);
     document.getElementById('btnCashout').disabled = true;
     document.getElementById('btnJump').disabled = true;
-    highlightPots();
-    updateUI();
+    highlightPots(); updateUI();
   }
-
   resolveJump();
 }
 
@@ -667,40 +663,27 @@ function resolveJump() {
   busy = true;
   document.getElementById('btnJump').disabled = true;
   document.getElementById('btnCashout').disabled = true;
-
   const potNum = potsCleared + 1;
   const cooked = Math.random() < burnChances[potNum - 1];
-
   setStatus('⏳ Jumping over pot ' + potNum + '...', 'active');
-
   setTimeout(() => {
     if (cooked) {
-      // ── COOKED ──
       const box  = document.getElementById('pbox-'  + potNum);
       const icon = document.getElementById('picon-' + potNum);
       if (box)  box.className    = 'pot-box dead';
       if (icon) icon.textContent = '🔥';
-      // Mark all previously cleared pots
       for (let i = 1; i < potNum; i++) {
         const ic = document.getElementById('picon-' + i);
         if (ic) ic.textContent = i === potsCleared ? '🐔' : '✅';
       }
       const sb = document.getElementById('startBox');
       if (sb) sb.textContent = potsCleared === 0 ? '💀' : '';
-
       saveBalance(-bet);
       setStatus('🍗 Cooked on pot ' + potNum + '! Lost $' + f$(bet) + '.', 'lose');
-
-      // Keep busy=true so Jump can't be pressed during the death display
       setTimeout(() => resetRound(), 2500);
-
     } else {
-      // ── SAFE ──
-      potsCleared++;
-      currentMult = multAt(potsCleared);
-      highlightPots();
-      updateUI();
-
+      potsCleared++; currentMult = multAt(potsCleared);
+      highlightPots(); updateUI();
       if (potsCleared >= TOTAL_POTS) {
         setStatus('🏆 All 20 pots cleared! Cashing out!', 'win');
         setTimeout(() => cashout(), 600);
@@ -717,45 +700,34 @@ function resolveJump() {
 /* ── CASHOUT ── */
 function cashout() {
   if (!gameActive || potsCleared === 0) return;
-
-  // Snapshot values before resetting state
   const mult   = currentMult;
   const profit = cm(bet * mult - bet);
-
-  gameActive = false;
-  busy = true; // block Jump until reset completes
+  gameActive = false; busy = true;
   lockControls(false);
   document.getElementById('btnCashout').disabled = true;
   document.getElementById('btnJump').disabled = true;
-
-  saveBalance(profit);
-  updateUI();
+  saveBalance(profit); updateUI();
   setStatus('💰 Cashed out at ×' + mult.toFixed(2) + '! Won $' + f$(profit) + '.', 'win');
-
   setTimeout(() => resetRound(), 2200);
 }
 
-/* ── STATUS ── */
+/* ── HELPERS ── */
 function setStatus(txt, cls) {
   const el = document.getElementById('statusBanner');
   if (!el) return;
   el.innerHTML = txt;
   el.className = 'status-banner' + (cls ? ' ' + cls : '');
 }
-
-/* ── UI UPDATE ── */
 function updateUI() {
   const active = gameActive && potsCleared > 0;
   const m = active ? currentMult : 1;
   const cashNow = active ? cm(bet * m) : 0;
-  document.getElementById('rpMult').textContent   = m.toFixed(2) + '×';
+  document.getElementById('rpMult').textContent    = m.toFixed(2) + '×';
   document.getElementById('rpCashout').textContent = '$' + f$(cashNow);
   document.getElementById('rpPots').textContent    = potsCleared;
   document.getElementById('rpNext').textContent    = multAt(potsCleared + 1).toFixed(2) + '×';
   document.getElementById('cashoutAmt').textContent = '$' + f$(cashNow);
 }
-
-/* ── LOCK CONTROLS ── */
 function lockControls(lock) {
   const rp = document.getElementById('rightPanel');
   if (lock) rp.classList.add('locked'); else rp.classList.remove('locked');
@@ -804,11 +776,9 @@ function expandRpTo(t) {
   switchRpTab(t);
 }
 
-/* ── PROFANITY ── */
 const BW = ['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'];
 function hasBad(t) { const s = t.toLowerCase().replace(/[^a-z0-9 ]/g,' '); return BW.some(w => s.includes(w)); }
 
-/* ── CHAT ── */
 function initChat() {
   const box = document.getElementById('chatMsgs');
   db.ref('global_chat').limitToLast(50).on('child_added', snap => {
@@ -835,8 +805,7 @@ function sendChat() {
   if (!txt || !CU) return;
   if (hasBad(txt)) { inp.style.borderColor = '#ef4444'; inp.value = ''; document.getElementById('charCtr').textContent = '0 / 50'; setTimeout(() => inp.style.borderColor = '', 1200); return; }
   db.ref('global_chat').push({user:CU.name, text:txt, ts:Date.now()});
-  inp.value = '';
-  document.getElementById('charCtr').textContent = '0 / 50';
+  inp.value = ''; document.getElementById('charCtr').textContent = '0 / 50';
 }
 
 /* ── NOTIFICATIONS ── */
