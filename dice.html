@@ -24,8 +24,6 @@
         .nav-bal{color:#fff;font-weight:700;font-family:var(--font-condensed);font-size:16px;}
         .back-btn{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:10px;padding:7px 14px;color:var(--text-muted);text-decoration:none;font-size:13px;font-weight:600;transition:0.2s;}
         .back-btn:hover{background:rgba(255,255,255,0.08);color:#fff;}
-
-        /* PAGE LOADER */
         #pageLoader{position:fixed;inset:0;background:var(--bg-body);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.4s;}
         #pageLoader.fade-out{opacity:0;pointer-events:none;}
         .page-loader-logo{font-family:var(--font-condensed);font-size:2rem;font-weight:700;letter-spacing:3px;}
@@ -33,8 +31,6 @@
         .page-loader-bar-wrap{width:160px;height:3px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
         .page-loader-bar{height:100%;width:0%;background:var(--primary-blue);border-radius:3px;transition:width 0.3s ease;}
         .page-loader-txt{font-size:11px;color:var(--text-muted);}
-
-        /* AUTH */
         #authGate{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:60px 20px;text-align:center;}
         .auth-gate-logo{font-family:var(--font-condensed);font-size:2rem;font-weight:700;margin-bottom:8px;}
         .auth-gate-logo span{color:var(--primary-blue);}
@@ -61,11 +57,9 @@
         .auth-bonus-row{display:flex;align-items:center;gap:10px;background:rgba(0,231,1,0.06);border:1px solid rgba(0,231,1,0.15);border-radius:8px;padding:10px 12px;font-size:12px;color:#a0aabc;margin-top:12px;}
         .auth-bonus-row .badge-dot{width:7px;height:7px;border-radius:50%;background:var(--accent-green);box-shadow:0 0 6px var(--accent-green);flex-shrink:0;}
         .auth-bonus-row strong{color:var(--accent-green);}
-
         .main-wrapper{display:none;flex:1;overflow:hidden;}
         .game-scroll{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
         .dice-game-area{width:100%;max-width:640px;display:flex;flex-direction:column;gap:20px;}
-
         .result-display{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:28px 24px 24px;text-align:center;position:relative;overflow:hidden;}
         .result-display::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(0,122,255,0.05) 0%,transparent 65%);pointer-events:none;}
         .result-eyebrow{font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
@@ -77,7 +71,6 @@
         .result-verdict.win{color:var(--accent-green);}
         .result-verdict.lose{color:var(--accent-red);}
         .result-verdict.idle{color:var(--text-muted);}
-
         .slider-section{background:var(--bg-card);border:1px solid var(--border-color);border-radius:16px;padding:24px 24px 20px;}
         .slider-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}
         .track-wrap{position:relative;height:40px;display:flex;align-items:center;margin-bottom:14px;}
@@ -90,10 +83,16 @@
         input[type=range].dice-slider::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--bg-body);box-shadow:0 2px 10px rgba(0,0,0,0.5);cursor:grab;}
         input[type=range].dice-slider:active::-webkit-slider-thumb{cursor:grabbing;}
         input[type=range].dice-slider::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--bg-body);box-shadow:0 2px 10px rgba(0,0,0,0.5);cursor:grab;}
+        /* Locked slider style */
+        input[type=range].dice-slider:disabled{cursor:not-allowed;opacity:0.5;}
+        input[type=range].dice-slider:disabled::-webkit-slider-thumb{cursor:not-allowed;background:rgba(255,255,255,0.4);}
+        input[type=range].dice-slider:disabled::-moz-range-thumb{cursor:not-allowed;background:rgba(255,255,255,0.4);}
         .mode-toggle{display:flex;gap:6px;justify-content:center;}
         .mode-btn{flex:1;padding:9px 12px;border-radius:8px;border:1px solid var(--border-color);font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-main);text-transform:uppercase;letter-spacing:0.5px;transition:0.15s;background:rgba(255,255,255,0.03);color:var(--text-muted);}
         .mode-btn.active-over{background:rgba(0,231,1,0.12);border-color:rgba(0,231,1,0.3);color:var(--accent-green);}
         .mode-btn.active-under{background:rgba(239,68,68,0.12);border-color:rgba(239,68,68,0.3);color:var(--accent-red);}
+        /* Disabled mode buttons during roll */
+        .mode-btn:disabled{opacity:0.4;cursor:not-allowed;}
         .stat-bar{display:grid;grid-template-columns:1fr 1px 1fr 1px 1fr;background:var(--bg-card);border:1px solid var(--border-color);border-radius:12px;overflow:hidden;}
         .stat-cell{padding:14px 10px;text-align:center;}
         .stat-cell-div{background:var(--border-color);}
@@ -107,7 +106,6 @@
         @keyframes pillIn{from{opacity:0;transform:scale(0.7);}to{opacity:1;transform:scale(1);}}
         .hist-pill.win{background:rgba(0,231,1,0.1);color:var(--accent-green);border:1px solid rgba(0,231,1,0.2);}
         .hist-pill.lose{background:rgba(239,68,68,0.1);color:var(--accent-red);border:1px solid rgba(239,68,68,0.2);}
-
         .right-panel{width:280px;flex-shrink:0;background:var(--bg-chat);border-left:1px solid var(--border-color);display:flex;flex-direction:column;overflow-y:auto;padding:20px 16px;gap:16px;}
         .rp-section-label{font-size:10px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;}
         .bet-manual-row{display:flex;align-items:center;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:10px;transition:0.2s;}
@@ -116,23 +114,30 @@
         .bet-manual-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:16px;font-weight:700;font-family:var(--font-condensed);padding:0 12px;height:44px;}
         .bet-manual-input::-webkit-inner-spin-button,.bet-manual-input::-webkit-outer-spin-button{-webkit-appearance:none;}
         .bet-manual-input::placeholder{color:rgba(255,255,255,0.2);font-weight:400;font-size:14px;}
+        /* Disabled bet input during roll */
+        .bet-manual-input:disabled{opacity:0.5;cursor:not-allowed;}
         .chip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
         .chip-btn{background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:8px 4px;text-align:center;font-family:var(--font-condensed);font-size:13px;font-weight:700;cursor:pointer;color:var(--text-muted);transition:0.15s;}
-        .chip-btn:hover{background:rgba(255,255,255,0.06);color:#fff;border-color:rgba(255,255,255,0.12);transform:translateY(-1px);}
+        .chip-btn:hover:not([disabled]){background:rgba(255,255,255,0.06);color:#fff;border-color:rgba(255,255,255,0.12);transform:translateY(-1px);}
         .chip-btn.c-blue{color:#60a5fa;border-color:rgba(59,130,246,0.2);}
         .chip-btn.c-green{color:var(--accent-green);border-color:rgba(0,231,1,0.2);}
         .chip-btn.c-yellow{color:#f59e0b;border-color:rgba(245,158,11,0.2);}
         .chip-btn.c-red{color:#f87171;border-color:rgba(239,68,68,0.2);}
         .chip-btn.c-purple{color:#c084fc;border-color:rgba(168,85,247,0.2);}
+        /* Disabled chips during roll */
+        .chip-btn[disabled]{opacity:0.35;cursor:not-allowed;transform:none !important;filter:none;}
         .bet-mod-row{display:flex;gap:6px;margin-bottom:4px;}
         .bet-mod-btn{flex:1;background:var(--bg-card);border:1px solid var(--border-color);border-radius:8px;padding:7px 4px;text-align:center;font-size:12px;font-weight:700;color:var(--text-muted);cursor:pointer;transition:0.15s;font-family:var(--font-main);}
-        .bet-mod-btn:hover{background:rgba(255,255,255,0.06);color:#fff;}
+        .bet-mod-btn:hover:not([disabled]){background:rgba(255,255,255,0.06);color:#fff;}
+        .bet-mod-btn[disabled]{opacity:0.35;cursor:not-allowed;}
         .rp-divider{height:1px;background:var(--border-color);}
         .threshold-row{display:flex;align-items:center;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.08);border-radius:10px;overflow:hidden;margin-bottom:10px;transition:0.2s;}
         .threshold-row:focus-within{border-color:var(--primary-blue);box-shadow:0 0 0 3px rgba(0,122,255,0.1);}
         .threshold-prefix{padding:0 10px;color:var(--text-muted);font-weight:700;font-family:var(--font-condensed);font-size:13px;flex-shrink:0;background:rgba(255,255,255,0.03);border-right:1px solid rgba(255,255,255,0.06);height:40px;display:flex;align-items:center;white-space:nowrap;}
         .threshold-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:15px;font-weight:700;font-family:var(--font-condensed);padding:0 12px;height:40px;}
         .threshold-input::-webkit-inner-spin-button,.threshold-input::-webkit-outer-spin-button{-webkit-appearance:none;}
+        /* Disabled threshold during roll */
+        .threshold-input:disabled{opacity:0.5;cursor:not-allowed;}
         .info-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
         .info-box{background:rgba(0,0,0,0.2);border:1px solid var(--border-color);border-radius:10px;padding:11px 12px;}
         .info-box-label{font-size:9px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
@@ -145,9 +150,9 @@
         .action-btn:active:not(:disabled){transform:none;}
         .action-btn:disabled{opacity:0.3;cursor:default;transform:none;filter:none;}
         .btn-roll{background:var(--primary-blue);color:#fff;box-shadow:0 4px 16px rgba(0,122,255,0.25);}
+        /* Rolling state for the roll button */
+        .btn-roll.rolling{background:rgba(0,122,255,0.4);box-shadow:none;}
         .msg-log{font-size:12px;color:var(--text-muted);text-align:center;background:rgba(0,0,0,0.15);border-radius:8px;padding:10px 12px;min-height:38px;display:flex;align-items:center;justify-content:center;line-height:1.4;}
-
-        /* CHAT PANEL */
         .chat-panel{width:300px;background:#0d1220;border-left:1px solid rgba(255,255,255,0.06);display:flex;flex-direction:column;height:100%;transition:width 0.3s ease;overflow:hidden;flex-shrink:0;}
         .chat-panel.collapsed{width:52px;}
         .rp-tab-bar{display:flex;align-items:stretch;border-bottom:1px solid rgba(255,255,255,0.06);background:#0b0f1c;flex-shrink:0;height:48px;}
@@ -211,35 +216,25 @@
         .notif-clear-btn{display:block;width:calc(100% - 24px);margin:0 12px 12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:var(--text-muted);border-radius:8px;padding:9px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;cursor:pointer;font-family:var(--font-main);transition:0.15s;flex-shrink:0;}
         .notif-clear-btn:hover{background:rgba(255,255,255,0.07);color:#fff;}
         #syncBadge{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,231,1,0.08);border:1px solid rgba(0,231,1,0.2);border-radius:8px;padding:7px 16px;font-size:11px;color:var(--accent-green);display:none;z-index:200;white-space:nowrap;}
-
         @media(max-width:1100px){.chat-panel{display:none;}}
         @media(max-width:800px){body{height:auto;overflow-y:auto;overflow-x:hidden;}.main-wrapper{height:auto;flex-direction:column;}.right-panel{width:100%;border-left:none;border-top:1px solid var(--border-color);}.game-scroll{overflow:visible;padding:16px;justify-content:flex-start;}.result-number{font-size:64px;}}
     </style>
 </head>
 <body>
-
 <div id="pageLoader">
     <div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div>
     <div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div>
     <div class="page-loader-txt" id="loaderTxt">Connecting...</div>
 </div>
-
 <nav>
     <a class="logo" href="index.html">UNIVERSAL-<span>BETS</span></a>
     <div class="nav-right">
-        <div class="balance-pill" id="navBalWrap" style="display:none;">
-            <span class="currency-icon">$</span>
-            <span class="nav-bal" id="navBal">0.00</span>
-        </div>
+        <div class="balance-pill" id="navBalWrap" style="display:none;"><span class="currency-icon">$</span><span class="nav-bal" id="navBal">0.00</span></div>
         <a class="back-btn" href="index.html">&#8592; Lobby</a>
     </div>
 </nav>
-
 <div id="authGate" style="display:none;">
-    <div>
-        <div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div>
-        <div class="auth-gate-sub">Sign in to play Dice with your real balance</div>
-    </div>
+    <div><div class="auth-gate-logo">UNIVERSAL-<span>BETS</span></div><div class="auth-gate-sub">Sign in to play Dice with your real balance</div></div>
     <div class="auth-gate-card">
         <div class="auth-tabs">
             <button class="auth-tab active" id="authTabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
@@ -248,29 +243,23 @@
         <div class="auth-form-panel active" id="authPanelSignin">
             <div class="auth-form-title">Welcome back</div>
             <div class="auth-form-sub">Sign in to your account to play.</div>
-            <label>Username</label>
-            <input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')doAuth()">
-            <label>Password</label>
-            <input type="password" id="authPassword" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
+            <label>Username</label><input type="text" id="authUsername" placeholder="your username" autocomplete="username" onkeydown="if(event.key==='Enter')doAuth()">
+            <label>Password</label><input type="password" id="authPassword" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" autocomplete="current-password" onkeydown="if(event.key==='Enter')doAuth()">
             <div class="auth-error" id="authError"></div>
             <button class="auth-gate-btn" id="authBtn" onclick="doAuth()">Sign In</button>
         </div>
         <div class="auth-form-panel" id="authPanelReg">
             <div class="auth-form-title">Create account</div>
             <div class="auth-form-sub">New accounts start with <strong>$100.00</strong> free.</div>
-            <label>Username</label>
-            <input type="text" id="regUsername" placeholder="letters &amp; numbers only" autocomplete="username" onkeydown="if(event.key==='Enter')doRegister()">
-            <label>Password</label>
-            <input type="password" id="regPassword" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
-            <label>Confirm Password</label>
-            <input type="password" id="regPasswordConfirm" placeholder="repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Username</label><input type="text" id="regUsername" placeholder="letters &amp; numbers only" autocomplete="username" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Password</label><input type="password" id="regPassword" placeholder="at least 4 characters" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
+            <label>Confirm Password</label><input type="password" id="regPasswordConfirm" placeholder="repeat password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doRegister()">
             <div class="auth-error" id="regError"></div>
             <button class="auth-gate-btn" id="regBtn" onclick="doRegister()">Create Account &amp; Play</button>
             <div class="auth-bonus-row"><div class="badge-dot"></div>You'll receive <strong>&nbsp;$100.00&nbsp;</strong> instantly!</div>
         </div>
     </div>
 </div>
-
 <div class="main-wrapper" id="mainWrapper">
     <div class="game-scroll">
     <div class="dice-game-area">
@@ -282,10 +271,7 @@
         <div class="slider-section">
             <div class="slider-labels"><span>0</span><span>25</span><span>50</span><span>75</span><span>100</span></div>
             <div class="track-wrap">
-                <div class="track-bg">
-                    <div class="track-lose-zone" id="trackLose"></div>
-                    <div class="track-win-zone" id="trackWin"></div>
-                </div>
+                <div class="track-bg"><div class="track-lose-zone" id="trackLose"></div><div class="track-win-zone" id="trackWin"></div></div>
                 <div class="track-needle" id="trackNeedle"></div>
                 <div class="track-result-dot" id="trackDot"></div>
                 <input type="range" class="dice-slider" id="diceSlider" min="2" max="98" value="50" step="1" oninput="onSliderChange()">
@@ -305,7 +291,6 @@
         <div class="history-row" id="historyRow"></div>
     </div>
     </div>
-
     <aside class="right-panel">
         <div class="msg-log" id="msgLog">Set your bet and roll.</div>
         <div>
@@ -314,21 +299,21 @@
                 <div class="bet-manual-prefix">$</div>
                 <input type="number" id="betInput" class="bet-manual-input" placeholder="Enter amount..." min="0.01" step="0.01" oninput="onBetInput()">
             </div>
-            <div class="chip-grid">
-                <div class="chip-btn c-blue" onclick="setBet(1)">$1</div>
-                <div class="chip-btn c-green" onclick="setBet(5)">$5</div>
-                <div class="chip-btn c-green" onclick="setBet(10)">$10</div>
-                <div class="chip-btn c-yellow" onclick="setBet(25)">$25</div>
-                <div class="chip-btn c-yellow" onclick="setBet(50)">$50</div>
-                <div class="chip-btn c-red" onclick="setBet(100)">$100</div>
-                <div class="chip-btn c-purple" onclick="setBet(250)">$250</div>
-                <div class="chip-btn c-purple" onclick="setBet(500)">$500</div>
-                <div class="chip-btn" onclick="setBetMax()" style="font-size:11px;">MAX</div>
+            <div class="chip-grid" id="chipGrid">
+                <div class="chip-btn c-blue" onclick="if(!rolling)setBet(1)">$1</div>
+                <div class="chip-btn c-green" onclick="if(!rolling)setBet(5)">$5</div>
+                <div class="chip-btn c-green" onclick="if(!rolling)setBet(10)">$10</div>
+                <div class="chip-btn c-yellow" onclick="if(!rolling)setBet(25)">$25</div>
+                <div class="chip-btn c-yellow" onclick="if(!rolling)setBet(50)">$50</div>
+                <div class="chip-btn c-red" onclick="if(!rolling)setBet(100)">$100</div>
+                <div class="chip-btn c-purple" onclick="if(!rolling)setBet(250)">$250</div>
+                <div class="chip-btn c-purple" onclick="if(!rolling)setBet(500)">$500</div>
+                <div class="chip-btn" onclick="if(!rolling)setBetMax()" style="font-size:11px;">MAX</div>
             </div>
             <div class="bet-mod-row">
-                <div class="bet-mod-btn" onclick="modBet(0.5)">&#189;</div>
-                <div class="bet-mod-btn" onclick="modBet(2)">2&#215;</div>
-                <div class="bet-mod-btn" onclick="clearBet()">Clear</div>
+                <div class="bet-mod-btn" id="modHalf" onclick="if(!rolling)modBet(0.5)">&#189;</div>
+                <div class="bet-mod-btn" id="modDouble" onclick="if(!rolling)modBet(2)">2&#215;</div>
+                <div class="bet-mod-btn" id="modClear" onclick="if(!rolling)clearBet()">Clear</div>
             </div>
         </div>
         <div class="rp-divider"></div>
@@ -351,37 +336,18 @@
                 <div class="info-box"><div class="info-box-label">Loss (Lose)</div><div class="info-box-val red" id="rpLoss">$0.00</div></div>
             </div>
         </div>
-        <div>
-            <button class="action-btn btn-roll" id="btnRoll" onclick="roll()" disabled>Roll Dice</button>
-        </div>
+        <div><button class="action-btn btn-roll" id="btnRoll" onclick="roll()" disabled>Roll Dice</button></div>
     </aside>
-
     <aside class="chat-panel" id="chatPanel">
         <div class="rp-tab-bar">
-            <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                <span class="rp-tab-label">Chat</span>
-            </div>
-            <div class="rp-tab" id="tab-notif" onclick="switchRpTab('notif')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                <span class="rp-tab-label">Alerts</span>
-                <span class="rp-notif-badge hidden" id="rpNotifBadge">0</span>
-            </div>
-            <div class="rp-tab" style="flex:0;padding:0 12px;" onclick="toggleChat()" title="Collapse">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
-            </div>
+            <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="rp-tab-label">Chat</span></div>
+            <div class="rp-tab" id="tab-notif" onclick="switchRpTab('notif')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="rp-tab-label">Alerts</span><span class="rp-notif-badge hidden" id="rpNotifBadge">0</span></div>
+            <div class="rp-tab" style="flex:0;padding:0 12px;" onclick="toggleChat()" title="Collapse"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg></div>
         </div>
         <div class="rp-collapsed-strip">
-            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')" title="Chat">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-            </button>
-            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')" title="Notifications">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                <span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span>
-            </button>
-            <button class="rp-col-btn" onclick="toggleChat()" title="Expand" style="margin-top:4px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
+            <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></button>
+            <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span></button>
+            <button class="rp-col-btn" onclick="toggleChat()" style="margin-top:4px;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
         </div>
         <div class="rp-content">
             <div class="rp-panel active" id="rp-chat">
@@ -389,9 +355,7 @@
                 <div class="chat-input-area">
                     <div class="chat-input-wrapper">
                         <input type="text" id="chatInput" placeholder="Send a message..." maxlength="50">
-                        <button class="chat-send-btn" onclick="sendChat()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                        </button>
+                        <button class="chat-send-btn" onclick="sendChat()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
                     </div>
                     <div class="char-counter" id="charCounter">0 / 50</div>
                 </div>
@@ -403,15 +367,47 @@
         </div>
     </aside>
 </div>
-
 <div id="syncBadge">&#10003; Balance synced</div>
-
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
 <script>
     const firebaseConfig={apiKey:"AIzaSyDAr9GqIDPWGw0ojEYPL1eigfMeqTGsfT0",authDomain:"universalbet-427ce.firebaseapp.com",databaseURL:"https://universalbet-427ce-default-rtdb.firebaseio.com",projectId:"universalbet-427ce",storageBucket:"universalbet-427ce.firebasestorage.app",messagingSenderId:"804592033030",appId:"1:804592033030:web:352d7f4e8a75fb3f215287"};
     firebase.initializeApp(firebaseConfig);
     const db=firebase.database();
+
+    /* ── WEBSITE THEME ── */
+    const ALL_WEBSITE_THEMES = [
+        {id:'theme_ocean',    bg:'#061a2e', accent:'#00c4ff'},
+        {id:'theme_ember',    bg:'#1a0805', accent:'#ff4c0c'},
+        {id:'theme_midnight', bg:'#0c0820', accent:'#7c3aed'},
+        {id:'theme_neon',     bg:'#050f0a', accent:'#00ff87'},
+        {id:'theme_gold',     bg:'#100e00', accent:'#f59e0b'},
+        {id:'theme_arctic',   bg:'#08101a', accent:'#93c5fd'},
+        {id:'theme_rose',     bg:'#1a080f', accent:'#f472b6'},
+        {id:'theme_mint',     bg:'#061510', accent:'#34d399'},
+    ];
+    function adjustColor(hex, amount) {
+        const h = hex.replace('#','');
+        const r = Math.min(255, parseInt(h.substr(0,2),16) + amount);
+        const g = Math.min(255, parseInt(h.substr(2,2),16) + amount);
+        const b = Math.min(255, parseInt(h.substr(4,2),16) + amount);
+        return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+    }
+    function applyUserTheme() {
+        if (!currentUser || !currentUser.websiteTheme) {
+            ['--bg-body','--bg-sidebar','--bg-card','--bg-chat','--bg-header','--primary-blue'].forEach(v => document.documentElement.style.removeProperty(v));
+            return;
+        }
+        const theme = ALL_WEBSITE_THEMES.find(t => t.id === currentUser.websiteTheme);
+        if (!theme) return;
+        const root = document.documentElement;
+        root.style.setProperty('--bg-body',    theme.bg);
+        root.style.setProperty('--bg-sidebar', adjustColor(theme.bg, 10));
+        root.style.setProperty('--bg-card',    adjustColor(theme.bg, 18));
+        root.style.setProperty('--bg-chat',    adjustColor(theme.bg, 8));
+        root.style.setProperty('--bg-header',  adjustColor(theme.bg, 10));
+        root.style.setProperty('--primary-blue', theme.accent);
+    }
 
     let currentUser=null,bet=0,mode='over',threshold=50,rolling=false,chatCollapsed=false,syncTimeout=null;
     const HOUSE_EDGE=0.03,MAX_HISTORY=20;
@@ -421,10 +417,48 @@
     function fmt$(v){return parseFloat(v||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
     function escHtml(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
     function setMsg(t){document.getElementById('msgLog').textContent=t;}
-
-    /* PAGE LOADER */
-    function showPageLoader(txt){const l=document.getElementById('pageLoader'),bar=document.getElementById('loaderBar'),t=document.getElementById('loaderTxt');if(l)l.style.display='flex';if(t)t.textContent=txt||'Loading...';if(bar){bar.style.width='0%';setTimeout(()=>bar.style.width='60%',50);}}
     function hidePageLoader(){const bar=document.getElementById('loaderBar');if(bar)bar.style.width='100%';setTimeout(()=>{const l=document.getElementById('pageLoader');if(l){l.classList.add('fade-out');setTimeout(()=>{l.style.display='none';l.classList.remove('fade-out');},400);}},300);}
+
+    /* ── LOCK / UNLOCK ALL GAME CONTROLS DURING ROLL ── */
+    function lockControls() {
+        // Bet input
+        document.getElementById('betInput').disabled = true;
+        // Chips
+        document.querySelectorAll('#chipGrid .chip-btn').forEach(el => el.setAttribute('disabled', 'true'));
+        // Mod buttons (½, 2×, clear)
+        document.getElementById('modHalf').setAttribute('disabled', 'true');
+        document.getElementById('modDouble').setAttribute('disabled', 'true');
+        document.getElementById('modClear').setAttribute('disabled', 'true');
+        // Slider
+        document.getElementById('diceSlider').disabled = true;
+        // Threshold input
+        document.getElementById('thresholdInput').disabled = true;
+        // Mode buttons
+        document.getElementById('modeOver').disabled = true;
+        document.getElementById('modeUnder').disabled = true;
+        // Roll button styling
+        document.getElementById('btnRoll').classList.add('rolling');
+    }
+
+    function unlockControls() {
+        // Bet input
+        document.getElementById('betInput').disabled = false;
+        // Chips
+        document.querySelectorAll('#chipGrid .chip-btn').forEach(el => el.removeAttribute('disabled'));
+        // Mod buttons
+        document.getElementById('modHalf').removeAttribute('disabled');
+        document.getElementById('modDouble').removeAttribute('disabled');
+        document.getElementById('modClear').removeAttribute('disabled');
+        // Slider
+        document.getElementById('diceSlider').disabled = false;
+        // Threshold input
+        document.getElementById('thresholdInput').disabled = false;
+        // Mode buttons
+        document.getElementById('modeOver').disabled = false;
+        document.getElementById('modeUnder').disabled = false;
+        // Roll button styling
+        document.getElementById('btnRoll').classList.remove('rolling');
+    }
 
     /* AUTH TABS */
     function switchAuthTab(tab){document.getElementById('authTabSignIn').classList.toggle('active',tab==='signin');document.getElementById('authTabReg').classList.toggle('active',tab==='register');document.getElementById('authPanelSignin').classList.toggle('active',tab==='signin');document.getElementById('authPanelReg').classList.toggle('active',tab==='register');document.getElementById('authError').textContent='';document.getElementById('regError').textContent='';}
@@ -439,7 +473,7 @@
         if(!pass){err.textContent='Enter your password.';return;}
         setAuthBtnLoading('authBtn',true,'Sign In');
         db.ref('users/'+name).once('value').then(snap=>{
-            if(!snap.exists()){err.textContent='No account found. Try registering.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
+            if(!snap.exists()){err.textContent='No account found.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
             const u=snap.val();
             if(u.password!==pass){err.textContent='Incorrect password.';setAuthBtnLoading('authBtn',false,'Sign In');return;}
             finalizeLogin(u);
@@ -469,12 +503,12 @@
         document.getElementById('authGate').style.display='none';
         document.getElementById('mainWrapper').style.display='flex';
         document.getElementById('navBalWrap').style.display='flex';
-        db.ref('users/'+user.name).on('value',snap=>{if(snap.exists()){currentUser=snap.val();updateNavBal();}});
+        db.ref('users/'+user.name).on('value',snap=>{if(snap.exists()){currentUser=snap.val();updateNavBal();applyUserTheme();}});
         const pr=db.ref('presence/'+user.name);
         pr.set({online:true,lastSeen:Date.now()});
         pr.onDisconnect().set({online:false,lastSeen:Date.now()});
         setInterval(()=>pr.update({lastSeen:Date.now()}),30000);
-        updateNavBal();updateSliderVisuals();updateStats();
+        applyUserTheme();updateNavBal();updateSliderVisuals();updateStats();
         initChat();initNotifications();initAdminAlerts();hidePageLoader();
     }
     function updateNavBal(){if(!currentUser)return;document.getElementById('navBal').textContent=fmt$(currentUser.balance);}
@@ -486,16 +520,16 @@
     function getProfit(){return cleanMoney(getPayout()-bet);}
 
     /* BET */
-    function onBetInput(){const raw=parseFloat(document.getElementById('betInput').value);bet=isNaN(raw)||raw<0?0:cleanMoney(Math.min(raw,currentUser?cleanMoney(currentUser.balance):99999));updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
-    function setBet(amount){bet=cleanMoney(Math.min(amount,currentUser?cleanMoney(currentUser.balance):99999));document.getElementById('betInput').value=bet;updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
-    function setBetMax(){if(!currentUser)return;setBet(currentUser.balance);}
-    function modBet(factor){bet=cleanMoney(Math.min(bet*factor,currentUser?cleanMoney(currentUser.balance):99999));if(bet<0)bet=0;document.getElementById('betInput').value=bet>0?bet:'';updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
-    function clearBet(){bet=0;document.getElementById('betInput').value='';updateStats();document.getElementById('btnRoll').disabled=true;}
+    function onBetInput(){if(rolling)return;const raw=parseFloat(document.getElementById('betInput').value);bet=isNaN(raw)||raw<0?0:cleanMoney(Math.min(raw,currentUser?cleanMoney(currentUser.balance):99999));updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
+    function setBet(amount){if(rolling)return;bet=cleanMoney(Math.min(amount,currentUser?cleanMoney(currentUser.balance):99999));document.getElementById('betInput').value=bet;updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
+    function setBetMax(){if(rolling||!currentUser)return;setBet(currentUser.balance);}
+    function modBet(factor){if(rolling)return;bet=cleanMoney(Math.min(bet*factor,currentUser?cleanMoney(currentUser.balance):99999));if(bet<0)bet=0;document.getElementById('betInput').value=bet>0?bet:'';updateStats();document.getElementById('btnRoll').disabled=(bet<=0);}
+    function clearBet(){if(rolling)return;bet=0;document.getElementById('betInput').value='';updateStats();document.getElementById('btnRoll').disabled=true;}
 
     /* SLIDER & MODE */
-    function setMode(m){mode=m;document.getElementById('modeOver').className='mode-btn'+(m==='over'?' active-over':'');document.getElementById('modeUnder').className='mode-btn'+(m==='under'?' active-under':'');document.getElementById('thresholdPrefix').textContent=m==='over'?'Roll Over':'Roll Under';updateSliderVisuals();updateStats();}
-    function onSliderChange(){threshold=parseInt(document.getElementById('diceSlider').value);document.getElementById('thresholdInput').value=threshold;updateSliderVisuals();updateStats();}
-    function onThresholdInput(){let val=parseInt(document.getElementById('thresholdInput').value);if(isNaN(val))return;val=Math.max(2,Math.min(98,val));threshold=val;document.getElementById('diceSlider').value=val;updateSliderVisuals();updateStats();}
+    function setMode(m){if(rolling)return;mode=m;document.getElementById('modeOver').className='mode-btn'+(m==='over'?' active-over':'');document.getElementById('modeUnder').className='mode-btn'+(m==='under'?' active-under':'');document.getElementById('thresholdPrefix').textContent=m==='over'?'Roll Over':'Roll Under';updateSliderVisuals();updateStats();}
+    function onSliderChange(){if(rolling)return;threshold=parseInt(document.getElementById('diceSlider').value);document.getElementById('thresholdInput').value=threshold;updateSliderVisuals();updateStats();}
+    function onThresholdInput(){if(rolling)return;let val=parseInt(document.getElementById('thresholdInput').value);if(isNaN(val))return;val=Math.max(2,Math.min(98,val));threshold=val;document.getElementById('diceSlider').value=val;updateSliderVisuals();updateStats();}
     function updateSliderVisuals(){const pct=(threshold-2)/96;const pctStr=(pct*100).toFixed(2)+'%';document.getElementById('trackNeedle').style.left=pctStr;const lz=document.getElementById('trackLose'),wz=document.getElementById('trackWin');if(mode==='over'){lz.style.width=pctStr;lz.style.left='0';lz.style.background='rgba(239,68,68,0.35)';wz.style.left=pctStr;wz.style.width=(100-pct*100).toFixed(2)+'%';wz.style.borderRadius='0 99px 99px 0';wz.style.background='rgba(0,231,1,0.35)';}else{lz.style.width=pctStr;lz.style.left='0';lz.style.background='rgba(0,231,1,0.35)';wz.style.left=pctStr;wz.style.width=(100-pct*100).toFixed(2)+'%';wz.style.borderRadius='0 99px 99px 0';wz.style.background='rgba(239,68,68,0.35)';}}
     function updateStats(){const chance=getWinChance()*100,mult=getMultiplier();document.getElementById('statChance').textContent=chance.toFixed(2)+'%';document.getElementById('statMult').textContent=mult.toFixed(2)+'x';document.getElementById('statPayout').textContent='$'+fmt$(getPayout());document.getElementById('rpMult').textContent=mult.toFixed(2)+'x';document.getElementById('rpChance').textContent=chance.toFixed(2)+'%';document.getElementById('rpProfit').textContent='$'+fmt$(getProfit());document.getElementById('rpLoss').textContent='$'+fmt$(bet);}
 
@@ -504,9 +538,16 @@
         if(rolling)return;
         if(bet<=0){setMsg('Enter a valid bet.');return;}
         if(!currentUser||bet>cleanMoney(currentUser.balance)){setMsg('Not enough balance.');return;}
-        rolling=true;document.getElementById('btnRoll').disabled=true;
+        rolling=true;
+        lockControls();
+        document.getElementById('btnRoll').disabled=true;
         const result=parseFloat((Math.random()*100).toFixed(2));
-        animateRoll(result,()=>{resolveRoll(result);rolling=false;document.getElementById('btnRoll').disabled=(bet<=0);});
+        animateRoll(result,()=>{
+            resolveRoll(result);
+            rolling=false;
+            unlockControls();
+            document.getElementById('btnRoll').disabled=(bet<=0);
+        });
     }
     function animateRoll(finalVal,cb){
         const el=document.getElementById('resultNumber'),dot=document.getElementById('trackDot');
@@ -527,7 +568,7 @@
     }
     function addHistory(val,won){history.unshift({val,won});if(history.length>MAX_HISTORY)history.pop();const row=document.getElementById('historyRow');row.innerHTML='';history.forEach(h=>{const p=document.createElement('div');p.className='hist-pill '+(h.won?'win':'lose');p.textContent=h.val.toFixed(2);row.appendChild(p);});}
 
-    /* FIREBASE — floor at zero */
+    /* FIREBASE */
     function saveBalance(delta){
         if(delta===0)return;
         db.ref('users/'+currentUser.name).transaction(u=>{if(!u)return u;u.balance=Math.max(0,cleanMoney((u.balance||0)+delta));return u;},(err,committed)=>{
@@ -545,7 +586,7 @@
 
     /* PROFANITY */
     const BLOCKED_WORDS=['fuck','shit','bitch','ass','cunt','nigger','nigga','faggot','retard','whore','slut','dick','cock','pussy','bastard','motherfucker','asshole','fag','twat','piss','crap','damn','hell'].map(w=>w.toLowerCase());
-    function containsProfanity(t){const s=t.toLowerCase().replace(/[^a-z0-9 ]/g,' ');return BLOCKED_WORDS.some(w=>new RegExp('\\b'+w+'\\b').test(s)||s.includes(w));}
+    function containsProfanity(t){const s=t.toLowerCase().replace(/[^a-z0-9 ]/g,' ');return BLOCKED_WORDS.some(w=>s.includes(w));}
 
     /* CHAT */
     function initChat(){
@@ -587,8 +628,6 @@
         let wasInTop10=false;
         setInterval(()=>{db.ref('users').once('value',snap=>{const all=[];snap.forEach(c=>all.push(c.val()));all.sort((a,b)=>b.balance-a.balance);const rank=all.findIndex(u=>u.name===currentUser.name)+1;const inTop10=rank>0&&rank<=10;if(inTop10&&!wasInTop10)addNotification('rank','You\'re #'+rank+' on the Leaderboard!','Keep playing to climb higher.');wasInTop10=inTop10;});},60000);
     }
-
-    /* ADMIN ALERTS */
     function initAdminAlerts(){
         let _last=Date.now();
         db.ref('admin_alerts').orderByChild('ts').startAt(_last).on('child_added',snap=>{
