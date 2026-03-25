@@ -34,16 +34,13 @@
         .auth-feature-list li { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; color: #a0aabc; }
         .auth-feature-list li:last-child { border-bottom: none; }
         .auth-feature-icon { width: 34px; height: 34px; border-radius: 8px; background: rgba(0,122,255,0.1); border: 1px solid rgba(0,122,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
-        /* Right panel — tabbed */
         .auth-right { width: 440px; display: flex; flex-direction: column; justify-content: center; padding: 52px 48px; background: var(--bg-body); }
         .auth-logo-mobile { display: none; font-family: var(--font-condensed); font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; text-align: center; margin-bottom: 28px; }
         .auth-logo-mobile span { color: var(--primary-blue); }
-        /* Tab switcher */
         .auth-tabs { display: flex; background: var(--bg-sidebar); border-radius: 12px; padding: 4px; gap: 4px; margin-bottom: 28px; border: 1px solid var(--border-color); }
         .auth-tab { flex: 1; padding: 10px; border: none; background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 700; border-radius: 9px; cursor: pointer; transition: 0.2s; font-family: var(--font-main); }
         .auth-tab.active { background: var(--primary-blue); color: #fff; box-shadow: 0 2px 12px rgba(0,122,255,0.3); }
         .auth-tab:not(.active):hover { background: rgba(255,255,255,0.05); color: #fff; }
-        /* Form panels */
         .auth-form-panel { display: none; }
         .auth-form-panel.active { display: block; }
         .auth-form-title { font-size: 22px; font-weight: 800; margin: 0 0 5px; letter-spacing: -0.3px; }
@@ -63,7 +60,6 @@
         .auth-bonus-row { display: flex; align-items: center; gap: 10px; background: rgba(0,231,1,0.06); border: 1px solid rgba(0,231,1,0.15); border-radius: 8px; padding: 11px 14px; font-size: 12px; color: #a0aabc; margin-top: 16px; }
         .auth-bonus-row .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); flex-shrink: 0; }
         .auth-bonus-row strong { color: var(--accent-green); }
-        /* Page loading screen */
         #pageLoader { position: fixed; inset: 0; background: var(--bg-body); z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; transition: opacity 0.4s; }
         #pageLoader.fade-out { opacity: 0; pointer-events: none; }
         .page-loader-logo { font-family: var(--font-condensed); font-size: 2rem; font-weight: 700; letter-spacing: 3px; }
@@ -71,17 +67,14 @@
         .page-loader-bar-wrap { width: 160px; height: 3px; background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden; }
         .page-loader-bar { height: 100%; width: 0%; background: var(--primary-blue); border-radius: 3px; transition: width 0.3s ease; }
         .page-loader-txt { font-size: 11px; color: var(--text-muted); }
-        /* Section loading skeleton */
         .skeleton-row { height: 44px; background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.07) 50%, rgba(255,255,255,0.04) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; margin-bottom: 8px; }
         @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
-        /* Online / offline status */
         .profile-status { display: flex; align-items: center; gap: 6px; justify-content: center; margin-bottom: 14px; font-size: 12px; font-weight: 600; }
         .status-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
         .status-dot.online  { background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); }
         .status-dot.offline { background: var(--text-muted); }
         .status-label.online  { color: var(--accent-green); }
         .status-label.offline { color: var(--text-muted); }
-        /* Owner badge */
         .owner-badge { display: inline-flex; align-items: center; gap: 5px; background: linear-gradient(135deg, rgba(255,196,0,0.15), rgba(255,150,0,0.1)); border: 1px solid rgba(255,196,0,0.35); color: #ffc400; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; margin-bottom: 8px; }
         nav { background: var(--bg-header); padding: 0 2rem; display: flex; justify-content: space-between; align-items: center; height: 70px; border-bottom: 1px solid var(--border-color); z-index: 1000; }
         .logo { font-family: var(--font-condensed); font-size: 1.5rem; font-weight: 800; color: #fff; }
@@ -100,24 +93,13 @@
         .currency-icon { color: var(--accent-green); font-weight: 800; margin-right: 10px; }
         .nav-bal { color: #fff; font-weight: 700; font-family: var(--font-condensed); font-size: 16px; }
         .main-wrapper { display: flex; flex: 1; overflow: hidden; position: relative; }
-        /* ── SIDEBAR ── */
         .sidebar { width: 228px; background: var(--bg-sidebar); border-right: 1px solid var(--border-color); padding: 0; display: flex; flex-direction: column; flex-shrink: 0; overflow-y: auto; overflow-x: hidden; transition: width 0.3s ease; }
         .sidebar::-webkit-scrollbar { width: 3px; }
         .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.07); border-radius: 3px; }
         .sidebar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.13); }
-
-
-        /* Pinned nav at top — never hidden */
         .sidebar-nav-pinned { padding: 12px 0 4px; flex-shrink: 0; }
         .sidebar-nav-pinned .side-link { border-radius: 0 10px 10px 0; margin-right: 10px; }
-
-        /* Collapse toggle button */
-
-
-        /* Divider */
         .sidebar-divider { height: 1px; background: var(--border-color); margin: 8px 14px; flex-shrink: 0; }
-
-        /* Section header with collapse arrow */
         .sidebar-section { flex-shrink: 0; overflow: hidden; }
         .sidebar-section-header { display: flex; align-items: center; padding: 8px 20px 6px; cursor: pointer; user-select: none; gap: 6px; }
         .sidebar-section-header:hover .sidebar-section-label { color: #c8d0dc; }
@@ -126,71 +108,22 @@
         .sidebar-section.open .sidebar-section-arrow { transform: rotate(90deg); }
         .sidebar-section-body { overflow: hidden; max-height: 0; transition: max-height 0.3s ease; }
         .sidebar-section.open .sidebar-section-body { max-height: 600px; }
-
-        /* Live dot */
         .sb-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 5px var(--accent-green); animation: pulse 2s infinite; flex-shrink: 0; }
-
-        /* side-link */
         .side-link { padding: 9px 18px; color: var(--text-muted); text-decoration: none; font-size: 13px; display: flex; align-items: center; gap: 10px; transition: background 0.15s, color 0.15s; cursor: pointer; border-radius: 0 10px 10px 0; margin-right: 10px; border-left: 3px solid transparent; user-select: none; white-space: nowrap; overflow: hidden; }
         .side-link:hover { background: rgba(255, 255, 255, 0.04); color: #c8d0dc; }
         .side-link.active-link { background: rgba(0, 122, 255, 0.1); color: var(--primary-blue); font-weight: 600; border-left-color: var(--primary-blue); }
         .side-link.active-link:hover { background: rgba(0, 122, 255, 0.14); color: var(--primary-blue); }
         .side-link-icon { font-size: 15px; flex-shrink: 0; }
         .side-link-text { flex: 1; overflow: hidden; text-overflow: ellipsis; transition: opacity 0.2s; }
-
-        /* Collapsed state: hide text, keep icons */
-        /* ── OFFLINE OVERLAY ── */
-        #offlineOverlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0; bottom: 0;
-            right: 300px; /* stop before the right chat panel */
-            z-index: 800;
-            background: rgba(10,14,23,0.92);
-            backdrop-filter: blur(3px);
-            -webkit-backdrop-filter: blur(3px);
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            pointer-events: all;
-        }
+        #offlineOverlay { display: none; position: absolute; top: 0; left: 0; bottom: 0; right: 300px; z-index: 800; background: rgba(10,14,23,0.92); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); flex-direction: column; align-items: center; justify-content: center; gap: 20px; pointer-events: all; }
         #offlineOverlay.show { display: flex; }
         .offline-icon { font-size: 56px; line-height: 1; filter: grayscale(0.3); }
-        .offline-title {
-            font-family: var(--font-condensed);
-            font-size: 2.2rem; font-weight: 900;
-            color: #fff; letter-spacing: 1px; text-align: center;
-        }
-        .offline-sub {
-            font-size: 14px; color: var(--text-muted);
-            text-align: center; max-width: 320px; line-height: 1.6;
-        }
-        .offline-badge {
-            display: flex; align-items: center; gap: 10px;
-            background: rgba(239,68,68,0.1);
-            border: 1px solid rgba(239,68,68,0.25);
-            border-radius: 10px; padding: 10px 18px;
-            font-size: 13px; font-weight: 700; color: #ef4444;
-        }
-        .offline-badge-dot {
-            width: 8px; height: 8px; border-radius: 50%;
-            background: #ef4444;
-            box-shadow: 0 0 8px #ef4444;
-            animation: offlinePulse 1.5s ease infinite;
-            flex-shrink: 0;
-        }
-        @keyframes offlinePulse {
-            0%,100% { opacity: 1; box-shadow: 0 0 8px #ef4444; }
-            50%      { opacity: 0.4; box-shadow: 0 0 3px #ef4444; }
-        }
-        .offline-chat-hint {
-            font-size: 12px; color: rgba(138,150,170,0.6);
-            text-align: center;
-        }
-
-
-        /* ── CODES SIDEBAR SECTION ── */
+        .offline-title { font-family: var(--font-condensed); font-size: 2.2rem; font-weight: 900; color: #fff; letter-spacing: 1px; text-align: center; }
+        .offline-sub { font-size: 14px; color: var(--text-muted); text-align: center; max-width: 320px; line-height: 1.6; }
+        .offline-badge { display: flex; align-items: center; gap: 10px; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 10px; padding: 10px 18px; font-size: 13px; font-weight: 700; color: #ef4444; }
+        .offline-badge-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px #ef4444; animation: offlinePulse 1.5s ease infinite; flex-shrink: 0; }
+        @keyframes offlinePulse { 0%,100% { opacity: 1; box-shadow: 0 0 8px #ef4444; } 50% { opacity: 0.4; box-shadow: 0 0 3px #ef4444; } }
+        .offline-chat-hint { font-size: 12px; color: rgba(138,150,170,0.6); text-align: center; }
         .codes-input-wrap { display: flex; gap: 6px; padding: 6px 12px 10px; }
         .codes-input { flex: 1; background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.08); border-radius: 8px; padding: 8px 10px; color: #fff; font-size: 12px; font-family: var(--font-main); outline: none; transition: .2s; text-transform: uppercase; letter-spacing: 1px; }
         .codes-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 2px rgba(0,122,255,.12); }
@@ -199,247 +132,268 @@
         .codes-msg { font-size: 11px; text-align: center; padding: 0 12px 8px; min-height: 16px; }
         .codes-msg.ok  { color: var(--accent-green); }
         .codes-msg.err { color: #ef4444; }
-
-        /* ── ADMIN MODAL ── */
-        /* ── ADMIN MODAL — matches site UI ── */
-        #adminModal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 8500; display: none; align-items: center; justify-content: center; padding: 20px; animation: fadeIn .15s ease; }
+        /* ══════════════════════════════════════════════
+           ADMIN PANEL — full redesign
+        ══════════════════════════════════════════════ */
+        #adminModal {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 8500;
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
         #adminModal.show { display: flex; }
-        .admin-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; width: 100%; max-width: 560px; max-height: 88vh; overflow-y: auto; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: slideUp .2s ease; }
-        .admin-card::-webkit-scrollbar { width: 4px; }
-        .admin-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-        /* sticky header */
-        .admin-header { display: flex; align-items: center; gap: 12px; padding: 20px 24px 16px; border-bottom: 1px solid var(--border-color); position: sticky; top: 0; background: var(--bg-sidebar); z-index: 2; border-radius: 18px 18px 0 0; }
-        .admin-header-crown { font-size: 20px; line-height: 1; }
-        .admin-header-titles { flex: 1; }
-        .admin-header-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-gold, #ffc400); margin-bottom: 2px; }
-        .admin-header-title { font-family: var(--font-condensed); font-size: 1.35rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; margin: 0; }
-        .admin-close { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: .2s; font-family: var(--font-main); }
-        .admin-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        /* sections match profile-stats / news-card feel */
-        .admin-section { padding: 18px 24px; border-bottom: 1px solid var(--border-color); }
-        .admin-section:last-child { border-bottom: none; padding-bottom: 22px; }
-        .admin-section-title { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 12px; }
-        .admin-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
-        /* inputs match auth-card inputs */
-        .admin-input { flex: 1; min-width: 100px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; font-family: var(--font-main); outline: none; transition: .2s; }
-        .admin-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
-        /* buttons match .lb-refresh-btn / .gw-enter-btn style */
-        .admin-btn { padding: 10px 16px; border: none; border-radius: 8px; font-size: 12px; font-weight: 800; cursor: pointer; font-family: var(--font-main); transition: .2s; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
-        .admin-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.08); }
-        .admin-btn:disabled { opacity: .4; cursor: default; }
-        .admin-btn.green  { background: var(--accent-green); color: #000; box-shadow: 0 3px 12px rgba(0,231,1,0.2); }
-        .admin-btn.red    { background: #ef4444; color: #fff; box-shadow: 0 3px 12px rgba(239,68,68,0.2); }
-        .admin-btn.blue   { background: var(--primary-blue); color: #fff; box-shadow: 0 3px 12px rgba(0,122,255,0.2); }
-        .admin-btn.gold   { background: #f59e0b; color: #000; box-shadow: 0 3px 12px rgba(245,158,11,0.2); }
-        .admin-btn.ghost  { background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
-        .admin-btn.ghost:hover { background: rgba(255,255,255,0.08); color: #fff; }
-        .admin-feedback { font-size: 12px; min-height: 18px; margin-top: 6px; display: flex; align-items: center; gap: 5px; }
-        .admin-feedback.ok  { color: var(--accent-green); }
-        .admin-feedback.err { color: #ef4444; }
-        /* textarea matches chat input area */
-        .admin-textarea { width: 100%; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 13px; font-family: var(--font-main); outline: none; resize: vertical; min-height: 64px; transition: .2s; box-sizing: border-box; line-height: 1.45; }
-        .admin-textarea:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
-        /* chat list matches .chat-messages style */
-
-        /* code list rows */
-        .admin-code-row { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 8px 12px; font-size: 12px; }
-        .admin-code-name { font-family: var(--font-condensed); font-weight: 700; color: #fff; flex: 1; letter-spacing: 1px; }
-        .admin-code-reward { color: var(--accent-green); font-weight: 700; font-family: var(--font-condensed); }
-        .admin-code-uses { color: var(--text-muted); font-size: 11px; }
-        /* crown button at top of sidebar */
-        .sidebar-crown-btn { display: flex; align-items: center; justify-content: center; padding: 10px 0 4px; cursor: pointer; font-size: 20px; opacity: 0.9; transition: opacity .2s, transform .2s; user-select: none; }
-        .sidebar-crown-btn:hover { opacity: 1; transform: scale(1.12); }
-        /* ── RIGHT PANEL ─────────────────────────────────────────────── */
-        .right-chat-panel {
-            width: 300px;
-            background: #0d1220;
-            border-left: 1px solid rgba(255,255,255,0.06);
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            transition: width 0.3s ease;
+        .admin-card {
+            background: var(--bg-sidebar);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            width: 100%; max-width: 620px;
+            max-height: 90vh;
+            display: flex; flex-direction: column;
             overflow: hidden;
-            flex-shrink: 0;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,196,0,0.06);
+            animation: adminSlideUp 0.22s cubic-bezier(0.34,1.56,0.64,1) both;
         }
-        .right-chat-panel.collapsed { width: 52px; }
+        @keyframes adminSlideUp { from { opacity:0; transform:translateY(20px) scale(0.97); } to { opacity:1; transform:none; } }
 
-        /* ── TAB BAR ── */
-        .rp-tab-bar {
-            display: flex;
-            align-items: stretch;
+        /* ── Top header bar ── */
+        .admin-topbar {
+            display: flex; align-items: center; gap: 14px;
+            padding: 20px 24px 16px;
             border-bottom: 1px solid rgba(255,255,255,0.06);
-            background: #0b0f1c;
             flex-shrink: 0;
-            height: 48px;
+            background: linear-gradient(135deg, rgba(255,196,0,0.04) 0%, transparent 60%);
         }
-        .rp-tab {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            border-bottom: 2px solid transparent;
-            transition: color 0.15s, border-color 0.15s, background 0.15s;
-            user-select: none;
-            position: relative;
-            padding: 0 4px;
+        .admin-crown-wrap {
+            width: 42px; height: 42px; border-radius: 12px;
+            background: linear-gradient(135deg, rgba(255,196,0,0.18), rgba(255,150,0,0.1));
+            border: 1px solid rgba(255,196,0,0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; flex-shrink: 0;
         }
+        .admin-topbar-text { flex: 1; }
+        .admin-topbar-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #ffc400; margin-bottom: 1px; }
+        .admin-topbar-title { font-family: var(--font-condensed); font-size: 1.4rem; font-weight: 800; color: #fff; letter-spacing: -0.3px; line-height: 1; }
+        .admin-topbar-close {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            color: var(--text-muted); width: 32px; height: 32px;
+            border-radius: 50%; cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            transition: .18s; font-family: var(--font-main); flex-shrink: 0;
+        }
+        .admin-topbar-close:hover { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: #ef4444; }
+
+        /* ── Tab nav ── */
+        .admin-tab-nav {
+            display: flex; gap: 2px; padding: 10px 24px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+            flex-shrink: 0; background: rgba(0,0,0,0.15);
+        }
+        .admin-tab-btn {
+            display: flex; align-items: center; gap: 7px;
+            padding: 9px 16px 10px;
+            background: none; border: none; border-bottom: 2px solid transparent;
+            color: var(--text-muted); font-size: 12px; font-weight: 700;
+            cursor: pointer; font-family: var(--font-main);
+            text-transform: uppercase; letter-spacing: 0.8px;
+            transition: color .15s, border-color .15s;
+            white-space: nowrap; margin-bottom: -1px;
+        }
+        .admin-tab-btn:hover { color: #c8d0dc; }
+        .admin-tab-btn.active { color: #fff; border-bottom-color: #ffc400; }
+        .admin-tab-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+        /* ── Tab bodies ── */
+        .admin-body { flex: 1; overflow-y: auto; }
+        .admin-body::-webkit-scrollbar { width: 4px; }
+        .admin-body::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
+        .admin-tab-content { display: none; padding: 20px 24px 24px; }
+        .admin-tab-content.active { display: block; }
+
+        /* ── Field labels & inputs ── */
+        .admin-field { margin-bottom: 14px; }
+        .admin-field-label {
+            display: block; font-size: 10px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 1px;
+            color: var(--text-muted); margin-bottom: 6px;
+        }
+        .admin-input {
+            width: 100%; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 11px 14px;
+            color: #fff; font-size: 13px; font-family: var(--font-main);
+            outline: none; transition: .2s; box-sizing: border-box;
+        }
+        .admin-input:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); background: rgba(0,0,0,0.4); }
+        .admin-input::placeholder { color: rgba(138,150,170,0.45); }
+        .admin-textarea {
+            width: 100%; background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 10px; padding: 11px 14px;
+            color: #fff; font-size: 13px; font-family: var(--font-main);
+            outline: none; resize: vertical; min-height: 72px;
+            transition: .2s; box-sizing: border-box; line-height: 1.5;
+        }
+        .admin-textarea:focus { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.12); }
+        .admin-textarea::placeholder { color: rgba(138,150,170,0.45); }
+
+        /* ── Row layouts ── */
+        .admin-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .admin-row .admin-field { flex: 1; min-width: 120px; margin-bottom: 0; }
+
+        /* ── Action buttons ── */
+        .admin-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+        .admin-action-btn {
+            flex: 1; padding: 11px 16px; border: none; border-radius: 10px;
+            font-size: 12px; font-weight: 800; cursor: pointer;
+            font-family: var(--font-main); transition: .18s;
+            white-space: nowrap; text-transform: uppercase; letter-spacing: 0.6px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .admin-action-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.1); }
+        .admin-action-btn:active { transform: translateY(0); }
+        .admin-action-btn:disabled { opacity: .4; cursor: default; transform: none; }
+        .admin-action-btn.green { background: var(--accent-green); color: #000; box-shadow: 0 4px 14px rgba(0,231,1,0.25); }
+        .admin-action-btn.red   { background: #ef4444; color: #fff; box-shadow: 0 4px 14px rgba(239,68,68,0.25); }
+        .admin-action-btn.blue  { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 14px rgba(0,122,255,0.25); }
+        .admin-action-btn.gold  { background: linear-gradient(135deg,#f59e0b,#d97706); color: #000; box-shadow: 0 4px 14px rgba(245,158,11,0.25); }
+        .admin-action-btn.ghost { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); box-shadow: none; }
+        .admin-action-btn.ghost:hover { background: rgba(255,255,255,0.1); color: #fff; }
+
+        /* ── Feedback line ── */
+        .admin-feedback {
+            font-size: 12px; min-height: 20px;
+            margin-top: 10px; display: flex; align-items: center; gap: 6px;
+            padding: 8px 12px; border-radius: 8px;
+            opacity: 0; transition: opacity .2s;
+        }
+        .admin-feedback.visible { opacity: 1; }
+        .admin-feedback.ok  { background: rgba(0,231,1,0.08); border: 1px solid rgba(0,231,1,0.18); color: var(--accent-green); }
+        .admin-feedback.err { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.18); color: #ef4444; }
+
+        /* ── Section divider ── */
+        .admin-divider { height: 1px; background: rgba(255,255,255,0.05); margin: 20px 0; }
+
+        /* ── User search result card ── */
+        .admin-user-card {
+            display: flex; align-items: center; gap: 12px;
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.07);
+            border-radius: 12px; padding: 12px 16px; margin-bottom: 14px;
+            animation: adminSlideUp .18s ease both;
+        }
+        .admin-user-ava {
+            width: 38px; height: 38px; border-radius: 50%;
+            background: linear-gradient(135deg,#007aff,#004fb1);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 16px; font-weight: 700; color: #fff;
+            font-family: var(--font-condensed); flex-shrink: 0;
+            overflow: hidden; position: relative;
+        }
+        .admin-user-ava img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+        .admin-user-info { flex: 1; min-width: 0; }
+        .admin-user-name { font-size: 14px; font-weight: 800; color: #fff; font-family: var(--font-condensed); letter-spacing: 0.5px; }
+        .admin-user-bal  { font-size: 12px; color: var(--accent-green); font-family: var(--font-condensed); font-weight: 700; }
+        .admin-user-meta { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+        /* ── Code list ── */
+        .admin-code-table { width: 100%; margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .admin-code-row {
+            display: flex; align-items: center; gap: 10px;
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 10px; padding: 10px 14px;
+        }
+        .admin-code-name { font-family: var(--font-condensed); font-weight: 700; color: #fff; flex: 1; letter-spacing: 1.5px; font-size: 13px; }
+        .admin-code-reward { color: var(--accent-green); font-weight: 700; font-family: var(--font-condensed); font-size: 14px; }
+        .admin-code-uses { color: var(--text-muted); font-size: 11px; white-space: nowrap; }
+        .admin-code-del {
+            background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.2);
+            color: #ef4444; width: 28px; height: 28px; border-radius: 8px;
+            cursor: pointer; font-size: 13px;
+            display: flex; align-items: center; justify-content: center;
+            transition: .15s; flex-shrink: 0;
+        }
+        .admin-code-del:hover { background: rgba(239,68,68,0.2); }
+
+        /* ── Stats grid in overview ── */
+        .admin-stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+        .admin-stat-card {
+            background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.06);
+            border-radius: 12px; padding: 14px 16px; text-align: center;
+        }
+        .admin-stat-val { font-family: var(--font-condensed); font-size: 22px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 4px; }
+        .admin-stat-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+
+        /* ── Recent users table ── */
+        .admin-users-table { width: 100%; border-collapse: collapse; }
+        .admin-users-table thead tr { background: rgba(0,0,0,0.2); }
+        .admin-users-table th { padding: 9px 14px; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .admin-users-table td { padding: 10px 14px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); vertical-align: middle; }
+        .admin-users-table tr:last-child td { border-bottom: none; }
+        .admin-users-table tr:hover td { background: rgba(255,255,255,0.02); }
+        .admin-tbl-name { font-weight: 700; color: #fff; cursor: pointer; }
+        .admin-tbl-name:hover { color: var(--primary-blue); }
+        .admin-tbl-bal { color: var(--accent-green); font-family: var(--font-condensed); font-weight: 700; }
+        .admin-tbl-del { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.18); color: #ef4444; width: 26px; height: 26px; border-radius: 7px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: .15s; }
+        .admin-tbl-del:hover { background: rgba(239,68,68,0.2); }
+        .admin-tbl-wrap { background: rgba(0,0,0,0.15); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; overflow: hidden; }
+        /* loading skeleton */
+        .admin-skeleton { height: 40px; background: linear-gradient(90deg, rgba(255,255,255,0.03) 25%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 75%); background-size: 200% 100%; animation: shimmer 1.4s infinite; border-radius: 8px; margin-bottom: 6px; }
+
+        .right-chat-panel { width: 300px; background: #0d1220; border-left: 1px solid rgba(255,255,255,0.06); display: flex; flex-direction: column; height: 100%; transition: width 0.3s ease; overflow: hidden; flex-shrink: 0; }
+        .right-chat-panel.collapsed { width: 52px; }
+        .rp-tab-bar { display: flex; align-items: stretch; border-bottom: 1px solid rgba(255,255,255,0.06); background: #0b0f1c; flex-shrink: 0; height: 48px; }
+        .rp-tab { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; border-bottom: 2px solid transparent; transition: color 0.15s, border-color 0.15s, background 0.15s; user-select: none; position: relative; padding: 0 4px; }
         .rp-tab svg { width: 15px; height: 15px; flex-shrink: 0; }
         .rp-tab:hover { color: #c8d0dc; background: rgba(255,255,255,0.02); }
         .rp-tab.active { color: var(--primary-blue); border-bottom-color: var(--primary-blue); }
         .rp-tab-label { white-space: nowrap; }
-
-        /* Notification badge on the bell tab */
-        .rp-notif-badge {
-            position: absolute;
-            top: 8px; right: 8px;
-            min-width: 16px; height: 16px;
-            background: #ef4444;
-            border-radius: 8px;
-            font-size: 9px;
-            font-weight: 800;
-            color: #fff;
-            display: flex; align-items: center; justify-content: center;
-            padding: 0 4px;
-            line-height: 1;
-            box-shadow: 0 0 0 2px #0b0f1c;
-            pointer-events: none;
-        }
+        .rp-notif-badge { position: absolute; top: 8px; right: 8px; min-width: 16px; height: 16px; background: #ef4444; border-radius: 8px; font-size: 9px; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; padding: 0 4px; line-height: 1; box-shadow: 0 0 0 2px #0b0f1c; pointer-events: none; }
         .rp-notif-badge.hidden { display: none; }
-
-        /* Collapsed strip — icon-only column */
-        .rp-collapsed-strip {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 8px 0;
-            gap: 2px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
-            flex-shrink: 0;
-        }
+        .rp-collapsed-strip { display: none; flex-direction: column; align-items: center; padding: 8px 0; gap: 2px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
         .right-chat-panel.collapsed .rp-collapsed-strip { display: flex; }
         .right-chat-panel.collapsed .rp-tab-bar { display: none; }
-
-        .rp-col-btn {
-            width: 38px; height: 38px;
-            border-radius: 10px;
-            border: 1px solid transparent;
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: 0.15s;
-            position: relative;
-        }
+        .rp-col-btn { width: 38px; height: 38px; border-radius: 10px; border: 1px solid transparent; background: transparent; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.15s; position: relative; }
         .rp-col-btn svg { width: 16px; height: 16px; }
         .rp-col-btn:hover { background: rgba(255,255,255,0.06); color: #fff; }
         .rp-col-btn.active { background: rgba(0,122,255,0.12); border-color: rgba(0,122,255,0.2); color: var(--primary-blue); }
-        .rp-col-notif-badge {
-            position: absolute;
-            top: 4px; right: 4px;
-            width: 8px; height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-            border: 2px solid #0d1220;
-            pointer-events: none;
-        }
+        .rp-col-notif-badge { position: absolute; top: 4px; right: 4px; width: 8px; height: 8px; background: #ef4444; border-radius: 50%; border: 2px solid #0d1220; pointer-events: none; }
         .rp-col-notif-badge.hidden { display: none; }
-
-        /* Content areas hidden when collapsed */
         .right-chat-panel.collapsed .rp-content { display: none; }
-
-        /* ── PANELS ── */
         .rp-content { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
         .rp-panel { display: none; flex-direction: column; flex: 1; overflow: hidden; }
         .rp-panel.active { display: flex; }
-
-        /* ── CHAT ── */
         .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 2px; }
         .chat-messages::-webkit-scrollbar { width: 4px; }
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
         .chat-messages::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-
-        .message {
-            padding: 8px 12px 6px;
-            border-radius: 10px;
-            background: rgba(255,255,255,0.025);
-            margin-bottom: 4px;
-            transition: background 0.15s;
-        }
+        .message { padding: 8px 12px 6px; border-radius: 10px; background: rgba(255,255,255,0.025); margin-bottom: 4px; transition: background 0.15s; }
         .message:hover { background: rgba(255,255,255,0.04); }
         .msg-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; }
         .msg-user { color: var(--primary-blue); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; }
         .msg-user:hover { text-decoration: underline; }
         .msg-time { font-size: 9px; color: rgba(138,150,170,0.6); }
         .msg-text { font-size: 13px; line-height: 1.45; color: #b8c2d4; word-break: break-word; white-space: pre-wrap; }
-
-        .chat-input-area {
-            padding: 12px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-            flex-shrink: 0;
-        }
-        .chat-input-wrapper {
-            display: flex;
-            gap: 8px;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.07);
-            border-radius: 10px;
-            padding: 4px 4px 4px 12px;
-            transition: border-color 0.2s;
-        }
+        .chat-input-area { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
+        .chat-input-wrapper { display: flex; gap: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 4px 4px 4px 12px; transition: border-color 0.2s; }
         .chat-input-wrapper:focus-within { border-color: rgba(0,122,255,0.35); }
         .chat-input-wrapper input { flex: 1; background: transparent; border: none; color: #fff; outline: none; font-size: 13px; font-family: var(--font-main); padding: 6px 0; }
         .chat-input-wrapper input::placeholder { color: rgba(138,150,170,0.5); }
-        .chat-send-btn {
-            background: var(--primary-blue);
-            border: none;
-            width: 34px; height: 34px;
-            border-radius: 8px;
-            cursor: pointer;
-            color: #fff;
-            font-size: 16px;
-            display: flex; align-items: center; justify-content: center;
-            transition: background 0.15s;
-            flex-shrink: 0;
-        }
+        .chat-send-btn { background: var(--primary-blue); border: none; width: 34px; height: 34px; border-radius: 8px; cursor: pointer; color: #fff; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.15s; flex-shrink: 0; }
         .chat-send-btn:hover { background: #006ae6; }
         .char-counter { font-size: 10px; color: rgba(138,150,170,0.5); text-align: right; padding: 4px 2px 0; }
         .char-counter.near-limit { color: #f59e0b; }
         .char-counter.at-limit { color: #ef4444; }
-
-
-
-        /* ── NOTIFICATIONS ── */
         .notif-list { flex: 1; overflow-y: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
         .notif-list::-webkit-scrollbar { width: 4px; }
         .notif-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 4px; }
-        .notif-card {
-            display: flex; align-items: flex-start; gap: 11px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px; padding: 13px 14px;
-            position: relative; transition: 0.15s;
-            animation: notifSlide 0.25s ease both;
-        }
+        .notif-card { display: flex; align-items: flex-start; gap: 11px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 13px 14px; position: relative; transition: 0.15s; animation: notifSlide 0.25s ease both; }
         @keyframes notifSlide { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
         .notif-card.unread { border-color: rgba(0,122,255,0.2); background: rgba(0,122,255,0.06); }
-        .notif-card.unread::before {
-            content:''; position:absolute; top:14px; right:14px;
-            width:6px; height:6px; border-radius:50%;
-            background: var(--primary-blue);
-            box-shadow: 0 0 6px var(--primary-blue);
-        }
-        .notif-icon {
-            width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
-        }
+        .notif-card.unread::before { content:''; position:absolute; top:14px; right:14px; width:6px; height:6px; border-radius:50%; background: var(--primary-blue); box-shadow: 0 0 6px var(--primary-blue); }
+        .notif-icon { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 16px; }
         .notif-icon.money { background: rgba(0,231,1,0.1); }
         .notif-icon.rank  { background: rgba(255,196,0,0.1); }
         .notif-icon.welcome { background: rgba(0,122,255,0.1); }
@@ -449,14 +403,14 @@
         .notif-sub { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
         .notif-time { font-size: 10px; color: rgba(138,150,170,0.5); margin-top: 5px; }
         .notif-empty { font-size: 13px; color: var(--text-muted); text-align: center; padding: 40px 16px; }
-        .notif-clear-btn {
-            display: block; width: calc(100% - 24px); margin: 0 12px 12px;
-            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
-            color: var(--text-muted); border-radius: 8px; padding: 9px;
-            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
-            cursor: pointer; font-family: var(--font-main); transition: 0.15s; flex-shrink: 0;
-        }
+        .notif-clear-btn { display: block; width: calc(100% - 24px); margin: 0 12px 12px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); border-radius: 8px; padding: 9px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; font-family: var(--font-main); transition: 0.15s; flex-shrink: 0; }
         .notif-clear-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
+        /* Notif action row — two buttons */
+        .notif-action-row { display: flex; gap: 6px; padding: 0 12px 12px; flex-shrink: 0; }
+        .notif-action-btn { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); color: var(--text-muted); border-radius: 8px; padding: 9px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; font-family: var(--font-main); transition: 0.15s; }
+        .notif-action-btn:hover { background: rgba(255,255,255,0.07); color: #fff; }
+        .notif-action-btn.danger { border-color: rgba(239,68,68,0.2); }
+        .notif-action-btn.danger:hover { background: rgba(239,68,68,0.1); color: #ef4444; border-color: rgba(239,68,68,0.35); }
         .welcome-title { font-size: 36px; font-weight: 800; margin-bottom: 30px; letter-spacing: -1px; }
         .content-scroll { flex: 1; overflow-y: auto; padding: 30px 32px; background: var(--bg-body); display: flex; flex-direction: column; }
         .hero-banner { background: linear-gradient(110deg, #0d1829 0%, #091530 60%, #071228 100%); border: 1px solid rgba(0,122,255,0.15); border-radius: 14px; padding: 28px 32px; margin-bottom: 24px; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
@@ -478,7 +432,6 @@
         .feed-header { padding: 13px 18px; border-bottom: 1px solid var(--border-color); font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
         .feed-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); box-shadow: 0 0 6px var(--accent-green); animation: pulse 2s infinite; flex-shrink: 0; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        /* win feed table — matches leaderboard style */
         .win-table { width: 100%; border-collapse: collapse; text-align: left; }
         .win-table thead tr { background: rgba(0,0,0,0.2); }
         .win-table th { padding: 11px 20px; font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border-color); }
@@ -493,14 +446,6 @@
         .win-src-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; }
         .win-amount-cell { text-align: right; color: var(--accent-green); font-family: var(--font-condensed); font-size: 15px; font-weight: 700; }
         .win-time-cell { text-align: right; color: var(--text-muted); font-size: 11px; white-space: nowrap; }
-        .chat-header { padding: 20px; border-bottom: 1px solid var(--border-color); font-weight: 800; display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; flex-shrink: 0; }
-        .chat-header:hover { background: rgba(255,255,255,0.02); }
-        .globe-icon { width: 18px; height: 18px; opacity: 0.35; flex-shrink: 0; }
-        .chat-header-label { flex: 1; white-space: nowrap; overflow: hidden; font-size: 14px; }
-        .chat-toggle-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.3s ease; flex-shrink: 0; }
-        .right-chat-panel.collapsed .chat-toggle-arrow { transform: rotate(180deg); }
-
-        /* ── SEARCH PANEL ── */
         .rp-search-wrap { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; }
         .rp-search-inner { display: flex; gap: 8px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); border-radius: 10px; padding: 4px 4px 4px 12px; transition: border-color 0.2s; }
         .rp-search-inner:focus-within { border-color: rgba(0,122,255,0.35); }
@@ -520,11 +465,7 @@
         .search-result-bal { font-family: var(--font-condensed); font-size: 12px; font-weight: 700; color: var(--accent-green); }
         .search-empty { font-size: 12px; color: var(--text-muted); text-align: center; padding: 32px 16px; }
         .search-hint { font-size: 12px; color: rgba(138,150,170,0.5); text-align: center; padding: 32px 16px; }
-
-        /* legacy stubs — kept for safety, overridden by new panel CSS above */
         @keyframes slideInBet { 0% { opacity: 0; transform: translateX(10px); } 100% { opacity: 1; transform: translateX(0); } }
-
-        /* GIVEAWAY */
         .gw-prize-badge { background: rgba(0,231,1,0.07); border: 1px solid rgba(0,231,1,0.2); border-radius: 10px; padding: 12px 20px; text-align: center; }
         .gw-prize-val { font-family: var(--font-condensed); font-size: 26px; font-weight: 700; color: var(--accent-green); line-height: 1; }
         .gw-prize-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
@@ -559,17 +500,18 @@
         @keyframes gw-winner-flash { 0%, 100% { border-color: rgba(0,231,1,0.15); } 50% { border-color: rgba(0,231,1,0.6); box-shadow: 0 0 20px rgba(0,231,1,0.15); } }
         .gw-winner-card.flash { animation: gw-winner-flash 0.6s ease 3; }
 
-        /* PROFILE MODAL */
+        /* ── PROFILE MODAL — no send money ── */
         #profileModal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); z-index: 8000; display: flex; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.15s ease; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .profile-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 36px 32px 28px; width: 100%; max-width: 360px; text-align: center; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: slideUp 0.2s ease; }
+        .profile-card { background: var(--bg-sidebar); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 0 0 28px; width: 100%; max-width: 360px; text-align: center; position: relative; box-shadow: 0 30px 60px rgba(0,0,0,0.5); animation: slideUp 0.2s ease; overflow: hidden; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-        .profile-close { position: absolute; top: 14px; right: 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-muted); width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-family: var(--font-main); }
-        .profile-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
-        .profile-avatar-wrap { position: relative; width: 80px; margin: 0 auto 14px; }
-        /* FIX: overflow:hidden + position:relative clips the img inside the circle */
+        .profile-card-banner { width: 100%; height: 80px; background: linear-gradient(135deg, #111723, #1a2232); position: relative; flex-shrink: 0; }
+        .profile-card-banner::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.2); }
+        .profile-card-inner { padding: 0 32px 4px; }
+        .profile-close { position: absolute; top: 14px; right: 14px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.15); color: #fff; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: 0.2s; font-family: var(--font-main); z-index: 10; }
+        .profile-close:hover { background: rgba(0,0,0,0.6); }
+        .profile-avatar-wrap { position: relative; width: 80px; margin: -40px auto 14px; z-index: 2; }
         .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #007aff, #004fb1); display: flex; align-items: center; justify-content: center; font-size: 34px; font-weight: 700; color: #fff; font-family: var(--font-condensed); box-shadow: 0 0 0 4px rgba(0,122,255,0.15); line-height: 1; user-select: none; overflow: hidden; position: relative; }
-        /* FIX: img fills the circle without bleeding outside */
         .profile-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; position: absolute; top: 0; left: 0; }
         .profile-edit-avatar-btn { position: absolute; bottom: 0; right: -4px; width: 26px; height: 26px; border-radius: 50%; background: var(--bg-card); border: 1px solid rgba(255,255,255,0.12); font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; line-height: 1; }
         .profile-edit-avatar-btn:hover { background: rgba(0,122,255,0.2); border-color: var(--primary-blue); }
@@ -578,7 +520,9 @@
         .avatar-upload-btn { display: inline-flex; align-items: center; gap: 6px; background: var(--primary-blue); color: #fff; border: none; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; font-family: var(--font-main); transition: 0.2s; box-shadow: 0 4px 12px rgba(0,122,255,0.25); }
         .avatar-upload-btn:hover { background: #006ae6; transform: translateY(-1px); }
         .avatar-upload-hint { font-size: 10px; color: var(--text-muted); margin: 8px 0 0; }
-        .profile-name { font-family: var(--font-condensed); font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #fff; margin-bottom: 6px; }
+        .profile-name { font-family: var(--font-condensed); font-size: 22px; font-weight: 700; letter-spacing: 1px; color: #fff; margin-bottom: 4px; }
+        /* Profile title badge under name */
+        .profile-title-badge { display: inline-block; color: #ffc400; font-size: 11px; font-weight: 700; font-style: italic; letter-spacing: 0.5px; margin-bottom: 6px; min-height: 16px; }
         .profile-you-tag { display: inline-block; background: rgba(0,122,255,0.12); border: 1px solid rgba(0,122,255,0.25); color: var(--primary-blue); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 10px; border-radius: 20px; margin-bottom: 20px; }
         .profile-stats { display: flex; align-items: center; background: rgba(0,0,0,0.2); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; margin: 0 0 14px; }
         .profile-stat { flex: 1; padding: 16px 12px; }
@@ -588,20 +532,54 @@
         .profile-joined { font-size: 11px; color: var(--text-muted); }
         .clickable-name { cursor: pointer; transition: color 0.15s; }
         .clickable-name:hover { color: var(--primary-blue) !important; text-decoration: underline; }
-        .send-money-divider { height: 1px; background: var(--border-color); margin: 18px 0 16px; }
-        .send-money-label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; text-align: left; }
-        .send-money-row { display: flex; gap: 8px; align-items: center; }
-        .send-money-input-wrap { flex: 1; display: flex; align-items: center; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 0 12px; transition: 0.2s; }
-        .send-money-input-wrap:focus-within { border-color: var(--primary-blue); box-shadow: 0 0 0 3px rgba(0,122,255,0.1); }
-        .send-money-dollar { color: var(--accent-green); font-weight: 800; font-family: var(--font-condensed); font-size: 16px; margin-right: 6px; flex-shrink: 0; }
-        .send-money-input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 15px; font-weight: 700; font-family: var(--font-condensed); padding: 11px 0; min-width: 0; }
-        .send-money-input::-webkit-inner-spin-button, .send-money-input::-webkit-outer-spin-button { -webkit-appearance: none; }
-        .send-money-btn { background: var(--accent-green); color: #000; border: none; padding: 11px 20px; border-radius: 8px; font-size: 13px; font-weight: 800; cursor: pointer; font-family: var(--font-main); transition: 0.2s; flex-shrink: 0; text-transform: uppercase; letter-spacing: 0.5px; }
-        .send-money-btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
-        .send-money-btn:disabled { background: rgba(255,255,255,0.08); color: var(--text-muted); cursor: default; filter: none; transform: none; }
-        .send-money-status { font-size: 12px; margin: 8px 0 0; min-height: 16px; text-align: left; transition: color 0.2s; }
-        .send-money-status.success { color: var(--accent-green); }
-        .send-money-status.error { color: #ef4444; }
+
+        /* ── SHOP TAB ── */
+        .shop-header-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 8px; }
+        .shop-refresh-countdown { font-size: 12px; color: var(--text-muted); font-family: var(--font-condensed); }
+        .shop-refresh-countdown span { color: var(--primary-blue); font-weight: 700; }
+        .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; margin-bottom: 28px; }
+        .shop-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; transition: 0.2s; display: flex; flex-direction: column; }
+        .shop-item:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-2px); }
+        .shop-item-preview { height: 80px; display: flex; align-items: center; justify-content: center; font-size: 28px; position: relative; overflow: hidden; }
+        .shop-item-body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .shop-item-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+        .shop-item-name { font-size: 14px; font-weight: 800; color: #fff; }
+        .shop-item-desc { font-size: 11px; color: var(--text-muted); line-height: 1.45; flex: 1; }
+        .shop-item-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .shop-item-price { font-family: var(--font-condensed); font-size: 18px; font-weight: 700; color: var(--accent-green); }
+        .shop-buy-btn { background: var(--primary-blue); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 0.8px; transition: 0.15s; }
+        .shop-buy-btn:hover:not(:disabled) { background: #006ae6; transform: translateY(-1px); }
+        .shop-buy-btn:disabled { background: rgba(255,255,255,0.07); color: var(--text-muted); cursor: default; transform: none; }
+        .shop-buy-btn.owned { background: rgba(0,231,1,0.12); border: 1px solid rgba(0,231,1,0.25); color: var(--accent-green); }
+        .shop-feedback { font-size: 12px; min-height: 18px; padding: 4px 0 0; }
+        .shop-feedback.ok { color: var(--accent-green); }
+        .shop-feedback.err { color: #ef4444; }
+        /* Theme preview swatches */
+        .theme-preview { width: 100%; height: 100%; display: flex; }
+        .theme-swatch { flex: 1; }
+        /* Title item preview */
+        .title-preview-text { font-size: 15px; font-weight: 700; font-style: italic; color: #ffc400; text-shadow: 0 0 12px rgba(255,196,0,0.4); }
+
+        /* ── INVENTORY TAB ── */
+        .inv-empty { text-align: center; padding: 60px 24px; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+        .inv-empty-icon { font-size: 48px; display: block; margin-bottom: 16px; }
+        .inv-section { margin-bottom: 32px; }
+        .inv-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+        .inv-item { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 14px; overflow: hidden; transition: 0.2s; display: flex; flex-direction: column; position: relative; }
+        .inv-item:hover { border-color: rgba(255,255,255,0.1); transform: translateY(-1px); }
+        .inv-item.equipped { border-color: rgba(0,231,1,0.35); box-shadow: 0 0 0 1px rgba(0,231,1,0.15); }
+        .inv-equipped-badge { position: absolute; top: 8px; right: 8px; background: rgba(0,231,1,0.15); border: 1px solid rgba(0,231,1,0.35); color: var(--accent-green); font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 3px 8px; border-radius: 20px; z-index: 2; }
+        .inv-item-preview { height: 72px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; flex-shrink: 0; }
+        .inv-item-body { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; gap: 5px; }
+        .inv-item-category { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
+        .inv-item-name { font-size: 13px; font-weight: 800; color: #fff; }
+        .inv-item-actions { display: flex; gap: 6px; margin-top: 8px; }
+        .inv-equip-btn { flex: 1; padding: 7px 12px; border: none; border-radius: 8px; font-size: 11px; font-weight: 800; cursor: pointer; font-family: var(--font-main); text-transform: uppercase; letter-spacing: 0.6px; transition: 0.15s; }
+        .inv-equip-btn.equip { background: var(--primary-blue); color: #fff; }
+        .inv-equip-btn.equip:hover { background: #006ae6; }
+        .inv-equip-btn.unequip { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; }
+        .inv-equip-btn.unequip:hover { background: rgba(239,68,68,0.2); }
+
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; height: 60px; background: var(--bg-sidebar); border-top: 1px solid var(--border-color); z-index: 500; flex-direction: row; align-items: stretch; }
         .mob-nav-btn { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; background: none; border: none; color: var(--text-muted); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; cursor: pointer; font-family: var(--font-main); text-decoration: none; transition: color 0.15s; padding: 0; }
         .mob-nav-btn:hover, .mob-nav-btn.active { color: var(--primary-blue); }
@@ -633,6 +611,7 @@
             .gw-countdown { font-size: 40px; }
             .gw-countdown-wrap, .gw-enter-wrap { padding: 24px; }
             .welcome-title { font-size: 24px; margin-bottom: 20px; }
+            .shop-grid { grid-template-columns: 1fr; }
         }
         @media (max-width: 400px) { .content-scroll { padding: 12px; padding-bottom: 72px; } .gw-countdown { font-size: 32px; } .lb-title, .welcome-title { font-size: 20px; } }
         .news-tab { flex-direction: column; gap: 0; }
@@ -670,7 +649,6 @@
 </head>
 <body>
 
-<!-- PAGE LOADER -->
 <div id="pageLoader">
     <div class="page-loader-logo">UNIVERSAL-<span>BETS</span></div>
     <div class="page-loader-bar-wrap"><div class="page-loader-bar" id="loaderBar"></div></div>
@@ -694,13 +672,10 @@
     <div class="auth-right">
         <div class="auth-card">
             <div class="auth-logo-mobile">UNIVERSAL-<span>BETS</span></div>
-            <!-- Tab switcher -->
             <div class="auth-tabs">
                 <button class="auth-tab active" id="authTabSignIn" onclick="switchAuthTab('signin')">Sign In</button>
                 <button class="auth-tab" id="authTabRegister" onclick="switchAuthTab('register')">Create Account</button>
             </div>
-
-            <!-- SIGN IN PANEL -->
             <div class="auth-form-panel active" id="authPanelSignin">
                 <div class="auth-form-title">Welcome back</div>
                 <div class="auth-form-sub">Sign in to your account to continue playing.</div>
@@ -709,8 +684,6 @@
                 <div class="auth-error" id="authError"></div>
                 <button class="auth-btn" id="authBtn" onclick="handleAuth()">Sign In</button>
             </div>
-
-            <!-- REGISTER PANEL -->
             <div class="auth-form-panel" id="authPanelRegister">
                 <div class="auth-form-title">Create your account</div>
                 <div class="auth-form-sub">New accounts start with <strong>$100.00</strong> free — no deposit needed.</div>
@@ -744,21 +717,15 @@
 </nav>
 
 <div class="main-wrapper" id="mainLayout" style="display:none;">
-    <!-- OFFLINE OVERLAY — covers content+sidebar but NOT the right chat panel -->
     <div id="offlineOverlay">
         <div class="offline-icon">🔌</div>
         <div class="offline-title">Servers Offline</div>
-        <div class="offline-badge">
-            <div class="offline-badge-dot"></div>
-            Currently Unavailable
-        </div>
+        <div class="offline-badge"><div class="offline-badge-dot"></div>Currently Unavailable</div>
         <div class="offline-sub">We'll be back soon! Thanks for your patience.<br>Your balance is safe and untouched.</div>
         <div class="offline-chat-hint">💬 Global chat and alerts are still available →</div>
     </div>
 
     <aside class="sidebar" id="mainSidebar">
-
-        <!-- Admin section — only visible after unlocking -->
         <div id="adminSidebarSection" style="display:none;">
             <div class="sidebar-section open" id="section-admin">
                 <div class="sidebar-section-header" onclick="toggleSection('admin')">
@@ -775,18 +742,15 @@
             </div>
             <div class="sidebar-divider"></div>
         </div>
-
-        <!-- Pinned nav — always visible -->
         <div class="sidebar-nav-pinned">
             <a class="side-link active-link" id="link-news" onclick="switchTab('news')"><span class="side-link-icon">🏠</span><span class="side-link-text">Home</span></a>
             <a class="side-link" id="link-rankingsTab" onclick="switchTab('rankingsTab')"><span class="side-link-icon">🏆</span><span class="side-link-text">Leaderboard</span></a>
             <a class="side-link" id="link-giveawayTab" onclick="switchTab('giveawayTab')"><span class="side-link-icon">🎁</span><span class="side-link-text">Giveaway</span></a>
             <a class="side-link" id="link-codesTab" onclick="switchTab('codesTab')"><span class="side-link-icon">🎟️</span><span class="side-link-text">Redeem Code</span></a>
+            <a class="side-link" id="link-shopTab" onclick="switchTab('shopTab')"><span class="side-link-icon">🛒</span><span class="side-link-text">Daily Shop</span></a>
+            <a class="side-link" id="link-inventoryTab" onclick="switchTab('inventoryTab')"><span class="side-link-icon">🎒</span><span class="side-link-text">Inventory</span></a>
         </div>
-
         <div class="sidebar-divider"></div>
-
-        <!-- Live Games section — collapsible -->
         <div class="sidebar-section open" id="section-live">
             <div class="sidebar-section-header" onclick="toggleSection('live')">
                 <span class="sidebar-section-label">Live Games</span>
@@ -796,10 +760,7 @@
                 <a class="side-link" href="uno.html"><span class="side-link-icon">🎴</span><span class="side-link-text">UNO Online</span></a>
             </div>
         </div>
-
         <div class="sidebar-divider"></div>
-
-        <!-- Games section — collapsible -->
         <div class="sidebar-section open" id="section-games">
             <div class="sidebar-section-header" onclick="toggleSection('games')">
                 <span class="sidebar-section-label">Games</span>
@@ -818,9 +779,6 @@
                 <a class="side-link" href="tower.html"><span class="side-link-icon">🗼</span><span class="side-link-text">Tower</span></a>
             </div>
         </div>
-
-
-
     </aside>
 
     <main class="content-scroll">
@@ -838,12 +796,12 @@
                 <div class="news-card">
                     <span class="news-card-tag" style="color: var(--primary-blue);">System Update</span>
                     <p class="news-card-title">New UI Interface</p>
-                    <p class="news-card-body">We have officially transitioned to our new 2026 Dashboard layout for better performance and looks!.</p>
+                    <p class="news-card-body">We have officially transitioned to our new 2026 Dashboard layout for better performance and looks!</p>
                 </div>
                 <div class="news-card">
                     <span class="news-card-tag" style="color: var(--accent-green);">Games</span>
                     <p class="news-card-title">New Games</p>
-                    <p class="news-card-body">We have added new games including plinko, kino, and roulette! And we redid all games for better preformance!</p>
+                    <p class="news-card-body">We have added chicken jump and pump and also fixed the issue with not being able to win some games!</p>
                 </div>
             </div>
             <div class="feed-section">
@@ -903,13 +861,11 @@
             </div>
         </div>
 
-        <!-- ── CODES TAB ── -->
+        <!-- CODES TAB -->
         <div id="codesTab" class="tab-content" style="display:none;">
             <div class="lb-header" style="margin-bottom:20px;">
                 <div><p class="lb-eyebrow">Free Rewards</p><h2 class="lb-title">Redeem a Code</h2></div>
             </div>
-
-            <!-- Redeem input card -->
             <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:28px 28px 24px;margin-bottom:24px;">
                 <p class="section-label" style="margin-bottom:14px;">Enter your code</p>
                 <div style="display:flex;gap:10px;margin-bottom:10px;">
@@ -925,127 +881,117 @@
                 </div>
                 <div class="codes-msg" id="codesMsg" style="font-size:13px;min-height:18px;padding:0;margin-top:4px;"></div>
             </div>
-
-            <!-- How to get codes -->
             <div style="background:var(--bg-card);border:1px solid var(--border-color);border-radius:14px;padding:24px 28px;">
                 <p class="section-label" style="margin-bottom:16px;">How to get codes</p>
                 <div style="display:flex;flex-direction:column;gap:12px;">
                     <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(0,122,255,.06);border:1px solid rgba(0,122,255,.15);border-radius:10px;">
                         <span style="font-size:22px;flex-shrink:0;">🔔</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Check your Alerts</div>
-                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Codes are sent out through the Alerts tab on the right panel. Keep an eye out for admin announcements!</div>
-                        </div>
+                        <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Check your Alerts</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Codes are sent out through the Alerts tab on the right panel.</div></div>
                     </div>
                     <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(0,231,1,.05);border:1px solid rgba(0,231,1,.12);border-radius:10px;">
                         <span style="font-size:22px;flex-shrink:0;">🎁</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Events &amp; Giveaways</div>
-                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Special codes are dropped during events, giveaways, and server milestones. Stay active to catch them!</div>
-                        </div>
+                        <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Events &amp; Giveaways</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Special codes are dropped during events, giveaways, and server milestones.</div></div>
                     </div>
                     <div style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,196,0,.05);border:1px solid rgba(255,196,0,.12);border-radius:10px;">
                         <span style="font-size:22px;flex-shrink:0;">⚡</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Each code is one-time use</div>
-                            <div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Every code can only be redeemed once per account. Codes may also have a limited number of total uses across all players.</div>
-                        </div>
+                        <div><div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Each code is one-time use</div><div style="font-size:12px;color:var(--text-muted);line-height:1.5;">Every code can only be redeemed once per account.</div></div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- DAILY SHOP TAB -->
+        <div id="shopTab" class="tab-content" style="display:none;">
+            <div class="lb-header" style="margin-bottom:8px;">
+                <div><p class="lb-eyebrow">Refreshes Daily</p><h2 class="lb-title">Daily Shop</h2></div>
+                <div style="text-align:right;">
+                    <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Resets in</div>
+                    <div style="font-family:var(--font-condensed);font-size:20px;font-weight:700;color:var(--primary-blue);" id="shopCountdown">--:--:--</div>
+                </div>
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);margin:0 0 20px;line-height:1.5;">Spend your balance on exclusive themes, profile colors, and titles. Shop rotates every 24 hours!</p>
+
+            <!-- Website Themes -->
+            <p class="section-label" style="margin-bottom:12px;">🌐 Website Themes</p>
+            <div class="shop-grid" id="shopThemesGrid"></div>
+
+            <!-- Profile Themes -->
+            <p class="section-label" style="margin-bottom:12px;">🎨 Profile Avatar Colors</p>
+            <div class="shop-grid" id="shopProfileGrid"></div>
+
+            <!-- Titles -->
+            <p class="section-label" style="margin-bottom:12px;">🏅 Profile Titles</p>
+            <div class="shop-grid" id="shopTitlesGrid"></div>
+
+            <div id="shopFeedback" class="shop-feedback" style="text-align:center;padding:8px 0;"></div>
+        </div>
+
+        <!-- INVENTORY TAB -->
+        <div id="inventoryTab" class="tab-content" style="display:none;">
+            <div class="lb-header" style="margin-bottom:8px;">
+                <div><p class="lb-eyebrow">Your Collection</p><h2 class="lb-title">Inventory</h2></div>
+            </div>
+            <p style="font-size:12px;color:var(--text-muted);margin:0 0 24px;line-height:1.5;">Manage all your purchased items. Equip to activate, unequip to remove. Only one item per category can be active at a time.</p>
+
+            <div id="invContent">
+                <div class="inv-empty"><span class="inv-empty-icon">🎒</span>Loading your inventory…</div>
+            </div>
+        </div>
     </main>
 
     <aside class="right-chat-panel" id="chatPanel">
-
-        <!-- Tab bar (visible when expanded) -->
         <div class="rp-tab-bar">
             <div class="rp-tab active" id="tab-chat" onclick="switchRpTab('chat')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                 <span class="rp-tab-label">Chat</span>
             </div>
             <div class="rp-tab" id="tab-search" onclick="switchRpTab('search')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 <span class="rp-tab-label">Search</span>
             </div>
             <div class="rp-tab" id="tab-notif" onclick="switchRpTab('notif')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="rp-tab-label">Alerts</span>
                 <span class="rp-notif-badge hidden" id="rpNotifBadge">0</span>
             </div>
-            <!-- Collapse arrow tab -->
             <div class="rp-tab" style="flex:0;padding:0 12px;" onclick="toggleChat()" title="Collapse">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;">
-                    <polyline points="9 18 15 12 9 6"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
         </div>
-
-        <!-- Collapsed icon strip -->
         <div class="rp-collapsed-strip">
             <button class="rp-col-btn active" id="colBtn-chat" onclick="expandRpTo('chat')" title="Chat">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </button>
-
             <button class="rp-col-btn" id="colBtn-search" onclick="expandRpTo('search')" title="Search Players">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             </button>
             <button class="rp-col-btn" id="colBtn-notif" onclick="expandRpTo('notif')" title="Notifications">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
                 <span class="rp-col-notif-badge hidden" id="rpColNotifBadge"></span>
             </button>
             <button class="rp-col-btn" onclick="toggleChat()" title="Expand" style="margin-top:4px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="15 18 9 12 15 6"/>
-                </svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
         </div>
-
-        <!-- Panel content area -->
         <div class="rp-content">
-
-            <!-- CHAT PANEL -->
             <div class="rp-panel active" id="rp-chat">
                 <div id="chatMessages" class="chat-messages"></div>
                 <div class="chat-input-area">
                     <div class="chat-input-wrapper">
                         <input type="text" id="chatInput" placeholder="Send a message…" maxlength="50">
                         <button class="chat-send-btn" onclick="sendChatMessage()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;">
-                                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
                         </button>
                     </div>
                     <div class="char-counter" id="charCounter">0 / 50</div>
                 </div>
             </div>
-
-
-
-            <!-- SEARCH PANEL -->
             <div class="rp-panel" id="rp-search">
                 <div class="rp-search-wrap">
                     <div class="rp-search-inner">
                         <input type="text" class="search-input" id="playerSearchInput" placeholder="Search by username…" oninput="onSearchInput()" onkeypress="if(event.key==='Enter')searchPlayers()">
                         <button class="search-btn" onclick="searchPlayers()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;">
-                                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                            </svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                         </button>
                     </div>
                 </div>
@@ -1053,86 +999,127 @@
                     <div class="search-hint">Type a username to find players</div>
                 </div>
             </div>
-
-            <!-- NOTIFICATIONS PANEL -->
             <div class="rp-panel" id="rp-notif">
                 <div class="notif-list" id="notifList">
                     <div class="notif-empty">No notifications yet</div>
                 </div>
-                <button class="notif-clear-btn" onclick="clearNotifications()">Mark all as read</button>
+                <div class="notif-action-row">
+                    <button class="notif-action-btn" onclick="markNotifsRead()">Mark all read</button>
+                    <button class="notif-action-btn danger" onclick="clearAllNotifications()">🗑 Clear all</button>
+                </div>
             </div>
-
         </div>
     </aside>
 </div>
 
 <!-- Admin Modal -->
-<div id="adminModal" onclick="if(event.target===this)closeAdminPanel()">
-    <div class="admin-card">
-        <!-- Header -->
-        <div class="admin-header">
-            <div class="admin-header-crown">👑</div>
-            <div class="admin-header-titles">
-                <div class="admin-header-eyebrow">fusionzzz</div>
-                <div class="admin-header-title">Admin Panel</div>
+<div id="adminModal">
+    <div class="admin-card" onclick="event.stopPropagation()">
+
+        <!-- Top bar -->
+        <div class="admin-topbar">
+            <div class="admin-crown-wrap">&#128081;</div>
+            <div class="admin-topbar-text">
+                <div class="admin-topbar-eyebrow">Owner Dashboard</div>
+                <div class="admin-topbar-title">Admin Panel</div>
             </div>
-            <button class="admin-close" onclick="closeAdminPanel()">✕</button>
+            <button class="admin-topbar-close" onclick="closeAdminPanel()">&#x2715;</button>
         </div>
 
-        <!-- Manage Balance -->
-        <div class="admin-section">
-            <div class="admin-section-title">Balance</div>
-            <div class="admin-row">
-                <input class="admin-input" id="adminBalUser" placeholder="Username" type="text" autocomplete="off">
-                <input class="admin-input" id="adminBalAmt" placeholder="Amount" type="number" min="0" step="0.01" style="max-width:120px;">
-            </div>
-            <div class="admin-row" style="margin-top:0;">
-                <button class="admin-btn green" onclick="adminGiveMoney()" style="flex:1;">Give Money</button>
-                <button class="admin-btn red" onclick="adminRemoveMoney()" style="flex:1;">Remove Money</button>
-            </div>
-            <div class="admin-feedback" id="adminBalFeedback"></div>
+        <!-- Tab nav -->
+        <div class="admin-tab-nav">
+            <button class="admin-tab-btn active" id="atab-balance" onclick="switchAdminTab('balance')">Balance</button>
+            <button class="admin-tab-btn" id="atab-alerts" onclick="switchAdminTab('alerts')">Alerts</button>
+            <button class="admin-tab-btn" id="atab-codes" onclick="switchAdminTab('codes')">Codes</button>
+            <button class="admin-tab-btn" id="atab-users" onclick="switchAdminTab('users')">Users</button>
         </div>
 
-        <!-- Broadcast Alert -->
-        <div class="admin-section">
-            <div class="admin-section-title">Broadcast Alert</div>
-            <div class="admin-row">
-                <input class="admin-input" id="adminAlertTitle" placeholder="Alert title…" type="text" autocomplete="off">
-            </div>
-            <textarea class="admin-textarea" id="adminAlertMsg" placeholder="Write a message to send to all players…"></textarea>
-            <div class="admin-row" style="margin-top:8px;">
-                <button class="admin-btn gold" onclick="adminBroadcastAlert()" style="flex:1;">📢 Send to All Players</button>
-            </div>
-            <div class="admin-feedback" id="adminAlertFeedback"></div>
-        </div>
+        <!-- Scrollable body -->
+        <div class="admin-body">
 
+            <!-- BALANCE -->
+            <div class="admin-tab-content active" id="atab-content-balance">
+                <div class="admin-field">
+                    <label class="admin-field-label">Username</label>
+                    <input class="admin-input" id="adminBalSearch" placeholder="Type a username..." oninput="adminSearchUser()" autocomplete="off" type="text">
+                </div>
+                <div id="adminBalUserCard" style="display:none;"></div>
+                <div class="admin-field">
+                    <label class="admin-field-label">Amount ($)</label>
+                    <input class="admin-input" id="adminBalAmt" placeholder="0.00" type="number" min="0.01" step="0.01">
+                </div>
+                <div class="admin-btn-row">
+                    <button class="admin-action-btn green" onclick="adminGiveMoney()" style="flex:1;">Give Money</button>
+                    <button class="admin-action-btn red" onclick="adminRemoveMoney()" style="flex:1;">Remove Money</button>
+                </div>
+                <div class="admin-feedback" id="adminBalFeedback"></div>
+            </div>
 
-        <!-- Create Code -->
-        <div class="admin-section">
-            <div class="admin-section-title">Create Reward Code</div>
-            <div class="admin-row">
-                <input class="admin-input" id="adminCodeName" placeholder="Code name (e.g. SUMMER25)" type="text" oninput="this.value=this.value.toUpperCase()" autocomplete="off">
+            <!-- ALERTS -->
+            <div class="admin-tab-content" id="atab-content-alerts">
+                <div class="admin-field">
+                    <label class="admin-field-label">Send To</label>
+                    <div style="display:flex;gap:8px;">
+                        <button class="admin-action-btn blue" id="alertTargetAll" onclick="setAlertTarget('all')" style="flex:1;padding:9px 12px;font-size:11px;">All Players</button>
+                        <button class="admin-action-btn ghost" id="alertTargetUser" onclick="setAlertTarget('user')" style="flex:1;padding:9px 12px;font-size:11px;">Specific User</button>
+                    </div>
+                </div>
+                <div class="admin-field" id="alertUserField" style="display:none;">
+                    <label class="admin-field-label">Username</label>
+                    <input class="admin-input" id="adminAlertUser" placeholder="Type username..." autocomplete="off" type="text">
+                </div>
+                <div class="admin-field">
+                    <label class="admin-field-label">Title</label>
+                    <input class="admin-input" id="adminAlertTitle" placeholder="Alert title..." autocomplete="off" type="text">
+                </div>
+                <div class="admin-field">
+                    <label class="admin-field-label">Message</label>
+                    <textarea class="admin-textarea" id="adminAlertMsg" placeholder="Write your message..." rows="3"></textarea>
+                </div>
+                <div class="admin-btn-row">
+                    <button class="admin-action-btn gold" onclick="adminBroadcastAlert()" style="flex:1;">Send Alert</button>
+                </div>
+                <div class="admin-feedback" id="adminAlertFeedback"></div>
             </div>
-            <div class="admin-row">
-                <input class="admin-input" id="adminCodeAmt" placeholder="Reward ($)" type="number" min="1" value="100">
-                <input class="admin-input" id="adminCodeUses" placeholder="Max uses" type="number" min="1">
-            </div>
-            <div class="admin-row">
-                <button class="admin-btn green" onclick="adminCreateCode()" style="flex:1;">Create Code</button>
-                <button class="admin-btn ghost" onclick="adminLoadCodes()" style="flex:1;">View Active Codes</button>
-            </div>
-            <div class="admin-feedback" id="adminCodeFeedback"></div>
-            <div id="adminCodeList" style="margin-top:10px;display:flex;flex-direction:column;gap:6px;"></div>
-        </div>
 
-        <!-- Remove Account -->
-        <div class="admin-section">
-            <div class="admin-section-title">Remove Account</div>
-            <div class="admin-row">
-                <input class="admin-input" id="adminDelUser" placeholder="Username to delete" type="text" autocomplete="off">
-                <button class="admin-btn red" onclick="adminDeleteAccount()">Delete</button>
+            <!-- CODES -->
+            <div class="admin-tab-content" id="atab-content-codes">
+                <div class="admin-field">
+                    <label class="admin-field-label">Code Name</label>
+                    <input class="admin-input" id="adminCodeName" placeholder="e.g. SUMMER25" autocomplete="off" type="text">
+                </div>
+                <div style="display:flex;gap:10px;">
+                    <div class="admin-field" style="flex:1;">
+                        <label class="admin-field-label">Reward ($)</label>
+                        <input class="admin-input" id="adminCodeAmt" placeholder="100" type="number" min="1">
+                    </div>
+                    <div class="admin-field" style="flex:1;">
+                        <label class="admin-field-label">Max Uses</label>
+                        <input class="admin-input" id="adminCodeUses" placeholder="Unlimited" type="number" min="1">
+                    </div>
+                </div>
+                <div class="admin-btn-row">
+                    <button class="admin-action-btn green" onclick="adminCreateCode()" style="flex:1;">Create Code</button>
+                    <button class="admin-action-btn ghost" onclick="adminLoadCodes()" style="padding:11px 18px;">Refresh</button>
+                </div>
+                <div class="admin-feedback" id="adminCodeFeedback"></div>
+                <div class="admin-code-table" id="adminCodeList" style="margin-top:16px;"></div>
             </div>
-            <div class="admin-feedback" id="adminDelFeedback"></div>
+
+            <!-- USERS -->
+            <div class="admin-tab-content" id="atab-content-users">
+                <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px;line-height:1.5;padding:10px 14px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15);border-radius:10px;">Warning: Deleting an account is permanent and cannot be undone.</div>
+                <div class="admin-field">
+                    <label class="admin-field-label">Search player to delete</label>
+                    <input class="admin-input" id="adminDelSearch" placeholder="Type username..." oninput="adminSearchDelUser()" autocomplete="off" type="text">
+                </div>
+                <div id="adminDelUserCard" style="display:none;margin-bottom:14px;"></div>
+                <div class="admin-btn-row">
+                    <button class="admin-action-btn red" onclick="adminDeleteAccount()" style="flex:1;" id="adminDelBtn" disabled>Delete Account</button>
+                </div>
+                <div class="admin-feedback" id="adminDelFeedback"></div>
+            </div>
+
         </div>
     </div>
 </div>
@@ -1141,40 +1128,32 @@
 <div id="profileModal" style="display:none;" onclick="if(event.target===this)closeProfile()">
     <div class="profile-card" id="profileCard">
         <button class="profile-close" onclick="closeProfile()">✕</button>
-        <div class="profile-avatar-wrap">
-            <div class="profile-avatar" id="profileAvatar">?</div>
-            <button class="profile-edit-avatar-btn" id="profileEditAvatarBtn" style="display:none;" onclick="toggleAvatarPicker()" title="Change profile picture">✏️</button>
-        </div>
-        <div class="profile-avatar-picker" id="profileAvatarPicker" style="display:none;">
-            <div class="avatar-picker-label">Change profile picture</div>
-            <label class="avatar-upload-btn" for="avatarFileInput">📁 Choose from files</label>
-            <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
-            <p class="avatar-upload-hint">JPG, PNG, GIF — max 2MB</p>
-        </div>
-        <div class="profile-name" id="profileName">—</div>
-        <div class="owner-badge" id="profileOwnerBadge" style="display:none;">👑 Owner</div>
-        <div class="profile-you-tag" id="profileYouTag" style="display:none;">That's you!</div>
-        <div class="profile-status" id="profileStatus" style="display:none;">
-            <div class="status-dot" id="profileStatusDot"></div>
-            <span class="status-label" id="profileStatusLabel"></span>
-        </div>
-        <div class="profile-stats">
-            <div class="profile-stat"><div class="profile-stat-val" id="profileBal">—</div><div class="profile-stat-label">Balance</div></div>
-            <div class="profile-stat-divider"></div>
-            <div class="profile-stat"><div class="profile-stat-val" id="profileRank">—</div><div class="profile-stat-label">Global Rank</div></div>
-        </div>
-        <div class="profile-joined" id="profileJoined"></div>
-        <div class="send-money-section" id="sendMoneySection" style="display:none;">
-            <div class="send-money-divider"></div>
-            <div class="send-money-label">Send Money</div>
-            <div class="send-money-row">
-                <div class="send-money-input-wrap">
-                    <span class="send-money-dollar">$</span>
-                    <input type="number" id="sendAmountInput" class="send-money-input" placeholder="0.00" min="0.01" step="0.01">
-                </div>
-                <button class="send-money-btn" onclick="sendMoney()">Send</button>
+        <!-- Colored banner — set by profileCardTheme -->
+        <div class="profile-card-banner" id="profileCardBanner"></div>
+        <div class="profile-card-inner">
+            <div class="profile-avatar-wrap">
+                <div class="profile-avatar" id="profileAvatar">?</div>
+                <button class="profile-edit-avatar-btn" id="profileEditAvatarBtn" style="display:none;" onclick="toggleAvatarPicker()" title="Change profile picture">✏️</button>
             </div>
-            <p class="send-money-status" id="sendMoneyStatus"></p>
+            <div class="profile-avatar-picker" id="profileAvatarPicker" style="display:none;">
+                <div class="avatar-picker-label">Change profile picture</div>
+                <label class="avatar-upload-btn" for="avatarFileInput">📁 Choose from files</label>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)">
+                <p class="avatar-upload-hint">JPG, PNG, GIF — max 2MB</p>
+            </div>
+            <div class="profile-name" id="profileName">—</div>
+            <div class="profile-title-badge" id="profileTitleBadge"></div>
+            <div class="owner-badge" id="profileOwnerBadge" style="display:none;">👑 Owner</div>
+            <div class="profile-status" id="profileStatus" style="display:none;">
+                <div class="status-dot" id="profileStatusDot"></div>
+                <span class="status-label" id="profileStatusLabel"></span>
+            </div>
+            <div class="profile-stats">
+                <div class="profile-stat"><div class="profile-stat-val" id="profileBal">—</div><div class="profile-stat-label">Balance</div></div>
+                <div class="profile-stat-divider"></div>
+                <div class="profile-stat"><div class="profile-stat-val" id="profileRank">—</div><div class="profile-stat-label">Global Rank</div></div>
+            </div>
+            <div class="profile-joined" id="profileJoined"></div>
         </div>
     </div>
 </div>
@@ -1183,7 +1162,8 @@
     <button class="mob-nav-btn active" id="mob-news" onclick="mobileSwitchTab('news')"><span class="mob-icon">🏠</span>Home</button>
     <button class="mob-nav-btn" id="mob-rankingsTab" onclick="mobileSwitchTab('rankingsTab')"><span class="mob-icon">🏆</span>Board</button>
     <button class="mob-nav-btn" id="mob-giveawayTab" onclick="mobileSwitchTab('giveawayTab')"><span class="mob-icon">🎁</span>Giveaway</button>
-    <button class="mob-nav-btn" id="mob-codesTab" onclick="mobileSwitchTab('codesTab')"><span class="mob-icon">🎟️</span>Codes</button>
+    <button class="mob-nav-btn" id="mob-shopTab" onclick="mobileSwitchTab('shopTab')"><span class="mob-icon">🛒</span>Shop</button>
+    <button class="mob-nav-btn" id="mob-inventoryTab" onclick="mobileSwitchTab('inventoryTab')"><span class="mob-icon">🎒</span>Items</button>
 </nav>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -1201,7 +1181,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let currentLocalUser = null;
-    let knownBalances = {};
     let atomicBonusLock = false;
 
     function cleanMoney(val) { return Math.round(val * 100) / 100; }
@@ -1223,7 +1202,7 @@
         setTimeout(() => { if (l) { l.classList.add('fade-out'); setTimeout(() => { l.style.display = 'none'; l.classList.remove('fade-out'); }, 400); } }, 300);
     }
 
-    // ── AUTH TAB SWITCH ───────────────────────────────────────────────────────
+    // ── AUTH ──────────────────────────────────────────────────────────────────
     function switchAuthTab(tab) {
         document.getElementById('authTabSignIn').classList.toggle('active', tab === 'signin');
         document.getElementById('authTabRegister').classList.toggle('active', tab === 'register');
@@ -1245,13 +1224,8 @@
     function setAuthLoading(btnId, loading) {
         const btn = document.getElementById(btnId);
         if (!btn) return;
-        if (loading) {
-            btn.disabled = true;
-            btn.innerHTML = '<div class="auth-btn-spinner"></div> Loading…';
-        } else {
-            btn.disabled = false;
-            btn.innerHTML = btnId === 'authBtn' ? 'Sign In' : 'Create Account &amp; Play';
-        }
+        if (loading) { btn.disabled = true; btn.innerHTML = '<div class="auth-btn-spinner"></div> Loading…'; }
+        else { btn.disabled = false; btn.innerHTML = btnId === 'authBtn' ? 'Sign In' : 'Create Account &amp; Play'; }
     }
 
     function handleAuth() {
@@ -1267,10 +1241,7 @@
                 const userData = snap.val();
                 if (userData.password === pass) { finalizeLogin(userData); }
                 else { errEl.textContent = '⚠ Incorrect password. Please try again.'; setAuthLoading('authBtn', false); }
-            } else {
-                errEl.textContent = '⚠ No account found. Try creating one instead!';
-                setAuthLoading('authBtn', false);
-            }
+            } else { errEl.textContent = '⚠ No account found. Try creating one instead!'; setAuthLoading('authBtn', false); }
         }).catch(() => { errEl.textContent = '⚠ Connection error. Please try again.'; setAuthLoading('authBtn', false); });
     }
 
@@ -1286,37 +1257,25 @@
         if (pass !== confirm) { errEl.textContent = '⚠ Passwords do not match.'; return; }
         setAuthLoading('regBtn', true);
         db.ref('users/' + name).once('value').then((snap) => {
-            if (snap.exists()) {
-                errEl.textContent = '⚠ That username is already taken. Try another.';
-                setAuthLoading('regBtn', false);
-            } else {
+            if (snap.exists()) { errEl.textContent = '⚠ That username is already taken. Try another.'; setAuthLoading('regBtn', false); }
+            else {
                 const newUser = { name, password: pass, balance: 100.00, lastBonus: 0, createdAt: Date.now() };
                 db.ref('users/' + name).set(newUser).then(() => finalizeLogin(newUser));
             }
         }).catch(() => { errEl.textContent = '⚠ Connection error. Please try again.'; setAuthLoading('regBtn', false); });
     }
 
-    // ── SERVER OFFLINE FLAG ─────────────────────────────────────────────
-    // Set to true to put the site in offline mode.
-    // Chat, alerts and balance still work. Everything else is blocked.
-    const SERVERS_OFFLINE = true;
+    const SERVERS_OFFLINE = false;
 
     function applyOfflineMode() {
         const overlay = document.getElementById('offlineOverlay');
         if (!overlay) return;
         if (SERVERS_OFFLINE) {
             overlay.classList.add('show');
-            // Disable sidebar links and game links
-            document.querySelectorAll('.side-link, .sidebar-section-header').forEach(el => {
-                el.style.pointerEvents = 'none';
-                el.style.opacity = '0.35';
-            });
-            // Disable reward claim pill
+            document.querySelectorAll('.side-link, .sidebar-section-header').forEach(el => { el.style.pointerEvents = 'none'; el.style.opacity = '0.35'; });
             const rp = document.getElementById('headerReward');
             if (rp) { rp.style.pointerEvents = 'none'; rp.style.opacity = '0.4'; }
-        } else {
-            overlay.classList.remove('show');
-        }
+        } else { overlay.classList.remove('show'); }
     }
 
     function finalizeLogin(user) {
@@ -1336,6 +1295,8 @@
             applyOfflineMode();
             initPresence();
             initAdminAlerts();
+            initShopCountdown();
+            applyUserTheme();
             hidePageLoader();
         }, 400);
     }
@@ -1344,7 +1305,6 @@
         const presRef = db.ref('presence/' + currentLocalUser.name);
         presRef.set({ online: true, lastSeen: Date.now() });
         presRef.onDisconnect().set({ online: false, lastSeen: Date.now() });
-        // Keep alive heartbeat
         setInterval(() => presRef.update({ lastSeen: Date.now() }), 30000);
     }
 
@@ -1358,6 +1318,13 @@
                 currentLocalUser = snap.val();
                 document.getElementById('navBal').innerText = fmt$(currentLocalUser.balance);
                 updateNavAvatar();
+                applyUserTheme();
+                // Refresh inventory if open
+                const invTab = document.getElementById('inventoryTab');
+                if (invTab && invTab.style.display !== 'none') renderInventory();
+                // Refresh shop if open
+                const shopTab = document.getElementById('shopTab');
+                if (shopTab && shopTab.style.display !== 'none') renderShop();
             }
         });
         if (timerInterval) clearInterval(timerInterval);
@@ -1370,10 +1337,8 @@
         const remaining = BONUS_INTERVAL - (Date.now() - lastBonus);
         const btn = document.getElementById('headerTimer');
         const pill = document.getElementById('headerReward');
-        if (remaining <= 0) {
-            pill.classList.add('reward-ready');
-            btn.innerText = 'Claim Reward';
-        } else {
+        if (remaining <= 0) { pill.classList.add('reward-ready'); btn.innerText = 'Claim Reward'; }
+        else {
             pill.classList.remove('reward-ready');
             const m = Math.floor(remaining / 60000);
             const s = Math.floor((remaining % 60000) / 1000);
@@ -1397,25 +1362,14 @@
             return user;
         }, (error, committed) => {
             atomicBonusLock = false;
-            if (committed) {
-                db.ref('recent_wins').push({ name: currentLocalUser.name, amount: BONUS_AMOUNT, ts: Date.now(), source: 'Bonus' });
-            } else {
-                updateTimer();
-            }
+            if (committed) { db.ref('recent_wins').push({ name: currentLocalUser.name, amount: BONUS_AMOUNT, ts: Date.now(), source: 'Bonus' }); }
+            else { updateTimer(); }
         });
     }
 
     function initGlobalFeed() {
         const container = document.getElementById('liveJackpotFeed');
-
-        const sourceIcon = {
-            'Bonus': '⚡', 'Giveaway': '🎁', 'Sent': '💸',
-            'Blackjack': '🃏', 'Crash': '🚀', 'Dice': '🎲',
-            'Mines': '💣', 'Plinko': '⚪', 'Keno': '💎',
-            'Tower': '🗼', 'RPS': '✂️', 'Pump': '🎈', 'Chicken Road': '🐔',
-            'UNO': '🎴',
-        };
-
+        const sourceIcon = { 'Bonus': '⚡', 'Giveaway': '🎁', 'Sent': '💸', 'Blackjack': '🃏', 'Crash': '🚀', 'Dice': '🎲', 'Mines': '💣', 'Plinko': '⚪', 'Keno': '💎', 'Tower': '🗼', 'RPS': '✂️', 'Pump': '🎈', 'Chicken Road': '🐔', 'UNO': '🎴' };
         db.ref('recent_wins').limitToLast(10).on('value', (snap) => {
             const rows = [];
             snap.forEach((child) => { rows.push(child.val()); });
@@ -1425,19 +1379,9 @@
                 const safeName = String(win.name || 'unknown');
                 const src = win.source || 'Game';
                 const icon = sourceIcon[src] || '🎰';
-                return `<tr class="win-row">
-                    <td class="win-name-cell" onclick="openProfile('${safeName}')">${safeName.toUpperCase()}</td>
-                    <td class="win-src-cell"><span class="win-src-badge">${icon} ${src}</span></td>
-                    <td class="win-amount-cell">+$${fmt$(win.amount)}</td>
-                    <td class="win-time-cell">${time}</td>
-                </tr>`;
+                return `<tr class="win-row"><td class="win-name-cell" onclick="openProfile('${safeName}')">${safeName.toUpperCase()}</td><td class="win-src-cell"><span class="win-src-badge">${icon} ${src}</span></td><td class="win-amount-cell">+$${fmt$(win.amount)}</td><td class="win-time-cell">${time}</td></tr>`;
             }).join('');
-            container.innerHTML = `<table class="win-table">
-                <thead><tr>
-                    <th>Player</th><th>Source</th><th style="text-align:right;">Won</th><th style="text-align:right;">Time</th>
-                </tr></thead>
-                <tbody>${tbody}</tbody>
-            </table>`;
+            container.innerHTML = `<table class="win-table"><thead><tr><th>Player</th><th>Source</th><th style="text-align:right;">Won</th><th style="text-align:right;">Time</th></tr></thead><tbody>${tbody}</tbody></table>`;
         });
     }
 
@@ -1487,13 +1431,12 @@
         document.getElementById('charCounter').className = 'char-counter';
     }
 
-    // ── RIGHT PANEL TAB SYSTEM ───────────────────────────────────────────────
+    // ── RIGHT PANEL ───────────────────────────────────────────────────────────
     let chatCollapsed = false;
     let currentRpTab = 'chat';
 
     function switchRpTab(tab) {
         currentRpTab = tab;
-        // Update tab bar active states
         ['chat','search','notif'].forEach(t => {
             const tabEl = document.getElementById('tab-' + t);
             const panelEl = document.getElementById('rp-' + t);
@@ -1502,7 +1445,6 @@
             if (panelEl) panelEl.classList.toggle('active', t === tab);
             if (colBtn) colBtn.classList.toggle('active', t === tab);
         });
-        // Mark notifications as read when opened
         if (tab === 'notif') markNotifsRead();
         if (tab === 'search') setTimeout(() => { const si = document.getElementById('playerSearchInput'); if(si) si.focus(); }, 50);
     }
@@ -1510,7 +1452,6 @@
     function toggleChat() {
         chatCollapsed = !chatCollapsed;
         document.getElementById('chatPanel').classList.toggle('collapsed', chatCollapsed);
-        // When expanding, restore last tab
         if (!chatCollapsed) switchRpTab(currentRpTab);
     }
 
@@ -1520,7 +1461,7 @@
         switchRpTab(tab);
     }
 
-    // ── PLAYER SEARCH ────────────────────────────────────────────────────────
+    // ── PLAYER SEARCH ─────────────────────────────────────────────────────────
     let searchDebounceTimer = null;
 
     function onSearchInput() {
@@ -1537,78 +1478,72 @@
             snap.forEach(c => { allUsers.push(c.val()); });
             allUsers.sort((a, b) => b.balance - a.balance);
             const matches = allUsers.filter(u => u.name && u.name.toLowerCase().includes(query));
-            if (matches.length === 0) {
-                resultsEl.innerHTML = `<div class="search-empty">No players found for "<strong>${query}</strong>"</div>`;
-                return;
-            }
+            if (matches.length === 0) { resultsEl.innerHTML = `<div class="search-empty">No players found for "<strong>${query}</strong>"</div>`; return; }
             resultsEl.innerHTML = matches.slice(0, 10).map(u => {
                 const initial = u.name.charAt(0).toUpperCase();
-                const avatarContent = (u.avatar && u.avatar.startsWith('data:image'))
-                    ? `<img src="${u.avatar}" alt="avatar">` : initial;
-                return `<div class="search-result-row" onclick="openProfile('${u.name}')">
-                    <div class="search-result-avatar">${avatarContent}</div>
-                    <div class="search-result-info">
-                        <div class="search-result-name">${u.name.toUpperCase()}</div>
-                        <div class="search-result-bal">$${fmt$(u.balance)}</div>
-                    </div>
-                </div>`;
+                const avatarContent = (u.avatar && u.avatar.startsWith('data:image')) ? `<img src="${u.avatar}" alt="avatar">` : initial;
+                return `<div class="search-result-row" onclick="openProfile('${u.name}')"><div class="search-result-avatar">${avatarContent}</div><div class="search-result-info"><div class="search-result-name">${u.name.toUpperCase()}</div><div class="search-result-bal">$${fmt$(u.balance)}</div></div></div>`;
             }).join('');
         });
     }
 
-    // ── NOTIFICATIONS ────────────────────────────────────────────────────────
+    // ── NOTIFICATIONS — 24h auto-clear ────────────────────────────────────────
     let unreadNotifCount = 0;
+    const NOTIF_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+    function notifKey() { return 'notifs_' + (currentLocalUser ? currentLocalUser.name : 'guest'); }
 
     function addNotification(type, title, sub) {
-        const key = 'notifs_' + (currentLocalUser ? currentLocalUser.name : 'guest');
-        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const stored = getStoredNotifs();
         const notif = { type, title, sub, ts: Date.now(), read: false, id: Date.now() + Math.random() };
         stored.unshift(notif);
-        // Keep max 30
-        localStorage.setItem(key, JSON.stringify(stored.slice(0, 30)));
+        localStorage.setItem(notifKey(), JSON.stringify(stored.slice(0, 30)));
         renderNotifications();
     }
 
+    function getStoredNotifs() {
+        const raw = JSON.parse(localStorage.getItem(notifKey()) || '[]');
+        // Auto-expire notifications older than 24 hours
+        const cutoff = Date.now() - NOTIF_TTL;
+        return raw.filter(n => n.ts > cutoff);
+    }
+
+    function saveNotifs(arr) {
+        localStorage.setItem(notifKey(), JSON.stringify(arr));
+    }
+
     function renderNotifications() {
-        const key = 'notifs_' + (currentLocalUser ? currentLocalUser.name : 'guest');
-        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const stored = getStoredNotifs();
+        saveNotifs(stored); // persist the filtered (expired-removed) list
         const listEl = document.getElementById('notifList');
         if (!listEl) return;
 
         unreadNotifCount = stored.filter(n => !n.read).length;
         updateNotifBadge();
 
-        if (stored.length === 0) {
-            listEl.innerHTML = '<div class="notif-empty">🔔<br><br>No notifications yet</div>';
-            return;
-        }
+        if (stored.length === 0) { listEl.innerHTML = '<div class="notif-empty">🔔<br><br>No notifications yet</div>'; return; }
 
         const iconMap = { money: '💸', rank: '🏆', welcome: '👋', giveaway: '🎉' };
         listEl.innerHTML = stored.map(n => {
             const time = timeSince(n.ts);
-            return `<div class="notif-card${n.read ? '' : ' unread'}">
-                <div class="notif-icon ${n.type}">${iconMap[n.type] || '🔔'}</div>
-                <div class="notif-body">
-                    <div class="notif-title">${n.title}</div>
-                    <div class="notif-sub">${n.sub}</div>
-                    <div class="notif-time">${time}</div>
-                </div>
-            </div>`;
+            return `<div class="notif-card${n.read ? '' : ' unread'}"><div class="notif-icon ${n.type}">${iconMap[n.type] || '🔔'}</div><div class="notif-body"><div class="notif-title">${n.title}</div><div class="notif-sub">${n.sub}</div><div class="notif-time">${time}</div></div></div>`;
         }).join('');
     }
 
     function markNotifsRead() {
-        const key = 'notifs_' + (currentLocalUser ? currentLocalUser.name : 'guest');
-        const stored = JSON.parse(localStorage.getItem(key) || '[]');
+        const stored = getStoredNotifs();
         stored.forEach(n => n.read = true);
-        localStorage.setItem(key, JSON.stringify(stored));
+        saveNotifs(stored);
         unreadNotifCount = 0;
         updateNotifBadge();
         renderNotifications();
     }
 
-    function clearNotifications() {
-        markNotifsRead();
+    function clearAllNotifications() {
+        saveNotifs([]);
+        unreadNotifCount = 0;
+        updateNotifBadge();
+        renderNotifications();
     }
 
     function updateNotifBadge() {
@@ -1625,38 +1560,29 @@
 
     function timeSince(ts) {
         const s = Math.floor((Date.now() - ts) / 1000);
-        if (s < 60)   return 'Just now';
+        if (s < 60) return 'Just now';
         if (s < 3600) return Math.floor(s/60) + 'm ago';
         if (s < 86400) return Math.floor(s/3600) + 'h ago';
         return Math.floor(s/86400) + 'd ago';
     }
 
-    // Watch for money received — compare balance increases from others
     function initNotifications() {
         renderNotifications();
-
-        // Welcome notification for first-time users
         const welcomeKey = 'welcomed_' + currentLocalUser.name;
         if (!localStorage.getItem(welcomeKey)) {
             localStorage.setItem(welcomeKey, '1');
             addNotification('welcome', 'Welcome to Universal-Bets! 👋', 'Your account has been created with $100.00. Good luck on the tables!');
         }
-
-        // Watch for money received — only fires when another player sends money (lastReceived field)
         let _seenReceivedTs = currentLocalUser.lastReceived ? currentLocalUser.lastReceived.ts : null;
         db.ref('users/' + currentLocalUser.name + '/lastReceived').on('value', snap => {
             if (!snap.exists()) return;
             const lr = snap.val();
             if (!lr || !lr.ts || lr.ts === _seenReceivedTs) return;
             _seenReceivedTs = lr.ts;
-            // Only notify if it's recent (within last 30s) to avoid firing on stale data at login
             if (Date.now() - lr.ts < 30000) {
-                const newBal = currentLocalUser.balance;
-                addNotification('money', `You received $${fmt$(lr.amount)}!`, `${lr.from.toUpperCase()} sent you money. Your balance is now $${fmt$(newBal)}.`);
+                addNotification('money', `You received $${fmt$(lr.amount)}!`, `${lr.from.toUpperCase()} sent you money.`);
             }
         });
-
-        // Watch leaderboard rank — notify when entering top 10
         let wasInTop10 = false;
         setInterval(() => {
             db.ref('users').once('value', snap => {
@@ -1665,12 +1591,12 @@
                 all.sort((a,b) => b.balance - a.balance);
                 const rank = all.findIndex(u => u.name === currentLocalUser.name) + 1;
                 const inTop10 = rank > 0 && rank <= 10;
-                if (inTop10 && !wasInTop10) {
-                    addNotification('rank', `You're #${rank} on the Leaderboard!`, `Keep playing to climb higher. Current balance: $${fmt$(currentLocalUser.balance)}.`);
-                }
+                if (inTop10 && !wasInTop10) addNotification('rank', `You're #${rank} on the Leaderboard!`, `Keep playing to climb higher.`);
                 wasInTop10 = inTop10;
             });
-        }, 60000); // check every minute
+        }, 60000);
+        // Schedule daily notif cleanup
+        setInterval(() => { renderNotifications(); }, 60 * 60 * 1000); // re-render hourly to prune expired
     }
 
     function switchTab(tabId) {
@@ -1684,8 +1610,10 @@
         const mobActive = document.getElementById('mob-' + tabId);
         if (mobActive) mobActive.classList.add('active');
         if (tabId === 'rankingsTab') loadLeaderboard();
-        if (tabId === 'giveawayTab' && typeof initGiveaway === 'function' && !window._gwInited) { window._gwInited = true; initGiveaway(); }
+        if (tabId === 'giveawayTab' && !window._gwInited) { window._gwInited = true; initGiveaway(); }
         if (tabId === 'codesTab') setTimeout(() => { const ci = document.getElementById('codeInput'); if (ci) ci.focus(); }, 80);
+        if (tabId === 'shopTab') renderShop();
+        if (tabId === 'inventoryTab') renderInventory();
     }
 
     function mobileSwitchTab(tabId) {
@@ -1695,7 +1623,6 @@
     }
 
     function loadLeaderboard() {
-        // Show skeleton
         document.getElementById('leaderboardBody').innerHTML = Array.from({length:6},()=>'<tr><td colspan="3"><div class="skeleton-row"></div></td></tr>').join('');
         document.getElementById('lbPodium').innerHTML = Array.from({length:3},()=>'<div style="flex:1;max-width:200px;"><div class="skeleton-row" style="height:120px;border-radius:12px;"></div></div>').join('');
         const medals = ['🥇', '🥈', '🥉'];
@@ -1710,42 +1637,28 @@
             const podiumClasses = top3[1] ? ['rank-2', 'rank-1', 'rank-3'] : ['rank-1', 'rank-2', 'rank-3'];
             const podiumLabels = top3[1] ? [rankLabels[1], rankLabels[0], rankLabels[2]] : rankLabels;
             const podiumMedals = top3[1] ? [medals[1], medals[0], medals[2]] : medals;
-            document.getElementById('lbPodium').innerHTML = podiumOrder.map((x, pi) => `
-                <div class="lb-podium-card ${podiumClasses[pi]}">
-                    <span class="lb-podium-rank-badge">${podiumLabels[pi]}</span>
-                    <span class="lb-podium-medal">${podiumMedals[pi]}</span>
-                    <div class="lb-podium-name clickable-name" onclick="openProfile('${x.name}')">${x.name.toUpperCase()}</div>
-                    <div class="lb-podium-bal">$${fmt$(x.balance)}</div>
-                </div>`).join('');
+            document.getElementById('lbPodium').innerHTML = podiumOrder.map((x, pi) => `<div class="lb-podium-card ${podiumClasses[pi]}"><span class="lb-podium-rank-badge">${podiumLabels[pi]}</span><span class="lb-podium-medal">${podiumMedals[pi]}</span><div class="lb-podium-name clickable-name" onclick="openProfile('${x.name}')">${x.name.toUpperCase()}</div><div class="lb-podium-bal">$${fmt$(x.balance)}</div></div>`).join('');
             document.getElementById('leaderboardBody').innerHTML = top10.map((x, i) => {
                 const isYou = x.name === currentLocalUser.name;
-                return `<tr class="lb-row${isYou ? ' lb-you' : ''}">
-                    <td class="lb-rank-cell">#${i + 1}</td>
-                    <td class="lb-name-cell"><span class="clickable-name" onclick="openProfile('${x.name}')">${x.name.toUpperCase()}</span></td>
-                    <td class="lb-bal-cell">$${fmt$(x.balance)}</td>
-                </tr>`;
+                return `<tr class="lb-row${isYou ? ' lb-you' : ''}"><td class="lb-rank-cell">#${i + 1}</td><td class="lb-name-cell"><span class="clickable-name" onclick="openProfile('${x.name}')">${x.name.toUpperCase()}</span></td><td class="lb-bal-cell">$${fmt$(x.balance)}</td></tr>`;
             }).join('');
         });
     }
 
-    // ── PROFILE MODAL ────────────────────────────────────────────────────────
-    let _profileCurrentUser = null;
-
+    // ── PROFILE MODAL ─────────────────────────────────────────────────────────
     function openProfile(name) {
         document.getElementById('profileModal').style.display = 'flex';
-        _profileCurrentUser = null;
         document.getElementById('profileName').textContent = '...';
         setProfileAvatarEl('profileAvatar', null, '?');
         document.getElementById('profileBal').textContent = '...';
         document.getElementById('profileRank').textContent = '...';
         document.getElementById('profileJoined').textContent = '';
-        document.getElementById('profileYouTag').style.display = 'none';
         document.getElementById('profileEditAvatarBtn').style.display = 'none';
         document.getElementById('profileAvatarPicker').style.display = 'none';
         document.getElementById('profileOwnerBadge').style.display = 'none';
         document.getElementById('profileStatus').style.display = 'none';
-
-        // Load user data and presence in parallel
+        document.getElementById('profileTitleBadge').textContent = '';
+        document.getElementById('profileCardBanner').style.background = 'linear-gradient(135deg,#111723,#1a2232)';
         Promise.all([
             db.ref('users').once('value'),
             db.ref('presence/' + name).once('value')
@@ -1756,18 +1669,19 @@
             const rank = allUsers.findIndex(u => u.name === name) + 1;
             const user = allUsers.find(u => u.name === name);
             if (!user) { closeProfile(); return; }
-            _profileCurrentUser = user;
             setProfileAvatarEl('profileAvatar', user.avatar || null, user.name.charAt(0).toUpperCase());
+
+            // Apply profile card banner theme
+            if (user.profileCardTheme) {
+                const pt = ALL_PROFILE_THEMES.find(t => t.id === user.profileCardTheme);
+                if (pt) document.getElementById('profileCardBanner').style.background = pt.gradient;
+            }
+
             document.getElementById('profileName').textContent = user.name.toUpperCase();
             document.getElementById('profileBal').textContent = '$' + fmt$(user.balance);
             document.getElementById('profileRank').textContent = rank > 0 ? '#' + rank : '—';
-
-            // Owner badge
-            if (user.name === 'fusionzzz') {
-                document.getElementById('profileOwnerBadge').style.display = 'inline-flex';
-            }
-
-            // Online status
+            if (user.profileTitle) document.getElementById('profileTitleBadge').textContent = user.profileTitle;
+            if (user.name === 'fusionzzz') document.getElementById('profileOwnerBadge').style.display = 'inline-flex';
             const presData = presSnap.exists() ? presSnap.val() : null;
             const isOnline = presData && presData.online === true && (Date.now() - (presData.lastSeen||0)) < 90000;
             const statusEl = document.getElementById('profileStatus');
@@ -1777,17 +1691,8 @@
             dotEl.className = 'status-dot ' + (isOnline ? 'online' : 'offline');
             lblEl.className = 'status-label ' + (isOnline ? 'online' : 'offline');
             lblEl.textContent = isOnline ? 'Online' : 'Offline';
-
             if (user.name === currentLocalUser.name) {
-                document.getElementById('profileYouTag').style.display = 'inline-block';
                 document.getElementById('profileEditAvatarBtn').style.display = 'flex';
-                document.getElementById('sendMoneySection').style.display = 'none';
-            } else {
-                document.getElementById('sendMoneySection').style.display = 'block';
-                document.getElementById('sendAmountInput').value = '';
-                document.getElementById('sendMoneyStatus').textContent = '';
-                document.getElementById('sendMoneyStatus').className = 'send-money-status';
-                document.querySelector('.send-money-btn').disabled = false;
             }
             if (user.createdAt) {
                 const d = new Date(user.createdAt);
@@ -1796,7 +1701,6 @@
         });
     }
 
-    // FIX: profile avatar — img is absolutely positioned to fill circle without overflow
     function setProfileAvatarEl(elId, imageDataUrl, fallbackText) {
         const el = document.getElementById(elId);
         if (!el) return;
@@ -1811,7 +1715,6 @@
         }
     }
 
-    // FIX: nav avatar pill — same pattern, img absolutely fills circle
     function updateNavAvatar() {
         if (!currentLocalUser) return;
         document.getElementById('navProfileName').textContent = currentLocalUser.name.toUpperCase();
@@ -1835,8 +1738,8 @@
     function handleAvatarUpload(event) {
         const file = event.target.files[0];
         if (!file || !currentLocalUser) return;
-        if (!file.type.startsWith('image/')) { alert('Please choose an image file (JPG, PNG, GIF, etc.)'); return; }
-        if (file.size > 2 * 1024 * 1024) { alert('Image must be under 2MB. Please choose a smaller file.'); return; }
+        if (!file.type.startsWith('image/')) { alert('Please choose an image file.'); return; }
+        if (file.size > 2 * 1024 * 1024) { alert('Image must be under 2MB.'); return; }
         const reader = new FileReader();
         reader.onload = function(e) {
             const img = new Image();
@@ -1863,77 +1766,30 @@
     function closeProfile() {
         document.getElementById('profileModal').style.display = 'none';
         document.getElementById('profileAvatarPicker').style.display = 'none';
-        document.getElementById('sendAmountInput').value = '';
-        document.getElementById('sendMoneyStatus').textContent = '';
-        document.getElementById('sendMoneyStatus').className = 'send-money-status';
     }
 
-    function sendMoney() {
-        if (!_profileCurrentUser || !currentLocalUser) return;
-        const recipient = _profileCurrentUser.name;
-        const amtRaw = parseFloat(document.getElementById('sendAmountInput').value);
-        const statusEl = document.getElementById('sendMoneyStatus');
-        const btn = document.querySelector('.send-money-btn');
-        if (isNaN(amtRaw) || amtRaw <= 0) { statusEl.textContent = 'Enter a valid amount.'; statusEl.className = 'send-money-status error'; return; }
-        const amount = cleanMoney(amtRaw);
-        if (amount < 0.01) { statusEl.textContent = 'Minimum send is $0.01.'; statusEl.className = 'send-money-status error'; return; }
-        if (amount > cleanMoney(currentLocalUser.balance)) { statusEl.textContent = "You don't have enough balance."; statusEl.className = 'send-money-status error'; return; }
-        btn.disabled = true;
-        statusEl.textContent = 'Sending...';
-        statusEl.className = 'send-money-status';
-        db.ref('users/' + currentLocalUser.name).transaction(sender => {
-            if (!sender) return sender;
-            if (cleanMoney(sender.balance) < amount) return;
-            sender.balance = cleanMoney(sender.balance - amount);
-            return sender;
-        }, (err, committed) => {
-            if (!committed) { statusEl.textContent = "Not enough balance to send."; statusEl.className = 'send-money-status error'; btn.disabled = false; return; }
-            db.ref('users/' + recipient).transaction(rec => {
-                if (!rec) return rec;
-                rec.balance = cleanMoney((rec.balance || 0) + amount);
-                rec.lastReceived = { amount, from: currentLocalUser.name, ts: Date.now() };
-                return rec;
-            }, (err2, committed2) => {
-                if (!committed2) {
-                    db.ref('users/' + currentLocalUser.name).transaction(s => { if (!s) return s; s.balance = cleanMoney((s.balance || 0) + amount); return s; });
-                    statusEl.textContent = 'Transfer failed. Your balance was refunded.'; statusEl.className = 'send-money-status error'; btn.disabled = false; return;
-                }
-                statusEl.textContent = `$${fmt$(amount)} sent to ${recipient.toUpperCase()}!`;
-                statusEl.className = 'send-money-status success';
-                document.getElementById('sendAmountInput').value = '';
-                btn.disabled = false;
-            });
-        });
-    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeProfile(); closeAdminPanel(); } });
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfile(); });
-
-    // ── SIDEBAR COLLAPSE + SECTIONS ─────────────────────────────────────────
-
+    // ── SIDEBAR SECTIONS ──────────────────────────────────────────────────────
     function toggleSection(id) {
         const sec = document.getElementById('section-' + id);
         if (!sec) return;
         sec.classList.toggle('open');
         localStorage.setItem('sbSection_' + id, sec.classList.contains('open') ? '1' : '0');
     }
-    // Restore sidebar state
     (function() {
-        const sb = document.getElementById('mainSidebar');
-
         ['live','games'].forEach(id => {
             const sec = document.getElementById('section-' + id);
             if (!sec) return;
-            // default open; only close if explicitly stored as closed
             if (localStorage.getItem('sbSection_' + id) === '0') sec.classList.remove('open');
         });
     })();
 
-    // ── INITIAL LOAD ─────────────────────────────────────────────────────────
+    // ── INITIAL LOAD ──────────────────────────────────────────────────────────
     (function initLoad() {
         const loaderBar = document.getElementById('loaderBar');
         const loaderTxt = document.getElementById('loaderTxt');
         if (loaderBar) loaderBar.style.width = '30%';
-
         const cached = localStorage.getItem('currentUser');
         if (cached) {
             try {
@@ -1945,31 +1801,20 @@
                         if (loaderBar) loaderBar.style.width = '85%';
                         finalizeLogin(snap.val());
                     } else {
-                        // Cached user invalid — show auth
                         localStorage.removeItem('currentUser');
                         if (loaderBar) loaderBar.style.width = '100%';
-                        setTimeout(() => {
-                            document.getElementById('pageLoader').style.display = 'none';
-                            document.getElementById('authContainer').style.display = 'flex';
-                        }, 300);
+                        setTimeout(() => { document.getElementById('pageLoader').style.display = 'none'; document.getElementById('authContainer').style.display = 'flex'; }, 300);
                     }
                 });
-            } catch(e) {
-                document.getElementById('pageLoader').style.display = 'none';
-                document.getElementById('authContainer').style.display = 'flex';
-            }
+            } catch(e) { document.getElementById('pageLoader').style.display = 'none'; document.getElementById('authContainer').style.display = 'flex'; }
         } else {
-            // No cached user — show auth after brief animation
             if (loaderBar) loaderBar.style.width = '100%';
-            setTimeout(() => {
-                document.getElementById('pageLoader').style.display = 'none';
-                document.getElementById('authContainer').style.display = 'flex';
-            }, 600);
+            setTimeout(() => { document.getElementById('pageLoader').style.display = 'none'; document.getElementById('authContainer').style.display = 'flex'; }, 600);
         }
     })();
 
-    // ── GIVEAWAY — changed to 2 hours ────────────────────────────────────────
-    const GW_INTERVAL = 2 * 60 * 60 * 1000; // 2 hours
+    // ── GIVEAWAY ──────────────────────────────────────────────────────────────
+    const GW_INTERVAL = 2 * 60 * 60 * 1000;
     const GW_PRIZE = 100;
     let gwCountdownInterval = null;
     let gwUserEntered = false;
@@ -1993,11 +1838,7 @@
             gwUserEntered = entrants.includes(currentLocalUser.name);
             updateEnterBtn();
             if (gw.lastWinner) renderWinner(gw.lastWinner, gw.lastWinnerTs);
-            // Fire a notification if current user just won and it's a new draw result
-            if (gw.lastWinner === currentLocalUser.name &&
-                gw.lastWinnerTs &&
-                gw.lastWinnerTs !== _seenWinnerTs &&
-                (now - gw.lastWinnerTs) < 30000) {
+            if (gw.lastWinner === currentLocalUser.name && gw.lastWinnerTs && gw.lastWinnerTs !== _seenWinnerTs && (now - gw.lastWinnerTs) < 30000) {
                 addNotification('giveaway', '🎉 You won the Giveaway!', `$${fmt$(GW_PRIZE)} has been added to your balance. Congrats!`);
             }
             _seenWinnerTs = gw.lastWinnerTs || _seenWinnerTs;
@@ -2015,17 +1856,12 @@
             const remaining = nextDraw - Date.now();
             const el = document.getElementById('gwCountdown');
             if (!el) return;
-            if (remaining <= 0) {
-                el.textContent = 'Drawing...';
-                el.className = 'gw-countdown drawing';
-            } else {
-                // Show H:MM:SS for long intervals
+            if (remaining <= 0) { el.textContent = 'Drawing...'; el.className = 'gw-countdown drawing'; }
+            else {
                 const h = Math.floor(remaining / 3600000);
                 const m = Math.floor((remaining % 3600000) / 60000);
                 const s = Math.floor((remaining % 60000) / 1000);
-                el.textContent = h > 0
-                    ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`
-                    : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                el.textContent = h > 0 ? `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}` : `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
                 el.className = 'gw-countdown' + (remaining < 60000 ? ' ending' : '');
             }
         });
@@ -2051,10 +1887,7 @@
             return { drawn: true, ts: Date.now() };
         }, (err, committed) => {
             if (!committed) { gwDrawing = false; return; }
-            if (entrants.length === 0) {
-                db.ref('giveaway').set({ nextDraw: Date.now() + GW_INTERVAL, entrants: {} });
-                gwDrawing = false; return;
-            }
+            if (entrants.length === 0) { db.ref('giveaway').set({ nextDraw: Date.now() + GW_INTERVAL, entrants: {} }); gwDrawing = false; return; }
             const winner = entrants[Math.floor(Math.random() * entrants.length)];
             db.ref('users/' + winner).transaction(u => { if (!u) return u; u.balance = cleanMoney((u.balance || 0) + GW_PRIZE); return u; });
             db.ref('recent_wins').push({ name: winner, amount: GW_PRIZE, ts: Date.now(), source: 'Giveaway' });
@@ -2067,13 +1900,8 @@
         const btn = document.getElementById('gwEnterBtn');
         const msg = document.getElementById('gwStatusMsg');
         if (!btn) return;
-        if (gwUserEntered) {
-            btn.textContent = '✓ Entered'; btn.disabled = true; btn.className = 'gw-enter-btn entered';
-            msg.textContent = 'Good luck! Winner picked when the timer hits zero.';
-        } else {
-            btn.textContent = 'Enter Giveaway'; btn.disabled = false; btn.className = 'gw-enter-btn';
-            msg.textContent = 'Free to enter — one winner picked per round.';
-        }
+        if (gwUserEntered) { btn.textContent = '✓ Entered'; btn.disabled = true; btn.className = 'gw-enter-btn entered'; msg.textContent = 'Good luck! Winner picked when the timer hits zero.'; }
+        else { btn.textContent = 'Enter Giveaway'; btn.disabled = false; btn.className = 'gw-enter-btn'; msg.textContent = 'Free to enter — one winner picked per round.'; }
     }
 
     function renderEntrants(entrants) {
@@ -2116,40 +1944,25 @@
         document.getElementById('codeInput').value = '';
         if (!raw) return;
         if (!currentLocalUser) return;
-
-        // Admin code — unlocks panel for session
         if (raw === ADMIN_CODE.toUpperCase()) {
             adminUnlocked = true;
             document.getElementById('adminSidebarSection').style.display = 'block';
             setCodesMsg('👑 Admin panel unlocked!', 'ok');
             return;
         }
-
-        // Check if already redeemed
         const redeemedSnap = await db.ref('redeemed_codes/' + currentLocalUser.name + '/' + raw).once('value');
         if (redeemedSnap.exists()) { setCodesMsg('Already redeemed this code.', 'err'); return; }
-
-        // Fetch code from Firebase
         const codeSnap = await db.ref('codes/' + raw).once('value');
         if (!codeSnap.exists()) { setCodesMsg('Invalid or expired code.', 'err'); return; }
         const code = codeSnap.val();
         if (!code.active) { setCodesMsg('This code has expired.', 'err'); return; }
-
-        // Check uses
         const uses = code.uses || 0;
         const maxUses = code.maxUses || 999999;
         if (uses >= maxUses) { setCodesMsg('This code has reached its limit.', 'err'); return; }
-
         const reward = code.reward || 0;
         if (reward <= 0) { setCodesMsg('Invalid code reward.', 'err'); return; }
-
-        // Atomic: increment use count, give money, mark redeemed
         await db.ref('codes/' + raw + '/uses').transaction(n => (n || 0) + 1);
-        await db.ref('users/' + currentLocalUser.name).transaction(u => {
-            if (!u) return u;
-            u.balance = cleanMoney((u.balance || 0) + reward);
-            return u;
-        });
+        await db.ref('users/' + currentLocalUser.name).transaction(u => { if (!u) return u; u.balance = cleanMoney((u.balance || 0) + reward); return u; });
         await db.ref('redeemed_codes/' + currentLocalUser.name + '/' + raw).set({ ts: Date.now(), reward });
         setCodesMsg('🎉 Code redeemed! +$' + fmt$(reward), 'ok');
         addNotification('money', '🎁 Code Redeemed!', 'You received $' + fmt$(reward) + ' from code ' + raw + '.');
@@ -2159,102 +1972,204 @@
     function openAdminPanel() {
         if (!adminUnlocked) return;
         document.getElementById('adminModal').classList.add('show');
+        switchAdminTab('balance');
     }
     function closeAdminPanel() {
         document.getElementById('adminModal').classList.remove('show');
     }
+    // Close on backdrop click
+    document.getElementById('adminModal').addEventListener('click', function(e) {
+        if (e.target === this) closeAdminPanel();
+    });
 
-    function adminFeedback(id, msg, type) {
+    let _adminCurrentTab = 'overview';
+    let _adminAlertTarget = 'all';
+    let _adminBalTargetUser = null;
+    let _adminDelTargetUser = null;
+
+    function switchAdminTab(tab) {
+        _adminCurrentTab = tab;
+        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+        const btn = document.getElementById('atab-' + tab);
+        const content = document.getElementById('atab-content-' + tab);
+        if (btn) btn.classList.add('active');
+        if (content) content.classList.add('active');
+        if (tab === 'codes') adminLoadCodes();
+    }
+
+    function showAdminFeedback(id, msg, type) {
         const el = document.getElementById(id);
         if (!el) return;
         el.textContent = msg;
-        el.className = 'admin-feedback ' + (type || '');
-        if (msg) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+        el.className = 'admin-feedback visible ' + type;
+        clearTimeout(el._timer);
+        el._timer = setTimeout(() => { el.className = 'admin-feedback'; el.textContent = ''; }, 4000);
+    }
+
+    let _balSearchTimer = null;
+    function adminSearchUser() {
+        clearTimeout(_balSearchTimer);
+        _balSearchTimer = setTimeout(async () => {
+            const q = document.getElementById('adminBalSearch').value.trim().toLowerCase();
+            const card = document.getElementById('adminBalUserCard');
+            _adminBalTargetUser = null;
+            if (!q) { card.style.display='none'; return; }
+            const snap = await db.ref('users/'+q).once('value');
+            if (!snap.exists()) { card.innerHTML=`<div style="font-size:12px;color:#ef4444;padding:8px 0 4px;">No user found: "${q}"</div>`; card.style.display='block'; return; }
+            const u = snap.val();
+            _adminBalTargetUser = u.name;
+            const avatarContent = (u.avatar&&u.avatar.startsWith('data:image'))?`<img src="${u.avatar}" alt="">`:u.name.charAt(0).toUpperCase();
+            card.innerHTML = `<div class="admin-user-card"><div class="admin-user-ava">${avatarContent}</div><div class="admin-user-info"><div class="admin-user-name">${u.name.toUpperCase()}</div><div class="admin-user-bal">$${fmt$(u.balance)}</div></div></div>`;
+            card.style.display='block';
+        }, 300);
     }
 
     async function adminGiveMoney() {
-        const user = document.getElementById('adminBalUser').value.trim().toLowerCase();
+        if (!_adminBalTargetUser) { showAdminFeedback('adminBalFeedback','⚠ Search for a player first.','err'); return; }
         const amt = parseFloat(document.getElementById('adminBalAmt').value);
-        if (!user || isNaN(amt) || amt <= 0) { adminFeedback('adminBalFeedback', '⚠ Enter a username and amount.', 'err'); return; }
-        const snap = await db.ref('users/' + user).once('value');
-        if (!snap.exists()) { adminFeedback('adminBalFeedback', '⚠ User not found.', 'err'); return; }
-        await db.ref('users/' + user).transaction(u => { if (!u) return u; u.balance = cleanMoney((u.balance || 0) + amt); return u; });
-        adminFeedback('adminBalFeedback', '✓ Gave $' + fmt$(amt) + ' to ' + user + '.', 'ok');
-        // Push alert to that user
-        db.ref('admin_alerts').push({ title: 'Balance Updated', body: 'An admin added $' + fmt$(amt) + ' to your account.', target: user, ts: Date.now() });
+        if (isNaN(amt)||amt<=0) { showAdminFeedback('adminBalFeedback','⚠ Enter a valid amount.','err'); return; }
+        await db.ref('users/'+_adminBalTargetUser).transaction(u => { if(!u)return u; u.balance=cleanMoney((u.balance||0)+amt); return u; });
+        db.ref('admin_alerts').push({ title:'Balance Updated', body:`An admin added $${fmt$(amt)} to your account.`, target:_adminBalTargetUser, ts:Date.now() });
+        showAdminFeedback('adminBalFeedback',`✓ Gave $${fmt$(amt)} to ${_adminBalTargetUser.toUpperCase()}.`,'ok');
+        adminSearchUser();
     }
 
     async function adminRemoveMoney() {
-        const user = document.getElementById('adminBalUser').value.trim().toLowerCase();
+        if (!_adminBalTargetUser) { showAdminFeedback('adminBalFeedback','⚠ Search for a player first.','err'); return; }
         const amt = parseFloat(document.getElementById('adminBalAmt').value);
-        if (!user || isNaN(amt) || amt <= 0) { adminFeedback('adminBalFeedback', '⚠ Enter a username and amount.', 'err'); return; }
-        const snap = await db.ref('users/' + user).once('value');
-        if (!snap.exists()) { adminFeedback('adminBalFeedback', '⚠ User not found.', 'err'); return; }
-        await db.ref('users/' + user).transaction(u => { if (!u) return u; u.balance = Math.max(0, cleanMoney((u.balance || 0) - amt)); return u; });
-        adminFeedback('adminBalFeedback', '✓ Removed $' + fmt$(amt) + ' from ' + user + '.', 'ok');
+        if (isNaN(amt)||amt<=0) { showAdminFeedback('adminBalFeedback','⚠ Enter a valid amount.','err'); return; }
+        await db.ref('users/'+_adminBalTargetUser).transaction(u => { if(!u)return u; u.balance=Math.max(0,cleanMoney((u.balance||0)-amt)); return u; });
+        showAdminFeedback('adminBalFeedback',`✓ Removed $${fmt$(amt)} from ${_adminBalTargetUser.toUpperCase()}.`,'ok');
+        adminSearchUser();
+    }
+
+    function setAlertTarget(t) {
+        _adminAlertTarget = t;
+        document.getElementById('alertTargetAll').className  = t==='all' ? 'admin-action-btn blue'  : 'admin-action-btn ghost';
+        document.getElementById('alertTargetUser').className = t==='user'? 'admin-action-btn blue'  : 'admin-action-btn ghost';
+        document.getElementById('alertUserField').style.display = t==='user' ? 'block' : 'none';
     }
 
     async function adminBroadcastAlert() {
         const title = document.getElementById('adminAlertTitle').value.trim();
         const body  = document.getElementById('adminAlertMsg').value.trim();
-        if (!title || !body) { adminFeedback('adminAlertFeedback', '⚠ Enter a title and message.', 'err'); return; }
-        await db.ref('admin_alerts').push({ title, body, target: '__all__', ts: Date.now(), sender: currentLocalUser.name });
-        document.getElementById('adminAlertTitle').value = '';
-        document.getElementById('adminAlertMsg').value = '';
-        adminFeedback('adminAlertFeedback', '✓ Alert sent to all players.', 'ok');
+        if (!title||!body) { showAdminFeedback('adminAlertFeedback','⚠ Enter a title and message.','err'); return; }
+        let target = '__all__';
+        if (_adminAlertTarget==='user') {
+            const u = document.getElementById('adminAlertUser').value.trim().toLowerCase();
+            if (!u) { showAdminFeedback('adminAlertFeedback','⚠ Enter a username.','err'); return; }
+            const snap = await db.ref('users/'+u).once('value');
+            if (!snap.exists()) { showAdminFeedback('adminAlertFeedback',`⚠ User "${u}" not found.`,'err'); return; }
+            target = u;
+        }
+        await db.ref('admin_alerts').push({ title, body, target, ts:Date.now(), sender:currentLocalUser.name });
+        document.getElementById('adminAlertTitle').value='';
+        document.getElementById('adminAlertMsg').value='';
+        showAdminFeedback('adminAlertFeedback',`✓ Alert sent to ${target==='__all__'?'all players':target.toUpperCase()}.`,'ok');
     }
 
     async function adminCreateCode() {
-        const name = document.getElementById('adminCodeName').value.trim().toUpperCase();
+        const nameRaw = document.getElementById('adminCodeName').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
+        document.getElementById('adminCodeName').value = nameRaw;
+        const name = nameRaw;
         const reward = parseFloat(document.getElementById('adminCodeAmt').value);
-        const maxUses = parseInt(document.getElementById('adminCodeUses').value) || 100;
-        if (!name || isNaN(reward) || reward <= 0) { adminFeedback('adminCodeFeedback', '⚠ Enter code name and reward.', 'err'); return; }
-        await db.ref('codes/' + name).set({ reward, maxUses, uses: 0, active: true, createdAt: Date.now(), createdBy: currentLocalUser.name });
-        document.getElementById('adminCodeName').value = '';
-        document.getElementById('adminCodeAmt').value = '';
-        document.getElementById('adminCodeUses').value = '';
-        adminFeedback('adminCodeFeedback', '✓ Code ' + name + ' created ($' + fmt$(reward) + ', ' + maxUses + ' uses).', 'ok');
+        const maxUses = parseInt(document.getElementById('adminCodeUses').value) || 999999;
+        if (!name) { showAdminFeedback('adminCodeFeedback','⚠ Enter a code name.','err'); return; }
+        if (isNaN(reward)||reward<=0) { showAdminFeedback('adminCodeFeedback','⚠ Enter a valid reward amount.','err'); return; }
+        const existing = await db.ref('codes/'+name).once('value');
+        if (existing.exists()) { showAdminFeedback('adminCodeFeedback','⚠ Code "'+name+'" already exists.','err'); return; }
+        await db.ref('codes/'+name).set({ reward, maxUses, uses:0, active:true, createdAt:Date.now(), createdBy:currentLocalUser.name });
+        document.getElementById('adminCodeName').value='';
+        document.getElementById('adminCodeAmt').value='';
+        document.getElementById('adminCodeUses').value='';
+        showAdminFeedback('adminCodeFeedback','✓ Code '+name+' created — $'+fmt$(reward)+', '+(maxUses===999999?'unlimited':maxUses)+' uses.','ok');
         adminLoadCodes();
     }
 
     function adminLoadCodes() {
-        const listEl = document.getElementById('adminCodeList');
-        listEl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">Loading…</div>';
-        db.ref('codes').once('value', snap => {
-            if (!snap.exists()) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:12px;">No codes yet.</div>'; return; }
-            const rows = [];
-            snap.forEach(c => rows.push({ key: c.key, ...c.val() }));
-            listEl.innerHTML = rows.map(r => `
-                <div class="admin-code-row">
-                    <span class="admin-code-name">${r.key}</span>
-                    <span class="admin-code-reward">$${fmt$(r.reward)}</span>
-                    <span class="admin-code-uses">${r.uses||0}/${r.maxUses} used</span>
-                    <button class="admin-msg-del" onclick="adminDeactivateCode('${r.key}')" title="Deactivate">🗑</button>
-                </div>`).join('');
+        var listEl = document.getElementById('adminCodeList');
+        if (!listEl) return;
+        listEl.innerHTML = '<div class="admin-skeleton"></div><div class="admin-skeleton"></div>';
+        db.ref('codes').once('value', function(snap) {
+            if (!snap.exists()) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;">No active codes.</div>'; return; }
+            var rows = [];
+            snap.forEach(function(c) {
+                var v = c.val();
+                if (v && v.active !== false) rows.push(Object.assign({ key: c.key }, v));
+            });
+            if (rows.length === 0) { listEl.innerHTML = '<div style="color:var(--text-muted);font-size:13px;text-align:center;padding:20px 0;">No active codes.</div>'; return; }
+            rows.sort(function(a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+            listEl.innerHTML = rows.map(function(r) {
+                var unlimited = !r.maxUses || r.maxUses >= 999999;
+                var usesLabel = unlimited ? ((r.uses || 0) + ' redeemed') : ((r.uses || 0) + ' / ' + r.maxUses + ' used');
+                var pct = unlimited ? 0 : Math.min(100, Math.round(((r.uses || 0) / r.maxUses) * 100));
+                var bar = unlimited ? '' : ('<div style="flex:1;height:3px;background:rgba(255,255,255,0.08);border-radius:3px;max-width:100px;"><div style="height:100%;width:' + pct + '%;background:var(--primary-blue);border-radius:3px;"></div></div>');
+                return '<div class="admin-code-row">'
+                    + '<div style="flex:1;min-width:0;">'
+                    +   '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">'
+                    +     '<span class="admin-code-name">' + r.key + '</span>'
+                    +     '<span class="admin-code-reward">+$' + fmt$(r.reward) + '</span>'
+                    +   '</div>'
+                    +   '<div style="display:flex;align-items:center;gap:8px;">'
+                    +     '<span class="admin-code-uses">' + usesLabel + '</span>'
+                    +     bar
+                    +   '</div>'
+                    + '</div>'
+                    + '<button class="admin-code-del" onclick="adminDeactivateCode(\\\'' + r.key + '\\\')" title="Deactivate">🗑️</button>'
+                    + '</div>';
+            }).join('');
         });
     }
 
     function adminDeactivateCode(key) {
-        db.ref('codes/' + key + '/active').set(false).then(() => {
-            adminFeedback('adminCodeFeedback', '✓ Code ' + key + ' deactivated.', 'ok');
-            adminLoadCodes();
-        });
+        if (!confirm(`Deactivate code "${key}"?`)) return;
+        db.ref('codes/'+key+'/active').set(false).then(() => { showAdminFeedback('adminCodeFeedback',`✓ Code ${key} deactivated.`,'ok'); adminLoadCodes(); });
+    }
+
+    let _delSearchTimer = null;
+    function adminSearchDelUser() {
+        clearTimeout(_delSearchTimer);
+        _delSearchTimer = setTimeout(async () => {
+            const q = document.getElementById('adminDelSearch').value.trim().toLowerCase();
+            const card = document.getElementById('adminDelUserCard');
+            const btn = document.getElementById('adminDelBtn');
+            _adminDelTargetUser = null; btn.disabled = true;
+            if (!q) { card.style.display='none'; return; }
+            const snap = await db.ref('users/'+q).once('value');
+            if (!snap.exists()) { card.innerHTML=`<div style="font-size:12px;color:#ef4444;padding:8px 0 4px;">No user found: "${q}"</div>`; card.style.display='block'; return; }
+            const u = snap.val();
+            const isOwner=u.name==='fusionzzz', isMe=u.name===currentLocalUser.name;
+            _adminDelTargetUser = u.name;
+            const avatarContent=(u.avatar&&u.avatar.startsWith('data:image'))?`<img src="${u.avatar}" alt="">`:u.name.charAt(0).toUpperCase();
+            card.innerHTML=`<div class="admin-user-card" style="border-color:${isOwner||isMe?'rgba(239,68,68,0.3)':'rgba(255,255,255,0.07)'};">
+                <div class="admin-user-ava">${avatarContent}</div>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">${u.name.toUpperCase()}${isOwner?' 👑':''}</div>
+                    <div class="admin-user-bal">$${fmt$(u.balance)}</div>
+                    ${isOwner?'<div style="font-size:11px;color:#ef4444;margin-top:2px;">Cannot delete owner</div>':''}
+                    ${isMe?'<div style="font-size:11px;color:#ef4444;margin-top:2px;">Cannot delete yourself</div>':''}
+                </div>
+            </div>`;
+            card.style.display='block';
+            if (!isOwner&&!isMe) btn.disabled=false;
+        }, 300);
     }
 
     async function adminDeleteAccount() {
-        const user = document.getElementById('adminDelUser').value.trim().toLowerCase();
-        if (!user) { adminFeedback('adminDelFeedback', '⚠ Enter a username.', 'err'); return; }
-        if (user === 'fusionzzz') { adminFeedback('adminDelFeedback', '⚠ Cannot delete owner account.', 'err'); return; }
-        if (user === currentLocalUser.name) { adminFeedback('adminDelFeedback', '⚠ Cannot delete yourself.', 'err'); return; }
-        const snap = await db.ref('users/' + user).once('value');
-        if (!snap.exists()) { adminFeedback('adminDelFeedback', '⚠ User not found.', 'err'); return; }
-        await db.ref('users/' + user).remove();
-        await db.ref('presence/' + user).remove();
-        adminFeedback('adminDelFeedback', '✓ Account ' + user + ' deleted.', 'ok');
-        document.getElementById('adminDelUser').value = '';
+        if (!_adminDelTargetUser) return;
+        if (_adminDelTargetUser==='fusionzzz'||_adminDelTargetUser===currentLocalUser.name) return;
+        if (!confirm(`Permanently delete "${_adminDelTargetUser}"? This cannot be undone.`)) return;
+        await db.ref('users/'+_adminDelTargetUser).remove();
+        await db.ref('presence/'+_adminDelTargetUser).remove();
+        showAdminFeedback('adminDelFeedback',`✓ Account ${_adminDelTargetUser.toUpperCase()} deleted.`,'ok');
+        _adminDelTargetUser=null;
+        document.getElementById('adminDelSearch').value='';
+        document.getElementById('adminDelUserCard').style.display='none';
+        document.getElementById('adminDelBtn').disabled=true;
+        adminLoadAllUsers();
     }
 
-    // ── LISTEN FOR ADMIN ALERTS ───────────────────────────────────────────────
     function initAdminAlerts() {
         let _lastAlertTs = Date.now();
         db.ref('admin_alerts').orderByChild('ts').startAt(_lastAlertTs).on('child_added', snap => {
@@ -2267,7 +2182,409 @@
         });
     }
 
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeAdminPanel(); } });
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── DAILY SHOP ────────────────────────────────────────────────────────────
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // Full master catalog — 3 from each category are picked daily via seeded random
+    const ALL_WEBSITE_THEMES = [
+        { id: 'theme_ocean',    name: 'Ocean Deep',    price: 375,  desc: 'Calming ocean blues and teals for the whole interface.',  bg: '#061a2e', accent: '#00c4ff', preview: ['#061a2e','#083250','#00c4ff'] },
+        { id: 'theme_ember',    name: 'Ember',         price: 675,  desc: 'Warm reds and oranges — a smoldering casino feel.',       bg: '#1a0805', accent: '#ff4c0c', preview: ['#1a0805','#2e1205','#ff4c0c'] },
+        { id: 'theme_midnight', name: 'Midnight',      price: 300,  desc: 'Deep purples and navy for a luxurious dark theme.',       bg: '#0c0820', accent: '#7c3aed', preview: ['#0c0820','#160d30','#7c3aed'] },
+        { id: 'theme_neon',     name: 'Neon City',     price: 900,  desc: 'Electric greens and pinks inspired by cyberpunk nights.', bg: '#050f0a', accent: '#00ff87', preview: ['#050f0a','#0a1f14','#00ff87'] },
+        { id: 'theme_gold',     name: 'Gold Rush',     price: 1100,  desc: 'Rich blacks and gold — dress the site like a VIP lounge.', bg: '#100e00', accent: '#f59e0b', preview: ['#100e00','#1e1800','#f59e0b'] },
+        { id: 'theme_arctic',   name: 'Arctic',        price: 525,  desc: 'Icy white-blues and slate — clean and sharp.',            bg: '#08101a', accent: '#93c5fd', preview: ['#08101a','#10202e','#93c5fd'] },
+        { id: 'theme_rose',     name: 'Rose Gold',     price: 675,  desc: 'Soft pinks and metallic rose — elegant and bold.',        bg: '#1a080f', accent: '#f472b6', preview: ['#1a080f','#2e1020','#f472b6'] },
+        { id: 'theme_mint',     name: 'Spearmint',     price: 425,  desc: 'Fresh mint greens keeping things cool and crisp.',        bg: '#061510', accent: '#34d399', preview: ['#061510','#0c2a1e','#34d399'] },
+    ];
+
+    const ALL_PROFILE_THEMES = [
+        { id: 'pt_crimson',   name: 'Crimson',      price: 225, gradient: 'linear-gradient(135deg,#b91c1c,#7f1d1d)' },
+        { id: 'pt_violet',    name: 'Violet',       price: 225, gradient: 'linear-gradient(135deg,#7c3aed,#4c1d95)' },
+        { id: 'pt_emerald',   name: 'Emerald',      price: 225, gradient: 'linear-gradient(135deg,#059669,#064e3b)' },
+        { id: 'pt_amber',     name: 'Amber',        price: 300, gradient: 'linear-gradient(135deg,#d97706,#78350f)' },
+        { id: 'pt_rose',      name: 'Rose',         price: 260, gradient: 'linear-gradient(135deg,#e11d48,#881337)' },
+        { id: 'pt_sky',       name: 'Sky Blue',     price: 190, gradient: 'linear-gradient(135deg,#0284c7,#0c4a6e)' },
+        { id: 'pt_lime',      name: 'Lime',         price: 190, gradient: 'linear-gradient(135deg,#65a30d,#365314)' },
+        { id: 'pt_slate',     name: 'Midnight Slate', price: 300, gradient: 'linear-gradient(135deg,#334155,#0f172a)' },
+        { id: 'pt_gold',      name: 'Golden',       price: 525, gradient: 'linear-gradient(135deg,#fbbf24,#92400e)' },
+        { id: 'pt_rainbow',   name: 'Aurora',       price: 1100, gradient: 'linear-gradient(135deg,#f43f5e,#a855f7,#3b82f6)' },
+    ];
+
+    const ALL_TITLES = [
+        { id: 'title_lucky',    name: 'Lucky One',      text: '🍀 Lucky One',        price: 150 },
+        { id: 'title_highroll', name: 'High Roller',    text: '💰 High Roller',      price: 675 },
+        { id: 'title_legend',   name: 'Legend',         text: '⚡ Legend',           price: 1100 },
+        { id: 'title_gambler',  name: 'True Gambler',   text: '🎰 True Gambler',     price: 300 },
+        { id: 'title_ghost',    name: 'Ghost',          text: '👻 Ghost',            price: 225 },
+        { id: 'title_king',     name: 'King',           text: '👑 King',             price: 900 },
+        { id: 'title_shadow',   name: 'Shadow',         text: '🌑 Shadow',           price: 375 },
+        { id: 'title_ace',      name: 'Ace',            text: '🃏 Ace',              price: 260 },
+        { id: 'title_goat',     name: 'The GOAT',       text: '🐐 The GOAT',         price: 1100 },
+        { id: 'title_rookie',   name: 'Rookie',         text: '🌱 Rookie',           price: 75  },
+        { id: 'title_veteran',  name: 'Veteran',        text: '🎖️ Veteran',         price: 900 },
+        { id: 'title_vip',      name: 'VIP',            text: '💎 VIP',              price: 525 },
+    ];
+
+    // Get the day seed (changes every 24 hours in UTC)
+    function getDaySeed() {
+        return Math.floor(Date.now() / (24 * 60 * 60 * 1000));
+    }
+
+    // Seeded shuffle — always same for same seed
+    function seededShuffle(arr, seed) {
+        const a = [...arr];
+        let s = seed;
+        for (let i = a.length - 1; i > 0; i--) {
+            s = (s * 1664525 + 1013904223) & 0xffffffff;
+            const j = Math.abs(s) % (i + 1);
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    function getDailyItems() {
+        const seed = getDaySeed();
+        const themes  = seededShuffle(ALL_WEBSITE_THEMES, seed).slice(0, 3);
+        const profiles = seededShuffle(ALL_PROFILE_THEMES, seed + 1).slice(0, 3);
+        const titles   = seededShuffle(ALL_TITLES, seed + 2).slice(0, 4);
+        return { themes, profiles, titles };
+    }
+
+    function getMsUntilNextDay() {
+        const now = Date.now();
+        const nextDay = (Math.floor(now / (24*60*60*1000)) + 1) * 24*60*60*1000;
+        return nextDay - now;
+    }
+
+    let shopCountdownInterval = null;
+
+    function initShopCountdown() {
+        if (shopCountdownInterval) clearInterval(shopCountdownInterval);
+        shopCountdownInterval = setInterval(() => {
+            const el = document.getElementById('shopCountdown');
+            if (!el) return;
+            const ms = getMsUntilNextDay();
+            const h = Math.floor(ms / 3600000);
+            const m = Math.floor((ms % 3600000) / 60000);
+            const s = Math.floor((ms % 60000) / 1000);
+            el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+        }, 1000);
+    }
+
+    function getOwnedItems() {
+        if (!currentLocalUser) return {};
+        return currentLocalUser.shopItems || {};
+    }
+
+    function renderShop() {
+        const { themes, profiles, titles } = getDailyItems();
+        const owned = getOwnedItems();
+
+        // ── Website Themes grid
+        document.getElementById('shopThemesGrid').innerHTML = themes.map(item => {
+            const isOwned = owned[item.id];
+            const isActive = currentLocalUser && currentLocalUser.websiteTheme === item.id;
+            const [c1, c2, c3] = item.preview;
+            return `<div class="shop-item">
+                <div class="shop-item-preview" style="background:${c1};">
+                    <div class="theme-preview">
+                        <div class="theme-swatch" style="background:${c1};"></div>
+                        <div class="theme-swatch" style="background:${c2};"></div>
+                        <div class="theme-swatch" style="background:${c3};"></div>
+                    </div>
+                    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                        <span style="font-size:13px;font-weight:800;color:${c3};letter-spacing:1px;text-shadow:0 1px 4px rgba(0,0,0,.6);">${item.name}</span>
+                    </div>
+                </div>
+                <div class="shop-item-body">
+                    <span class="shop-item-category" style="color:var(--primary-blue);">Website Theme</span>
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-desc">${item.desc}</div>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price">$${fmt$(item.price)}</div>
+                        ${isOwned
+                            ? `<button class="shop-buy-btn${isActive ? ' owned' : ''}" onclick="invEquipTheme('${item.id}')">${isActive ? '✓ Active' : 'Equip'}</button>`
+                            : `<button class="shop-buy-btn" onclick="buyShopItem('${item.id}','theme')">Buy</button>`
+                        }
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // ── Profile Card Themes grid
+        document.getElementById('shopProfileGrid').innerHTML = profiles.map(item => {
+            const isOwned = owned[item.id];
+            const isActive = currentLocalUser && currentLocalUser.profileCardTheme === item.id;
+            return `<div class="shop-item">
+                <div class="shop-item-preview" style="background:var(--bg-card);padding:0;overflow:hidden;">
+                    <div style="width:100%;height:100%;background:${item.gradient};display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;">
+                        <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#007aff,#004fb1);border:2px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff;margin-bottom:-4px;">${(currentLocalUser ? currentLocalUser.name.charAt(0).toUpperCase() : '?')}</div>
+                    </div>
+                </div>
+                <div class="shop-item-body">
+                    <span class="shop-item-category" style="color:#a855f7;">Profile Card</span>
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-desc">Applied as the banner behind your profile card header.</div>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price">$${fmt$(item.price)}</div>
+                        ${isOwned
+                            ? `<button class="shop-buy-btn${isActive ? ' owned' : ''}" onclick="activateProfileCardTheme('${item.id}')">${isActive ? '✓ Active' : 'Equip'}</button>`
+                            : `<button class="shop-buy-btn" onclick="buyShopItem('${item.id}','profile')">Buy</button>`
+                        }
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+
+        // ── Titles grid
+        document.getElementById('shopTitlesGrid').innerHTML = titles.map(item => {
+            const isOwned = owned[item.id];
+            const isActive = currentLocalUser && currentLocalUser.profileTitle === item.text;
+            return `<div class="shop-item">
+                <div class="shop-item-preview" style="background:linear-gradient(135deg,#1a1a0a,#201e08);">
+                    <span class="title-preview-text">${item.text}</span>
+                </div>
+                <div class="shop-item-body">
+                    <span class="shop-item-category" style="color:#ffc400;">Profile Title</span>
+                    <div class="shop-item-name">${item.name}</div>
+                    <div class="shop-item-desc">Displayed in gold under your name on your profile card.</div>
+                    <div class="shop-item-footer">
+                        <div class="shop-item-price">$${fmt$(item.price)}</div>
+                        ${isOwned
+                            ? `<button class="shop-buy-btn${isActive ? ' owned' : ''}" onclick="invEquipTitle('${item.id}')">${isActive ? '✓ Active' : 'Equip'}</button>`
+                            : `<button class="shop-buy-btn" onclick="buyShopItem('${item.id}','title')">Buy</button>`
+                        }
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    async function buyShopItem(itemId, category) {
+        if (!currentLocalUser) return;
+        const owned = getOwnedItems();
+        if (owned[itemId]) { showShopFeedback('You already own this item.', 'err'); return; }
+
+        let item;
+        if (category === 'theme') { item = ALL_WEBSITE_THEMES.find(x => x.id === itemId); }
+        else if (category === 'profile') { item = ALL_PROFILE_THEMES.find(x => x.id === itemId); }
+        else if (category === 'title') { item = ALL_TITLES.find(x => x.id === itemId); }
+
+        if (!item) { showShopFeedback('Item not found.', 'err'); return; }
+        const price = item.price;
+
+        if (cleanMoney(currentLocalUser.balance) < price) { showShopFeedback(`Not enough balance. Need $${fmt$(price)}.`, 'err'); return; }
+
+        let committed = false;
+        await db.ref('users/' + currentLocalUser.name).transaction(u => {
+            if (!u) return u;
+            if (cleanMoney(u.balance) < price) return;
+            u.balance = cleanMoney(u.balance - price);
+            if (!u.shopItems) u.shopItems = {};
+            u.shopItems[itemId] = true;
+            // Auto-equip on first purchase
+            if (category === 'theme') u.websiteTheme = itemId;
+            else if (category === 'profile') u.profileCardTheme = itemId;
+            else if (category === 'title') u.profileTitle = item.text;
+            committed = true;
+            return u;
+        });
+
+        if (!committed) { showShopFeedback('Purchase failed. Check your balance.', 'err'); return; }
+
+        showShopFeedback(`✓ Purchased ${item.name}! It has been equipped automatically.`, 'ok');
+        addNotification('money', `🛒 Purchased ${item.name}!`, `$${fmt$(price)} was deducted from your balance.`);
+        renderShop();
+    }
+
+    async function activateProfileCardTheme(themeId) {
+        if (!currentLocalUser) return;
+        await db.ref('users/' + currentLocalUser.name + '/profileCardTheme').set(themeId);
+        showShopFeedback('Profile card theme equipped!', 'ok');
+        renderShop();
+    }
+
+    function showShopFeedback(msg, type) {
+        const el = document.getElementById('shopFeedback');
+        if (!el) return;
+        el.textContent = msg;
+        el.className = 'shop-feedback ' + (type || '');
+        el.style.display = 'block';
+        setTimeout(() => { if (el.textContent === msg) { el.textContent = ''; el.style.display = 'none'; } }, 4000);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // ── INVENTORY ─────────────────────────────────────────────────────────────
+    // ══════════════════════════════════════════════════════════════════════════
+
+    function renderInventory() {
+        const el = document.getElementById('invContent');
+        if (!el || !currentLocalUser) return;
+        const owned = currentLocalUser.shopItems || {};
+        const ownedIds = Object.keys(owned).filter(k => owned[k]);
+
+        if (ownedIds.length === 0) {
+            el.innerHTML = `<div class="inv-empty"><span class="inv-empty-icon">🎒</span>Your inventory is empty.<br><span style="font-size:12px;">Head to the <strong>Daily Shop</strong> to pick up some items!</span></div>`;
+            return;
+        }
+
+        // Split into categories
+        const myThemes   = ALL_WEBSITE_THEMES.filter(x => ownedIds.includes(x.id));
+        const myProfiles = ALL_PROFILE_THEMES.filter(x => ownedIds.includes(x.id));
+        const myTitles   = ALL_TITLES.filter(x => ownedIds.includes(x.id));
+
+        const activeTheme   = currentLocalUser.websiteTheme || null;
+        const activeCard    = currentLocalUser.profileCardTheme || null;
+        const activeTitle   = currentLocalUser.profileTitle || null;
+
+        let html = '';
+
+        if (myThemes.length > 0) {
+            html += `<div class="inv-section">
+                <p class="section-label" style="margin-bottom:12px;">🌐 Website Themes</p>
+                <div class="inv-grid">
+                ${myThemes.map(item => {
+                    const isActive = activeTheme === item.id;
+                    const [c1,c2,c3] = item.preview;
+                    return `<div class="inv-item${isActive ? ' equipped' : ''}">
+                        ${isActive ? '<div class="inv-equipped-badge">✓ Active</div>' : ''}
+                        <div class="inv-item-preview" style="background:${c1};padding:0;">
+                            <div style="width:100%;height:100%;display:flex;">
+                                <div style="flex:1;background:${c1};"></div>
+                                <div style="flex:1;background:${c2};"></div>
+                                <div style="flex:1;background:${c3};"></div>
+                            </div>
+                            <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+                                <span style="font-size:12px;font-weight:800;color:${c3};text-shadow:0 1px 4px rgba(0,0,0,.7);">${item.name}</span>
+                            </div>
+                        </div>
+                        <div class="inv-item-body">
+                            <span class="inv-item-category" style="color:var(--primary-blue);">Website Theme</span>
+                            <div class="inv-item-name">${item.name}</div>
+                            <div class="inv-item-actions">
+                                ${isActive
+                                    ? `<button class="inv-equip-btn unequip" onclick="invUnequip('websiteTheme')">Unequip</button>`
+                                    : `<button class="inv-equip-btn equip" onclick="invEquipTheme('${item.id}')">Equip</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('')}
+                </div>
+            </div>`;
+        }
+
+        if (myProfiles.length > 0) {
+            html += `<div class="inv-section">
+                <p class="section-label" style="margin-bottom:12px;">🎨 Profile Card Colors</p>
+                <div class="inv-grid">
+                ${myProfiles.map(item => {
+                    const isActive = activeCard === item.id;
+                    return `<div class="inv-item${isActive ? ' equipped' : ''}">
+                        ${isActive ? '<div class="inv-equipped-badge">✓ Active</div>' : ''}
+                        <div class="inv-item-preview" style="padding:0;background:${item.gradient};">
+                            <div style="width:100%;height:100%;background:${item.gradient};display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;">
+                                <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#007aff,#004fb1);border:2px solid rgba(255,255,255,0.35);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;">${currentLocalUser.name.charAt(0).toUpperCase()}</div>
+                            </div>
+                        </div>
+                        <div class="inv-item-body">
+                            <span class="inv-item-category" style="color:#a855f7;">Profile Card</span>
+                            <div class="inv-item-name">${item.name}</div>
+                            <div class="inv-item-actions">
+                                ${isActive
+                                    ? `<button class="inv-equip-btn unequip" onclick="invUnequip('profileCardTheme')">Unequip</button>`
+                                    : `<button class="inv-equip-btn equip" onclick="invEquipCard('${item.id}')">Equip</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('')}
+                </div>
+            </div>`;
+        }
+
+        if (myTitles.length > 0) {
+            html += `<div class="inv-section">
+                <p class="section-label" style="margin-bottom:12px;">🏅 Profile Titles</p>
+                <div class="inv-grid">
+                ${myTitles.map(item => {
+                    const isActive = activeTitle === item.text;
+                    return `<div class="inv-item${isActive ? ' equipped' : ''}">
+                        ${isActive ? '<div class="inv-equipped-badge">✓ Active</div>' : ''}
+                        <div class="inv-item-preview" style="background:linear-gradient(135deg,#1a1a0a,#201e08);">
+                            <span style="font-size:14px;font-weight:700;font-style:italic;color:#ffc400;text-shadow:0 0 12px rgba(255,196,0,0.4);">${item.text}</span>
+                        </div>
+                        <div class="inv-item-body">
+                            <span class="inv-item-category" style="color:#ffc400;">Title</span>
+                            <div class="inv-item-name">${item.name}</div>
+                            <div class="inv-item-actions">
+                                ${isActive
+                                    ? `<button class="inv-equip-btn unequip" onclick="invUnequip('profileTitle')">Unequip</button>`
+                                    : `<button class="inv-equip-btn equip" onclick="invEquipTitle('${item.id}')">Equip</button>`
+                                }
+                            </div>
+                        </div>
+                    </div>`;
+                }).join('')}
+                </div>
+            </div>`;
+        }
+
+        el.innerHTML = html;
+    }
+
+    async function invEquipTheme(id) {
+        await db.ref('users/' + currentLocalUser.name + '/websiteTheme').set(id);
+        renderInventory();
+    }
+    async function invEquipCard(id) {
+        await db.ref('users/' + currentLocalUser.name + '/profileCardTheme').set(id);
+        renderInventory();
+    }
+    async function invEquipTitle(id) {
+        const item = ALL_TITLES.find(x => x.id === id);
+        if (!item) return;
+        await db.ref('users/' + currentLocalUser.name + '/profileTitle').set(item.text);
+        renderInventory();
+    }
+    async function invUnequip(field) {
+        await db.ref('users/' + currentLocalUser.name + '/' + field).remove();
+        if (field === 'websiteTheme') applyUserTheme();
+        renderInventory();
+    }
+
+    // ── APPLY USER THEME ──────────────────────────────────────────────────────
+    function applyUserTheme() {
+        if (!currentLocalUser || !currentLocalUser.websiteTheme) {
+            // Restore defaults
+            document.documentElement.style.removeProperty('--bg-body');
+            document.documentElement.style.removeProperty('--bg-sidebar');
+            document.documentElement.style.removeProperty('--bg-card');
+            document.documentElement.style.removeProperty('--bg-header');
+            document.documentElement.style.removeProperty('--primary-blue');
+            return;
+        }
+        const themeId = currentLocalUser.websiteTheme;
+        const theme = ALL_WEBSITE_THEMES.find(t => t.id === themeId);
+        if (!theme) return;
+        const root = document.documentElement;
+        root.style.setProperty('--bg-body', theme.bg);
+        // Derive sidebar/card from bg with slight lightening
+        root.style.setProperty('--bg-sidebar', adjustColor(theme.bg, 10));
+        root.style.setProperty('--bg-card', adjustColor(theme.bg, 18));
+        root.style.setProperty('--bg-header', adjustColor(theme.bg, 10));
+        root.style.setProperty('--primary-blue', theme.accent);
+    }
+
+    function adjustColor(hex, amount) {
+        // Lighten a hex color by adding amount to each channel
+        const h = hex.replace('#','');
+        const r = Math.min(255, parseInt(h.substr(0,2),16) + amount);
+        const g = Math.min(255, parseInt(h.substr(2,2),16) + amount);
+        const b = Math.min(255, parseInt(h.substr(4,2),16) + amount);
+        return '#' + [r,g,b].map(x => x.toString(16).padStart(2,'0')).join('');
+    }
 </script>
 </body>
 </html>
