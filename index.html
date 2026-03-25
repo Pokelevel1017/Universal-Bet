@@ -721,7 +721,7 @@
         <div class="offline-icon">🔌</div>
         <div class="offline-title">Servers Offline</div>
         <div class="offline-badge"><div class="offline-badge-dot"></div>Currently Unavailable</div>
-        <div class="offline-sub">We'll be back soon! Thanks for your patience.<br>Your balance is safe and untouched.</div>
+        <div class="offline-sub">We'll be back soon! Thanks for your patience.<br>We are currently fixing bugs and doing some work!</div>
         <div class="offline-chat-hint">💬 Global chat and alerts are still available →</div>
     </div>
 
@@ -1265,7 +1265,7 @@
         }).catch(() => { errEl.textContent = '⚠ Connection error. Please try again.'; setAuthLoading('regBtn', false); });
     }
 
-    const SERVERS_OFFLINE = false;
+    const SERVERS_OFFLINE = true;
 
     function applyOfflineMode() {
         const overlay = document.getElementById('offlineOverlay');
