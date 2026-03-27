@@ -1983,30 +1983,22 @@ input, textarea { font-family: var(--font-body); }
           <div class="auth-stat-lbl">Casino Games</div>
         </div>
         <div>
-          <div class="auth-stat-num"><em>$</em>100</div>
+          <div class="auth-stat-num"><em>$</em>50</div>
           <div class="auth-stat-lbl">Free on signup</div>
         </div>
         <div>
-          <div class="auth-stat-num">2<em>hr</em></div>
-          <div class="auth-stat-lbl">Giveaways</div>
+          <div class="auth-stat-num">24<em>/7</em></div>
+          <div class="auth-stat-lbl">Live Chat</div>
         </div>
       </div>
 
       <ul class="auth-features">
         <li class="auth-feature"><div class="auth-feat-icon">🃏</div>10+ casino games — blackjack, crash, mines &amp; more</li>
         <li class="auth-feature"><div class="auth-feat-icon">🏆</div>Global leaderboards &amp; competitive rankings</li>
-        <li class="auth-feature"><div class="auth-feat-icon">⚡</div>Claim free rewards every 5 minutes</li>
-        <li class="auth-feature"><div class="auth-feat-icon">🎁</div>Automatic giveaways every 2 hours</li>
+        <li class="auth-feature"><div class="auth-feat-icon">🎁</div>Giveaways &amp; promo codes for free credits</li>
         <li class="auth-feature"><div class="auth-feat-icon">💬</div>Live global chat with all players</li>
+        <li class="auth-feature"><div class="auth-feat-icon">🛒</div>Daily shop — unlock themes, titles &amp; more</li>
       </ul>
-    </div>
-
-    <!-- Floating wins card decoration -->
-    <div class="auth-deco-card">
-      <div class="auth-deco-label">Recent Wins</div>
-      <div class="auth-deco-row"><div class="auth-deco-dot"></div><span class="auth-deco-name">PLAYER_1</span><span class="auth-deco-amt">+$240.00</span></div>
-      <div class="auth-deco-row"><div class="auth-deco-dot"></div><span class="auth-deco-name">HIGHROLLER</span><span class="auth-deco-amt">+$1,400.00</span></div>
-      <div class="auth-deco-row"><div class="auth-deco-dot"></div><span class="auth-deco-name">LUCKY_ACE</span><span class="auth-deco-amt">+$88.50</span></div>
     </div>
   </div>
 
@@ -2022,7 +2014,7 @@ input, textarea { font-family: var(--font-body); }
     <!-- Sign In -->
     <div class="auth-panel on" id="authPanelIn">
       <div class="auth-title">Welcome back</div>
-      <div class="auth-sub">Sign in to continue playing and claim your rewards.</div>
+      <div class="auth-sub">Sign in to your account to continue playing.</div>
       <div class="field">
         <label>Username</label>
         <input id="signUsername" type="text" placeholder="your username" autocomplete="username" maxlength="20"
@@ -2043,7 +2035,7 @@ input, textarea { font-family: var(--font-body); }
     <!-- Register — Step 1: Account details -->
     <div class="auth-panel" id="authPanelReg">
       <div class="auth-title">Create account</div>
-      <div class="auth-sub">New accounts start with <strong>$100.00</strong> free — no deposit needed.</div>
+      <div class="auth-sub">New accounts start with <strong>$50.00</strong> free — no deposit needed.</div>
       <div class="field">
         <label>Username</label>
         <input id="regUsername" type="text" placeholder="letters and numbers only" autocomplete="username" maxlength="20"
@@ -2062,7 +2054,7 @@ input, textarea { font-family: var(--font-body); }
       </div>
       <div class="auth-err" id="regErr"></div>
       <button class="btn-primary" id="regBtn" onclick="doRegister()">Continue →</button>
-      <div class="bonus-row"><div class="bonus-dot"></div>You'll receive <strong>&nbsp;$100.00&nbsp;</strong> in free credits instantly!</div>
+      <div class="bonus-row"><div class="bonus-dot"></div>You'll receive <strong>&nbsp;$50.00&nbsp;</strong> in free credits instantly!</div>
       <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--text3);">
         Already have an account?&nbsp;<span onclick="authSwitchTab('in')" style="color:var(--blue);cursor:pointer;font-weight:700;">Sign in</span>
       </div>
@@ -2071,28 +2063,29 @@ input, textarea { font-family: var(--font-body); }
     <!-- Register — Step 2: Phone number -->
     <div class="auth-panel" id="authPanelPhone">
       <div class="auth-title">Verify your number</div>
-      <div class="auth-sub">Enter your phone number to receive a 6-digit verification code. <strong>Each number can only be used for 2 accounts.</strong></div>
+      <div class="auth-sub">Enter your phone number. We'll send a 6-digit code via SMS. <strong>Each number can only be used for 2 accounts.</strong></div>
+      <div class="field">
+        <label>Country Code</label>
+        <input class="phone-country" id="phoneCountry" type="text" value="+1" maxlength="5" placeholder="+1"
+          style="width:80px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:13px 12px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:.2s;">
+      </div>
       <div class="field">
         <label>Phone Number</label>
-        <div class="phone-input-row">
-          <input class="phone-country" id="phoneCountry" type="text" value="+1" maxlength="5" placeholder="+1">
-          <input class="phone-num" id="phoneNumber" type="tel" placeholder="(555) 000-0000" maxlength="15"
-            onkeydown="if(event.key==='Enter')sendOtp()">
-        </div>
+        <input id="phoneNumber" type="tel" placeholder="5550000000" maxlength="15"
+          style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:13px 15px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:.2s;"
+          onkeydown="if(event.key==='Enter')sendOtp()">
       </div>
-      <!-- Invisible reCAPTCHA container (required by Firebase Phone Auth) -->
-      <div id="recaptcha-container"></div>
       <div class="auth-err" id="phoneErr"></div>
       <button class="btn-primary" id="phoneSendBtn" onclick="sendOtp()">Send Code →</button>
       <div style="margin-top:14px;text-align:center;font-size:11px;color:var(--text3);">
-        By continuing you agree to receive an SMS. Standard rates may apply.
+        Numbers without country code will use +1 (US). Standard SMS rates may apply.
       </div>
     </div>
 
     <!-- Register — Step 3: OTP verification -->
     <div class="auth-panel" id="authPanelOtp">
       <div class="auth-title">Enter the code</div>
-      <div class="phone-step-info">We sent a 6-digit code to <strong id="otpPhoneDisplay"></strong>. Enter it below.</div>
+      <div class="phone-step-info">We sent a 6-digit code to <strong id="otpPhoneDisplay"></strong>. Enter it below — it expires in 10 minutes.</div>
       <div class="otp-row">
         <input class="otp-digit" id="otp0" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(0)" onkeydown="otpKey(event,0)">
         <input class="otp-digit" id="otp1" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(1)" onkeydown="otpKey(event,1)">
@@ -2103,7 +2096,7 @@ input, textarea { font-family: var(--font-body); }
       </div>
       <div class="auth-err" id="otpErr"></div>
       <button class="btn-primary" id="otpVerifyBtn" onclick="verifyOtp()">Verify &amp; Create Account →</button>
-      <div class="resend-link">Didn't get it? <span onclick="resendOtp()">Resend code</span></div>
+      <div class="resend-link">Didn't receive it? <span onclick="resendOtp()">Resend code</span> · <span onclick="authSwitchTab('phone')">Change number</span></div>
     </div>
   </div>
 
@@ -2641,7 +2634,6 @@ input, textarea { font-family: var(--font-body); }
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
 <script>
 /* ══════════════════════════════════════════════════════
    CONFIG & INIT
@@ -2657,9 +2649,6 @@ firebase.initializeApp({
   measurementId:     "G-W02GC0KNR5"
 });
 const db   = firebase.database();
-const auth = firebase.auth();
-let _recaptchaVerifier = null;
-let _confirmationResult = null;
 
 /* ══════════════════════════════════════════════════════
    CONSTANTS
@@ -2938,8 +2927,7 @@ function doRegister() {
     _pendingReg = { name, pass };
     setBtnLoading('regBtn', false, 'Continue →');
     authSwitchTab('phone');
-    // Init reCAPTCHA for Firebase Phone Auth
-    initRecaptcha();
+    setTimeout(() => $('phoneNumber')?.focus(), 80);
   }).catch(() => {
     errEl.textContent = '⚠ Connection error. Please try again.';
     setBtnLoading('regBtn', false, 'Continue →');
@@ -2956,146 +2944,159 @@ function hashPhone(phone) {
   return 'ph_' + Math.abs(h).toString(16);
 }
 
-function initRecaptcha() {
-  if (_recaptchaVerifier) return;
-  try {
-    _recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-      size: 'invisible',
-      callback: () => {}
-    });
-    _recaptchaVerifier.render();
-  } catch(e) {
-    console.warn('reCAPTCHA init error:', e);
+/* ── Phone number hashing (store hash, never raw number) ── */
+function hashPhone(phone) {
+  let h = 5381;
+  for (let i = 0; i < phone.length; i++) {
+    h = ((h << 5) + h) ^ phone.charCodeAt(i);
+    h = h & 0x7fffffff;
   }
+  return 'ph_' + Math.abs(h).toString(16).padStart(8, '0');
 }
 
-async function sendOtp() {
-  const country = ($('phoneCountry').value.trim() || '+1').replace(/[^+\d]/g,'');
-  const num     = $('phoneNumber').value.trim().replace(/[^\d]/g,'');
-  const errEl   = $('phoneErr');
-  errEl.textContent = '';
-  if (num.length < 7) { errEl.textContent = '⚠ Enter a valid phone number.'; return; }
-  const fullPhone = country + num;
-  setBtnLoading('phoneSendBtn', true, 'Send Code →');
+/* ── Generate random 6-digit OTP ── */
+function genOtp() {
+  return String(Math.floor(100000 + Math.random() * 900000));
+}
 
-  // Check how many accounts already use this phone hash (max 2)
-  const phoneHash = hashPhone(fullPhone);
-  const phoneSnap = await db.ref('phone_index/' + phoneHash).once('value');
-  if (phoneSnap.exists()) {
-    const count = phoneSnap.val().count || 0;
-    if (count >= 2) {
-      errEl.textContent = '⚠ This phone number has already been used for the maximum of 2 accounts.';
-      setBtnLoading('phoneSendBtn', false, 'Send Code →');
-      return;
-    }
+const OTP_TTL = 10 * 60 * 1000; // 10 minutes
+
+/* ── Send OTP: generate code, store in Firebase, show OTP step ── */
+async function sendOtp() {
+  const countryRaw = ($('phoneCountry').value.trim() || '+1');
+  const country    = countryRaw.startsWith('+') ? countryRaw : '+' + countryRaw;
+  const numRaw     = $('phoneNumber').value.trim().replace(/[\s\-().]/g, '');
+  const num        = numRaw.replace(/\D/g, '');
+  const errEl      = $('phoneErr');
+  errEl.textContent = '';
+
+  if (num.length < 7 || num.length > 13) {
+    errEl.textContent = '⚠ Enter a valid phone number (digits only, no spaces or dashes).';
+    return;
   }
 
-  // Store phone for later
-  _pendingReg.phone = fullPhone;
+  const fullPhone = country + num;
+  const phoneHash = hashPhone(fullPhone);
+  setBtnLoading('phoneSendBtn', true, 'Send Code →');
+
+  // Enforce 2-account limit per number
+  const phoneSnap = await db.ref('phone_index/' + phoneHash).once('value');
+  if (phoneSnap.exists() && (phoneSnap.val().count || 0) >= 2) {
+    errEl.textContent = '⚠ This number is already linked to the maximum of 2 accounts.';
+    setBtnLoading('phoneSendBtn', false, 'Send Code →');
+    return;
+  }
+
+  // Generate code and write to Firebase (admin/webhook reads this to send real SMS)
+  const code    = genOtp();
+  const expires = Date.now() + OTP_TTL;
+  await db.ref('otp_pending/' + phoneHash).set({
+    code, expires, phone: fullPhone, used: false, createdAt: Date.now()
+  });
+
+  _pendingReg.phone     = fullPhone;
   _pendingReg.phoneHash = phoneHash;
   $('otpPhoneDisplay').textContent = fullPhone;
 
-  try {
-    if (!_recaptchaVerifier) initRecaptcha();
-    _confirmationResult = await auth.signInWithPhoneNumber(fullPhone, _recaptchaVerifier);
-    setBtnLoading('phoneSendBtn', false, 'Send Code →');
-    authSwitchTab('otp');
-    setTimeout(() => $('otp0')?.focus(), 100);
-  } catch(e) {
-    console.error('SMS error:', e);
-    let msg = '⚠ Failed to send code. ';
-    if (e.code === 'auth/invalid-phone-number')    msg += 'Invalid phone number format.';
-    else if (e.code === 'auth/too-many-requests')  msg += 'Too many attempts. Try again later.';
-    else if (e.code === 'auth/captcha-check-failed') msg += 'reCAPTCHA failed. Refresh and try again.';
-    else msg += 'Check the number and try again.';
-    errEl.textContent = msg;
-    // Reset reCAPTCHA so it can be used again
-    try { _recaptchaVerifier.render().then(id => grecaptcha.reset(id)); } catch(_) {}
-    setBtnLoading('phoneSendBtn', false, 'Send Code →');
-  }
+  setBtnLoading('phoneSendBtn', false, 'Send Code →');
+  authSwitchTab('otp');
+  setTimeout(() => $('otp0')?.focus(), 100);
+
+  // Dev hint — remove before deploying publicly
+  console.info('[UB-DEV] OTP for', fullPhone, '→', code);
 }
 
+/* ── OTP digit input ── */
 function otpInput(idx) {
-  const el = $('otp' + idx);
-  const val = el.value.replace(/\D/g,'');
-  el.value = val.slice(-1); // only keep last digit
+  const el  = $('otp' + idx);
+  el.value  = el.value.replace(/\D/g, '').slice(-1);
   el.classList.toggle('filled', !!el.value);
-  // Auto-advance
-  if (el.value && idx < 5) {
-    $('otp' + (idx + 1))?.focus();
-  }
-  // Auto-submit if all 6 filled
-  const code = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
-  if (code.length === 6) verifyOtp();
+  if (el.value && idx < 5) $('otp' + (idx + 1))?.focus();
+  const full = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
+  if (full.length === 6) setTimeout(verifyOtp, 150);
 }
-
 function otpKey(e, idx) {
-  if (e.key === 'Backspace' && !$('otp' + idx).value && idx > 0) {
-    $('otp' + (idx - 1))?.focus();
-  }
+  if (e.key === 'Backspace' && !$('otp' + idx).value && idx > 0) $('otp' + (idx - 1))?.focus();
   if (e.key === 'Enter') verifyOtp();
 }
 
+/* ── Verify OTP against Firebase ── */
 async function verifyOtp() {
-  const code = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
+  const code  = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
   const errEl = $('otpErr');
   errEl.textContent = '';
   if (code.length < 6) { errEl.textContent = '⚠ Enter all 6 digits.'; return; }
-  if (!_confirmationResult) { errEl.textContent = '⚠ Session expired. Go back and resend.'; return; }
+  if (!_pendingReg?.phoneHash) { errEl.textContent = '⚠ Session expired. Please start again.'; authSwitchTab('reg'); return; }
+
   setBtnLoading('otpVerifyBtn', true, 'Verify &amp; Create Account →');
-  try {
-    await _confirmationResult.confirm(code);
-    // Phone verified — now create the account
-    await createVerifiedAccount();
-  } catch(e) {
-    console.error('OTP error:', e);
-    let msg = '⚠ Incorrect code. ';
-    if (e.code === 'auth/code-expired')         msg += 'Code has expired — resend a new one.';
-    else if (e.code === 'auth/invalid-verification-code') msg += 'Double-check the 6 digits.';
-    errEl.textContent = msg;
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →');
+
+  const snap = await db.ref('otp_pending/' + _pendingReg.phoneHash).once('value');
+  if (!snap.exists()) {
+    $('otpErr').textContent = '⚠ Code not found or already expired. Tap "Resend code".';
+    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
   }
+  const stored = snap.val();
+  if (stored.used) {
+    $('otpErr').textContent = '⚠ This code was already used. Tap "Resend code" to get a new one.';
+    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
+  }
+  if (Date.now() > stored.expires) {
+    $('otpErr').textContent = '⚠ Code expired (10 minutes). Tap "Resend code".';
+    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
+  }
+  if (stored.code !== code) {
+    $('otpErr').textContent = '⚠ Wrong code. Double-check the 6 digits and try again.';
+    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
+  }
+
+  // Mark OTP used immediately to prevent replay
+  await db.ref('otp_pending/' + _pendingReg.phoneHash + '/used').set(true);
+  await createVerifiedAccount();
 }
 
+/* ── Create the account after OTP is verified ── */
 async function createVerifiedAccount() {
-  const { name, pass, phone, phoneHash } = _pendingReg;
-  // Re-check username hasn't been taken while they were doing phone auth
+  const { name, pass, phoneHash } = _pendingReg;
+
+  // Re-check username availability
   const snap = await db.ref('users/' + name).once('value');
   if (snap.exists()) {
     $('otpErr').textContent = '⚠ Username was just taken. Go back and choose another.';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →');
-    return;
+    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
   }
-  // Increment phone usage count atomically
-  await db.ref('phone_index/' + phoneHash).transaction(current => {
-    if (!current) return { count: 1, firstUsed: Date.now() };
-    return { ...current, count: (current.count || 0) + 1, lastUsed: Date.now() };
+
+  // Atomically increment phone usage count
+  await db.ref('phone_index/' + phoneHash).transaction(curr => {
+    if (!curr) return { count: 1, firstUsed: Date.now() };
+    return { ...curr, count: (curr.count || 0) + 1, lastUsed: Date.now() };
   });
-  // Create user record (store phone hash, never plain phone)
-  const newUser = { name, password: pass, balance: 100.00, lastBonus: 0, createdAt: Date.now(), phoneHash };
+
+  // Clean up OTP record
+  db.ref('otp_pending/' + phoneHash).remove();
+
+  // Create user record
+  const newUser = { name, password: pass, balance: 50.00, lastBonus: 0, createdAt: Date.now(), phoneHash };
   await db.ref('users/' + name).set(newUser);
-  // Sign out of Firebase Auth (we use our own session management)
-  await auth.signOut();
+
   _pendingReg = null;
-  _confirmationResult = null;
   setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →');
   finalizeLogin(newUser);
 }
 
+/* ── Resend OTP ── */
 async function resendOtp() {
   if (!_pendingReg?.phone) { authSwitchTab('phone'); return; }
-  // Clear OTP boxes
-  [0,1,2,3,4,5].forEach(i => { const el = $('otp'+i); if(el){ el.value=''; el.classList.remove('filled'); } });
+  [0,1,2,3,4,5].forEach(i => { const el = $('otp'+i); if (el) { el.value = ''; el.classList.remove('filled'); } });
   $('otpErr').textContent = '';
-  // Reset reCAPTCHA
-  try { if (_recaptchaVerifier) { _recaptchaVerifier.clear(); _recaptchaVerifier = null; } } catch(_) {}
-  initRecaptcha();
-  try {
-    _confirmationResult = await auth.signInWithPhoneNumber(_pendingReg.phone, _recaptchaVerifier);
-    setTimeout(() => $('otp0')?.focus(), 100);
-  } catch(e) {
-    $('otpErr').textContent = '⚠ Failed to resend. Please wait before trying again.';
-  }
+
+  const code    = genOtp();
+  const expires = Date.now() + OTP_TTL;
+  await db.ref('otp_pending/' + _pendingReg.phoneHash).set({
+    code, expires, phone: _pendingReg.phone, used: false, createdAt: Date.now()
+  });
+
+  setTimeout(() => $('otp0')?.focus(), 100);
+  console.info('[UB-DEV] Resent OTP for', _pendingReg.phone, '→', code);
 }
 
 function finalizeLogin(user) {
@@ -3528,7 +3529,7 @@ function initNotifs() {
   const wKey = 'welcomed_' + me().name;
   if (!localStorage.getItem(wKey)) {
     localStorage.setItem(wKey, '1');
-    addNotif('welcome', 'Welcome to Universal-Bets! 👋', 'Your account starts with $100.00. Good luck!');
+    addNotif('welcome', 'Welcome to Universal-Bets! 👋', 'Your account starts with $50.00. Good luck!');
   }
   // Money received listener
   let _seenRecTs = null;
