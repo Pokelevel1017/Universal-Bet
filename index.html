@@ -501,11 +501,8 @@ input, textarea { font-family: var(--font-body); }
   padding: 9px 16px 7px;
   cursor: pointer;
   user-select: none;
-  border-left: 2px solid transparent;
-  transition: border-color .15s;
 }
 .sb-section-head:hover .sb-label { color: var(--text2); }
-.sb-section.open .sb-section-head { border-left-color: var(--blue); }
 .sb-label {
   font-size: 10px; font-weight: 800;
   color: var(--text3);
@@ -520,17 +517,8 @@ input, textarea { font-family: var(--font-body); }
 .sb-section.open .sb-arrow { transform: rotate(90deg); }
 .sb-body { max-height: 0; overflow: hidden; transition: max-height .3s ease; }
 .sb-section.open .sb-body { max-height: 600px; }
-.sb-pinned {
-  padding: 12px 0 4px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 4px;
-}
-/* Category divider — the visible line between sections */
-.sb-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
-  margin: 4px 0;
-}
+.sb-pinned { padding: 12px 0 4px; }
+.sb-divider { height: 0; margin: 0; }
 .sb-link {
   display: flex; align-items: center; gap: 10px;
   padding: 9px 16px;
@@ -1863,99 +1851,271 @@ input, textarea { font-family: var(--font-body); }
 }
 
 /* ════════════════════════════════════
-   PHONE VERIFICATION (auth panel)
+   MOBILE BOTTOM NAV
 ════════════════════════════════════ */
-.auth-panel.phone-step .phone-verify-wrap { display: block; }
-.phone-verify-wrap { display: none; }
-
-/* Phone input row */
-.phone-input-row {
-  display: flex; gap: 8px; margin-bottom: 6px;
+.mob-nav {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 60px;
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  z-index: 200;
+  align-items: stretch;
 }
-.phone-country {
-  width: 72px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: var(--r-sm);
-  padding: 13px 10px;
-  color: var(--text); font-size: 14px;
-  font-family: var(--font-body); outline: none;
-  transition: .2s;
-}
-.phone-country:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); }
-.phone-num {
+.mob-tab {
   flex: 1;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: var(--r-sm);
-  padding: 13px 15px;
-  color: var(--text); font-size: 14px;
-  font-family: var(--font-mono); outline: none;
-  transition: .2s;
-  letter-spacing: .05em;
-}
-.phone-num:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); }
-.phone-num::placeholder { color: var(--text3); font-family: var(--font-body); letter-spacing: 0; }
-
-/* OTP input */
-.otp-row {
-  display: flex; gap: 8px; justify-content: center;
-  margin: 8px 0;
-}
-.otp-digit {
-  width: 44px; height: 52px;
-  background: rgba(255,255,255,.04);
-  border: 1px solid rgba(255,255,255,.09);
-  border-radius: var(--r-sm);
-  text-align: center; font-size: 1.4rem;
-  font-weight: 800; font-family: var(--font-head);
-  color: var(--text); outline: none;
-  transition: .2s; caret-color: var(--blue);
-}
-.otp-digit:focus { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-dim); background: rgba(59,130,246,.06); }
-.otp-digit.filled { border-color: rgba(59,130,246,.4); }
-
-.phone-step-info {
-  font-size: 12px; color: var(--text2);
-  line-height: 1.6; margin-bottom: 16px;
-}
-.phone-step-info strong { color: var(--text); }
-
-.resend-link {
-  font-size: 11px; color: var(--text3);
-  text-align: center; margin-top: 12px;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
   cursor: pointer;
+  color: var(--text3);
+  font-size: 9px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  transition: color .15s;
+  border: none; background: none;
+  padding: 0; position: relative;
 }
-.resend-link span { color: var(--blue); cursor: pointer; font-weight: 700; }
-.resend-link span:hover { text-decoration: underline; }
+.mob-tab svg { width: 20px; height: 20px; flex-shrink: 0; }
+.mob-tab.active { color: var(--blue); }
+.mob-tab-dot {
+  position: absolute; top: 8px; right: calc(50% - 14px);
+  width: 6px; height: 6px;
+  background: var(--red); border-radius: 50%;
+  border: 2px solid var(--bg2);
+  display: none;
+}
+.mob-tab-dot.show { display: block; }
 
-/* Hidden recaptcha container */
-#recaptcha-container { margin: 8px 0; }
-#recaptcha-container .grecaptcha-badge { visibility: hidden; }
+/* Mobile sidebar drawer */
+.mob-sidebar-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.6);
+  z-index: 300;
+  backdrop-filter: blur(3px);
+}
+.mob-sidebar-overlay.open { display: block; }
+.mob-drawer {
+  position: fixed;
+  top: 0; left: -240px; bottom: 0;
+  width: 240px;
+  background: var(--bg2);
+  border-right: 1px solid var(--border);
+  z-index: 301;
+  overflow-y: auto;
+  transition: left .28s cubic-bezier(.4,0,.2,1);
+}
+.mob-drawer.open { left: 0; }
+.mob-drawer-head {
+  padding: 20px 16px 12px;
+  font-family: var(--font-head);
+  font-size: 1.1rem; font-weight: 800;
+  letter-spacing: 2px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 8px;
+}
+.mob-drawer-head em { color: var(--blue); font-style: normal; }
+
+/* Mobile chat panel */
+.mob-chat-panel {
+  display: none;
+  position: fixed; inset: 0;
+  background: var(--bg2);
+  z-index: 250;
+  flex-direction: column;
+}
+.mob-chat-panel.open { display: flex; }
+.mob-chat-head {
+  height: 54px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.mob-chat-head-title {
+  font-size: 15px; font-weight: 800;
+  font-family: var(--font-head);
+  flex: 1;
+}
+.mob-chat-close {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.06);
+  border: 1px solid var(--border);
+  color: var(--text); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-family: var(--font-body);
+}
 
 /* ════════════════════════════════════
    RESPONSIVE
 ════════════════════════════════════ */
+
+/* ── Tablet ── */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .sidebar { width: 190px; }
+  .right-panel { width: 260px; }
+  .content-scroll { padding: 20px 22px; }
+}
+
+/* ── All mobile (portrait + landscape) ── */
 @media (max-width: 768px) {
-  body { height: 100dvh; }
+  *, *::before, *::after { -webkit-tap-highlight-color: transparent; }
+  body { height: 100dvh; overflow: hidden; }
+
+  /* Auth */
   .auth-hero { display: none; }
-  .auth-form-side { position: relative; width: 100%; left: 0; right: 0; padding: 40px 28px 60px; overflow-y: auto; border-left: none; }
+  .auth-form-side {
+    position: relative; width: 100%; left: 0; right: 0;
+    padding: 28px 22px 40px; overflow-y: auto;
+    border-left: none; height: 100dvh;
+    justify-content: flex-start; box-sizing: border-box;
+  }
   .auth-form-logo { display: block; }
-  .sidebar { display: none; }
-  .right-panel { display: none; }
-  .content-scroll { padding: 16px; }
-  .announce-grid { grid-template-columns: 1fr; }
-  .gw-bottom-grid { grid-template-columns: 1fr; }
-  .gw-info-strip { grid-template-columns: repeat(3,1fr); }
-  .gw-cd { font-size: 2rem; }
-  .gw-hero-prize { font-size: 3rem; }
-  .lb-podium { flex-direction: column; align-items: center; gap: 16px; }
+  .field { margin-bottom: 11px; }
+
+  /* Top nav */
+  #topNav {
+    height: 52px; gap: 8px;
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .nav-logo { font-size: .9rem; letter-spacing: 1px; }
+  .nav-name { display: none; }
+  .reward-pill { padding: 5px 9px; font-size: 10px; }
+  .balance-chip { padding: 5px 10px; font-size: 12px; }
+  .profile-pill { padding: 4px 10px 4px 4px; }
+  .nav-avatar { width: 28px; height: 28px; font-size: 11px; }
+
+  /* Layout */
+  #mainWrap { flex-direction: column; }
+  .sidebar { display: none !important; }
+  .right-panel { display: none !important; }
+  .content-scroll {
+    padding: 14px 14px calc(60px + env(safe-area-inset-bottom));
+  }
+
+  /* Bottom nav */
+  .mob-nav {
+    display: flex;
+    height: calc(60px + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Drawer + chat safe area */
+  .mob-drawer { padding-bottom: env(safe-area-inset-bottom); }
+  .mob-chat-panel { padding-bottom: env(safe-area-inset-bottom); }
+
+  /* Page layout */
+  .page-head { flex-wrap: wrap; gap: 8px; }
+  .page-title { font-size: 1.4rem; }
+
+  /* Home */
+  .announce-grid { grid-template-columns: 1fr; gap: 12px; }
+
+  /* Giveaway */
+  .gw-bottom-grid { grid-template-columns: 1fr; gap: 12px; }
+  .gw-info-strip { grid-template-columns: repeat(3,1fr); gap: 8px; }
+  .gw-hero-inner { padding: 24px 16px 20px; }
+  .gw-hero-prize { font-size: 2.8rem; }
+  .gw-cd { font-size: 1.9rem; }
+  .gw-action-row { flex-direction: column; align-items: center; gap: 8px; }
+  .gw-enter-btn { width: 100%; max-width: 280px; }
+
+  /* Leaderboard */
+  .lb-podium { flex-direction: column; align-items: center; gap: 10px; }
   .lb-pod { max-width: 100%; width: 100%; }
-  .shop-grid { grid-template-columns: 1fr; }
+  .lb-pod.r1 { order: -1; }
+  .lb-table { font-size: 12px; }
+  .lb-row td { padding: 10px 14px; }
+
+  /* Shop / inventory */
+  .shop-grid { grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .inv-grid  { grid-template-columns: repeat(2,1fr); gap: 8px; }
+
+  /* Profile modal — sheet from bottom */
+  #profileModal { padding: 0; align-items: flex-end; }
+  .prf-card { max-width: 100%; width: 100%; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+
+  /* Admin modal — sheet from bottom */
+  #adminModal { padding: 0; align-items: flex-end; }
+  .adm-card { width: 100%; max-height: 88dvh; border-radius: var(--r-xl) var(--r-xl) 0 0; }
+
+  /* Offline overlay */
   #offlineOverlay { right: 0 !important; }
 }
-@media (max-width: 400px) {
-  .content-scroll { padding: 12px; }
+
+/* ── Portrait only ── */
+@media (max-width: 768px) and (orientation: portrait) {
+  .auth-form-side { padding-top: 36px; }
+}
+
+/* ── Landscape only ── */
+@media (max-width: 768px) and (orientation: landscape) {
+  #topNav { height: 44px; }
+
+  /* Auth scrollable in landscape */
+  .auth-form-side {
+    padding: 14px 28px 16px;
+    display: block; overflow-y: auto;
+  }
+  .auth-form-logo { margin-bottom: 10px; font-size: 1.1rem; }
+  .auth-tabs { margin-bottom: 12px; }
+  .field { margin-bottom: 7px; }
+  .field input { padding: 9px 12px; font-size: 13px; }
+  .btn-primary { padding: 10px; }
+  .bonus-row { margin-top: 6px; font-size: 11px; }
+
+  /* Bottom nav — icon only, smaller */
+  .mob-nav { height: calc(48px + env(safe-area-inset-bottom)); }
+  .mob-tab { font-size: 0; gap: 0; }
+  .mob-tab svg { width: 20px; height: 20px; }
+  .content-scroll { padding-bottom: calc(48px + env(safe-area-inset-bottom)); padding-top: 10px; }
+
+  /* Giveaway — 2-col in landscape */
+  .gw-bottom-grid { grid-template-columns: 1fr 1fr; }
+  .gw-action-row { flex-direction: row; }
+  .gw-hero-inner { padding: 16px 16px 14px; gap: 3px; }
+  .gw-hero-prize { font-size: 2.2rem; }
+  .gw-cd { font-size: 1.5rem; }
+  .gw-hero-divider { margin: 2px 0 8px; }
+  .gw-hero-prize-label { margin-bottom: 12px; }
+
+  /* Leaderboard — row in landscape */
+  .lb-podium { flex-direction: row; }
+  .lb-pod { max-width: none; flex: 1; }
+  .lb-pod.r1 { order: 0; }
+
+  /* Shop — 3 cols in landscape */
+  .shop-grid { grid-template-columns: repeat(3,1fr); }
+  .inv-grid  { grid-template-columns: repeat(3,1fr); }
+
+  /* Profile / admin — centered in landscape */
+  #profileModal { padding: 12px; align-items: center; }
+  .prf-card { border-radius: var(--r-xl); max-width: 400px; width: 100%; }
+  #adminModal { padding: 12px; align-items: center; }
+  .adm-card { border-radius: var(--r-xl); max-height: 92dvh; width: calc(100vw - 24px); }
+
+  /* Chat panel — side drawer in landscape */
+  .mob-chat-panel {
+    left: auto; right: 0; width: min(320px, 50vw);
+    border-left: 1px solid var(--border);
+  }
+  .mob-drawer { width: 210px; }
+}
+
+/* ── Tiny phones < 375px ── */
+@media (max-width: 374px) {
+  #topNav { padding-left: 8px; padding-right: 8px; gap: 5px; }
+  .reward-pill { display: none; }
+  .content-scroll { padding-left: 10px; padding-right: 10px; }
+  .shop-grid { grid-template-columns: 1fr; }
+  .inv-grid  { grid-template-columns: 1fr; }
+  .gw-info-val { font-size: 1.1rem; }
+  .gw-info-strip { gap: 5px; }
 }
 </style>
 </head>
@@ -2053,50 +2213,11 @@ input, textarea { font-family: var(--font-body); }
           onkeydown="if(event.key==='Enter')doRegister()">
       </div>
       <div class="auth-err" id="regErr"></div>
-      <button class="btn-primary" id="regBtn" onclick="doRegister()">Continue →</button>
+      <button class="btn-primary" id="regBtn" onclick="doRegister()">Create Account →</button>
       <div class="bonus-row"><div class="bonus-dot"></div>You'll receive <strong>&nbsp;$50.00&nbsp;</strong> in free credits instantly!</div>
       <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--text3);">
         Already have an account?&nbsp;<span onclick="authSwitchTab('in')" style="color:var(--blue);cursor:pointer;font-weight:700;">Sign in</span>
       </div>
-    </div>
-
-    <!-- Register — Step 2: Phone number -->
-    <div class="auth-panel" id="authPanelPhone">
-      <div class="auth-title">Verify your number</div>
-      <div class="auth-sub">Enter your phone number. We'll send a 6-digit code via SMS. <strong>Each number can only be used for 2 accounts.</strong></div>
-      <div class="field">
-        <label>Country Code</label>
-        <input class="phone-country" id="phoneCountry" type="text" value="+1" maxlength="5" placeholder="+1"
-          style="width:80px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:13px 12px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:.2s;">
-      </div>
-      <div class="field">
-        <label>Phone Number</label>
-        <input id="phoneNumber" type="tel" placeholder="5550000000" maxlength="15"
-          style="width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:var(--r-sm);padding:13px 15px;color:var(--text);font-size:14px;font-family:var(--font-body);outline:none;transition:.2s;"
-          onkeydown="if(event.key==='Enter')sendOtp()">
-      </div>
-      <div class="auth-err" id="phoneErr"></div>
-      <button class="btn-primary" id="phoneSendBtn" onclick="sendOtp()">Send Code →</button>
-      <div style="margin-top:14px;text-align:center;font-size:11px;color:var(--text3);">
-        Numbers without country code will use +1 (US). Standard SMS rates may apply.
-      </div>
-    </div>
-
-    <!-- Register — Step 3: OTP verification -->
-    <div class="auth-panel" id="authPanelOtp">
-      <div class="auth-title">Enter the code</div>
-      <div class="phone-step-info">We sent a 6-digit code to <strong id="otpPhoneDisplay"></strong>. Enter it below — it expires in 10 minutes.</div>
-      <div class="otp-row">
-        <input class="otp-digit" id="otp0" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(0)" onkeydown="otpKey(event,0)">
-        <input class="otp-digit" id="otp1" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(1)" onkeydown="otpKey(event,1)">
-        <input class="otp-digit" id="otp2" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(2)" onkeydown="otpKey(event,2)">
-        <input class="otp-digit" id="otp3" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(3)" onkeydown="otpKey(event,3)">
-        <input class="otp-digit" id="otp4" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(4)" onkeydown="otpKey(event,4)">
-        <input class="otp-digit" id="otp5" type="text" inputmode="numeric" maxlength="1" oninput="otpInput(5)" onkeydown="otpKey(event,5)">
-      </div>
-      <div class="auth-err" id="otpErr"></div>
-      <button class="btn-primary" id="otpVerifyBtn" onclick="verifyOtp()">Verify &amp; Create Account →</button>
-      <div class="resend-link">Didn't receive it? <span onclick="resendOtp()">Resend code</span> · <span onclick="authSwitchTab('phone')">Change number</span></div>
     </div>
   </div>
 
@@ -2416,12 +2537,12 @@ input, textarea { font-family: var(--font-body); }
         <div class="chat-msgs" id="chatMsgs"></div>
         <div class="chat-input-wrap">
           <div class="chat-row">
-            <input type="text" id="chatInput" placeholder="Send a message…" maxlength="50" onkeypress="if(event.key==='Enter')sendChat()" oninput="updateCharCtr()">
+            <input type="text" id="chatInput" placeholder="Send a message…" maxlength="100" onkeypress="if(event.key==='Enter')sendChat()" oninput="updateCharCtr()">
             <button class="chat-send" onclick="sendChat()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
-          <div class="char-ctr" id="charCtr">0 / 50</div>
+          <div class="char-ctr" id="charCtr">0 / 100</div>
         </div>
       </div>
       <!-- Search -->
@@ -2622,6 +2743,56 @@ input, textarea { font-family: var(--font-body); }
 </div>
 
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-nav" id="mobNav">
+  <button class="mob-tab active" id="mobt-home" onclick="mobGoTab('home')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Home
+  </button>
+  <button class="mob-tab" id="mobt-menu" onclick="mobOpenDrawer()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    Menu
+  </button>
+  <button class="mob-tab" id="mobt-chat" onclick="mobOpenChat()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div class="mob-tab-dot" id="mobChatDot"></div>
+    Chat
+  </button>
+  <button class="mob-tab" id="mobt-profile" onclick="me() && openProfile(me().name)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Profile
+  </button>
+</nav>
+
+<!-- MOBILE SIDEBAR DRAWER -->
+<div class="mob-sidebar-overlay" id="mobOverlay" onclick="mobCloseDrawer()"></div>
+<div class="mob-drawer" id="mobDrawer">
+  <div class="mob-drawer-head">UNIVERSAL-<em>BETS</em></div>
+  <!-- Drawer content is cloned from sidebar by JS -->
+  <div id="mobDrawerBody"></div>
+</div>
+
+<!-- MOBILE CHAT PANEL -->
+<div class="mob-chat-panel" id="mobChatPanel">
+  <div class="mob-chat-head">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;color:var(--blue)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <div class="mob-chat-head-title">Global Chat</div>
+    <button class="mob-chat-close" onclick="mobCloseChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="mobChatMsgs"></div>
+  <div class="chat-input-wrap">
+    <div class="chat-row">
+      <input type="text" id="mobChatInput" placeholder="Send a message…" maxlength="100"
+        onkeypress="if(event.key==='Enter')sendMobChat()"
+        oninput="updateMobCharCtr()">
+      <button class="chat-send" onclick="sendMobChat()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </button>
+    </div>
+    <div class="char-ctr" id="mobCharCtr">0 / 100</div>
+  </div>
+</div>
+
 <!-- Ban Screen -->
 <div id="banScreen">
   <div class="ban-icon">🔨</div>
@@ -2653,8 +2824,8 @@ const db   = firebase.database();
 /* ══════════════════════════════════════════════════════
    CONSTANTS
 ══════════════════════════════════════════════════════ */
-const BONUS_INTERVAL  = 5 * 60 * 1000;   // 5 min
-const BONUS_AMOUNT    = 10.00;
+const BONUS_INTERVAL  = 10 * 60 * 1000;   // 10 min
+const BONUS_AMOUNT    = 5.00;
 const GW_INTERVAL     = 2 * 60 * 60 * 1000; // 2 hr
 const GW_PRIZE        = 100;
 const SERVERS_OFFLINE = true;
@@ -2842,19 +3013,15 @@ function hideLoader() {
    AUTH
 ══════════════════════════════════════════════════════ */
 function authSwitchTab(tab) {
-  const panels = ['In','Reg','Phone','Otp'];
-  // Tabs only toggle between In and Reg
   $('authTabIn').classList.toggle('on', tab === 'in');
   $('authTabReg').classList.toggle('on', tab === 'reg');
-  panels.forEach(p => {
+  ['In','Reg'].forEach(p => {
     const el = $('authPanel' + p);
     if (el) el.classList.toggle('on', p.toLowerCase() === tab);
   });
   $('signErr').textContent = '';
   $('regErr').textContent = '';
   $('regUserErr').textContent = '';
-  if ($('phoneErr')) $('phoneErr').textContent = '';
-  if ($('otpErr'))   $('otpErr').textContent = '';
 }
 
 function validateRegUser() {
@@ -2904,199 +3071,31 @@ function doSignIn() {
   });
 }
 
-/* ── pending registration details, set in step 1 ── */
-let _pendingReg = null;
-
 function doRegister() {
-  const name = cleanUsername($('regUsername').value);
-  const pass = $('regPassword').value.trim();
-  const conf = $('regConfirm').value.trim();
+  const name  = cleanUsername($('regUsername').value);
+  const pass  = $('regPassword').value.trim();
+  const conf  = $('regConfirm').value.trim();
   const errEl = $('regErr');
   errEl.textContent = '';
   if (name.length < 3) { errEl.textContent = '⚠ Username must be at least 3 characters.'; return; }
   if (pass.length < 4) { errEl.textContent = '⚠ Password must be at least 4 characters.'; return; }
   if (pass !== conf)   { errEl.textContent = '⚠ Passwords do not match.'; return; }
-  setBtnLoading('regBtn', true, 'Continue →');
+  setBtnLoading('regBtn', true, 'Create Account →');
   db.ref('users/' + name).once('value').then(snap => {
     if (snap.exists()) {
       errEl.textContent = '⚠ That username is taken. Try another.';
-      setBtnLoading('regBtn', false, 'Continue →');
+      setBtnLoading('regBtn', false, 'Create Account →');
       return;
     }
-    // Save pending registration and proceed to phone step
-    _pendingReg = { name, pass };
-    setBtnLoading('regBtn', false, 'Continue →');
-    authSwitchTab('phone');
-    setTimeout(() => $('phoneNumber')?.focus(), 80);
+    const newUser = { name, password: pass, balance: 50.00, lastBonus: 0, createdAt: Date.now() };
+    db.ref('users/' + name).set(newUser).then(() => finalizeLogin(newUser)).catch(() => {
+      errEl.textContent = '⚠ Failed to create account. Try again.';
+      setBtnLoading('regBtn', false, 'Create Account →');
+    });
   }).catch(() => {
     errEl.textContent = '⚠ Connection error. Please try again.';
-    setBtnLoading('regBtn', false, 'Continue →');
+    setBtnLoading('regBtn', false, 'Create Account →');
   });
-}
-
-/* ── Phone number hashing (for indexing, not stored in plain text) ── */
-function hashPhone(phone) {
-  let h = 5381;
-  for (let i = 0; i < phone.length; i++) {
-    h = ((h << 5) + h) ^ phone.charCodeAt(i);
-    h = h & 0x7fffffff;
-  }
-  return 'ph_' + Math.abs(h).toString(16);
-}
-
-/* ── Phone number hashing (store hash, never raw number) ── */
-function hashPhone(phone) {
-  let h = 5381;
-  for (let i = 0; i < phone.length; i++) {
-    h = ((h << 5) + h) ^ phone.charCodeAt(i);
-    h = h & 0x7fffffff;
-  }
-  return 'ph_' + Math.abs(h).toString(16).padStart(8, '0');
-}
-
-/* ── Generate random 6-digit OTP ── */
-function genOtp() {
-  return String(Math.floor(100000 + Math.random() * 900000));
-}
-
-const OTP_TTL = 10 * 60 * 1000; // 10 minutes
-
-/* ── Send OTP: generate code, store in Firebase, show OTP step ── */
-async function sendOtp() {
-  const countryRaw = ($('phoneCountry').value.trim() || '+1');
-  const country    = countryRaw.startsWith('+') ? countryRaw : '+' + countryRaw;
-  const numRaw     = $('phoneNumber').value.trim().replace(/[\s\-().]/g, '');
-  const num        = numRaw.replace(/\D/g, '');
-  const errEl      = $('phoneErr');
-  errEl.textContent = '';
-
-  if (num.length < 7 || num.length > 13) {
-    errEl.textContent = '⚠ Enter a valid phone number (digits only, no spaces or dashes).';
-    return;
-  }
-
-  const fullPhone = country + num;
-  const phoneHash = hashPhone(fullPhone);
-  setBtnLoading('phoneSendBtn', true, 'Send Code →');
-
-  // Enforce 2-account limit per number
-  const phoneSnap = await db.ref('phone_index/' + phoneHash).once('value');
-  if (phoneSnap.exists() && (phoneSnap.val().count || 0) >= 2) {
-    errEl.textContent = '⚠ This number is already linked to the maximum of 2 accounts.';
-    setBtnLoading('phoneSendBtn', false, 'Send Code →');
-    return;
-  }
-
-  // Generate code and write to Firebase (admin/webhook reads this to send real SMS)
-  const code    = genOtp();
-  const expires = Date.now() + OTP_TTL;
-  await db.ref('otp_pending/' + phoneHash).set({
-    code, expires, phone: fullPhone, used: false, createdAt: Date.now()
-  });
-
-  _pendingReg.phone     = fullPhone;
-  _pendingReg.phoneHash = phoneHash;
-  $('otpPhoneDisplay').textContent = fullPhone;
-
-  setBtnLoading('phoneSendBtn', false, 'Send Code →');
-  authSwitchTab('otp');
-  setTimeout(() => $('otp0')?.focus(), 100);
-
-  // Dev hint — remove before deploying publicly
-  console.info('[UB-DEV] OTP for', fullPhone, '→', code);
-}
-
-/* ── OTP digit input ── */
-function otpInput(idx) {
-  const el  = $('otp' + idx);
-  el.value  = el.value.replace(/\D/g, '').slice(-1);
-  el.classList.toggle('filled', !!el.value);
-  if (el.value && idx < 5) $('otp' + (idx + 1))?.focus();
-  const full = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
-  if (full.length === 6) setTimeout(verifyOtp, 150);
-}
-function otpKey(e, idx) {
-  if (e.key === 'Backspace' && !$('otp' + idx).value && idx > 0) $('otp' + (idx - 1))?.focus();
-  if (e.key === 'Enter') verifyOtp();
-}
-
-/* ── Verify OTP against Firebase ── */
-async function verifyOtp() {
-  const code  = [0,1,2,3,4,5].map(i => $('otp'+i)?.value || '').join('');
-  const errEl = $('otpErr');
-  errEl.textContent = '';
-  if (code.length < 6) { errEl.textContent = '⚠ Enter all 6 digits.'; return; }
-  if (!_pendingReg?.phoneHash) { errEl.textContent = '⚠ Session expired. Please start again.'; authSwitchTab('reg'); return; }
-
-  setBtnLoading('otpVerifyBtn', true, 'Verify &amp; Create Account →');
-
-  const snap = await db.ref('otp_pending/' + _pendingReg.phoneHash).once('value');
-  if (!snap.exists()) {
-    $('otpErr').textContent = '⚠ Code not found or already expired. Tap "Resend code".';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
-  }
-  const stored = snap.val();
-  if (stored.used) {
-    $('otpErr').textContent = '⚠ This code was already used. Tap "Resend code" to get a new one.';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
-  }
-  if (Date.now() > stored.expires) {
-    $('otpErr').textContent = '⚠ Code expired (10 minutes). Tap "Resend code".';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
-  }
-  if (stored.code !== code) {
-    $('otpErr').textContent = '⚠ Wrong code. Double-check the 6 digits and try again.';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
-  }
-
-  // Mark OTP used immediately to prevent replay
-  await db.ref('otp_pending/' + _pendingReg.phoneHash + '/used').set(true);
-  await createVerifiedAccount();
-}
-
-/* ── Create the account after OTP is verified ── */
-async function createVerifiedAccount() {
-  const { name, pass, phoneHash } = _pendingReg;
-
-  // Re-check username availability
-  const snap = await db.ref('users/' + name).once('value');
-  if (snap.exists()) {
-    $('otpErr').textContent = '⚠ Username was just taken. Go back and choose another.';
-    setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →'); return;
-  }
-
-  // Atomically increment phone usage count
-  await db.ref('phone_index/' + phoneHash).transaction(curr => {
-    if (!curr) return { count: 1, firstUsed: Date.now() };
-    return { ...curr, count: (curr.count || 0) + 1, lastUsed: Date.now() };
-  });
-
-  // Clean up OTP record
-  db.ref('otp_pending/' + phoneHash).remove();
-
-  // Create user record
-  const newUser = { name, password: pass, balance: 50.00, lastBonus: 0, createdAt: Date.now(), phoneHash };
-  await db.ref('users/' + name).set(newUser);
-
-  _pendingReg = null;
-  setBtnLoading('otpVerifyBtn', false, 'Verify &amp; Create Account →');
-  finalizeLogin(newUser);
-}
-
-/* ── Resend OTP ── */
-async function resendOtp() {
-  if (!_pendingReg?.phone) { authSwitchTab('phone'); return; }
-  [0,1,2,3,4,5].forEach(i => { const el = $('otp'+i); if (el) { el.value = ''; el.classList.remove('filled'); } });
-  $('otpErr').textContent = '';
-
-  const code    = genOtp();
-  const expires = Date.now() + OTP_TTL;
-  await db.ref('otp_pending/' + _pendingReg.phoneHash).set({
-    code, expires, phone: _pendingReg.phone, used: false, createdAt: Date.now()
-  });
-
-  setTimeout(() => $('otp0')?.focus(), 100);
-  console.info('[UB-DEV] Resent OTP for', _pendingReg.phone, '→', code);
 }
 
 function finalizeLogin(user) {
@@ -3299,6 +3298,135 @@ function expandTo(t) {
 }
 
 /* ══════════════════════════════════════════════════════
+   MOBILE UI
+══════════════════════════════════════════════════════ */
+function isMobile() { return window.innerWidth <= 768; }
+
+/* ── Mobile tab bar ── */
+function mobGoTab(id) {
+  if (!isMobile()) { goTab(id); return; }
+  goTab(id);
+  document.querySelectorAll('.mob-tab').forEach(b => b.classList.remove('active'));
+  $('mobt-home')?.classList.remove('active');
+  const btn = $('mobt-' + id);
+  if (btn) btn.classList.add('active');
+  else $('mobt-home').classList.add('active');
+  mobCloseDrawer();
+  mobCloseChat();
+}
+
+/* ── Sidebar drawer ── */
+function mobOpenDrawer() {
+  if (!isMobile()) return;
+  // Clone sidebar content into drawer if not already done
+  const drawerBody = $('mobDrawerBody');
+  const sidebar    = document.querySelector('.sidebar');
+  if (sidebar && !drawerBody.hasChildNodes()) {
+    drawerBody.innerHTML = sidebar.innerHTML;
+    // Patch onclick handlers to close drawer after navigation
+    drawerBody.querySelectorAll('[onclick*="goTab"]').forEach(el => {
+      const orig = el.getAttribute('onclick');
+      el.setAttribute('onclick', orig + '; mobCloseDrawer();');
+    });
+    drawerBody.querySelectorAll('[onclick*="openAdminModal"]').forEach(el => {
+      const orig = el.getAttribute('onclick');
+      el.setAttribute('onclick', orig + '; mobCloseDrawer();');
+    });
+  }
+  // Sync admin visibility
+  const adminSrc = $('sbAdmin');
+  const adminDst = drawerBody.querySelector('#sbAdmin');
+  if (adminSrc && adminDst) adminDst.style.display = adminSrc.style.display;
+
+  $('mobOverlay').classList.add('open');
+  $('mobDrawer').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function mobCloseDrawer() {
+  $('mobOverlay').classList.remove('open');
+  $('mobDrawer').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── Mobile chat ── */
+let _mobChatInited = false;
+function mobOpenChat() {
+  if (!isMobile()) return;
+  $('mobChatPanel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  $('mobt-chat').classList.add('active');
+  $('mobt-home').classList.remove('active');
+  $('mobChatDot').classList.remove('show');
+  // Mirror messages from desktop chat on first open
+  if (!_mobChatInited) {
+    _mobChatInited = true;
+    const src = $('chatMsgs');
+    const dst = $('mobChatMsgs');
+    if (src && dst) dst.innerHTML = src.innerHTML;
+    // Watch for new messages and mirror them
+    const observer = new MutationObserver(() => {
+      if (dst) dst.innerHTML = src.innerHTML;
+      dst.scrollTop = dst.scrollHeight;
+    });
+    observer.observe(src, { childList: true });
+  }
+  setTimeout(() => {
+    const dst = $('mobChatMsgs');
+    if (dst) dst.scrollTop = dst.scrollHeight;
+    $('mobChatInput')?.focus();
+  }, 100);
+}
+function mobCloseChat() {
+  $('mobChatPanel').classList.remove('open');
+  document.body.style.overflow = '';
+  $('mobt-chat').classList.remove('active');
+  // Restore home tab active state if no other tab is selected
+  if (!document.querySelector('.mob-tab.active')) $('mobt-home').classList.add('active');
+}
+
+function updateMobCharCtr() {
+  const len = $('mobChatInput').value.length;
+  const el  = $('mobCharCtr');
+  el.textContent = `${len} / 100`;
+  el.className = 'char-ctr' + (len >= 100 ? ' over' : len >= 80 ? ' warn' : '');
+}
+function sendMobChat() {
+  const input = $('mobChatInput');
+  const text  = input.value.trim().slice(0, 100);
+  if (!text || !me()) return;
+  if (hasProfanity(text)) {
+    input.style.borderColor = 'var(--red)';
+    input.value = '';
+    $('mobCharCtr').textContent = '0 / 100';
+    setTimeout(() => input.style.borderColor = '', 1200);
+    return;
+  }
+  const now = Date.now();
+  if (sendMobChat._last && now - sendMobChat._last < 5000) return;
+  sendMobChat._last = now;
+  db.ref('global_chat').push({ user: me().name, text: esc(text), ts: now });
+  input.value = '';
+  $('mobCharCtr').textContent = '0 / 100';
+  $('mobCharCtr').className = 'char-ctr';
+}
+
+// Flash chat dot on new message when chat panel is closed
+function mobNotifyChatNewMsg() {
+  if (isMobile() && !$('mobChatPanel').classList.contains('open')) {
+    $('mobChatDot').classList.add('show');
+  }
+}
+
+// Handle resize — hide mobile UI on desktop
+window.addEventListener('resize', () => {
+  if (!isMobile()) {
+    mobCloseDrawer();
+    mobCloseChat();
+    document.body.style.overflow = '';
+  }
+});
+
+/* ══════════════════════════════════════════════════════
    LIVE FEED  —  auto-purge entries older than 12 hours
 ══════════════════════════════════════════════════════ */
 const srcIcon = { Bonus:'⚡', Giveaway:'🎁', Blackjack:'🃏', Crash:'🚀', Dice:'🎲', Mines:'💣', Plinko:'⚪', Keno:'💎', Tower:'🗼', RPS:'✂️', Pump:'🎈', 'Chicken Road':'🐔', UNO:'🎴' };
@@ -3395,6 +3523,7 @@ function initChat() {
     <div class="msg-text">${esc(m.text)}</div>`;
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
+    if (typeof mobNotifyChatNewMsg === 'function') mobNotifyChatNewMsg();
   });
 
   // Also listen for removals (when server-side purge deletes a node, remove it from UI)
@@ -3407,28 +3536,28 @@ function initChat() {
 function updateCharCtr() {
   const len = $('chatInput').value.length;
   const el = $('charCtr');
-  el.textContent = `${len} / 50`;
-  el.className = 'char-ctr' + (len >= 50 ? ' over' : len >= 40 ? ' warn' : '');
+  el.textContent = `${len} / 100`;
+  el.className = 'char-ctr' + (len >= 100 ? ' over' : len >= 80 ? ' warn' : '');
 }
 
 function sendChat() {
   const input = $('chatInput');
-  const text = input.value.trim().slice(0, 50);
+  const text = input.value.trim().slice(0, 100);
   if (!text || !me()) return;
   if (hasProfanity(text)) {
     input.style.borderColor = 'var(--red)';
     input.value = '';
-    $('charCtr').textContent = '0 / 50';
+    $('charCtr').textContent = '0 / 100';
     setTimeout(() => input.style.borderColor = '', 1200);
     return;
   }
-  // Rate limit: only allow 1 message per second in the client
+  // Rate limit: 5 second cooldown between messages
   const now = Date.now();
-  if (sendChat._last && now - sendChat._last < 1000) return;
+  if (sendChat._last && now - sendChat._last < 5000) return;
   sendChat._last = now;
   db.ref('global_chat').push({ user: me().name, text: esc(text), ts: now });
   input.value = '';
-  $('charCtr').textContent = '0 / 50';
+  $('charCtr').textContent = '0 / 100';
   $('charCtr').className = 'char-ctr';
 }
 
